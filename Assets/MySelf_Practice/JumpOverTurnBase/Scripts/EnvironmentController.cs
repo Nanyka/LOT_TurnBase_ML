@@ -11,6 +11,7 @@ public class EnvironmentController : MonoBehaviour
 
     [SerializeField] private ObstacleManager _obstacleManager;
     [SerializeField] private bool _isUseObstacle;
+    [SerializeField] private bool _isSpawnObstale;
     [SerializeField] private int _currFaction;
     [SerializeField] private int _maxStep;
 
@@ -44,7 +45,7 @@ public class EnvironmentController : MonoBehaviour
 
     public void AskToSpawnObstacle()
     {
-        if (_isUseObstacle)
+        if (_isSpawnObstale)
             _obstacleManager.SpawnObstacle();
     }
 

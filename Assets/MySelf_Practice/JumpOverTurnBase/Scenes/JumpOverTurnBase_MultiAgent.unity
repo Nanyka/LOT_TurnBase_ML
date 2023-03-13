@@ -423,10 +423,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: JumpOver_MultiAgent
       objectReference: {fileID: 0}
-    - target: {fileID: 4914435914229984931, guid: 9e645cdd8a197401491d30d2ebe11d0a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e645cdd8a197401491d30d2ebe11d0a, type: 3}
 --- !u!1 &1715640920
@@ -481,8 +477,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 50
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -505,14 +501,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1715640920}
-  m_LocalRotation: {x: 0.70221215, y: -0.00085635163, z: 0.00084625924, w: 0.71196675}
-  m_LocalPosition: {x: 40.276676, y: 53.102898, z: 11.134866}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 40, y: 50, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &1737841122
 PrefabInstance:
   m_ObjectHideFlags: 0

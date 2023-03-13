@@ -284,7 +284,7 @@ MonoBehaviour:
   - {fileID: 3018600483890542740}
   - {fileID: 7940471121639013389}
   - {fileID: 7940471122832324806}
-  _punishAmount: 2
+  _punishAmount: 0.2
   _idlePunish: 1
 --- !u!1 &4915599118417269010
 GameObject:
@@ -339,7 +339,7 @@ MonoBehaviour:
   - {fileID: 7940471122736367794}
   - {fileID: 7940471122545172999}
   - {fileID: 7940471122481360793}
-  _punishAmount: 2
+  _punishAmount: 0.2
   _idlePunish: 1
 --- !u!1 &4915599119174466194
 GameObject:
@@ -396,6 +396,7 @@ MonoBehaviour:
       m_Calls: []
   _obstacleManager: {fileID: 5508356154280591128}
   _isUseObstacle: 0
+  _isSpawnObstale: 0
   _currFaction: 0
   _maxStep: 400
   _step: 0
@@ -445,7 +446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _obstacle: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
   _platformColider: {fileID: 4962577736836580383}
-  _numberOfObstacles: 0
+  _numberOfObstacles: 3
   _listTeam1:
   - {fileID: 280853788784183533}
   - {fileID: 280853788631392856}
@@ -869,7 +870,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ff6bdf93835694465845425e5995ebb3, type: 2}
     - target: {fileID: 3027983764081746031, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_ShowGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3027983764081746031, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_DebugColors.Array.data[0].b

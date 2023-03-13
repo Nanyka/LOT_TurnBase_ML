@@ -10,6 +10,7 @@ public class SingleJumperController : MonoBehaviour
     [SerializeField] private Collider _platformColider;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
+    [SerializeField] private float _currReward;
 
     Agent m_Agent;
     private int _platformMaxCol;
@@ -90,10 +91,16 @@ public class SingleJumperController : MonoBehaviour
     /// <param name="direction"></param>
     public void MoveDirection()
     {
+        var previousPos = _mMoving.targetPos;
         _mMoving = GetPositionByDirection(_currentDirection);
         _mTransfrom.position = _mMoving.targetPos;
 
-        if (_mMoving.jumpStep > 0)
+        // set punishment whenever agent stand in place
+        if (previousPos == _mMoving.targetPos)
+            Punish(m_AgentManager.GetIdlePunish());
+        
+        // set reward for jumping
+        else if (_mMoving.jumpStep > 0)
         {
             // _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
             // m_Agent.AddReward(0.1f * (_mMoving.jumpStep + Mathf.Pow(2, _mMoving.jumpStep)));
@@ -101,9 +108,11 @@ public class SingleJumperController : MonoBehaviour
 
             // v3.4: apply balance multiplier
             _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
-            m_Agent.AddReward(0.1f * (_mMoving.jumpStep + Mathf.Pow(1 + 1f, _mMoving.jumpStep)) * BalanceMultiplier());
+            m_Agent.AddReward(0.5f * (_mMoving.jumpStep + Mathf.Pow(1 + 1f, _mMoving.jumpStep)) * BalanceMultiplier());
             _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
         }
+        
+        UpdateReward();
     }
 
     private (Vector3, int, int) GetPositionByDirection(int direction)
@@ -120,6 +129,8 @@ public class SingleJumperController : MonoBehaviour
         {
             if (jumpCount == 0)
                 return (newPos, jumpCount, overEnemy);
+            
+            
             return (curPos, jumpCount, overEnemy);
         }
 
@@ -211,12 +222,17 @@ public class SingleJumperController : MonoBehaviour
     }
 
     // avoid abuse of using only single agent. When an agent collect too many reward, the adjacent movement will receive a less reward
-    public float BalanceMultiplier()
+    private float BalanceMultiplier()
     {
         if (m_AgentManager.GetMaxReward() - m_AgentManager.GetMinReward() == 0f)
             return 0f;
         
         return (m_AgentManager.GetMaxReward() - m_Agent.GetCumulativeReward()) /
                (m_AgentManager.GetMaxReward() - m_AgentManager.GetMinReward());
+    }
+
+    private void UpdateReward()
+    {
+        _currReward = m_Agent.GetCumulativeReward();
     }
 }

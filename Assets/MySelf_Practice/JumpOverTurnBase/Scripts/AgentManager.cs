@@ -86,15 +86,24 @@ public class AgentManager : MonoBehaviour
             //     _isMoved = true;
             //     agent.MoveDirection();
             // }
-            
+
             // v3.5: Allow all agent act
             agent.Punish(_idlePunish);
-            if (agent.GetCurrentAction() != 0 )
+            if (agent.GetCurrentAction() != 0)
                 agent.MoveDirection();
         }
-        
+
         EndTurn();
     }
+
+    public void ResponseBack()
+    {
+        _responseCounter++;
+    }
+
+    #endregion
+
+    #region AgentManager agent
 
     // Use managerAgent to select agent in list and selected agent do its action
     public void SelectAgent(int agentIndex)
@@ -105,13 +114,8 @@ public class AgentManager : MonoBehaviour
         checkReward = GetTotalReward() - checkReward;
         // m_Agent.AddReward(checkReward);
         // TODO: Use JumpOverController and this agent instead of two kind of agent;
-        
-        EndTurn();
-    }
 
-    public void ResponseBack()
-    {
-        _responseCounter++;
+        EndTurn();
     }
 
     #endregion
@@ -141,5 +145,10 @@ public class AgentManager : MonoBehaviour
     private float GetTotalReward()
     {
         return m_JumpOverControllers.Sum(x => x.GetAgent().GetCumulativeReward());
+    }
+
+    public float GetIdlePunish()
+    {
+        return _idlePunish;
     }
 }
