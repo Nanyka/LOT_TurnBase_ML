@@ -7,7 +7,9 @@ public class EnvironmentController : MonoBehaviour
 {
     [HideInInspector] public UnityEvent OnChangeFaction; // invoke at JumpOverActuation;
     [HideInInspector] public UnityEvent OnReset; // send to AgentManager
-    [HideInInspector] public UnityEvent<int,int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
+
+    [HideInInspector]
+    public UnityEvent<int, int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
 
     [SerializeField] private ObstacleManager _obstacleManager;
     [SerializeField] private bool _isUseObstacle;
@@ -17,6 +19,7 @@ public class EnvironmentController : MonoBehaviour
 
     [SerializeField] private int _step;
 
+
     public void ChangeFaction()
     {
         _step++;
@@ -25,7 +28,7 @@ public class EnvironmentController : MonoBehaviour
             _step = 0;
             OnReset.Invoke();
         }
-        
+
         if (_currFaction == 0)
             _currFaction = 1;
         else
@@ -43,14 +46,11 @@ public class EnvironmentController : MonoBehaviour
         return _currFaction;
     }
 
-    public void AskToSpawnObstacle()
+    public void KickOffEnvironment()
     {
         if (_isSpawnObstale)
             _obstacleManager.SpawnObstacle();
-    }
-
-    public void KickOffEnvironment()
-    {
+        
         OnChangeFaction.Invoke();
     }
 

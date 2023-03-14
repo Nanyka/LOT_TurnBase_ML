@@ -11,8 +11,7 @@ public class MultiAgentObsController : ObstacleManager
         if (isSpawningPhase && plot == Vector3.zero)
             return true;
 
-        return CheckTeam(plot, 0) || CheckTeam(plot, 1) ||
-               _listTeam1.Find(x => Vector3.Distance(x.transform.position, plot) < Mathf.Epsilon);
+        return CheckTeam(plot, 0) || CheckTeam(plot, 1);
     }
 
     public override bool CheckTeam(Vector3 position, int faction)

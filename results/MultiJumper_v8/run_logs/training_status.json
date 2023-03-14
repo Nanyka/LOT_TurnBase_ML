@@ -1,0 +1,29 @@
+{
+    "Supervisor": {
+        "checkpoints": [
+            {
+                "steps": 360600,
+                "file_path": "results/MultiJumper_v8/Supervisor/Supervisor-360600.onnx",
+                "reward": 56.52777746485339,
+                "creation_time": 1678805407.8523462,
+                "auxillary_file_paths": [
+                    "results/MultiJumper_v8/Supervisor/Supervisor-360600.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 360600,
+            "file_path": "results/MultiJumper_v8/Supervisor.onnx",
+            "reward": 56.52777746485339,
+            "creation_time": 1678805407.8523462,
+            "auxillary_file_paths": [
+                "results/MultiJumper_v8/Supervisor/Supervisor-360600.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.11.0"
+    }
+}

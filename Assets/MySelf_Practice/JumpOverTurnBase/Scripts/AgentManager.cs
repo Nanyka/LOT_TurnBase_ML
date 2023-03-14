@@ -46,7 +46,7 @@ public class AgentManager : MonoBehaviour
         }
     }
 
-    // KICK-OFF function of this MLAgents environment
+    // KICK-OFF this MLAgents environment
     private void MultiJumperKickOff()
     {
         if (m_Faction == 0)
@@ -74,7 +74,7 @@ public class AgentManager : MonoBehaviour
     private IEnumerator WaitForAgents()
     {
         yield return new WaitUntil(() => _responseCounter == m_JumpOverControllers.Count);
-        // _isMoved = false;
+        _isMoved = false;
 
         // if the selected agent do not choose idle --> action & break
         foreach (var agent in m_JumpOverControllers)
@@ -88,9 +88,25 @@ public class AgentManager : MonoBehaviour
             // }
 
             // v3.5: Allow all agent act
-            agent.Punish(_idlePunish);
-            if (agent.GetCurrentAction() != 0)
-                agent.MoveDirection();
+            // agent.Punish(_idlePunish);
+            // if (agent.GetCurrentAction() != 0)
+            //     agent.MoveDirection();
+
+            // v7: go one agent in one turn
+            if (agent.GetCurrentAction() == 0)
+                agent.Punish(_idlePunish);
+            else
+            {
+                agent.Punish(_idlePunish / 2);
+
+                if (_isMoved == false)
+                {
+                    _isMoved = true;
+                    agent.MoveDirection();
+                }
+            }
+
+            agent.UpdateRewardUI(); // for debug purpose. It's not important
         }
 
         EndTurn();

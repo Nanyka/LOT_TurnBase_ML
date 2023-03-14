@@ -191,7 +191,7 @@ public class JumpOverController : MonoBehaviour
         _mMoving.targetPos = Vector3.zero + _platformPos;
         _mTransfrom.position = _mMoving.targetPos;
         _agentRenderer.material = _agentColor[0];
-        _environmentController.AskToSpawnObstacle();
+        // _environmentController.AskToSpawnObstacle();
         _environmentController.KickOffEnvironment();
     }
 }

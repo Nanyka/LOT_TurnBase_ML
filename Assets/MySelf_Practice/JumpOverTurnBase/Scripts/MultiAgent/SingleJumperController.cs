@@ -96,7 +96,7 @@ public class SingleJumperController : MonoBehaviour
         _mTransfrom.position = _mMoving.targetPos;
 
         // set punishment whenever agent stand in place
-        if (previousPos == _mMoving.targetPos)
+        if (Vector3.Distance(previousPos,_mMoving.targetPos) < Mathf.Epsilon)
             Punish(m_AgentManager.GetIdlePunish());
         
         // set reward for jumping
@@ -108,11 +108,9 @@ public class SingleJumperController : MonoBehaviour
 
             // v3.4: apply balance multiplier
             _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
-            m_Agent.AddReward(0.5f * (_mMoving.jumpStep + Mathf.Pow(1 + 1f, _mMoving.jumpStep)) * BalanceMultiplier());
+            m_Agent.AddReward(0.3f * (_mMoving.jumpStep + Mathf.Pow(1 + 1f, _mMoving.jumpStep)) * BalanceMultiplier());
             _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
         }
-        
-        UpdateReward();
     }
 
     private (Vector3, int, int) GetPositionByDirection(int direction)
@@ -231,7 +229,7 @@ public class SingleJumperController : MonoBehaviour
                (m_AgentManager.GetMaxReward() - m_AgentManager.GetMinReward());
     }
 
-    private void UpdateReward()
+    public void UpdateRewardUI()
     {
         _currReward = m_Agent.GetCumulativeReward();
     }
