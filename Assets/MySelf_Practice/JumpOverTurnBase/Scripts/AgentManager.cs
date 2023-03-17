@@ -10,11 +10,13 @@ public class AgentManager : MonoBehaviour
     [SerializeField] private EnvironmentController _environmentController;
     [SerializeField] private int m_Faction;
     [SerializeField] private List<SingleJumperController> m_JumpOverControllers;
+    [SerializeField] private float _unitReward;
     [SerializeField] private float _punishAmount;
-    [SerializeField] private float _idlePunish;
+    [SerializeField] private float _idlePunish = 0.01f;
 
+    private SimpleMultiAgentGroup m_AgentGroup;
     private int _responseCounter;
-    private int _steps;
+    private int _currentJump;
     private bool _isMoved;
 
     private void Start()
@@ -22,16 +24,24 @@ public class AgentManager : MonoBehaviour
         _environmentController.OnChangeFaction.AddListener(ToMyTurn);
         _environmentController.OnReset.AddListener(ResetAgents);
         _environmentController.OnPunishOppositeTeam.AddListener(GetPunish);
+        _environmentController.OnOneTeamWin.AddListener(FinishRound);
+
+        m_AgentGroup = new SimpleMultiAgentGroup();
+        foreach (var singleJumperController in m_JumpOverControllers)
+        {
+            m_AgentGroup.RegisterAgent(singleJumperController.GetAgent());
+        }
 
         MultiJumperKickOff();
     }
 
     private void ResetAgents()
     {
+        _currentJump = 0;
         foreach (var agent in m_JumpOverControllers)
-        {
             agent.ResetAgent();
-        }
+
+        m_AgentGroup.GroupEpisodeInterrupted();
     }
 
     // Get punish whenever an agent jump over enemies
@@ -39,11 +49,8 @@ public class AgentManager : MonoBehaviour
     {
         if (faction == m_Faction)
             return;
-
-        foreach (var agent in m_JumpOverControllers)
-        {
-            agent.Punish(_punishAmount * overEnemy);
-        }
+        
+        m_AgentGroup.AddGroupReward(-1f*_punishAmount);
     }
 
     // KICK-OFF this MLAgents environment
@@ -79,34 +86,9 @@ public class AgentManager : MonoBehaviour
         // if the selected agent do not choose idle --> action & break
         foreach (var agent in m_JumpOverControllers)
         {
-            // if (agent.GetCurrentAction() == 0)
-            //     agent.Punish(_idlePunish);
-            // if (agent.GetCurrentAction() != 0 && _isMoved == false)
-            // {
-            //     _isMoved = true;
-            //     agent.MoveDirection();
-            // }
-
-            // v3.5: Allow all agent act
-            // agent.Punish(_idlePunish);
-            // if (agent.GetCurrentAction() != 0)
-            //     agent.MoveDirection();
-
-            // v7: go one agent in one turn
-            if (agent.GetCurrentAction() == 0)
-                agent.Punish(_idlePunish);
-            else
-            {
-                agent.Punish(_idlePunish / 2);
-
-                if (_isMoved == false)
-                {
-                    _isMoved = true;
-                    agent.MoveDirection();
-                }
-            }
-
-            agent.UpdateRewardUI(); // for debug purpose. It's not important
+            // v10: go one agent in one turn and suffer an existential penalty
+            m_AgentGroup.AddGroupReward(-1f*_idlePunish);
+            agent.MoveDirection();
         }
 
         EndTurn();
@@ -119,7 +101,50 @@ public class AgentManager : MonoBehaviour
 
     #endregion
 
-    #region AgentManager agent
+    private void EndTurn()
+    {
+        // call for the end-turn event
+        _environmentController.ChangeFaction();
+        _environmentController.OnChangeFaction.Invoke();
+    }
+
+    #region GET & SET
+
+    public int GetFaction()
+    {
+        return m_Faction;
+    }
+
+    public void ContributeGroupReward((Vector3 targetPos,int jumpStep,int overEnemy) unitAction)
+    {
+        var rewardMultiplier = unitAction.jumpStep;
+        m_AgentGroup.AddGroupReward(_unitReward * (rewardMultiplier + Mathf.Pow(1 + 1f, rewardMultiplier)));
+        
+        _currentJump += rewardMultiplier;
+
+        if (_environmentController.CheckWinCondition(_currentJump))
+            _environmentController.OnOneTeamWin.Invoke(m_Faction);
+    }
+
+    private void FinishRound(int faction)
+    {
+        if (faction == m_Faction)
+            m_AgentGroup.AddGroupReward(_currentJump*_unitReward);
+        else
+            m_AgentGroup.AddGroupReward(-1f*_currentJump*_unitReward);
+
+        _currentJump = 0;
+        foreach (var agent in m_JumpOverControllers)
+            agent.ResetAgent();
+        
+        m_AgentGroup.EndGroupEpisode();
+    }
+
+    #endregion
+
+    #region OLD VERSION (DEDICATED)
+    
+    #region Supervisor agent
 
     // Use managerAgent to select agent in list and selected agent do its action
     public void SelectAgent(int agentIndex)
@@ -136,17 +161,7 @@ public class AgentManager : MonoBehaviour
 
     #endregion
 
-    private void EndTurn()
-    {
-        // call for the end-turn event
-        _environmentController.ChangeFaction();
-        _environmentController.OnChangeFaction.Invoke();
-    }
-
-    public int GetFaction()
-    {
-        return m_Faction;
-    }
+    #region GET & SET
 
     public float GetMaxReward()
     {
@@ -167,4 +182,9 @@ public class AgentManager : MonoBehaviour
     {
         return _idlePunish;
     }
+
+    #endregion
+    
+
+    #endregion
 }

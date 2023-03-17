@@ -12,7 +12,7 @@ public class SingleJumperController : MonoBehaviour
     [SerializeField] private List<Material> _agentColor;
     [SerializeField] private float _currReward;
 
-    Agent m_Agent;
+    private Agent m_Agent;
     private int _platformMaxCol;
     private int _platformMaxRow;
     private Vector3 _platformPos;
@@ -102,14 +102,14 @@ public class SingleJumperController : MonoBehaviour
         // set reward for jumping
         else if (_mMoving.jumpStep > 0)
         {
-            // _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
-            // m_Agent.AddReward(0.1f * (_mMoving.jumpStep + Mathf.Pow(2, _mMoving.jumpStep)));
-            // _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
+            _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
+            m_AgentManager.ContributeGroupReward(_mMoving);
+            _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
 
             // v3.4: apply balance multiplier
-            _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
-            m_Agent.AddReward(0.3f * (_mMoving.jumpStep + Mathf.Pow(1 + 1f, _mMoving.jumpStep)) * BalanceMultiplier());
-            _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
+            // _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
+            // m_Agent.AddReward(0.3f * (_mMoving.jumpStep + Mathf.Pow(1 + 1f, _mMoving.jumpStep)) * BalanceMultiplier());
+            // _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
         }
     }
 
@@ -142,15 +142,6 @@ public class SingleJumperController : MonoBehaviour
                 jumpCount++;
                 overEnemy++;
             }
-            
-            // version 3.2
-            // if (_environmentController.CheckObjectInTeam(newPos, m_AgentManager.GetFaction()))
-            //     jumpCount++;
-            // else
-            // {
-            //     jumpCount+=2;
-            //     overEnemy++;
-            // }
 
             curPos = newPos + DirectionToVector(direction);
             newPos = curPos + DirectionToVector(direction);
@@ -202,7 +193,7 @@ public class SingleJumperController : MonoBehaviour
 
     public void ResetAgent()
     {
-        m_Agent.EndEpisode();
+        // m_Agent.EndEpisode(); // just use this one when training one one agent
         _mTransfrom.position = _defaultPos;
         _mMoving.targetPos = _defaultPos;
         // _mMoving.targetPos = _defaultPos + _platformPos;

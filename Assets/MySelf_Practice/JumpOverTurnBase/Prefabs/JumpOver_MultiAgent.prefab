@@ -284,8 +284,9 @@ MonoBehaviour:
   - {fileID: 3018600483890542740}
   - {fileID: 7940471121639013389}
   - {fileID: 7940471122832324806}
+  _unitReward: 0.1
   _punishAmount: 0.1
-  _idlePunish: 0.3
+  _idlePunish: 0.01
 --- !u!1 &4915599118417269010
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,8 +340,9 @@ MonoBehaviour:
   - {fileID: 7940471122736367794}
   - {fileID: 7940471122545172999}
   - {fileID: 7940471122481360793}
+  _unitReward: 0.1
   _punishAmount: 0.1
-  _idlePunish: 0.3
+  _idlePunish: 0.01
 --- !u!1 &4915599119174466194
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +393,9 @@ MonoBehaviour:
   OnReset:
     m_PersistentCalls:
       m_Calls: []
+  OnOneTeamWin:
+    m_PersistentCalls:
+      m_Calls: []
   OnPunishOppositeTeam:
     m_PersistentCalls:
       m_Calls: []
@@ -398,7 +403,8 @@ MonoBehaviour:
   _isUseObstacle: 0
   _isSpawnObstale: 0
   _currFaction: 0
-  _maxStep: 400
+  _maxStep: 200
+  _winJumpAmount: 50
   _step: 0
 --- !u!1 &4915599119671032611
 GameObject:
@@ -474,6 +480,10 @@ PrefabInstance:
       propertyPath: _environmentController
       value: 
       objectReference: {fileID: 4915599119174466192}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_BehaviorName
+      value: GroupJumper
+      objectReference: {fileID: 0}
     - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_BrainParameters.NumStackedVectorObservations
       value: 2
@@ -607,6 +617,14 @@ PrefabInstance:
     - target: {fileID: 3027983764081746031, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_DebugColors.Array.data[1].r
       value: 0.73442703
+      objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: TeamId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_BehaviorName
+      value: GroupJumper
       objectReference: {fileID: 0}
     - target: {fileID: 5153362588685398764, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -749,6 +767,14 @@ PrefabInstance:
     - target: {fileID: 3027983764081746031, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_DebugColors.Array.data[1].r
       value: 0.73442703
+      objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: TeamId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_BehaviorName
+      value: GroupJumper
       objectReference: {fileID: 0}
     - target: {fileID: 5153362588685398764, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -896,6 +922,14 @@ PrefabInstance:
       propertyPath: m_DebugColors.Array.data[1].r
       value: 0.73442703
       objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: TeamId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_BehaviorName
+      value: GroupJumper
+      objectReference: {fileID: 0}
     - target: {fileID: 5153362588685398764, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1022,6 +1056,10 @@ PrefabInstance:
       propertyPath: m_DebugColors.Array.data[1].r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_BehaviorName
+      value: GroupJumper
+      objectReference: {fileID: 0}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
       value: SingleAgent (2)
@@ -1135,6 +1173,10 @@ PrefabInstance:
     - target: {fileID: 3027983764081746031, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_DebugColors.Array.data[1].r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_BehaviorName
+      value: GroupJumper
       objectReference: {fileID: 0}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
