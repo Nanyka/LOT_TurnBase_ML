@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,6 @@ public class EnvironmentController : MonoBehaviour
     [HideInInspector] public UnityEvent OnChangeFaction; // invoke at JumpOverActuation;
     [HideInInspector] public UnityEvent OnReset; // send to AgentManager
     [HideInInspector] public UnityEvent<int> OnOneTeamWin; // invoke at AgentManager; sent to all AgentManager 
-
     [HideInInspector]
     public UnityEvent<int, int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
 
@@ -21,6 +21,17 @@ public class EnvironmentController : MonoBehaviour
 
     [SerializeField] private int _step;
 
+    private void Start()
+    {
+        OnOneTeamWin.AddListener(ResetEnvironment);
+    }
+
+    private void ResetEnvironment(int arg0)
+    {
+        _step = 0;
+        if (_isSpawnObstale)
+            _obstacleManager.SpawnObstacle();
+    }
 
     public void ChangeFaction()
     {

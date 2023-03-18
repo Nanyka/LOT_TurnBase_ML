@@ -88,6 +88,7 @@ public class AgentManager : MonoBehaviour
         {
             // v10: go one agent in one turn and suffer an existential penalty
             m_AgentGroup.AddGroupReward(-1f*_idlePunish);
+
             agent.MoveDirection();
         }
 
