@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MultiAgentObsController : ObstacleManager
 {
-    [SerializeField] private List<GameObject> _listTeam0 = new();
-
     public override bool CheckObstaclePlot(Vector3 plot, bool isSpawningPhase)
     {
         if (isSpawningPhase && plot == Vector3.zero)

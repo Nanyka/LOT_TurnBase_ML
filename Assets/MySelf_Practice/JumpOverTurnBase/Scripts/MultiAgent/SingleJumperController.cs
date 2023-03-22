@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class SingleJumperController : MonoBehaviour
 {
+    public bool UseThisTurn;
+    
     [SerializeField] private EnvironmentController _environmentController;
     [SerializeField] private AgentManager m_AgentManager;
     [SerializeField] private Collider _platformColider;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
-    [SerializeField] private float _currReward;
 
     private Agent m_Agent;
     private int _platformMaxCol;
@@ -19,7 +20,7 @@ public class SingleJumperController : MonoBehaviour
     private Transform _mTransfrom;
     private Transform _smallGoalTransform;
     private Transform _largeGoalTransform;
-    private (Vector3 targetPos, int jumpStep, int overEnemy) _mMoving;
+    private (Vector3 targetPos, int jumpStep) _mMoving;
     private int _steps;
     private int _currentDirection;
     private Vector3 _defaultPos;
@@ -49,6 +50,16 @@ public class SingleJumperController : MonoBehaviour
 
         SetUpPlatform();
     }
+    
+    // REFACTORING: Access this information from AgentManager
+    private void SetUpPlatform()
+    {
+        var platformSize = _platformColider.bounds.size;
+        _platformMaxCol = Mathf.RoundToInt((platformSize.x - 1) / 2);
+        _platformMaxRow = Mathf.RoundToInt((platformSize.z - 1) / 2);
+    }
+
+    #region Connect with BRAIN
 
     // Move the agent periodically
     public void AskForAction()
@@ -68,21 +79,11 @@ public class SingleJumperController : MonoBehaviour
         m_Agent?.RequestDecision();
     }
 
-    // REFACTORING: Access this information from AgentManager
-    private void SetUpPlatform()
-    {
-        var platformSize = _platformColider.bounds.size;
-        _platformMaxCol = Mathf.RoundToInt((platformSize.x - 1) / 2);
-        _platformMaxRow = Mathf.RoundToInt((platformSize.z - 1) / 2);
-    }
-
-    #region Moving function
-
     // Receive action decision from ActuatorComponent
     public void ResponseAction(int direction)
     {
         _currentDirection = direction;
-        m_AgentManager.ResponseBack();
+        MoveDirection();
     }
 
     /// <summary>
@@ -91,65 +92,59 @@ public class SingleJumperController : MonoBehaviour
     /// <param name="direction"></param>
     public void MoveDirection()
     {
-        var previousPos = _mMoving.targetPos;
         _mMoving = GetPositionByDirection(_currentDirection);
+        
+        // Change agent direction before the agent jump to the new position
+        _agentRenderer.transform.forward = _mMoving.targetPos - _mTransfrom.position;
         _mTransfrom.position = _mMoving.targetPos;
 
-        // set punishment whenever agent stand in place
-        if (Vector3.Distance(previousPos,_mMoving.targetPos) < Mathf.Epsilon)
-            Punish(m_AgentManager.GetIdlePunish());
+        // TODO: remove this set reward for jumping, add reward when agent attack enemy successfully
+        // if (_mMoving.jumpStep > 0)
+        // {
+        //     ChangeColor();
+        //     m_AgentManager.ContributeGroupReward(_mMoving);
+        // }
         
-        // set reward for jumping
-        else if (_mMoving.jumpStep > 0)
-        {
-            _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
-            m_AgentManager.ContributeGroupReward(_mMoving);
-            _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
-
-            // v3.4: apply balance multiplier
-            // _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
-            // m_Agent.AddReward(0.3f * (_mMoving.jumpStep + Mathf.Pow(1 + 1f, _mMoving.jumpStep)) * BalanceMultiplier());
-            // _environmentController.OnPunishOppositeTeam.Invoke(m_AgentManager.GetFaction(), _mMoving.overEnemy);
-        }
+        m_AgentManager.CollectUnitResponse(); // finish this action and turn to the next agent
     }
 
-    private (Vector3, int, int) GetPositionByDirection(int direction)
+    #endregion
+
+    #region Moving function
+    
+    private (Vector3, int) GetPositionByDirection(int direction)
     {
         var curPos = _mMoving.targetPos;
         var newPos = curPos + DirectionToVector(direction);
 
-        return MovingPath(curPos, newPos, direction, 0, 0);
+        return MovingPath(curPos, newPos, direction, 0);
     }
 
-    private (Vector3, int, int) MovingPath(Vector3 curPos, Vector3 newPos, int direction, int jumpCount, int overEnemy)
+    private (Vector3, int) MovingPath(Vector3 curPos, Vector3 newPos, int direction, int jumpCount)
     {
         if (CheckAvailableMove(newPos))
         {
             if (jumpCount == 0)
-                return (newPos, jumpCount, overEnemy);
+                return (newPos, jumpCount);
             
             
-            return (curPos, jumpCount, overEnemy);
+            return (curPos, jumpCount);
         }
 
         if (CheckAvailableMove(newPos + DirectionToVector(direction)))
         {
-            // version 3.1
             if (_environmentController.CheckObjectInTeam(newPos, m_AgentManager.GetFaction()))
                 jumpCount++;
             else
-            {
                 jumpCount++;
-                overEnemy++;
-            }
 
             curPos = newPos + DirectionToVector(direction);
             newPos = curPos + DirectionToVector(direction);
 
-            return MovingPath(curPos, newPos, direction, jumpCount, overEnemy);
+            return MovingPath(curPos, newPos, direction, jumpCount);
         }
 
-        return (curPos, jumpCount, overEnemy);
+        return (curPos, jumpCount);
     }
 
     private Vector3 DirectionToVector(int direction)
@@ -159,17 +154,15 @@ public class SingleJumperController : MonoBehaviour
         switch (direction)
         {
             case 0:
-                break;
-            case 1:
                 checkVector += Vector3.left;
                 break;
-            case 2:
+            case 1:
                 checkVector += Vector3.right;
                 break;
-            case 3:
+            case 2:
                 checkVector += Vector3.back;
                 break;
-            case 4:
+            case 3:
                 checkVector += Vector3.forward;
                 break;
         }
@@ -184,11 +177,6 @@ public class SingleJumperController : MonoBehaviour
                _environmentController.FreeToMove(checkPos);
     }
 
-    public void Punish(float amount)
-    {
-        m_Agent?.AddReward(-1f * amount);
-    }
-
     #endregion
 
     public void ResetAgent()
@@ -200,28 +188,28 @@ public class SingleJumperController : MonoBehaviour
         _agentRenderer.material = _agentColor[0];
     }
 
-    public int GetCurrentAction()
-    {
-        return _currentDirection;
-    }
-
     public Agent GetAgent()
     {
         return m_Agent;
     }
 
-    // avoid abuse of using only single agent. When an agent collect too many reward, the adjacent movement will receive a less reward
-    private float BalanceMultiplier()
+    public Vector3 GetPosition()
     {
-        if (m_AgentManager.GetMaxReward() - m_AgentManager.GetMinReward() == 0f)
-            return 0f;
-        
-        return (m_AgentManager.GetMaxReward() - m_Agent.GetCumulativeReward()) /
-               (m_AgentManager.GetMaxReward() - m_AgentManager.GetMinReward());
+        return _mTransfrom.position;
     }
 
-    public void UpdateRewardUI()
+    public Vector3 GetDirection()
     {
-        _currReward = m_Agent.GetCumulativeReward();
+        return _agentRenderer.transform.forward;
+    }
+
+    public int GetJumpStep()
+    {
+        return _mMoving.jumpStep;
+    }
+
+    public void ChangeColor(int index)
+    {
+        _agentRenderer.material = _agentColor[Mathf.Clamp(index, 0, _agentColor.Count - 1)];
     }
 }

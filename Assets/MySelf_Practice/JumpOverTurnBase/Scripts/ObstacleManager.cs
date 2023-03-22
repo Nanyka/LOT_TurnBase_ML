@@ -9,6 +9,7 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] private GameObject _obstacle;
     [SerializeField] private Collider _platformColider;
     [SerializeField] private int _numberOfObstacles;
+    [SerializeField] protected List<GameObject> _listTeam0 = new();
     [SerializeField] protected List<GameObject> _listTeam1 = new();
     
     private int _maxX;
@@ -73,5 +74,12 @@ public class ObstacleManager : MonoBehaviour
     public virtual bool CheckTeam(Vector3 position, int faction)
     {
         return true;
+    }
+
+    public bool CheckEnemy(Vector3 targetPos, int faction)
+    {
+        if (faction == 0)
+            return CheckTeam(targetPos, 1);
+        return CheckTeam(targetPos, 0);
     }
 }

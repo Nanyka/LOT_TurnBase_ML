@@ -119,7 +119,7 @@ public class Supervisor : MonoBehaviour
     }
 
     // Get punish whenever an agent jump over enemies
-    private void GetPunish(int faction, int overEnemy)
+    private void GetPunish(int faction)
     {
         if (faction == m_Faction)
             return;

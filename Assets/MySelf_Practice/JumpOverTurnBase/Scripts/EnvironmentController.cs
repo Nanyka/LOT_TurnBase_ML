@@ -10,14 +10,13 @@ public class EnvironmentController : MonoBehaviour
     [HideInInspector] public UnityEvent OnReset; // send to AgentManager
     [HideInInspector] public UnityEvent<int> OnOneTeamWin; // invoke at AgentManager; sent to all AgentManager 
     [HideInInspector]
-    public UnityEvent<int, int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
+    public UnityEvent<int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
 
     [SerializeField] private ObstacleManager _obstacleManager;
     [SerializeField] private bool _isUseObstacle;
     [SerializeField] private bool _isSpawnObstale;
     [SerializeField] private int _currFaction;
     [SerializeField] private int _maxStep;
-    [SerializeField] private int _winJumpAmount;
 
     [SerializeField] private int _step;
 
@@ -87,13 +86,8 @@ public class EnvironmentController : MonoBehaviour
         return _obstacleManager.CheckTeam(pos, faction);
     }
 
-    #region Win condition
-
-    // Team will win if reach win amount
-    public bool CheckWinCondition(int accumulateJump)
+    public bool CheckEnemy(Vector3 pos, int myFaction)
     {
-        return accumulateJump >= _winJumpAmount;
+        return _obstacleManager.CheckEnemy(pos, myFaction);
     }
-
-    #endregion
 }
