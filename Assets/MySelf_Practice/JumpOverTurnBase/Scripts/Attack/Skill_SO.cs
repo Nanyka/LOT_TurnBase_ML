@@ -64,4 +64,9 @@ public class Skill_SO : ScriptableObject
     }
 
     #endregion
+
+    public float GetMagnitude()
+    {
+        return _magnitude;
+    }
 }

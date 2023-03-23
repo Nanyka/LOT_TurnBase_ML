@@ -6,7 +6,7 @@ using UnityEngine;
 public class SingleJumperController : MonoBehaviour
 {
     public bool UseThisTurn;
-    
+
     [SerializeField] private EnvironmentController _environmentController;
     [SerializeField] private AgentManager m_AgentManager;
     [SerializeField] private Collider _platformColider;
@@ -50,7 +50,7 @@ public class SingleJumperController : MonoBehaviour
 
         SetUpPlatform();
     }
-    
+
     // REFACTORING: Access this information from AgentManager
     private void SetUpPlatform()
     {
@@ -93,9 +93,10 @@ public class SingleJumperController : MonoBehaviour
     public void MoveDirection()
     {
         _mMoving = GetPositionByDirection(_currentDirection);
-        
+
         // Change agent direction before the agent jump to the new position
-        _agentRenderer.transform.forward = _mMoving.targetPos - _mTransfrom.position;
+        if (_mMoving.targetPos != _mTransfrom.position)
+            _agentRenderer.transform.forward = _mMoving.targetPos - _mTransfrom.position;
         _mTransfrom.position = _mMoving.targetPos;
 
         // TODO: remove this set reward for jumping, add reward when agent attack enemy successfully
@@ -104,14 +105,14 @@ public class SingleJumperController : MonoBehaviour
         //     ChangeColor();
         //     m_AgentManager.ContributeGroupReward(_mMoving);
         // }
-        
+
         m_AgentManager.CollectUnitResponse(); // finish this action and turn to the next agent
     }
 
     #endregion
 
     #region Moving function
-    
+
     private (Vector3, int) GetPositionByDirection(int direction)
     {
         var curPos = _mMoving.targetPos;
@@ -126,8 +127,8 @@ public class SingleJumperController : MonoBehaviour
         {
             if (jumpCount == 0)
                 return (newPos, jumpCount);
-            
-            
+
+
             return (curPos, jumpCount);
         }
 

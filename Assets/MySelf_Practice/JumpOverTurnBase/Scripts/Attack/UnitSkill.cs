@@ -10,4 +10,9 @@ public class UnitSkill : MonoBehaviour
     {
         return m_SkillSOs[jumpStep-1].CalculateSkillRange(targetPos,direction);
     }
+
+    public float GetSkillMagnitude(int jumpStep)
+    {
+        return m_SkillSOs[jumpStep].GetMagnitude();
+    }
 }

@@ -115,11 +115,14 @@ public class AgentManager : MonoBehaviour
             foreach (var attackPoint in attackPoints)
             {
                 if (_environmentController.CheckEnemy(attackPoint, m_Faction))
+                {
+                    // Debug.Log($"Agent at {agent.GetPosition()} conduct a successful attack at {attackPoint}");
                     successAttacks++;
+                }
             }
 
             agent.ChangeColor(successAttacks);
-            m_AgentGroup.AddGroupReward(_unitReward * successAttacks);
+            m_AgentGroup.AddGroupReward(_unitReward * successAttacks * m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
             _visualGroupReward += _unitReward * successAttacks;
         }
 
