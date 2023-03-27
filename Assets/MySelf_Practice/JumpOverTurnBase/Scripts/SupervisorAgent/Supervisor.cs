@@ -3,19 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.MLAgents;
+using Unity.MLAgents.Actuators;
 using UnityEngine;
 
 public class Supervisor : MonoBehaviour
 {
     [SerializeField] private EnvironmentController _environmentController;
     [SerializeField] private int m_Faction;
-    [SerializeField] private List<NPCUnit> _npvUnits;
+    [SerializeField] private List<NPCUnit> _npcUnits;
     [SerializeField] private float _standardReward = 1f;
     [SerializeField] private float _standarPunishment = -0.1f;
     [SerializeField] private float _idlePunish = -1f;
     [SerializeField] private float _showCurrentReward;
+    
+    [Header("Attack part")] [SerializeField]
+    private UnitSkill m_UnitSkill;
 
     private Agent _mAgent;
+    private List<(int unitIndex, int order, int action)> _movingOrder = new (3);
     
     public void Awake()
     {
@@ -33,6 +38,11 @@ public class Supervisor : MonoBehaviour
     private void Start()
     {
         _mAgent = GetComponent<Agent>();
+        
+        // Add 3 item corresponding to 3 unit into list tuple
+        _movingOrder.Add(new (0,0,0));
+        _movingOrder.Add(new (0,0,0));
+        _movingOrder.Add(new (0,0,0));
 
         _environmentController.OnChangeFaction.AddListener(ToMyTurn);
         _environmentController.OnReset.AddListener(ResetAgents);
@@ -60,11 +70,23 @@ public class Supervisor : MonoBehaviour
         _mAgent?.RequestDecision();
     }
 
-    // Receive action and assign task to selected unit
-    public void MoveUnit(int index, int direction)
+    // Receive action and assign task to selected unit.
+    public void MoveUnit(ActionSegment<int> returnAction)
     {
-        _mAgent.AddReward(_standarPunishment);
-        _npvUnits[index].MoveDirection(direction);
+        _mAgent.AddReward(_standarPunishment); // ADD a small PUNISH to rush agent learn faster
+
+        // Insert result into tuple array
+        _movingOrder[0] = new(0, returnAction[0], returnAction[3]);
+        _movingOrder[1] = new(1, returnAction[1], returnAction[4]);
+        _movingOrder[2] = new(2, returnAction[2], returnAction[5]);
+        
+        // sort actions and have unit move as an order
+        _movingOrder.Sort((x,y) => x.order.CompareTo(y.order));
+        
+        foreach (var moving in _movingOrder)
+            _npcUnits[moving.unitIndex].MoveDirection(moving.action);
+        
+        FinishAndResponse();
     }
 
     // get response from selected unit after it conducted action
@@ -79,7 +101,7 @@ public class Supervisor : MonoBehaviour
     private void ResetAgents()
     {
         // Reset this agent
-        foreach (var unit in _npvUnits)
+        foreach (var unit in _npcUnits)
         {
             unit.ResetUnit();
         }
@@ -96,6 +118,32 @@ public class Supervisor : MonoBehaviour
 
     private void EndTurn()
     {
+        // Attack nearby enemy and ADD REWARD based on number of successful attacks
+        foreach (var unit in _npcUnits)
+        {
+            if (unit.GetJumpStep() == 0)
+                continue;
+
+            var attackPoints = m_UnitSkill.AttackPoints(unit.GetPosition(), unit.GetDirection(), unit.GetJumpStep());
+            int successAttacks = 0;
+            foreach (var attackPoint in attackPoints)
+            {
+                if (_environmentController.CheckEnemy(attackPoint, m_Faction))
+                {
+                    // Debug.Log($"Agent at {agent.GetPosition()} conduct a successful attack at {attackPoint}");
+                    successAttacks++;
+                }
+            }
+
+            if (successAttacks > 0)
+            {
+                unit.ChangeColor(successAttacks);
+                _mAgent.AddReward(_standardReward * successAttacks);
+                
+                _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+            }
+        }
+        
         // call for the end-turn event
         _environmentController.ChangeFaction();
         _environmentController.OnChangeFaction.Invoke();

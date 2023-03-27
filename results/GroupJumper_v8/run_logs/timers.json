@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1679944407",
+        "python_version": "3.9.13 (main, Oct 13 2022, 16:12:30) \n[Clang 12.0.0 ]",
+        "command_line_arguments": "/Users/admin/opt/anaconda3/envs/my_rl_env/bin/mlagents-learn /Users/admin/Desktop/GameProjects/TestMLAgents/config/groupjumper_v3.yaml --run-id=GroupJumper_v8 --env=/Users/admin/Desktop/GroupAgent_v8.app --no-graphic --initialize-from=/Users/admin/Desktop/GameProjects/TestMLAgents/results/GroupJumper_v8 --force",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.11.0",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1679944411"
+    },
+    "total": 4.012699978,
+    "count": 1,
+    "self": 0.6512933439999999,
+    "children": {
+        "run_training.setup": {
+            "total": 0.025425653000000104,
+            "count": 1,
+            "self": 0.025425653000000104
+        },
+        "TrainerController.start_learning": {
+            "total": 3.3359809809999996,
+            "count": 1,
+            "self": 5.92239999996913e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 3.335876844,
+                    "count": 1,
+                    "self": 3.335876844
+                },
+                "TrainerController._save_models": {
+                    "total": 4.4912999999979775e-05,
+                    "count": 1,
+                    "self": 4.4912999999979775e-05
+                }
+            }
+        }
+    }
+}

@@ -9,7 +9,7 @@ public class NPCUnit : MonoBehaviour
     [SerializeField] private Collider _platformColider;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
-    [SerializeField] private float _currReward;
+    // [SerializeField] private float _currReward;
 
     private int _platformMaxCol;
     private int _platformMaxRow;
@@ -44,11 +44,11 @@ public class NPCUnit : MonoBehaviour
     #region Moving function
 
     // Receive action decision from ActuatorComponent
-    public void ResponseAction(int direction)
-    {
-        _currentDirection = direction;
-        _supervisor.FinishAndResponse();
-    }
+    // public void ResponseAction(int direction)
+    // {
+    //     _currentDirection = direction;
+    //     _supervisor.FinishAndResponse();
+    // }
 
     // Control unit movement from supervisor
     public void MoveDirection(int direct)
@@ -62,14 +62,16 @@ public class NPCUnit : MonoBehaviour
         {
             _supervisor.AddIdlePunishment(); // If unit stand in place give it a punishment
         }
+        else
+            _agentRenderer.transform.forward = _mMoving.targetPos - previousPos;
 
-        else if (_mMoving.jumpStep > 0)
-        {
-            // _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
-            _supervisor.AddReward(0.5f * Mathf.Pow(1 + 1f, _mMoving.jumpStep));
-        }
-        
-        _supervisor.FinishAndResponse();
+        // else if (_mMoving.jumpStep > 0)
+        // {
+        //     // _agentRenderer.material = _agentColor[Mathf.Clamp(_mMoving.jumpStep, 0, _agentColor.Count - 1)];
+        //     _supervisor.AddReward(0.5f * Mathf.Pow(1 + 1f, _mMoving.jumpStep));
+        // }
+        //
+        // _supervisor.FinishAndResponse();
     }
 
     private (Vector3, int, int) GetPositionByDirection(int direction)
@@ -151,5 +153,26 @@ public class NPCUnit : MonoBehaviour
         _mMoving.targetPos = _defaultPos;
         // _mMoving.targetPos = _defaultPos + _platformPos;
         _agentRenderer.material = _agentColor[0];
+    }
+
+    public int GetJumpStep()
+    {
+        return _mMoving.jumpStep;
+    }
+    
+    public Vector3 GetPosition()
+    {
+        return _mTransfrom.position;
+    }
+    
+    public Vector3 GetDirection()
+    {
+        return _agentRenderer.transform.forward;
+    }
+    
+    public void ChangeColor(int index)
+    {
+        Debug.Log($"Change color as number of successful attacks is {index}");
+        _agentRenderer.material = _agentColor[Mathf.Clamp(index, 0, _agentColor.Count - 1)];
     }
 }

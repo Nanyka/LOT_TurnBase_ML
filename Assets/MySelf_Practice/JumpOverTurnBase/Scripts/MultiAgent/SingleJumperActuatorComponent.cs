@@ -7,7 +7,7 @@ using UnityEngine;
 public class SingleJumperActuatorComponent : ActuatorComponent
 {
     [SerializeField] private SingleJumperController _controller;
-    private ActionSpec _actionSpec = ActionSpec.MakeDiscrete(4);
+    private ActionSpec _actionSpec = ActionSpec.MakeDiscrete(5, 3);
 
     public override IActuator[] CreateActuators()
     {
@@ -28,7 +28,7 @@ public class SingleJumperActuator : IActuator
     public SingleJumperActuator(SingleJumperController controller)
     {
         _controller = controller;
-        m_ActionSpec = ActionSpec.MakeDiscrete(4);
+        m_ActionSpec = ActionSpec.MakeDiscrete(5,3);
     }
 
     public ActionSpec ActionSpec
@@ -65,16 +65,27 @@ public class SingleJumperActuator : IActuator
             case 3:
                 direction = 3;
                 break;
+            case 4:
+                direction = 4;
+                break;
         }
 
-        _controller.ResponseAction(direction);
+        _controller.ResponseAction(actionBuffers);
     }
 
     public void Heuristic(in ActionBuffers actionBuffersOut)
     {
+        var testOrder = Input.GetKey(KeyCode.Z);
+
         var directionX = Input.GetAxis("Horizontal");
         var directionZ = Input.GetAxis("Vertical");
         var discreteActions = actionBuffersOut.DiscreteActions;
+
+        if (testOrder)
+            discreteActions[1] = 23;
+        else
+            discreteActions[1] = 12;
+
         if (Mathf.Approximately(directionX, 0.0f) && Mathf.Approximately(directionZ, 0.0f))
         {
             discreteActions[0] = 0;
@@ -82,12 +93,12 @@ public class SingleJumperActuator : IActuator
         else if (Mathf.Approximately(directionZ, 0.0f))
         {
             var signX = Mathf.Sign(directionX);
-            discreteActions[0] = signX < 0 ? 0 : 1;
+            discreteActions[0] = signX < 0 ? 1 : 2;
         }
         else if (Mathf.Approximately(directionX, 0.0f))
         {
             var signZ = Mathf.Sign(directionZ);
-            discreteActions[0] = signZ < 0 ? 2 : 3;
+            discreteActions[0] = signZ < 0 ? 3 : 4;
         }
     }
 

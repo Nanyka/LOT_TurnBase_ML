@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
+using Unity.MLAgents.Actuators;
 using UnityEngine;
 
 public class SingleJumperController : MonoBehaviour
@@ -12,6 +13,7 @@ public class SingleJumperController : MonoBehaviour
     [SerializeField] private Collider _platformColider;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
+    [SerializeField] private float _showLocalReward;
 
     private Agent m_Agent;
     private int _platformMaxCol;
@@ -24,6 +26,7 @@ public class SingleJumperController : MonoBehaviour
     private int _steps;
     private int _currentDirection;
     private Vector3 _defaultPos;
+    private bool _isMoved;
 
     public void Awake()
     {
@@ -80,10 +83,11 @@ public class SingleJumperController : MonoBehaviour
     }
 
     // Receive action decision from ActuatorComponent
-    public void ResponseAction(int direction)
+    public void ResponseAction(ActionBuffers responseAction)
     {
-        _currentDirection = direction;
-        MoveDirection();
+        _currentDirection = responseAction.DiscreteActions[0];
+        m_AgentManager.CollectUnitResponse(responseAction.DiscreteActions[1]); // finish this action and turn to the next agent
+        // MoveDirection();
     }
 
     /// <summary>
@@ -97,16 +101,10 @@ public class SingleJumperController : MonoBehaviour
         // Change agent direction before the agent jump to the new position
         if (_mMoving.targetPos != _mTransfrom.position)
             _agentRenderer.transform.forward = _mMoving.targetPos - _mTransfrom.position;
+        else
+            m_Agent.AddReward(-0.01f); // punish agent when it stand in place beside the edges
+
         _mTransfrom.position = _mMoving.targetPos;
-
-        // TODO: remove this set reward for jumping, add reward when agent attack enemy successfully
-        // if (_mMoving.jumpStep > 0)
-        // {
-        //     ChangeColor();
-        //     m_AgentManager.ContributeGroupReward(_mMoving);
-        // }
-
-        m_AgentManager.CollectUnitResponse(); // finish this action and turn to the next agent
     }
 
     #endregion
@@ -155,15 +153,17 @@ public class SingleJumperController : MonoBehaviour
         switch (direction)
         {
             case 0:
-                checkVector += Vector3.left;
                 break;
             case 1:
-                checkVector += Vector3.right;
+                checkVector += Vector3.left;
                 break;
             case 2:
-                checkVector += Vector3.back;
+                checkVector += Vector3.right;
                 break;
             case 3:
+                checkVector += Vector3.back;
+                break;
+            case 4:
                 checkVector += Vector3.forward;
                 break;
         }
@@ -212,5 +212,10 @@ public class SingleJumperController : MonoBehaviour
     public void ChangeColor(int index)
     {
         _agentRenderer.material = _agentColor[Mathf.Clamp(index, 0, _agentColor.Count - 1)];
+    }
+
+    private void UpdateLocalReward()
+    {
+        _showLocalReward = m_Agent.GetCumulativeReward();
     }
 }

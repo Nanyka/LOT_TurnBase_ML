@@ -189,7 +189,7 @@ MonoBehaviour:
   m_UnitSkill: {fileID: 1818060636}
   _unitReward: 1
   _punishAmount: 0.1
-  _movementCost: 0.1
+  _movementCost: 0.01
   _visualGroupReward: 0
 --- !u!114 &1818060636
 MonoBehaviour:
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SkillSOs:
   - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
+  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
   - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
   - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
   - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
@@ -440,6 +440,10 @@ PrefabInstance:
       propertyPath: _environmentController
       value: 
       objectReference: {fileID: 7301754044229405435}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: aee86e4aa98f040a1a422acb54643d2c, type: 3}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
       value: SingleAgent (1)
@@ -530,6 +534,10 @@ PrefabInstance:
       propertyPath: _environmentController
       value: 
       objectReference: {fileID: 7301754044229405435}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: aee86e4aa98f040a1a422acb54643d2c, type: 3}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
       value: SingleAgent (2)
@@ -620,6 +628,10 @@ PrefabInstance:
       propertyPath: _environmentController
       value: 
       objectReference: {fileID: 7301754044229405435}
+    - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: aee86e4aa98f040a1a422acb54643d2c, type: 3}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
       value: SingleAgent (0)
