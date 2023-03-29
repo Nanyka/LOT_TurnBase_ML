@@ -11,6 +11,7 @@ public class SingleJumperController : MonoBehaviour
     [SerializeField] private EnvironmentController _environmentController;
     [SerializeField] private AgentManager m_AgentManager;
     [SerializeField] private Collider _platformColider;
+    [SerializeField] private Transform _rotatePart;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
     [SerializeField] private float _showLocalReward;
@@ -100,7 +101,7 @@ public class SingleJumperController : MonoBehaviour
 
         // Change agent direction before the agent jump to the new position
         if (_mMoving.targetPos != _mTransfrom.position)
-            _agentRenderer.transform.forward = _mMoving.targetPos - _mTransfrom.position;
+            _rotatePart.transform.forward = _mMoving.targetPos - _mTransfrom.position;
         else
             m_Agent.AddReward(-0.01f); // punish agent when it stand in place beside the edges
 
@@ -201,7 +202,7 @@ public class SingleJumperController : MonoBehaviour
 
     public Vector3 GetDirection()
     {
-        return _agentRenderer.transform.forward;
+        return _rotatePart.transform.forward;
     }
 
     public int GetJumpStep()

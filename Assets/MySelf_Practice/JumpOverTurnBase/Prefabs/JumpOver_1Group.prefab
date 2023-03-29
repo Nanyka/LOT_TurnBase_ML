@@ -204,11 +204,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillSOs:
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &7301754043720518472
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _obstacle: {fileID: 8639395968909153129, guid: 60e51adf50f6a47f588eea07ec9c58ec, type: 3}
   _platformColider: {fileID: 7330773805295809652}
-  _numberOfObstacles: 3
+  _numberOfObstacles: 5
   _listTeam0:
   - {fileID: 4041128155705156433}
   - {fileID: 4673228135130617388}
@@ -443,7 +443,7 @@ PrefabInstance:
     - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: aee86e4aa98f040a1a422acb54643d2c, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
       value: SingleAgent (1)
@@ -537,7 +537,7 @@ PrefabInstance:
     - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: aee86e4aa98f040a1a422acb54643d2c, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
       value: SingleAgent (2)
@@ -628,10 +628,14 @@ PrefabInstance:
       propertyPath: _environmentController
       value: 
       objectReference: {fileID: 7301754044229405435}
+    - target: {fileID: 3027983764081746031, guid: 394c741d255b24f9794495b4668febaa, type: 3}
+      propertyPath: m_ShowGizmos
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5062268947377629124, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: aee86e4aa98f040a1a422acb54643d2c, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5175335616686137394, guid: 394c741d255b24f9794495b4668febaa, type: 3}
       propertyPath: m_Name
       value: SingleAgent (0)

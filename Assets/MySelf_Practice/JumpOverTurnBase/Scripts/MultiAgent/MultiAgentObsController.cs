@@ -15,7 +15,7 @@ public class MultiAgentObsController : ObstacleManager
     public override bool CheckTeam(Vector3 position, int faction)
     {
         if (faction == 0)
-            return _listTeam0.Find(x => Vector3.Distance(x.transform.position, position) < Mathf.Epsilon);
-        return _listTeam1.Find(x => Vector3.Distance(x.transform.position, position) < Mathf.Epsilon);
+            return _listTeam0.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
+        return _listTeam1.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
     }
 }

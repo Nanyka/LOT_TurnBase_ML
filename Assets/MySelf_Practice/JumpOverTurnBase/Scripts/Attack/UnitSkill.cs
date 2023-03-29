@@ -8,11 +8,13 @@ public class UnitSkill : MonoBehaviour
 
     public IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep)
     {
-        return m_SkillSOs[jumpStep-1].CalculateSkillRange(targetPos,direction);
+        if (m_SkillSOs.Length < jumpStep || m_SkillSOs[jumpStep - 1] == null)
+            return null;
+        return m_SkillSOs[jumpStep - 1].CalculateSkillRange(targetPos, direction);
     }
 
     public float GetSkillMagnitude(int jumpStep)
     {
-        return m_SkillSOs[jumpStep].GetMagnitude();
+        return m_SkillSOs[jumpStep-1].GetMagnitude();
     }
 }

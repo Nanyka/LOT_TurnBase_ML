@@ -15,13 +15,14 @@ public class AgentManager : MonoBehaviour
     [Header("Attack part")] [SerializeField]
     private UnitSkill m_UnitSkill;
 
-    [Header("Reward part")] 
-    [SerializeField] private float _unitReward;
+    [Header("Reward part")] [SerializeField]
+    private float _unitReward;
+
     [SerializeField] private float _punishAmount;
     [SerializeField] private float _movementCost = 0.01f;
     [SerializeField] private float _visualGroupReward;
 
-    private List<(int unitIndex, int prefer)> _movingOrder = new ();
+    private List<(int unitIndex, int prefer)> _movingOrder = new();
     private SimpleMultiAgentGroup m_AgentGroup;
     private int _responseCounter;
     private bool _isMoved;
@@ -97,7 +98,7 @@ public class AgentManager : MonoBehaviour
             _movingOrder.Add(new(_responseCounter, responseReference));
         else
             _movingOrder[_responseCounter] = new(_responseCounter, responseReference);
-        
+
         _responseCounter++;
 
         if (_responseCounter < m_JumpOverControllers.Count)
@@ -109,10 +110,10 @@ public class AgentManager : MonoBehaviour
     private void ExecuteAllAgent()
     {
         // sort and have unit move as an order
-        _movingOrder.Sort((x,y) => x.prefer.CompareTo(y.prefer));
+        _movingOrder.Sort((x, y) => x.prefer.CompareTo(y.prefer));
         foreach (var moving in _movingOrder)
             m_JumpOverControllers[moving.unitIndex].MoveDirection();
-        
+
         EndTurn();
     }
 
@@ -127,19 +128,21 @@ public class AgentManager : MonoBehaviour
                 continue;
 
             var attackPoints = m_UnitSkill.AttackPoints(agent.GetPosition(), agent.GetDirection(), agent.GetJumpStep());
+            if (attackPoints == null)
+                continue;
+
             int successAttacks = 0;
             foreach (var attackPoint in attackPoints)
-            {
                 if (_environmentController.CheckEnemy(attackPoint, m_Faction))
                     successAttacks++;
-            }
 
             if (successAttacks > 0)
             {
                 agent.ChangeColor(successAttacks);
-                m_AgentGroup.AddGroupReward(_unitReward * successAttacks * m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
+                m_AgentGroup.AddGroupReward(_unitReward * successAttacks *
+                                            m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
                 _visualGroupReward += _unitReward * successAttacks;
-                
+
                 _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
             }
         }
