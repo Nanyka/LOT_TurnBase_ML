@@ -10,18 +10,20 @@ public class AgentManager : MonoBehaviour
     private EnvironmentController _environmentController;
 
     [SerializeField] private int m_Faction;
+    [SerializeField] private bool _isResetInstance;
     [SerializeField] private List<SingleJumperController> m_JumpOverControllers;
 
     [Header("Attack part")] [SerializeField]
     private UnitSkill m_UnitSkill;
 
-    [Header("Reward part")] 
-    [SerializeField] private float _unitReward;
+    [Header("Reward part")] [SerializeField]
+    private float _unitReward;
+
     [SerializeField] private float _punishAmount;
     [SerializeField] private float _movementCost = 0.01f;
     [SerializeField] private float _visualGroupReward;
 
-    private List<(int unitIndex, int prefer)> _movingOrder = new ();
+    private List<(int unitIndex, int prefer)> _movingOrder = new();
     private SimpleMultiAgentGroup m_AgentGroup;
     private int _responseCounter;
     private bool _isMoved;
@@ -83,7 +85,6 @@ public class AgentManager : MonoBehaviour
 
     private void KickOffUnitActions()
     {
-        m_JumpOverControllers[_responseCounter].UseThisTurn = false;
         m_JumpOverControllers[_responseCounter].AskForAction();
 
         // Movement cost an amount of point
@@ -91,29 +92,14 @@ public class AgentManager : MonoBehaviour
         _visualGroupReward += -1f * _movementCost;
     }
 
-    public void CollectUnitResponse(int responseReference)
+    public void CollectUnitResponse()
     {
-        if (_movingOrder == null || _movingOrder.Count <= _responseCounter)
-            _movingOrder.Add(new(_responseCounter, responseReference));
-        else
-            _movingOrder[_responseCounter] = new(_responseCounter, responseReference);
-        
         _responseCounter++;
 
         if (_responseCounter < m_JumpOverControllers.Count)
             KickOffUnitActions();
         else
-            ExecuteAllAgent();
-    }
-
-    private void ExecuteAllAgent()
-    {
-        // sort and have unit move as an order
-        _movingOrder.Sort((x,y) => x.prefer.CompareTo(y.prefer));
-        foreach (var moving in _movingOrder)
-            m_JumpOverControllers[moving.unitIndex].MoveDirection();
-        
-        EndTurn();
+            EndTurn();
     }
 
     #endregion
@@ -121,13 +107,16 @@ public class AgentManager : MonoBehaviour
     private void EndTurn()
     {
         // Attack nearby enemy
+        int successAttacks = 0;
         foreach (var agent in m_JumpOverControllers)
         {
             if (agent.GetJumpStep() == 0)
                 continue;
 
             var attackPoints = m_UnitSkill.AttackPoints(agent.GetPosition(), agent.GetDirection(), agent.GetJumpStep());
-            int successAttacks = 0;
+            if (attackPoints == null)
+                continue;
+
             foreach (var attackPoint in attackPoints)
             {
                 if (_environmentController.CheckEnemy(attackPoint, m_Faction))
@@ -137,16 +126,29 @@ public class AgentManager : MonoBehaviour
             if (successAttacks > 0)
             {
                 agent.ChangeColor(successAttacks);
-                m_AgentGroup.AddGroupReward(_unitReward * successAttacks * m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
+                m_AgentGroup.AddGroupReward(_unitReward * successAttacks *
+                                            m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
                 _visualGroupReward += _unitReward * successAttacks;
-                
+
                 _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
             }
         }
-
+        
         // call for the end-turn event
-        _environmentController.ChangeFaction();
+        _environmentController.ChangeFaction(_isResetInstance && successAttacks>0);
         _environmentController.OnChangeFaction.Invoke();
+
+        // if (_isResetInstance && successAttacks>0)
+        // {
+        //     _environmentController.ResetGame();
+        // }
+        // else
+        // {
+        //     // call for the end-turn event
+        //     _environmentController.ChangeFaction();
+        //     _environmentController.OnChangeFaction.Invoke();
+        //     
+        // }
     }
 
     #region GET & SET
