@@ -131,24 +131,13 @@ public class AgentManager : MonoBehaviour
                 _visualGroupReward += _unitReward * successAttacks;
 
                 _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+                break;
             }
         }
         
         // call for the end-turn event
         _environmentController.ChangeFaction(_isResetInstance && successAttacks>0);
         _environmentController.OnChangeFaction.Invoke();
-
-        // if (_isResetInstance && successAttacks>0)
-        // {
-        //     _environmentController.ResetGame();
-        // }
-        // else
-        // {
-        //     // call for the end-turn event
-        //     _environmentController.ChangeFaction();
-        //     _environmentController.OnChangeFaction.Invoke();
-        //     
-        // }
     }
 
     #region GET & SET
