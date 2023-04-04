@@ -9,11 +9,9 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] private GameObject _obstacle;
     [SerializeField] private Collider _platformColider;
     [SerializeField] private int _numberOfObstacles;
-    [SerializeField] private bool _isDecidePosition;
-    [SerializeField] private Vector3 _designatedPostion;
     [SerializeField] protected List<GameObject> _listTeam0 = new();
     [SerializeField] protected List<GameObject> _listTeam1 = new();
-
+    
     private int _maxX;
     private int _maxZ;
 
@@ -21,21 +19,11 @@ public class ObstacleManager : MonoBehaviour
     {
         SetUpPlatform();
 
-        if (_isDecidePosition)
+        for (int i = 0; i < _numberOfObstacles; i++)
         {
-            var spawnPos = _designatedPostion + _platformColider.transform.position;
-            spawnPos = new Vector3(spawnPos.x, 0f, spawnPos.z);
+            var spawnPos = GetAvailablePlot();
             var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
             _listTeam1.Add(obstacle);
-        }
-        else
-        {
-            for (int i = 0; i < _numberOfObstacles; i++)
-            {
-                var spawnPos = GetAvailablePlot();
-                var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
-                _listTeam1.Add(obstacle);
-            }
         }
     }
 
@@ -82,7 +70,7 @@ public class ObstacleManager : MonoBehaviour
     {
         return _listTeam1.Count;
     }
-
+    
     public virtual bool CheckTeam(Vector3 position, int faction)
     {
         return true;

@@ -3,13 +3,8 @@ behaviors:
   GroupJumper:
     trainer_type: poca
     hyperparameters:
-<<<<<<< HEAD
       batch_size: 2048
       buffer_size: 20480
-=======
-      batch_size: 1024
-      buffer_size: 10240
->>>>>>> 1FactionSkill2
       learning_rate: 0.0003
       beta: 0.01
       epsilon: 0.2
@@ -20,13 +15,8 @@ behaviors:
       epsilon_schedule: linear
     network_settings:
       normalize: false
-<<<<<<< HEAD
       hidden_units: 512
       num_layers: 2
-=======
-      hidden_units: 256
-      num_layers: 3
->>>>>>> 1FactionSkill2
       vis_encode_type: simple
       memory: null
       goal_conditioning_type: hyper
@@ -50,7 +40,6 @@ behaviors:
     time_horizon: 1000
     summary_freq: 50000
     threaded: false
-<<<<<<< HEAD
     self_play:
       save_steps: 50000
       team_change: 200000
@@ -61,12 +50,6 @@ behaviors:
     behavioral_cloning: null
 env_settings:
   env_path: /Users/admin/Desktop/GroupAgent_skill2_v1.app
-=======
-    self_play: null
-    behavioral_cloning: null
-env_settings:
-  env_path: /Users/admin/Desktop/GroupAgent_Skill2_v1.app
->>>>>>> 1FactionSkill2
   env_args: null
   base_port: 5005
   num_envs: 1

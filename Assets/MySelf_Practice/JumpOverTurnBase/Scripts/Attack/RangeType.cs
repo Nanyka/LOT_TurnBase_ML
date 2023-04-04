@@ -4,5 +4,4 @@ public enum RangeType
     FrontArea,
     BackHandStrike,
     FrontArea3D,
-    SquareArea,
 }
