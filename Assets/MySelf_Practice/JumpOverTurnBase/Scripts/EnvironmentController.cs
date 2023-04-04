@@ -37,9 +37,7 @@ public class EnvironmentController : MonoBehaviour
         _step++;
         if (_step == _maxStep)
         {
-            _step = 0;
-            OnReset.Invoke();
-            ResetEnvironment(0);
+            ResetGame();
         }
 
         if (_currFaction == 0)
@@ -48,10 +46,32 @@ public class EnvironmentController : MonoBehaviour
             _currFaction = 0;
 
         if (_isUseObstacle)
-        {
             _currFaction = 0;
-            OnChangeFaction.Invoke();
-        }
+    }
+
+    public void ChangeFaction(bool isResetInstance)
+    {
+        _step++;
+        if (_step == _maxStep)
+            ResetGame();
+        
+        if (isResetInstance)
+            ResetGame();
+        
+        if (_currFaction == 0)
+            _currFaction = 1;
+        else
+            _currFaction = 0;
+
+        if (_isUseObstacle)
+            _currFaction = 0;
+    }
+
+    public void ResetGame()
+    {
+        _step = 0;
+        OnReset.Invoke();
+        ResetEnvironment(0);
     }
 
     public int GetCurrFaction()

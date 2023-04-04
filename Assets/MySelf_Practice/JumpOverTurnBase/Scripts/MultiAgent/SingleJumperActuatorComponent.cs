@@ -48,43 +48,14 @@ public class SingleJumperActuator : IActuator
 
     public void OnActionReceived(ActionBuffers actionBuffers)
     {
-        var movement = actionBuffers.DiscreteActions[0];
-        var direction = 0;
-
-        switch (movement)
-        {
-            case 0:
-                direction = 0;
-                break;
-            case 1:
-                direction = 1;
-                break;
-            case 2:
-                direction = 2;
-                break;
-            case 3:
-                direction = 3;
-                break;
-            case 4:
-                direction = 4;
-                break;
-        }
-
-        _controller.ResponseAction(actionBuffers);
+        _controller.ResponseAction(actionBuffers.DiscreteActions[0]);
     }
 
     public void Heuristic(in ActionBuffers actionBuffersOut)
     {
-        var testOrder = Input.GetKey(KeyCode.Z);
-
         var directionX = Input.GetAxis("Horizontal");
         var directionZ = Input.GetAxis("Vertical");
         var discreteActions = actionBuffersOut.DiscreteActions;
-
-        if (testOrder)
-            discreteActions[1] = 23;
-        else
-            discreteActions[1] = 12;
 
         if (Mathf.Approximately(directionX, 0.0f) && Mathf.Approximately(directionZ, 0.0f))
         {

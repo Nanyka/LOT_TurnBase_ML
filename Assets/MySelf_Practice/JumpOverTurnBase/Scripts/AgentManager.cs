@@ -10,6 +10,7 @@ public class AgentManager : MonoBehaviour
     private EnvironmentController _environmentController;
 
     [SerializeField] private int m_Faction;
+    [SerializeField] private bool _isResetInstance;
     [SerializeField] private List<SingleJumperController> m_JumpOverControllers;
 
     [Header("Attack part")] [SerializeField]
@@ -84,7 +85,6 @@ public class AgentManager : MonoBehaviour
 
     private void KickOffUnitActions()
     {
-        m_JumpOverControllers[_responseCounter].UseThisTurn = false;
         m_JumpOverControllers[_responseCounter].AskForAction();
 
         // Movement cost an amount of point
@@ -92,18 +92,22 @@ public class AgentManager : MonoBehaviour
         _visualGroupReward += -1f * _movementCost;
     }
 
-    public void CollectUnitResponse(int responseReference)
+    public void CollectUnitResponse()
     {
+<<<<<<< HEAD
         if (_movingOrder == null || _movingOrder.Count <= _responseCounter)
             _movingOrder.Add(new(_responseCounter, responseReference));
         else
             _movingOrder[_responseCounter] = new(_responseCounter, responseReference);
 
+=======
+>>>>>>> 1FactionSkill2
         _responseCounter++;
 
         if (_responseCounter < m_JumpOverControllers.Count)
             KickOffUnitActions();
         else
+<<<<<<< HEAD
             ExecuteAllAgent();
     }
 
@@ -115,6 +119,9 @@ public class AgentManager : MonoBehaviour
             m_JumpOverControllers[moving.unitIndex].MoveDirection();
 
         EndTurn();
+=======
+            EndTurn();
+>>>>>>> 1FactionSkill2
     }
 
     #endregion
@@ -122,6 +129,7 @@ public class AgentManager : MonoBehaviour
     private void EndTurn()
     {
         // Attack nearby enemy
+        int successAttacks = 0;
         foreach (var agent in m_JumpOverControllers)
         {
             if (agent.GetJumpStep() == 0)
@@ -131,8 +139,14 @@ public class AgentManager : MonoBehaviour
             if (attackPoints == null)
                 continue;
 
+<<<<<<< HEAD
             int successAttacks = 0;
             foreach (var attackPoint in attackPoints)
+=======
+            foreach (var attackPoint in attackPoints)
+            {
+                // Debug.Log($"Attack at {attackPoint}");
+>>>>>>> 1FactionSkill2
                 if (_environmentController.CheckEnemy(attackPoint, m_Faction))
                     successAttacks++;
 
@@ -144,11 +158,13 @@ public class AgentManager : MonoBehaviour
                 _visualGroupReward += _unitReward * successAttacks;
 
                 _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+                // Debug.Log($"Group reward {_visualGroupReward}");
+                break;
             }
         }
-
+        
         // call for the end-turn event
-        _environmentController.ChangeFaction();
+        _environmentController.ChangeFaction(_isResetInstance && successAttacks>0);
         _environmentController.OnChangeFaction.Invoke();
     }
 
