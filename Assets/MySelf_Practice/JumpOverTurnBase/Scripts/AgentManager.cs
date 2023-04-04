@@ -119,6 +119,7 @@ public class AgentManager : MonoBehaviour
 
             foreach (var attackPoint in attackPoints)
             {
+                // Debug.Log($"Attack at {attackPoint}");
                 if (_environmentController.CheckEnemy(attackPoint, m_Faction))
                     successAttacks++;
             }
@@ -131,6 +132,7 @@ public class AgentManager : MonoBehaviour
                 _visualGroupReward += _unitReward * successAttacks;
 
                 _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+                // Debug.Log($"Group reward {_visualGroupReward}");
                 break;
             }
         }
