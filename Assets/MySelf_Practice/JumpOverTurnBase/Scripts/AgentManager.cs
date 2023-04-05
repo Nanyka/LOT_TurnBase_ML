@@ -7,11 +7,11 @@ using UnityEngine;
 public class AgentManager : MonoBehaviour
 {
     [Header("General control part")] [SerializeField]
-    private EnvironmentController _environmentController;
+    protected EnvironmentController _environmentController;
 
     [SerializeField] private int m_Faction;
     [SerializeField] private bool _isResetInstance;
-    [SerializeField] private List<SingleJumperController> m_JumpOverControllers;
+    [SerializeField] protected List<SingleJumperController> m_JumpOverControllers;
 
     [Header("Attack part")] [SerializeField]
     private UnitSkill m_UnitSkill;
@@ -25,10 +25,10 @@ public class AgentManager : MonoBehaviour
 
     private List<(int unitIndex, int prefer)> _movingOrder = new();
     private SimpleMultiAgentGroup m_AgentGroup;
-    private int _responseCounter;
+    protected int _responseCounter;
     private bool _isMoved;
 
-    private void Start()
+    protected virtual void Start()
     {
         _environmentController.OnChangeFaction.AddListener(ToMyTurn);
         _environmentController.OnReset.AddListener(ResetAgents);
@@ -44,7 +44,7 @@ public class AgentManager : MonoBehaviour
         MultiJumperKickOff();
     }
 
-    private void ResetAgents()
+    protected void ResetAgents()
     {
         foreach (var agent in m_JumpOverControllers)
             agent.ResetAgent();
@@ -54,7 +54,7 @@ public class AgentManager : MonoBehaviour
     }
 
     // Get punish whenever an agent jump over enemies
-    private void GetPunish(int faction)
+    protected void GetPunish(int faction)
     {
         if (faction == m_Faction)
             return;
@@ -64,7 +64,7 @@ public class AgentManager : MonoBehaviour
     }
 
     // KICK-OFF this MLAgents environment
-    private void MultiJumperKickOff()
+    protected void MultiJumperKickOff()
     {
         if (m_Faction == 0)
             _environmentController.KickOffEnvironment();
@@ -72,7 +72,7 @@ public class AgentManager : MonoBehaviour
 
     #region Ask for decision from agents
 
-    private void ToMyTurn()
+    protected void ToMyTurn()
     {
         if (_environmentController.GetCurrFaction() != m_Faction)
             return;
@@ -83,7 +83,7 @@ public class AgentManager : MonoBehaviour
         KickOffUnitActions(); // kick off unit action recursion
     }
 
-    private void KickOffUnitActions()
+    protected virtual void KickOffUnitActions()
     {
         m_JumpOverControllers[_responseCounter].AskForAction();
 
@@ -149,7 +149,7 @@ public class AgentManager : MonoBehaviour
         return m_Faction;
     }
 
-    private void FinishRound(int faction)
+    protected void FinishRound(int faction)
     {
         foreach (var agent in m_JumpOverControllers)
             agent.ResetAgent();

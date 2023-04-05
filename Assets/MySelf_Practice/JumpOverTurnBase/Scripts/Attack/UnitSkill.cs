@@ -17,4 +17,9 @@ public class UnitSkill : MonoBehaviour
     {
         return m_SkillSOs[jumpStep-1].GetMagnitude();
     }
+
+    public IEnumerable<Skill_SO> GetSkills()
+    {
+        return m_SkillSOs;
+    }
 }

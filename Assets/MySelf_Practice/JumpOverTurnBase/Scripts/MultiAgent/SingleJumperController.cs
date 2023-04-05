@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Barracuda;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Policies;
 using UnityEngine;
 
 public class SingleJumperController : MonoBehaviour
 {
-    [SerializeField] private EnvironmentController _environmentController;
-    [SerializeField] private AgentManager m_AgentManager;
+    [SerializeField] protected EnvironmentController _environmentController;
+    [SerializeField] protected AgentManager m_AgentManager;
     [SerializeField] private Collider _platformColider;
     [SerializeField] private Transform _rotatePart;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
 
-    private Agent m_Agent;
+    protected Agent m_Agent;
     private int _platformMaxCol;
     private int _platformMaxRow;
     private Vector3 _platformPos;
-    private Transform _mTransform;
-    private (Vector3 targetPos, int jumpStep) _mMoving;
+    protected Transform _mTransform;
+    protected (Vector3 targetPos, int jumpStep) _mMoving;
     private int _steps;
-    private int _currentDirection;
+    protected int _currentDirection;
     private Vector3 _defaultPos;
 
     public void Awake()
@@ -60,7 +62,7 @@ public class SingleJumperController : MonoBehaviour
     #region Connect with BRAIN
 
     // Move the agent periodically
-    public void AskForAction()
+    public virtual void AskForAction()
     {
         if (m_Agent == null)
             return;
@@ -78,7 +80,7 @@ public class SingleJumperController : MonoBehaviour
     }
 
     // Receive action decision from ActuatorComponent
-    public void ResponseAction(int direction)
+    public virtual void ResponseAction(int direction)
     {
         _currentDirection = direction;
         MoveDirection();
@@ -89,7 +91,7 @@ public class SingleJumperController : MonoBehaviour
     /// Controls the movement of the GameObject based on the actions received from agent manager.
     /// </summary>
     /// <param name="direction"></param>
-    public void MoveDirection()
+    public virtual void MoveDirection()
     {
         _mMoving = GetPositionByDirection(_currentDirection);
 
@@ -119,7 +121,6 @@ public class SingleJumperController : MonoBehaviour
             if (jumpCount == 0)
                 return (newPos, jumpCount);
 
-
             return (curPos, jumpCount);
         }
 
@@ -139,7 +140,7 @@ public class SingleJumperController : MonoBehaviour
         return (curPos, jumpCount);
     }
 
-    private Vector3 DirectionToVector(int direction)
+    protected Vector3 DirectionToVector(int direction)
     {
         var checkVector = Vector3.zero;
 
@@ -164,7 +165,7 @@ public class SingleJumperController : MonoBehaviour
         return checkVector;
     }
 
-    private bool CheckAvailableMove(Vector3 checkPos)
+    protected bool CheckAvailableMove(Vector3 checkPos)
     {
         return Mathf.Abs(checkPos.x - _platformPos.x) <= _platformMaxCol &&
                Mathf.Abs(checkPos.z - _platformPos.z) <= _platformMaxRow &&
@@ -192,12 +193,12 @@ public class SingleJumperController : MonoBehaviour
         return _mTransform.position;
     }
 
-    public Vector3 GetDirection()
+    public virtual Vector3 GetDirection()
     {
         return _rotatePart.transform.forward;
     }
 
-    public int GetJumpStep()
+    public virtual int GetJumpStep()
     {
         return _mMoving.jumpStep;
     }

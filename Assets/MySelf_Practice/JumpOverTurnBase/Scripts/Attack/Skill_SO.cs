@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Barracuda;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -15,6 +16,9 @@ public class Skill_SO : ScriptableObject
     [Header("Skill range")]
     [SerializeField] private RangeType _rangeType;
     [SerializeField] private int _numberOfSteps;
+
+    [Header("ML property")] [SerializeField]
+    private NNModel MLModel;
 
     private SkillRange _skillRange;
 
@@ -71,5 +75,10 @@ public class Skill_SO : ScriptableObject
     public float GetMagnitude()
     {
         return _magnitude;
+    }
+
+    public NNModel GetModel()
+    {
+        return MLModel;
     }
 }
