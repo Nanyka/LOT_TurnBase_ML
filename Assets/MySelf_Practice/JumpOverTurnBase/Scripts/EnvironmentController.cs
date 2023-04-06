@@ -9,6 +9,7 @@ public class EnvironmentController : MonoBehaviour
     [HideInInspector] public UnityEvent OnChangeFaction; // invoke at JumpOverActuation;
     [HideInInspector] public UnityEvent OnReset; // send to AgentManager
     [HideInInspector] public UnityEvent<int> OnOneTeamWin; // invoke at AgentManager; sent to all AgentManager 
+
     [HideInInspector]
     public UnityEvent<int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
 
@@ -54,10 +55,10 @@ public class EnvironmentController : MonoBehaviour
         _step++;
         if (_step == _maxStep)
             ResetGame();
-        
+
         if (isResetInstance)
             ResetGame();
-        
+
         if (_currFaction == 0)
             _currFaction = 1;
         else
@@ -83,7 +84,7 @@ public class EnvironmentController : MonoBehaviour
     {
         if (_isSpawnObstale)
             _obstacleManager.SpawnObstacle();
-        
+
         OnChangeFaction.Invoke();
     }
 

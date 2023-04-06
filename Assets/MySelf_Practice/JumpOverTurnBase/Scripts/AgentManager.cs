@@ -9,12 +9,12 @@ public class AgentManager : MonoBehaviour
     [Header("General control part")] [SerializeField]
     protected EnvironmentController _environmentController;
 
-    [SerializeField] private int m_Faction;
-    [SerializeField] private bool _isResetInstance;
+    [SerializeField] protected int m_Faction;
+    [SerializeField] protected bool _isResetInstance;
     [SerializeField] protected List<SingleJumperController> m_JumpOverControllers;
 
     [Header("Attack part")] [SerializeField]
-    private UnitSkill m_UnitSkill;
+    protected UnitSkill m_UnitSkill;
 
     [Header("Reward part")] [SerializeField]
     private float _unitReward;
@@ -44,7 +44,7 @@ public class AgentManager : MonoBehaviour
         MultiJumperKickOff();
     }
 
-    protected void ResetAgents()
+    protected virtual void ResetAgents()
     {
         foreach (var agent in m_JumpOverControllers)
             agent.ResetAgent();
@@ -72,10 +72,14 @@ public class AgentManager : MonoBehaviour
 
     #region Ask for decision from agents
 
-    protected void ToMyTurn()
+    protected virtual void ToMyTurn()
     {
         if (_environmentController.GetCurrFaction() != m_Faction)
             return;
+        
+        // reset all agent's moving state
+        foreach (var jumperController in m_JumpOverControllers)
+            jumperController.ResetMoveState();
 
         // reset counter before an iteration
         _responseCounter = 0;
@@ -83,7 +87,7 @@ public class AgentManager : MonoBehaviour
         KickOffUnitActions(); // kick off unit action recursion
     }
 
-    protected virtual void KickOffUnitActions()
+    public virtual void KickOffUnitActions()
     {
         m_JumpOverControllers[_responseCounter].AskForAction();
 
@@ -92,7 +96,7 @@ public class AgentManager : MonoBehaviour
         _visualGroupReward += -1f * _movementCost;
     }
 
-    public void CollectUnitResponse()
+    public virtual void CollectUnitResponse()
     {
         _responseCounter++;
 
@@ -104,7 +108,7 @@ public class AgentManager : MonoBehaviour
 
     #endregion
 
-    private void EndTurn()
+    protected virtual void EndTurn()
     {
         // Attack nearby enemy
         int successAttacks = 0;

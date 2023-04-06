@@ -11,7 +11,7 @@ public class SingleJumperController : MonoBehaviour
     [SerializeField] protected EnvironmentController _environmentController;
     [SerializeField] protected AgentManager m_AgentManager;
     [SerializeField] private Collider _platformColider;
-    [SerializeField] private Transform _rotatePart;
+    [SerializeField] protected Transform _rotatePart;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
 
@@ -20,10 +20,11 @@ public class SingleJumperController : MonoBehaviour
     private int _platformMaxRow;
     private Vector3 _platformPos;
     protected Transform _mTransform;
-    protected (Vector3 targetPos, int jumpStep) _mMoving;
+    private (Vector3 targetPos, int jumpStep) _mMoving;
     private int _steps;
-    protected int _currentDirection;
+    private int _currentDirection;
     private Vector3 _defaultPos;
+    [SerializeField] private bool _isUseThisTurn;
 
     public void Awake()
     {
@@ -176,11 +177,10 @@ public class SingleJumperController : MonoBehaviour
 
     public void ResetAgent()
     {
-        // m_Agent.EndEpisode(); // just use this one when training one one agent
         _mTransform.position = _defaultPos;
         _mMoving.targetPos = _defaultPos;
-        // _mMoving.targetPos = _defaultPos + _platformPos;
         _agentRenderer.material = _agentColor[0];
+        _isUseThisTurn = false;
     }
 
     public Agent GetAgent()
@@ -206,5 +206,20 @@ public class SingleJumperController : MonoBehaviour
     public void ChangeColor(int index)
     {
         _agentRenderer.material = _agentColor[Mathf.Clamp(index, 0, _agentColor.Count - 1)];
+    }
+
+    public bool CheckUsedThisTurn()
+    {
+        return _isUseThisTurn;
+    }
+
+    protected void MarkAsUsedThisTurn()
+    {
+        _isUseThisTurn = true;
+    }
+
+    public void ResetMoveState()
+    {
+        _isUseThisTurn = false;
     }
 }

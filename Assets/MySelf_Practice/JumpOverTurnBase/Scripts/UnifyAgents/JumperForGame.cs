@@ -9,6 +9,8 @@ public class JumperForGame : SingleJumperController
     public BehaviorParameters m_BehaviorParameters;
     public DummyAction InferMoving;
 
+    #region INFER PHASE
+
     public override void AskForAction()
     {
         m_Agent?.RequestDecision();
@@ -16,13 +18,15 @@ public class JumperForGame : SingleJumperController
 
     public override void ResponseAction(int direction)
     {
-        _currentDirection = direction;
-        GetPositionByDirection(_currentDirection);
+        InferMoving.Action = direction;
+        InferMoving.CurrentPos = _mTransform.position;
+        GetPositionByDirection(InferMoving.Action);
+        m_AgentManager.CollectUnitResponse();
     }
 
     private void GetPositionByDirection(int direction)
     {
-        var curPos = _mMoving.targetPos;
+        var curPos = InferMoving.CurrentPos;
         var newPos = curPos + DirectionToVector(direction);
         MovingPath(curPos, newPos, direction, 0);
 
@@ -41,14 +45,15 @@ public class JumperForGame : SingleJumperController
 
         if (CheckAvailableMove(newPos + DirectionToVector(direction)))
         {
-            if (_environmentController.CheckObjectInTeam(newPos, m_AgentManager.GetFaction()))
-            {
-                InferMoving.JumpOverAt[jumpCount] = newPos;
-                jumpCount++;
-            }
-            else
-                jumpCount++;
+            // if (_environmentController.CheckObjectInTeam(newPos, m_AgentManager.GetFaction()))
+            // {
+            //     InferMoving.JumpOverAt[jumpCount] = newPos;
+            //     jumpCount++;
+            // }
+            // else
+            //     jumpCount++;
 
+            jumpCount++;
             curPos = newPos + DirectionToVector(direction);
             newPos = curPos + DirectionToVector(direction);
 
@@ -73,4 +78,24 @@ public class JumperForGame : SingleJumperController
     {
         m_BehaviorParameters.Model = brain;
     }
+
+    #endregion
+
+    #region ACTION PHASE
+
+    public void ConductSelectedAction(DummyAction selectedAction)
+    {
+        MarkAsUsedThisTurn();
+        
+        // Change agent direction before the agent jump to the new position
+        if (selectedAction.TargetPos != _mTransform.position)
+            _rotatePart.forward = selectedAction.TargetPos - _mTransform.position;
+
+        _mTransform.position = selectedAction.TargetPos;
+        
+        // Ask for the next inference
+        m_AgentManager.KickOffUnitActions();
+    }
+
+    #endregion
 }

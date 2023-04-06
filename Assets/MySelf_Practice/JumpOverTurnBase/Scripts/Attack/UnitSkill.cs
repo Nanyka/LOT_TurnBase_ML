@@ -22,4 +22,14 @@ public class UnitSkill : MonoBehaviour
     {
         return m_SkillSOs;
     }
+
+    public Skill_SO GetSkillByIndex(int index)
+    {
+        return m_SkillSOs[index];
+    }
+
+    public int GetSkillAmount()
+    {
+        return m_SkillSOs.Length;
+    }
 }

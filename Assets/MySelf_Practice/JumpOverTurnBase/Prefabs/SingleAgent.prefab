@@ -69,7 +69,7 @@ MonoBehaviour:
   m_GizmoYOffset: -0.5
   m_ShowGizmos: 0
   m_CompressionType: 1
-  m_ObservationStacks: 2
+  m_ObservationStacks: 1
 --- !u!1 &1915747994895246203
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,9 +245,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4741464951942916541}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5174667246520446998

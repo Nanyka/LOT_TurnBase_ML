@@ -16,133 +16,65 @@ public class SkillManager : MonoBehaviour
 
     [SerializeField] private List<JumperForGame> _jumperControllers;
 
-    private List<DummyAction> m_ActionCache = new();
+    public List<DummyAction> m_ActionCache = new();
 
-    private void Start()
+    public void AddActionToCache(DummyAction inputAction)
     {
-        for (int i = 0; i < _jumperControllers.Count; i++)
+        DummyAction dummyAction = new DummyAction(inputAction); 
+        
+        // Check if any tuple store the same action for this agent, if not, save a new tuple in cache
+        var checkDuplicateTuple = false;
+        foreach (var action in m_ActionCache)
         {
-            var jumper = _jumperControllers[i];
-            jumper.InferMoving.AgentIndex = i;
-        }
-
-        InferActionForAgents();
-    }
-
-    public void InferActionForAgents()
-    {
-        // Gather skills from all agent. Leave it there for later
-
-        // Get one skill manager
-
-        var skill = m_UnitSkill.GetSkills().ElementAt(0);
-        if (skill == null)
-            return;
-
-        foreach (var jumperController in _jumperControllers)
-        {
-            jumperController.SetBrain(skill.GetModel());
-        }
-
-        foreach (var jumper in _jumperControllers)
-        {
-            // Infer action & add to jumper cache as currentAction when other idle
-            jumper.AskForAction();
-
-            // Calculate reward for each agent
-            if (jumper.GetJumpStep() > 0)
-            {
-                var attackPoints = m_UnitSkill.AttackPoints(jumper.GetPosition(), jumper.GetDirection(),
-                    jumper.GetJumpStep());
-                if (attackPoints != null)
-                {
-                    jumper.InferMoving.Reward = 0;
-                    foreach (var attackPoint in attackPoints)
-                    {
-                        // Debug.Log($"Attack at {attackPoint}");
-                        if (_environmentController.CheckEnemy(attackPoint, _agentManager.GetFaction()))
-                            jumper.InferMoving.Reward++;
-                    }
-                }
-            }
-
-            // Check if any tuple store the same action for this agent, if not, save a new tuple in cache
-            var checkDuplicateTuple = false;
-            foreach (var action in m_ActionCache.Where(action =>
-                action.CheckTupleExist(jumper.InferMoving.AgentIndex, jumper.InferMoving.Action)))
+            if (action.CheckTupleExist(dummyAction.AgentIndex, dummyAction.Action))
             {
                 checkDuplicateTuple = true;
                 action.VoteAmount++;
+                break;
             }
-
-            if (checkDuplicateTuple == false)
-                m_ActionCache.Add(jumper.InferMoving);
         }
-        
-        // m_ActionCache.Clear();
-        // foreach (var skill in m_UnitSkill.GetSkills())
-        // {
-        //     if (skill == null)
-        //         continue;
-        //
-        //     foreach (var jumperController in _jumperControllers)
-        //     {
-        //         jumperController.SetBrain(skill.GetModel());
-        //     }
-        //
-        //     foreach (var jumper in _jumperControllers)
-        //     {
-        //         // Infer action & add to jumper cache as currentAction when other idle
-        //         jumper.AskForAction();
-        //
-        //         // Calculate reward for each agent
-        //         if (jumper.GetJumpStep() > 0)
-        //         {
-        //             var attackPoints = m_UnitSkill.AttackPoints(jumper.GetPosition(), jumper.GetDirection(),
-        //                 jumper.GetJumpStep());
-        //             if (attackPoints != null)
-        //             {
-        //                 jumper.InferMoving.Reward = 0;
-        //                 foreach (var attackPoint in attackPoints)
-        //                 {
-        //                     // Debug.Log($"Attack at {attackPoint}");
-        //                     if (_environmentController.CheckEnemy(attackPoint, _agentManager.GetFaction()))
-        //                         jumper.InferMoving.Reward++;
-        //                 }
-        //             }
-        //         }
-        //
-        //         // Check if any tuple store the same action for this agent, if not, save a new tuple in cache
-        //         var checkDuplicateTuple = false;
-        //         foreach (var action in m_ActionCache.Where(action =>
-        //             action.CheckTupleExist(jumper.InferMoving.AgentIndex, jumper.InferMoving.Action)))
-        //         {
-        //             checkDuplicateTuple = true;
-        //             action.VoteAmount++;
-        //         }
-        //
-        //         if (checkDuplicateTuple == false)
-        //             m_ActionCache.Add(jumper.InferMoving);
-        //     }
-        // }
 
-        // Sort by reward
-        var orderedAction = m_ActionCache.OrderBy(x => x.Reward);
-
-        foreach (var action in orderedAction)
+        if (checkDuplicateTuple == false)
         {
-            Debug.Log(
-                $"Agent {action.AgentIndex} action as {action.Direction} with direction {action.Direction} have reward {action.Reward}");
+            dummyAction.VoteAmount++;
+            m_ActionCache.Add(dummyAction);
         }
-
-        // Get top tuple
-
-        // Decide action for selected agent and remove tuple of relevant agents from list
     }
 
-    private IEnumerator WaitForModel()
+    public void ActionBrainstorming()
     {
-        yield return new WaitForSeconds(2f);
+        //Start brainstorming from this place
         
+        // Sort by reward
+        foreach (var action in m_ActionCache)
+        {
+            // Debug.Log($"Agent {action.AgentIndex} action as {action.Action} with direction {action.Direction} have reward {action.Reward} and {action.VoteAmount} votes");
+            
+            // Calculate reward for each agent
+            if (action.JumpCount > 0)
+            {
+                var attackPoints = m_UnitSkill.AttackPoints(action.CurrentPos, action.Direction, action.JumpCount);
+                if (attackPoints != null)
+                    foreach (var attackPoint in attackPoints)
+                        if (_environmentController.CheckEnemy(attackPoint, _agentManager.GetFaction()))
+                            action.Reward++;
+            }
+        }
+        
+        // Sort by reward
+        var orderedAction = m_ActionCache.OrderByDescending(x => x.Reward).ElementAt(0);
+        if (orderedAction.Reward == 0)
+            orderedAction = m_ActionCache.OrderByDescending(x => x.VoteAmount).ElementAt(0);
+        
+        // Get top tuple
+        _jumperControllers[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
+
+        // Decide action for selected agent and reset current inference
+        
+    }
+
+    public void ResetSkillCache()
+    {
+        m_ActionCache.Clear();    
     }
 }
