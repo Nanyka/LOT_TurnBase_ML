@@ -4,10 +4,12 @@ using Unity.Barracuda;
 using Unity.MLAgents.Policies;
 using UnityEngine;
 
-public class JumperForGame : SingleJumperController
+public class JumperForGame : SingleJumperController, IGetUnitInfo
 {
     public BehaviorParameters m_BehaviorParameters;
     public DummyAction InferMoving;
+
+    [SerializeField] private UnitEntity _unitEntity;
 
     #region INFER PHASE
 
@@ -42,17 +44,25 @@ public class JumperForGame : SingleJumperController
             InferMoving.JumpCount = jumpCount;
             return;
         }
+        
+        if (CheckInBoundary(newPos))
+        {
+            if (CheckAvailableMove(newPos))
+            {
+                InferMoving.TargetPos = jumpCount == 0 ? newPos : curPos;
+                InferMoving.JumpCount = jumpCount;
+                return;
+            }
+        }
+        else
+        {
+            InferMoving.TargetPos = curPos;
+            InferMoving.JumpCount = jumpCount;
+            return;
+        }
 
         if (CheckAvailableMove(newPos + DirectionToVector(direction)))
         {
-            // if (_environmentController.CheckObjectInTeam(newPos, m_AgentManager.GetFaction()))
-            // {
-            //     InferMoving.JumpOverAt[jumpCount] = newPos;
-            //     jumpCount++;
-            // }
-            // else
-            //     jumpCount++;
-
             jumpCount++;
             curPos = newPos + DirectionToVector(direction);
             newPos = curPos + DirectionToVector(direction);
@@ -91,10 +101,33 @@ public class JumperForGame : SingleJumperController
         if (selectedAction.TargetPos != _mTransform.position)
             _rotatePart.forward = selectedAction.TargetPos - _mTransform.position;
 
-        _mTransform.position = selectedAction.TargetPos;
-        
+        StartCoroutine(MoveOverTime(selectedAction.TargetPos));
+    }
+    
+    private IEnumerator MoveOverTime(Vector3 targetPos)
+    {
+        while (transform.position != targetPos)
+        {
+            _mTransform.position = Vector3.MoveTowards(transform.position, targetPos, 10f * Time.deltaTime);
+            yield return null;
+        }
+
         // Ask for the next inference
         m_AgentManager.KickOffUnitActions();
+    }
+
+    #endregion
+
+    #region GET
+
+    public (string name, int health, int damage, int power) GetUnitInfo()
+    {
+        return (name ,3, 1, InferMoving.JumpCount);
+    }
+
+    public int GetAttackDamage()
+    {
+        return _unitEntity.GetAttackDamage();
     }
 
     #endregion

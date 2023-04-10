@@ -52,7 +52,7 @@ public class SingleJumperController : MonoBehaviour
         SetUpPlatform();
     }
 
-    // REFACTORING: Access this information from AgentManager
+    // REFACTORING: Access this information from EnvironmentManager
     private void SetUpPlatform()
     {
         var platformSize = _platformColider.bounds.size;
@@ -117,13 +117,18 @@ public class SingleJumperController : MonoBehaviour
 
     private (Vector3, int) MovingPath(Vector3 curPos, Vector3 newPos, int direction, int jumpCount)
     {
-        if (CheckAvailableMove(newPos))
+        if (CheckInBoundary(newPos))
         {
-            if (jumpCount == 0)
-                return (newPos, jumpCount);
+            if (CheckAvailableMove(newPos))
+            {
+                if (jumpCount == 0)
+                    return (newPos, jumpCount);
 
-            return (curPos, jumpCount);
+                return (curPos, jumpCount);
+            }
         }
+        else
+            return (curPos, jumpCount);
 
         if (CheckAvailableMove(newPos + DirectionToVector(direction)))
         {
@@ -168,9 +173,13 @@ public class SingleJumperController : MonoBehaviour
 
     protected bool CheckAvailableMove(Vector3 checkPos)
     {
+        return _environmentController.FreeToMove(checkPos);
+    }
+
+    protected bool CheckInBoundary(Vector3 checkPos)
+    {
         return Mathf.Abs(checkPos.x - _platformPos.x) <= _platformMaxCol &&
-               Mathf.Abs(checkPos.z - _platformPos.z) <= _platformMaxRow &&
-               _environmentController.FreeToMove(checkPos);
+               Mathf.Abs(checkPos.z - _platformPos.z) <= _platformMaxRow;
     }
 
     #endregion
@@ -183,6 +192,13 @@ public class SingleJumperController : MonoBehaviour
         _isUseThisTurn = false;
     }
 
+    #region GET & SET
+    
+    public Material GetDefaultMaterial()
+    {
+        return _agentRenderer.material;
+    }
+    
     public Agent GetAgent()
     {
         return m_Agent;
@@ -208,6 +224,11 @@ public class SingleJumperController : MonoBehaviour
         _agentRenderer.material = _agentColor[Mathf.Clamp(index, 0, _agentColor.Count - 1)];
     }
 
+    public void SetMaterial(Material setMaterial)
+    {
+        _agentRenderer.material = setMaterial;
+    }
+
     public bool CheckUsedThisTurn()
     {
         return _isUseThisTurn;
@@ -222,4 +243,12 @@ public class SingleJumperController : MonoBehaviour
     {
         _isUseThisTurn = false;
     }
+    
+    public void ResetMoveState(Material factionMaterial)
+    {
+        _isUseThisTurn = false;
+        _agentRenderer.material = factionMaterial;
+    }
+    
+    #endregion
 }

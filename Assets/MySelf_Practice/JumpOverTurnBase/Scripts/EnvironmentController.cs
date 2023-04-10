@@ -9,19 +9,21 @@ public class EnvironmentController : MonoBehaviour
     [HideInInspector] public UnityEvent OnChangeFaction; // invoke at JumpOverActuation;
     [HideInInspector] public UnityEvent OnReset; // send to AgentManager
     [HideInInspector] public UnityEvent<int> OnOneTeamWin; // invoke at AgentManager; sent to all AgentManager 
+    [HideInInspector] public UnityEvent<int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
 
-    [HideInInspector]
-    public UnityEvent<int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
-
+    [Header("Game Managers")]
     [SerializeField] private ObstacleManager _obstacleManager;
-    [SerializeField] private bool _isUseObstacle;
-    [SerializeField] private bool _isSpawnObstale;
-    [SerializeField] private int _currFaction;
-    [SerializeField] private int _maxStep;
+    [SerializeField] private MovementCalculator _movementCalculator;
 
+    [Header("Game Configurations")] 
+    [SerializeField] private Collider _platformCollider;
+    [SerializeField] protected bool _isUseObstacle;
+    [SerializeField] private bool _isSpawnObstale;
+    [SerializeField] protected int _currFaction;
+    [SerializeField] private int _maxStep;
     [SerializeField] private int _step;
 
-    private void Start()
+    protected virtual void Start()
     {
         OnOneTeamWin.AddListener(ResetEnvironment);
     }
@@ -33,13 +35,11 @@ public class EnvironmentController : MonoBehaviour
             _obstacleManager.SpawnObstacle();
     }
 
-    public void ChangeFaction()
+    public virtual void ChangeFaction()
     {
         _step++;
         if (_step == _maxStep)
-        {
             ResetGame();
-        }
 
         if (_currFaction == 0)
             _currFaction = 1;
@@ -75,11 +75,6 @@ public class EnvironmentController : MonoBehaviour
         ResetEnvironment(0);
     }
 
-    public int GetCurrFaction()
-    {
-        return _currFaction;
-    }
-
     public void KickOffEnvironment()
     {
         if (_isSpawnObstale)
@@ -88,9 +83,9 @@ public class EnvironmentController : MonoBehaviour
         OnChangeFaction.Invoke();
     }
 
-    public virtual bool FreeToMove(Vector3 checkPos)
+    public bool FreeToMove(Vector3 checkPos)
     {
-        return !_obstacleManager.CheckObstaclePlot(checkPos, false);
+        return !_obstacleManager.CheckObstaclePlot(checkPos);
     }
 
     public void DestroyObstacle(Vector3 position)
@@ -103,6 +98,28 @@ public class EnvironmentController : MonoBehaviour
         return _obstacleManager.CountObstacle() == 0;
     }
 
+    
+    #region MOVEMENT CALCULATOR
+
+    public MovementCalculator GetMovementCalculator()
+    {
+        return _movementCalculator;
+    }
+
+    #endregion
+
+    #region GET
+
+    public int GetCurrFaction()
+    {
+        return _currFaction;
+    }
+
+    public Collider GetPlatformCollider()
+    {
+        return _platformCollider;
+    }
+    
     public bool CheckObjectInTeam(Vector3 pos, int faction)
     {
         return _obstacleManager.CheckTeam(pos, faction);
@@ -112,4 +129,11 @@ public class EnvironmentController : MonoBehaviour
     {
         return _obstacleManager.CheckEnemy(pos, myFaction);
     }
+
+    public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
+    {
+        return _obstacleManager.GetEnemyByPosition(position, fromFaction);
+    }
+    
+    #endregion
 }

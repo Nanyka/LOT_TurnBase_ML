@@ -7,7 +7,7 @@ using UnityEngine;
 public class AgentManager : MonoBehaviour
 {
     [Header("General control part")] [SerializeField]
-    protected EnvironmentController _environmentController;
+    protected EnvironmentController m_Environment;
 
     [SerializeField] protected int m_Faction;
     [SerializeField] protected bool _isResetInstance;
@@ -30,10 +30,10 @@ public class AgentManager : MonoBehaviour
 
     protected virtual void Start()
     {
-        _environmentController.OnChangeFaction.AddListener(ToMyTurn);
-        _environmentController.OnReset.AddListener(ResetAgents);
-        _environmentController.OnPunishOppositeTeam.AddListener(GetPunish);
-        _environmentController.OnOneTeamWin.AddListener(FinishRound);
+        m_Environment.OnChangeFaction.AddListener(ToMyTurn);
+        m_Environment.OnReset.AddListener(ResetAgents);
+        m_Environment.OnPunishOppositeTeam.AddListener(GetPunish);
+        m_Environment.OnOneTeamWin.AddListener(FinishRound);
 
         m_AgentGroup = new SimpleMultiAgentGroup();
         foreach (var singleJumperController in m_JumpOverControllers)
@@ -67,14 +67,14 @@ public class AgentManager : MonoBehaviour
     protected void MultiJumperKickOff()
     {
         if (m_Faction == 0)
-            _environmentController.KickOffEnvironment();
+            m_Environment.KickOffEnvironment();
     }
 
     #region Ask for decision from agents
 
     protected virtual void ToMyTurn()
     {
-        if (_environmentController.GetCurrFaction() != m_Faction)
+        if (m_Environment.GetCurrFaction() != m_Faction)
             return;
         
         // reset all agent's moving state
@@ -124,7 +124,7 @@ public class AgentManager : MonoBehaviour
             foreach (var attackPoint in attackPoints)
             {
                 // Debug.Log($"Attack at {attackPoint}");
-                if (_environmentController.CheckEnemy(attackPoint, m_Faction))
+                if (m_Environment.CheckEnemy(attackPoint, m_Faction))
                     successAttacks++;
             }
 
@@ -135,15 +135,15 @@ public class AgentManager : MonoBehaviour
                                             m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
                 _visualGroupReward += _unitReward * successAttacks;
 
-                _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+                m_Environment.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
                 // Debug.Log($"Group reward {_visualGroupReward}");
                 break;
             }
         }
         
         // call for the end-turn event
-        _environmentController.ChangeFaction(_isResetInstance && successAttacks>0);
-        _environmentController.OnChangeFaction.Invoke();
+        m_Environment.ChangeFaction(_isResetInstance && successAttacks>0);
+        m_Environment.OnChangeFaction.Invoke();
     }
 
     #region GET & SET

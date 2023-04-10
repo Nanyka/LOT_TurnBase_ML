@@ -62,11 +62,16 @@ public class ObstacleManager : MonoBehaviour
         return newPos;
     }
 
-    public virtual bool CheckObstaclePlot(Vector3 plot, bool isSpawningPhase)
+    protected virtual bool CheckObstaclePlot(Vector3 plot, bool isSpawningPhase)
     {
         if (isSpawningPhase && plot == Vector3.zero)
             return true;
 
+        return CheckObstaclePlot(plot);
+    }
+
+    public virtual bool CheckObstaclePlot(Vector3 plot)
+    {
         return _listTeam1.Find(x => Vector3.Distance(x.transform.position, plot) < Mathf.Epsilon);
     }
 
@@ -93,5 +98,12 @@ public class ObstacleManager : MonoBehaviour
         if (faction == 0)
             return CheckTeam(targetPos, 1);
         return CheckTeam(targetPos, 0);
+    }
+
+    public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
+    {
+        if (fromFaction == 0)
+            return _listTeam1.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
+        return _listTeam0.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
     }
 }

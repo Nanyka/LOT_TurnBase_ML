@@ -8,16 +8,21 @@ public class AgentForInfer : AgentManager
 {
     [SerializeField] private SkillManager m_SkillManager;
 
+    [SerializeField] private Material _factionMaterial;
+
+    private Material _defaultMaterial;
     private List<JumperForGame> m_JumperForGames;
     private List<JumperForGame> _dummyJumper;
     private int _skillCount;
-    
+
     protected override void Start()
     {
-        _environmentController.OnChangeFaction.AddListener(ToMyTurn);
-        _environmentController.OnReset.AddListener(ResetAgents);
-        _environmentController.OnPunishOppositeTeam.AddListener(GetPunish);
-        _environmentController.OnOneTeamWin.AddListener(FinishRound);
+        m_Environment.OnChangeFaction.AddListener(ToMyTurn);
+        m_Environment.OnReset.AddListener(ResetAgents);
+        m_Environment.OnPunishOppositeTeam.AddListener(GetPunish);
+        m_Environment.OnOneTeamWin.AddListener(FinishRound);
+
+        _defaultMaterial = m_JumpOverControllers[0].GetDefaultMaterial();
 
         InitiateJumperList();
         MultiJumperKickOff();
@@ -27,7 +32,7 @@ public class AgentForInfer : AgentManager
     {
         m_JumperForGames = new List<JumperForGame>(m_JumpOverControllers.Count);
         _dummyJumper = new List<JumperForGame>(m_JumpOverControllers.Count);
-        
+
         foreach (var jumperController in m_JumpOverControllers)
             m_JumperForGames.Add((JumperForGame) jumperController);
 
@@ -37,7 +42,7 @@ public class AgentForInfer : AgentManager
             jumper.InferMoving.AgentIndex = i;
         }
     }
-    
+
     protected override void ResetAgents()
     {
         foreach (var agent in m_JumpOverControllers)
@@ -45,16 +50,23 @@ public class AgentForInfer : AgentManager
     }
 
     #region MY TURN
-    
+
+    // Change unit colour from environmentManager when changing faction
+    public void SetUnitsMaterial(Material selectedMaterial)
+    {
+        foreach (var jumperController in m_JumpOverControllers)
+            jumperController.SetMaterial(selectedMaterial);
+    }
+
     protected override void ToMyTurn()
     {
-        if (_environmentController.GetCurrFaction() != m_Faction)
+        if (m_Environment.GetCurrFaction() != m_Faction)
             return;
-        
+
         // reset all agent's moving state
         foreach (var jumperController in m_JumpOverControllers)
-            jumperController.ResetMoveState();
-        
+            jumperController.ResetMoveState(_factionMaterial);
+
         KickOffUnitActions(); // kick off the first round of inferring action
     }
 
@@ -83,7 +95,7 @@ public class AgentForInfer : AgentManager
 
     private void StartInferAgentsAction(IEnumerable<JumperForGame> jumperForGames)
     {
-        if (_skillCount < m_UnitSkill.GetSkillAmount() && m_UnitSkill.GetSkillByIndex(_skillCount) !=null)
+        if (_skillCount < m_UnitSkill.GetSkillAmount() && m_UnitSkill.GetSkillByIndex(_skillCount) != null)
         {
             var forGames = jumperForGames as JumperForGame[] ?? jumperForGames.ToArray();
             // reset counter before collect action
@@ -101,17 +113,17 @@ public class AgentForInfer : AgentManager
             m_SkillManager.ActionBrainstorming();
         }
     }
-    
+
     public override void CollectUnitResponse()
     {
         _responseCounter++;
 
         // if all agent response, add action to cache at skillManager
         if (_responseCounter != _dummyJumper.Count) return;
-        
+
         foreach (var jumperForGame in _dummyJumper)
             m_SkillManager.AddActionToCache(jumperForGame.InferMoving);
-            
+
         // Move to next skill
         _skillCount++;
         StartInferAgentsAction(_dummyJumper);
@@ -120,40 +132,48 @@ public class AgentForInfer : AgentManager
     #endregion
 
     #region END TURN
-    
+
     protected override void EndTurn()
     {
         // Attack nearby enemy
         int successAttacks = 0;
-        foreach (var agent in m_JumpOverControllers)
+        foreach (var agent in m_JumperForGames)
         {
             if (agent.GetJumpStep() == 0)
                 continue;
-        
+
             var attackPoints = m_UnitSkill.AttackPoints(agent.GetPosition(), agent.GetDirection(), agent.GetJumpStep());
             if (attackPoints == null)
                 continue;
-        
+
             foreach (var attackPoint in attackPoints)
             {
-                if (_environmentController.CheckEnemy(attackPoint, m_Faction))
+                if (m_Environment.CheckEnemy(attackPoint, m_Faction))
                 {
-                    Debug.Log($"Attack success at {attackPoint}");
+                    var enemy = m_Environment.GetEnemyByPosition(attackPoint, m_Faction);
+                    if (enemy.TryGetComponent(out UnitEntity enemyEntity))
+                    {
+                        enemyEntity.TakeDamage(agent.GetAttackDamage());
+                    }
+                    
                     successAttacks++;
                 }
             }
         }
-        
+
+        foreach (var jumper in m_JumperForGames)
+            jumper.SetMaterial(_defaultMaterial);
+
         // call for the end-turn event
-        _environmentController.ChangeFaction();
-        StartCoroutine(WaitForChangeFaction());
+        m_Environment.ChangeFaction();
+        m_Environment.OnChangeFaction.Invoke();
     }
-    
+
     private IEnumerator WaitForChangeFaction()
     {
         yield return new WaitUntil(() => Input.anyKey);
-        _environmentController.OnChangeFaction.Invoke();
+        m_Environment.OnChangeFaction.Invoke();
     }
-    
+
     #endregion
 }
