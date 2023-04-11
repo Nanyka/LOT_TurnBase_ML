@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerFactionManager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class PlayerFactionManager : MonoBehaviour
         m_Environment.OnChangeFaction.AddListener(ToMyTurn);
         m_Environment.OnTouchSelection.AddListener(MoveToward);
         m_Environment.OnOneTeamWin.AddListener(EndGame);
+        m_Environment.OnReset.AddListener(ResetGame);
+        UIManager.Instance.OnClickIdleButton.AddListener(SetCurrentUnitIdle);
 
         _camera = Camera.main;
         _defaultMaterial = _unitMovements[0].GetMaterial();
@@ -55,7 +58,7 @@ public class PlayerFactionManager : MonoBehaviour
             return;
 
         foreach (var unitMovement in _unitMovements)
-            unitMovement.ResetUnit(_factionMaterial);
+            unitMovement.NewTurnReset(_factionMaterial);
 
         _countMovedUnit = 0;
     }
@@ -70,8 +73,8 @@ public class PlayerFactionManager : MonoBehaviour
         if (_currentUnit.IsAvailable())
             m_Environment.OnShowMovingPath.Invoke(unitPos);
         else
-            Debug.Log("Highlight selected unit");
-        
+            m_Environment.OnHighlightUnit.Invoke(_currentUnit.GetCurrentPosition());
+
         UIManager.Instance.OnShowUnitInfo.Invoke(getUnitAtPos);
     }
 
@@ -85,8 +88,6 @@ public class PlayerFactionManager : MonoBehaviour
         // "Don't move" button
 
         // End turn
-
-        // Debug.Log($"Check mouse pointer work or not: {unitPos}");
     }
 
     public void UnitMoved()
@@ -97,48 +98,61 @@ public class PlayerFactionManager : MonoBehaviour
             EndTurn();
     }
 
+    private void SetCurrentUnitIdle()
+    {
+        if (_currentUnit == null || !_currentUnit.IsAvailable())
+            return;
+        _currentUnit.SetUsedState();
+        UnitMoved();
+    }
+
     private void EndTurn()
     {
         // Attack nearby enemy
-        int successAttacks = 0;
         foreach (var unit in _unitMovements)
         {
             if (unit.GetJumpStep() == 0)
                 continue;
 
-            var attackPoints = unit.GetAttackPoint();
-            if (attackPoints == null)
-                continue;
-
-            foreach (var attackPoint in attackPoints)
-            {
-                if (m_Environment.CheckEnemy(attackPoint, m_Faction))
-                {
-                    var enemy = m_Environment.GetEnemyByPosition(attackPoint, m_Faction);
-                    if (enemy.TryGetComponent(out UnitEntity enemyEntity))
-                    {
-                        enemyEntity.TakeDamage(unit.GetAttackDamage());
-                    }
-                    successAttacks++;
-                }
-            }
+            unit.Attack();
         }
-        
+
         foreach (var unitMovement in _unitMovements)
             unitMovement.SetMaterial(_defaultMaterial);
-
+        
+        StartCoroutine(WaitForChangeFaction());
+    }
+    
+    private IEnumerator WaitForChangeFaction()
+    {
+        yield return new WaitForSeconds(1f);
         m_Environment.ChangeFaction();
         m_Environment.OnChangeFaction.Invoke();
     }
 
     private void EndGame(int winFaction)
     {
-        throw new System.NotImplementedException();
+        Debug.Log($"End game from player faction");
+    }
+
+    private void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     #endregion
 
     #region GET & SET
+
+    public EnvironmentController GetEnvironment()
+    {
+        return m_Environment;
+    }
+
+    public int GetFaction()
+    {
+        return m_Faction;
+    }
 
     public Collider GetPlatformCollider()
     {
@@ -156,4 +170,10 @@ public class PlayerFactionManager : MonoBehaviour
     }
 
     #endregion
+
+    public void RemoveAgent(UnitMovement unitMovement)
+    {
+        m_Environment.RemoveObject(unitMovement.gameObject, m_Faction);
+        _unitMovements.Remove(unitMovement);
+    }
 }

@@ -10,7 +10,7 @@ public class Skill_SO : ScriptableObject
 {
     //Manage attribute of unit's skills
     [Header("Skill variable")] 
-    [SerializeField] private int _powerCost;
+    [SerializeField] private string _animTrigger;
     [SerializeField] private float _magnitude;
     
     [Header("Skill range")]
@@ -80,5 +80,10 @@ public class Skill_SO : ScriptableObject
     public NNModel GetModel()
     {
         return MLModel;
+    }
+
+    public string GetAnimation()
+    {
+        return _animTrigger;
     }
 }

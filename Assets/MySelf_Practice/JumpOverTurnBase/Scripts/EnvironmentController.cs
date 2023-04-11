@@ -20,8 +20,8 @@ public class EnvironmentController : MonoBehaviour
     [SerializeField] protected bool _isUseObstacle;
     [SerializeField] private bool _isSpawnObstale;
     [SerializeField] protected int _currFaction;
-    [SerializeField] private int _maxStep;
-    [SerializeField] private int _step;
+    [SerializeField] protected int _maxStep;
+    [SerializeField] protected int _step;
 
     protected virtual void Start()
     {
@@ -38,7 +38,7 @@ public class EnvironmentController : MonoBehaviour
     public virtual void ChangeFaction()
     {
         _step++;
-        if (_step == _maxStep)
+        if (_step >= _maxStep)
             ResetGame();
 
         if (_currFaction == 0)
@@ -53,7 +53,7 @@ public class EnvironmentController : MonoBehaviour
     public void ChangeFaction(bool isResetInstance)
     {
         _step++;
-        if (_step == _maxStep)
+        if (_step >= _maxStep)
             ResetGame();
 
         if (isResetInstance)
@@ -68,9 +68,8 @@ public class EnvironmentController : MonoBehaviour
             _currFaction = 0;
     }
 
-    public void ResetGame()
+    private void ResetGame()
     {
-        _step = 0;
         OnReset.Invoke();
         ResetEnvironment(0);
     }
@@ -82,6 +81,18 @@ public class EnvironmentController : MonoBehaviour
 
         OnChangeFaction.Invoke();
     }
+    
+    #region MOVEMENT CALCULATOR
+
+    public MovementCalculator GetMovementCalculator()
+    {
+        return _movementCalculator;
+    }
+
+    #endregion
+    
+    
+    #region OBSTACLES
 
     public bool FreeToMove(Vector3 checkPos)
     {
@@ -97,28 +108,6 @@ public class EnvironmentController : MonoBehaviour
     {
         return _obstacleManager.CountObstacle() == 0;
     }
-
-    
-    #region MOVEMENT CALCULATOR
-
-    public MovementCalculator GetMovementCalculator()
-    {
-        return _movementCalculator;
-    }
-
-    #endregion
-
-    #region GET
-
-    public int GetCurrFaction()
-    {
-        return _currFaction;
-    }
-
-    public Collider GetPlatformCollider()
-    {
-        return _platformCollider;
-    }
     
     public bool CheckObjectInTeam(Vector3 pos, int faction)
     {
@@ -133,6 +122,28 @@ public class EnvironmentController : MonoBehaviour
     public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
     {
         return _obstacleManager.GetEnemyByPosition(position, fromFaction);
+    }
+
+    public void RemoveObject(GameObject targetObject, int faction)
+    {
+        _obstacleManager.RemoveObject(targetObject,faction);
+        var checkWin = _obstacleManager.CheckWinCondition();
+        if (checkWin >=0)
+            OnOneTeamWin.Invoke(checkWin);
+    }
+
+    #endregion
+
+    #region GET
+
+    public int GetCurrFaction()
+    {
+        return _currFaction;
+    }
+
+    public Collider GetPlatformCollider()
+    {
+        return _platformCollider;
     }
     
     #endregion

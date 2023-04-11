@@ -6,17 +6,33 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
-    [Header("General control part")] [SerializeField]
-    private EnvironmentController _environmentController;
+    [Header("General control part")] 
+    [SerializeField] private EnvironmentController _environmentController;
+    [SerializeField] private AgentForInfer _agentManager;
 
-    [SerializeField] private AgentManager _agentManager;
-
-    [Header("Skill part")] [SerializeField]
-    private UnitSkill m_UnitSkill;
-
-    [SerializeField] private List<JumperForGame> _jumperControllers;
+    [Header("Skill part")] 
+    [SerializeField] private List<Skill_SO> m_SkillSOs;
+    // [SerializeField] private List<JumperForGame> _jumperControllers;
 
     public List<DummyAction> m_ActionCache = new();
+
+    private void Start()
+    {
+        GatherSkillFromJumpers();
+    }
+
+    private void GatherSkillFromJumpers()
+    {
+        foreach (var jumper in _agentManager.GetJumpers())
+        {
+            foreach (var skill in jumper.GetEntity().GetSkills())
+            {
+                if (m_SkillSOs.Contains(skill))
+                    continue;
+                m_SkillSOs.Add(skill);
+            }
+        }
+    }
 
     public void AddActionToCache(DummyAction inputAction)
     {
@@ -53,7 +69,7 @@ public class SkillManager : MonoBehaviour
             // Calculate reward for each agent
             if (action.JumpCount > 0)
             {
-                var attackPoints = m_UnitSkill.AttackPoints(action.CurrentPos, action.Direction, action.JumpCount);
+                var attackPoints = AttackPoints(action.CurrentPos, action.Direction, action.JumpCount);
                 if (attackPoints != null)
                     foreach (var attackPoint in attackPoints)
                         if (_environmentController.CheckEnemy(attackPoint, _agentManager.GetFaction()))
@@ -67,14 +83,30 @@ public class SkillManager : MonoBehaviour
             orderedAction = m_ActionCache.OrderByDescending(x => x.VoteAmount).ElementAt(0);
         
         // Get top tuple
-        _jumperControllers[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
+        _agentManager.GetJumpers()[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
 
         // Decide action for selected agent and reset current inference
-        
     }
 
     public void ResetSkillCache()
     {
         m_ActionCache.Clear();    
+    }
+    
+    public IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep)
+    {
+        if (m_SkillSOs.Count < jumpStep || m_SkillSOs[jumpStep - 1] == null)
+            return null;
+        return m_SkillSOs[jumpStep - 1].CalculateSkillRange(targetPos, direction);
+    }
+
+    public int GetSkillAmount()
+    {
+        return m_SkillSOs.Count;
+    }
+
+    public Skill_SO GetSkillByIndex(int skillCount)
+    {
+        return m_SkillSOs[skillCount];
     }
 }

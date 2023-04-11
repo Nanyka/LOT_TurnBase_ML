@@ -29,6 +29,12 @@ public class SelectionCircle : MonoBehaviour
         m_Projector.enabled = turnOn;
         m_Collider.enabled = turnOn;
     }
+    
+    public void HighlightAt(Vector3 position)
+    {
+        m_Projector.enabled = true;
+        m_Transform.position = position;
+    }
 
     public int GetDirection()
     {

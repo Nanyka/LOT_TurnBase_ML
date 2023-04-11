@@ -7,15 +7,12 @@ public class EnvironmentInGame : EnvironmentController
 {
     [HideInInspector] public UnityEvent<Vector3> OnShowMovingPath; // send to MovingPath; invoke at PlayerFactionManager
     [HideInInspector] public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingPath
-
-    public override void ChangeFaction()
+    [HideInInspector] public UnityEvent<Vector3> OnHighlightUnit; // send to MovingPath; invoke at PlayerFactionManager
+    
+    public virtual void ChangeFaction()
     {
-        if (_currFaction == 0)
-            _currFaction = 1;
-        else
-            _currFaction = 0;
-
-        if (_isUseObstacle)
-            _currFaction = 0;
+        base.ChangeFaction();
+        
+        UIManager.Instance.OnRemainStep.Invoke(_maxStep - _step);
     }
 }

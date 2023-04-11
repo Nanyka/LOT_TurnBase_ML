@@ -24,7 +24,7 @@ public class SingleJumperController : MonoBehaviour
     private int _steps;
     private int _currentDirection;
     private Vector3 _defaultPos;
-    [SerializeField] private bool _isUseThisTurn;
+    private bool _isUseThisTurn;
 
     public void Awake()
     {
@@ -39,7 +39,7 @@ public class SingleJumperController : MonoBehaviour
 #endif
     }
 
-    public void OnEnable()
+    public virtual void OnEnable()
     {
         m_Agent = GetComponent<Agent>();
         _mTransform = transform;
@@ -184,7 +184,7 @@ public class SingleJumperController : MonoBehaviour
 
     #endregion
 
-    public void ResetAgent()
+    public virtual void ResetAgent()
     {
         _mTransform.position = _defaultPos;
         _mMoving.targetPos = _defaultPos;

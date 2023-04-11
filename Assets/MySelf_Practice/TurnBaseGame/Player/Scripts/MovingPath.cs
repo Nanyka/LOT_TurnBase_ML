@@ -15,6 +15,8 @@ public class MovingPath : MonoBehaviour
     private void Start()
     {
         m_Environment.OnShowMovingPath.AddListener(MovingRange);
+        m_Environment.OnHighlightUnit.AddListener(HighlightUnit);
+        UIManager.Instance.OnClickIdleButton.AddListener(DisableMovingPath);
         
         _camera = Camera.main;
     }
@@ -33,6 +35,12 @@ public class MovingPath : MonoBehaviour
             
             _movingPoints[index].SwitchProjector(currentMovement.returnPos, index+1);
         }
+    }
+
+    private void HighlightUnit(Vector3 position)
+    {
+        DisableMovingPath();
+        _movingPoints[0].HighlightAt(position);
     }
 
     #region INTERACT SELECTION

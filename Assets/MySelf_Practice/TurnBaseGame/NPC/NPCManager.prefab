@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1814030843770287032}
-  - component: {fileID: 587313349456989822}
   - component: {fileID: 1965326685923815715}
   - component: {fileID: 9089914860800479016}
   m_Layer: 0
@@ -35,26 +34,8 @@ Transform:
   - {fileID: 6564466356340860426}
   - {fileID: 6795246437186880112}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &587313349456989822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4807659018669872851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eebf76ca35b154fbdaa94e4bb7ed5da7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SkillSOs:
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
-  - {fileID: 11400000, guid: fa1e369e9f75345c99e19f4db8a46893, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &1965326685923815715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _environmentController: {fileID: 0}
   _agentManager: {fileID: 9089914860800479016}
-  m_UnitSkill: {fileID: 587313349456989822}
+  m_SkillSOs: []
   _jumperControllers:
   - {fileID: 5122611903104724574}
   - {fileID: 8776285576392217918}
@@ -87,14 +68,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592bce693bc43449fb8b0d03020c3d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _environmentController: {fileID: 0}
+  m_Environment: {fileID: 0}
   m_Faction: 1
   _isResetInstance: 1
   m_JumpOverControllers:
   - {fileID: 5122611903104724574}
   - {fileID: 8776285576392217918}
   - {fileID: 8980066351159603524}
-  m_UnitSkill: {fileID: 587313349456989822}
+  m_UnitSkill: {fileID: 0}
   _unitReward: 1
   _punishAmount: 0.1
   _movementCost: 0.006
@@ -165,10 +146,6 @@ PrefabInstance:
       propertyPath: m_AgentManager
       value: 
       objectReference: {fileID: 9089914860800479016}
-    - target: {fileID: 7060472575456858971, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8309573429785562680, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
       propertyPath: m_Name
       value: NPCUnit (2)
@@ -258,10 +235,6 @@ PrefabInstance:
       propertyPath: m_AgentManager
       value: 
       objectReference: {fileID: 9089914860800479016}
-    - target: {fileID: 7060472575456858971, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8309573429785562680, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
       propertyPath: m_Name
       value: NPCUnit (1)
@@ -351,10 +324,6 @@ PrefabInstance:
       propertyPath: m_AgentManager
       value: 
       objectReference: {fileID: 9089914860800479016}
-    - target: {fileID: 7060472575456858971, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8309573429785562680, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
       propertyPath: m_Name
       value: NPCUnit (0)

@@ -11,6 +11,14 @@ public class JumperForGame : SingleJumperController, IGetUnitInfo
 
     [SerializeField] private UnitEntity _unitEntity;
 
+    private bool _isDie;
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        _unitEntity.OnUnitDie.AddListener(UnitDie);
+    }
+
     #region INFER PHASE
 
     public override void AskForAction()
@@ -116,18 +124,45 @@ public class JumperForGame : SingleJumperController, IGetUnitInfo
         m_AgentManager.KickOffUnitActions();
     }
 
+    public void Attack()
+    {
+        _unitEntity.Attack(this);
+    }
+
     #endregion
 
     #region GET
 
     public (string name, int health, int damage, int power) GetUnitInfo()
     {
-        return (name ,3, 1, InferMoving.JumpCount);
+        return (name ,_unitEntity.GetCurrentHealth(), _unitEntity.GetAttackDamage(), InferMoving.JumpCount);
     }
 
-    public int GetAttackDamage()
+    public (Vector3 midPos, Vector3 direction, int jumpStep, int faction) GetCurrentState()
     {
-        return _unitEntity.GetAttackDamage();
+        return (_mTransform.position, _rotatePart.forward, InferMoving.JumpCount, m_AgentManager.GetFaction());
+    }
+
+    public EnvironmentController GetEnvironment()
+    {
+        return m_AgentManager.GetEnvironment();
+    }
+
+    public UnitEntity GetEntity()
+    {
+        return _unitEntity;
+    }
+
+    public override void ResetAgent()
+    {
+        base.ResetAgent();
+        _unitEntity.ResetEntity();
+    }
+
+    private void UnitDie()
+    {
+        m_AgentManager.RemoveAgent(this);
+        Destroy(gameObject,1f);
     }
 
     #endregion

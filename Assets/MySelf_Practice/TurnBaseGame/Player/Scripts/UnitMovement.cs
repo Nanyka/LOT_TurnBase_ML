@@ -13,13 +13,17 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
     [SerializeField] private UnitEntity _unitEntity;
 
     private Transform m_Transform;
+    private Vector3 _defaultPos;
     private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
     private int _currentPower;
     private bool _isUsed;
 
-    private void Start()
+    public void OnEnable()
     {
+        _unitEntity.OnUnitDie.AddListener(UnitDie);
+        
         m_Transform = transform;
+        _defaultPos = m_Transform.position;
     }
 
     public void MoveDirection(int moveDirection)
@@ -46,10 +50,23 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
         m_FactionManager.UnitMoved();
     }
 
-    public void ResetUnit(Material factionMaterial)
+    public void NewTurnReset(Material factionMaterial)
     {
         _isUsed = false;
         SetMaterial(factionMaterial);
+    }
+    
+    public void ResetUnit()
+    {
+        m_Transform.position = _defaultPos;
+        _movement.targetPos = _defaultPos;
+        _isUsed = false;
+        _unitEntity.ResetEntity();
+    }
+
+    public void Attack()
+    {
+        _unitEntity.Attack(this);
     }
 
     #region GET & SET
@@ -64,9 +81,24 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
         return _agentRenderer.material;
     }
 
+    public Vector3 GetCurrentPosition()
+    {
+        return m_Transform.position;
+    }
+
     public (string name, int health, int damage, int power) GetUnitInfo()
     {
-        return (name ,3, 1, _movement.jumpCount);
+        return (name , _unitEntity.GetCurrentHealth(), _unitEntity.GetAttackDamage(), _movement.jumpCount);
+    }
+
+    public (Vector3 midPos, Vector3 direction, int jumpStep, int faction) GetCurrentState()
+    {
+        return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, m_FactionManager.GetFaction());
+    }
+
+    public EnvironmentController GetEnvironment()
+    {
+        return m_FactionManager.GetEnvironment();
     }
 
     public int GetJumpStep()
@@ -87,6 +119,17 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
     public void SetMaterial(Material setMaterial)
     {
         _agentRenderer.material = setMaterial;
+    }
+
+    public void SetUsedState()
+    {
+        _isUsed = true;
+    }
+
+    private void UnitDie()
+    {
+        m_FactionManager.RemoveAgent(this);
+        Destroy(gameObject,1f);
     }
 
     #endregion

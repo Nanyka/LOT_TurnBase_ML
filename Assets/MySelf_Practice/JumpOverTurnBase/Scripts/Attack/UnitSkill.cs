@@ -32,4 +32,9 @@ public class UnitSkill : MonoBehaviour
     {
         return m_SkillSOs.Length;
     }
+
+    public string GetAttackAnimation(int atIndex)
+    {
+        return m_SkillSOs[atIndex].GetAnimation();
+    }
 }

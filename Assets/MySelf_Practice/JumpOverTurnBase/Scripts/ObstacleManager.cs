@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -105,5 +106,28 @@ public class ObstacleManager : MonoBehaviour
         if (fromFaction == 0)
             return _listTeam1.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
         return _listTeam0.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
+    }
+
+    public void RemoveObject(GameObject targetObject, int faction)
+    {
+        if (faction == 0)
+        {
+            _listTeam0.Remove(targetObject);
+            _listTeam0 = _listTeam0.Where(x => x != null).ToList();
+        }
+        else
+        {
+            _listTeam1.Remove(targetObject);
+            _listTeam1 = _listTeam1.Where(x => x != null).ToList();
+        }
+    }
+
+    public int CheckWinCondition()
+    {
+        if (_listTeam1.Count == 0)
+            return 0;
+        if (_listTeam0.Count == 0)
+            return 1;
+        return -1;
     }
 }

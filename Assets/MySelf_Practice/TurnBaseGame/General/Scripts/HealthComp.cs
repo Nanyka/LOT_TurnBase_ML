@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class HealthComp : MonoBehaviour
@@ -9,27 +10,38 @@ public class HealthComp : MonoBehaviour
 
     private int m_MAXHp;
     private int _currentHp;
+    private UnityEvent _dieEvent;
 
-    public void Init(int maxHp)
+    public void Init(int maxHp, UnityEvent dieEvent)
     {
         m_MAXHp = maxHp;
         _currentHp = m_MAXHp;
         _hpSlider.value = _currentHp * 1f / m_MAXHp;
+        _dieEvent = dieEvent;
     }
 
     public void TakeDamage(int damage)
     {
         _currentHp -= damage;
         _hpSlider.value = _currentHp * 1f / m_MAXHp;
-        Debug.Log($"{name} take {damage} damge and remain health is {_hpSlider.value*100f}");
 
         if (_currentHp <= 0)
             Die();
     }
 
+    public int GetCurrentHealth()
+    {
+        return _currentHp;
+    }
+
     private void Die()
     {
-        // TODO Die function
-        Debug.Log($"{name} die");
+        _dieEvent.Invoke();
+    }
+
+    public void Reset()
+    {
+        _currentHp = m_MAXHp;
+        _hpSlider.value = _currentHp * 1f / m_MAXHp;
     }
 }

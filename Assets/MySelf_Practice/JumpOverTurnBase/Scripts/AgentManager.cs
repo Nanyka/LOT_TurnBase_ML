@@ -153,7 +153,12 @@ public class AgentManager : MonoBehaviour
         return m_Faction;
     }
 
-    protected void FinishRound(int faction)
+    public EnvironmentController GetEnvironment()
+    {
+        return m_Environment;
+    }
+
+    protected virtual void FinishRound(int faction)
     {
         foreach (var agent in m_JumpOverControllers)
             agent.ResetAgent();
@@ -184,24 +189,14 @@ public class AgentManager : MonoBehaviour
 
     #region GET & SET
 
-    public float GetMaxReward()
-    {
-        return m_JumpOverControllers.Max(x => x.GetAgent().GetCumulativeReward());
-    }
-
-    public float GetMinReward()
-    {
-        return m_JumpOverControllers.Min(x => x.GetAgent().GetCumulativeReward());
-    }
-
     private float GetTotalReward()
     {
         return m_JumpOverControllers.Sum(x => x.GetAgent().GetCumulativeReward());
     }
 
-    public float GetIdlePunish()
+    public virtual void RemoveAgent(SingleJumperController jumper)
     {
-        return _movementCost;
+        m_JumpOverControllers.Remove(jumper);
     }
 
     #endregion
