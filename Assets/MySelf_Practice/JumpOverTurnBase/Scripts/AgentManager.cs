@@ -17,14 +17,14 @@ public class AgentManager : MonoBehaviour
     protected UnitSkill m_UnitSkill;
 
     [Header("Reward part")] [SerializeField]
-    private float _unitReward;
+    protected float _unitReward;
 
     [SerializeField] private float _punishAmount;
-    [SerializeField] private float _movementCost = 0.01f;
-    [SerializeField] private float _visualGroupReward;
+    [SerializeField] protected float _movementCost = 0.01f;
+    [SerializeField] protected float _visualGroupReward;
 
     private List<(int unitIndex, int prefer)> _movingOrder = new();
-    private SimpleMultiAgentGroup m_AgentGroup;
+    protected SimpleMultiAgentGroup m_AgentGroup;
     protected int _responseCounter;
     private bool _isMoved;
 

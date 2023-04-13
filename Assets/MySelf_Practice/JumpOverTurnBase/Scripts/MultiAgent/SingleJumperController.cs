@@ -85,7 +85,7 @@ public class SingleJumperController : MonoBehaviour
     {
         _currentDirection = direction;
         MoveDirection();
-        m_AgentManager.CollectUnitResponse();// finish this action and turn to the next agent
+        m_AgentManager.CollectUnitResponse(); // finish this action and turn to the next agent
     }
 
     /// <summary>
@@ -117,18 +117,15 @@ public class SingleJumperController : MonoBehaviour
 
     private (Vector3, int) MovingPath(Vector3 curPos, Vector3 newPos, int direction, int jumpCount)
     {
-        if (CheckInBoundary(newPos))
+        if (!CheckInBoundary(newPos)) return (curPos, jumpCount);
+        
+        if (CheckAvailableMove(newPos))
         {
-            if (CheckAvailableMove(newPos))
-            {
-                if (jumpCount == 0)
-                    return (newPos, jumpCount);
+            if (jumpCount == 0)
+                return (newPos, jumpCount);
 
-                return (curPos, jumpCount);
-            }
-        }
-        else
             return (curPos, jumpCount);
+        }
 
         if (CheckAvailableMove(newPos + DirectionToVector(direction)))
         {
@@ -144,6 +141,7 @@ public class SingleJumperController : MonoBehaviour
         }
 
         return (curPos, jumpCount);
+
     }
 
     protected Vector3 DirectionToVector(int direction)
@@ -173,7 +171,7 @@ public class SingleJumperController : MonoBehaviour
 
     protected bool CheckAvailableMove(Vector3 checkPos)
     {
-        return _environmentController.FreeToMove(checkPos);
+        return _environmentController.FreeToMove(checkPos) && CheckInBoundary(checkPos);
     }
 
     protected bool CheckInBoundary(Vector3 checkPos)
@@ -193,12 +191,12 @@ public class SingleJumperController : MonoBehaviour
     }
 
     #region GET & SET
-    
+
     public Material GetDefaultMaterial()
     {
         return _agentRenderer.material;
     }
-    
+
     public Agent GetAgent()
     {
         return m_Agent;
@@ -243,12 +241,12 @@ public class SingleJumperController : MonoBehaviour
     {
         _isUseThisTurn = false;
     }
-    
+
     public void ResetMoveState(Material factionMaterial)
     {
         _isUseThisTurn = false;
         _agentRenderer.material = factionMaterial;
     }
-    
+
     #endregion
 }
