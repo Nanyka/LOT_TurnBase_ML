@@ -52,7 +52,7 @@ public class UnitEntity : MonoBehaviour
 
     #endregion
 
-    #region GET
+    #region GET & SET
 
     public IEnumerable<Vector3> GetAttackPoint(Vector3 midPos, Vector3 direction, int jumpStep)
     {
@@ -72,6 +72,11 @@ public class UnitEntity : MonoBehaviour
     public IEnumerable<Skill_SO> GetSkills()
     {
         return m_UnitSkill.GetSkills();
+    }
+
+    public void SeWalkAnimation(bool isWalk)
+    {
+        m_Animator.SetBool("Walk", isWalk);
     }
 
     #endregion

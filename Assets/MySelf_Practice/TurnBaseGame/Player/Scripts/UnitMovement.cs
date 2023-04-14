@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitMovement : MonoBehaviour, IGetUnitInfo
@@ -36,6 +35,7 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
             _rotatePart.forward = _movement.targetPos - m_Transform.position;
 
         _isUsed = true;
+        _unitEntity.SeWalkAnimation(true);
         StartCoroutine(MoveOverTime(_movement.targetPos));
     }
     
@@ -43,10 +43,11 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
     {
         while (transform.position != targetPos)
         {
-            m_Transform.position = Vector3.MoveTowards(transform.position, targetPos, 10f * Time.deltaTime);
+            m_Transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime);
             yield return null;
         }
 
+        _unitEntity.SeWalkAnimation(false);
         m_FactionManager.UnitMoved();
     }
 
@@ -106,16 +107,6 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
         return _movement.jumpCount;
     }
 
-    public IEnumerable<Vector3> GetAttackPoint()
-    {
-        return _unitEntity.GetAttackPoint(m_Transform.position,_rotatePart.forward, _movement.jumpCount);
-    }
-
-    public int GetAttackDamage()
-    {
-        return _unitEntity.GetAttackDamage();
-    }
-    
     public void SetMaterial(Material setMaterial)
     {
         _agentRenderer.material = setMaterial;

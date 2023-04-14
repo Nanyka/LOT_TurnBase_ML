@@ -17,7 +17,7 @@ public class EnvironmentController : MonoBehaviour
 
     [Header("Game Configurations")] 
     [SerializeField] private Collider _platformCollider;
-    [SerializeField] protected bool _isUseObstacle;
+    [SerializeField] protected bool _isObstacleAsTeam1;
     [SerializeField] private bool _isSpawnObstale;
     [SerializeField] protected int _currFaction;
     [SerializeField] protected int _maxStep;
@@ -46,7 +46,7 @@ public class EnvironmentController : MonoBehaviour
         else
             _currFaction = 0;
 
-        if (_isUseObstacle)
+        if (_isObstacleAsTeam1)
             _currFaction = 0;
     }
 
@@ -64,7 +64,7 @@ public class EnvironmentController : MonoBehaviour
         else
             _currFaction = 0;
 
-        if (_isUseObstacle)
+        if (_isObstacleAsTeam1)
             _currFaction = 0;
     }
 

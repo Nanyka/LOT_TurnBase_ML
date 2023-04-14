@@ -9,7 +9,7 @@ public class EnvironmentInGame : EnvironmentController
     [HideInInspector] public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingPath
     [HideInInspector] public UnityEvent<Vector3> OnHighlightUnit; // send to MovingPath; invoke at PlayerFactionManager
     
-    public virtual void ChangeFaction()
+    public override void ChangeFaction()
     {
         base.ChangeFaction();
         

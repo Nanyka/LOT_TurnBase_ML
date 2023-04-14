@@ -34,7 +34,7 @@ Transform:
   - {fileID: 6564466356340860426}
   - {fileID: 6795246437186880112}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1965326685923815715
 MonoBehaviour:
@@ -51,10 +51,6 @@ MonoBehaviour:
   _environmentController: {fileID: 0}
   _agentManager: {fileID: 9089914860800479016}
   m_SkillSOs: []
-  _jumperControllers:
-  - {fileID: 5122611903104724574}
-  - {fileID: 8776285576392217918}
-  - {fileID: 8980066351159603524}
   m_ActionCache: []
 --- !u!114 &9089914860800479016
 MonoBehaviour:
@@ -82,6 +78,7 @@ MonoBehaviour:
   _visualGroupReward: 0
   m_SkillManager: {fileID: 1965326685923815715}
   _factionMaterial: {fileID: 2100000, guid: ff6bdf93835694465845425e5995ebb3, type: 2}
+  m_JumperForGames: []
 --- !u!1001 &6374661083816376441
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -146,6 +143,10 @@ PrefabInstance:
       propertyPath: m_AgentManager
       value: 
       objectReference: {fileID: 9089914860800479016}
+    - target: {fileID: 4723316676739610103, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8309573429785562680, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
       propertyPath: m_Name
       value: NPCUnit (2)
@@ -235,6 +236,10 @@ PrefabInstance:
       propertyPath: m_AgentManager
       value: 
       objectReference: {fileID: 9089914860800479016}
+    - target: {fileID: 4723316676739610103, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8309573429785562680, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
       propertyPath: m_Name
       value: NPCUnit (1)
@@ -324,6 +329,10 @@ PrefabInstance:
       propertyPath: m_AgentManager
       value: 
       objectReference: {fileID: 9089914860800479016}
+    - target: {fileID: 4723316676739610103, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8309573429785562680, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
       propertyPath: m_Name
       value: NPCUnit (0)

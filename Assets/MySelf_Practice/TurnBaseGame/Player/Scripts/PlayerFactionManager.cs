@@ -133,6 +133,14 @@ public class PlayerFactionManager : MonoBehaviour
     private void EndGame(int winFaction)
     {
         Debug.Log($"End game from player faction");
+        UIManager.Instance.OnGameOver.Invoke(winFaction);
+        StartCoroutine(WaitToReset());
+    }
+
+    private IEnumerator WaitToReset()
+    {
+        yield return new WaitForSeconds(3f);
+        ResetGame();
     }
 
     private void ResetGame()

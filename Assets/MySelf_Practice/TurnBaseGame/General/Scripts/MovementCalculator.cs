@@ -38,32 +38,6 @@ public class MovementCalculator : MonoBehaviour
         }
 
         return (curPos, jumpCount, overEnemy);
-
-
-        // var newPos = curPos + DirectionToVector(direction);
-        // if (CheckInBoundary(newPos))
-        // {
-        //     if (CheckAvailableMove(newPos))
-        //     {
-        //         if (jumpCount == 0)
-        //             return (newPos, jumpCount, overEnemy);
-        //
-        //         return (curPos, jumpCount, overEnemy);
-        //     }
-        // }
-        // else
-        //     return (curPos, jumpCount, overEnemy);
-        //
-        // if (CheckAvailableMove(newPos + DirectionToVector(direction)))
-        // {
-        //     jumpCount++;
-        //
-        //     curPos = newPos + DirectionToVector(direction);
-        //
-        //     return MovingPath(curPos, direction, jumpCount, overEnemy);
-        // }
-        //
-        // return (curPos, jumpCount, overEnemy);
     }
 
     private Vector3 DirectionToVector(int direction)

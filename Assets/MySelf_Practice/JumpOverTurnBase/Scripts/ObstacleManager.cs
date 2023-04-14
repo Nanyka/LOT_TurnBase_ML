@@ -7,20 +7,24 @@ using Random = UnityEngine.Random;
 
 public class ObstacleManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _obstacle;
-    [SerializeField] private Collider _platformColider;
-    [SerializeField] private int _numberOfObstacles;
-    [SerializeField] private bool _isDecidePosition;
-    [SerializeField] private Vector3 _designatedPostion;
+    [SerializeField] protected GameObject _obstacle;
+    [SerializeField] protected Collider _platformColider;
+    [SerializeField] protected int _numberOfObstacles;
+    [SerializeField] protected bool _isDecidePosition;
+    [SerializeField] protected Vector3 _designatedPostion;
     [SerializeField] protected List<GameObject> _listTeam0 = new();
     [SerializeField] protected List<GameObject> _listTeam1 = new();
 
     private int _maxX;
     private int _maxZ;
 
-    public void SpawnObstacle()
+    public virtual void SpawnObstacle()
     {
         SetUpPlatform();
+
+        foreach (var obstacle in _listTeam1)
+            Destroy(obstacle);
+        _listTeam1.Clear();
 
         if (_isDecidePosition)
         {
@@ -40,19 +44,14 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
-    private void SetUpPlatform()
+    protected void SetUpPlatform()
     {
         var platformSize = _platformColider.bounds.size;
         _maxX = Mathf.RoundToInt((platformSize.x - 1) / 2) - 1;
         _maxZ = Mathf.RoundToInt((platformSize.z - 1) / 2) - 1;
-
-        foreach (var obstacle in _listTeam1)
-            Destroy(obstacle);
-
-        _listTeam1.Clear();
     }
 
-    private Vector3 GetAvailablePlot()
+    protected Vector3 GetAvailablePlot()
     {
         var xPos = Mathf.RoundToInt(Random.Range(-_maxX, _maxX));
         var zPos = Mathf.RoundToInt(Random.Range(-_maxZ, _maxZ));

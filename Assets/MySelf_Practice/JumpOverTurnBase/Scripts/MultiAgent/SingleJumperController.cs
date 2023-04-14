@@ -191,6 +191,11 @@ public class SingleJumperController : MonoBehaviour
     }
 
     #region GET & SET
+    
+    public MovementCalculator GetMovementCalculator()
+    {
+        return _environmentController.GetMovementCalculator();
+    }
 
     public Material GetDefaultMaterial()
     {
