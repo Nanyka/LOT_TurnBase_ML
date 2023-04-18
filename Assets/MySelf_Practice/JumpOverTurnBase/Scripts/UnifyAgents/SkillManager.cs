@@ -16,7 +16,7 @@ public class SkillManager : MonoBehaviour
 
     public List<DummyAction> m_ActionCache = new();
 
-    private void Start()
+    public void Init()
     {
         GatherSkillFromJumpers();
     }
@@ -36,7 +36,9 @@ public class SkillManager : MonoBehaviour
 
     public void AddActionToCache(DummyAction inputAction)
     {
-        DummyAction dummyAction = new DummyAction(inputAction); 
+        DummyAction dummyAction = new DummyAction(inputAction);
+        dummyAction.VoteAmount = 0;
+        dummyAction.Reward = 0;
         
         // Check if any tuple store the same action for this agent, if not, save a new tuple in cache
         var checkDuplicateTuple = false;
@@ -59,7 +61,7 @@ public class SkillManager : MonoBehaviour
 
     public void ActionBrainstorming()
     {
-        //Start brainstorming from this place
+        //--> START brainstorming from here
         
         // Sort by reward
         foreach (var action in m_ActionCache)
@@ -69,11 +71,12 @@ public class SkillManager : MonoBehaviour
             // Calculate reward for each agent
             if (action.JumpCount > 0)
             {
-                var attackPoints = AttackPoints(action.CurrentPos, action.Direction, action.JumpCount);
-                if (attackPoints != null)
-                    foreach (var attackPoint in attackPoints)
-                        if (_environmentController.CheckEnemy(attackPoint, _agentManager.GetFaction()))
-                            action.Reward++;
+                var attackPoints = AttackPoints(action.TargetPos, action.Direction, action.JumpCount);
+                // var attackRange = attackPoints as Vector3[] ?? attackPoints.ToArray();
+                // _agentManager.GetJumpers()[action.AgentIndex].ShowAttackRange(attackRange); // --> TESTING
+                foreach (var attackPoint in attackPoints)
+                    if (_environmentController.CheckEnemy(attackPoint, _agentManager.GetFaction()))
+                        action.Reward++;
             }
         }
         
@@ -84,16 +87,24 @@ public class SkillManager : MonoBehaviour
         
         // Get top tuple
         _agentManager.GetJumpers()[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
-
-        // Decide action for selected agent and reset current inference
+        // StartCoroutine(WaitBeforeAction(orderedAction)); // --TESTING--
     }
+
+    // just for testing purpose
+    private IEnumerator WaitBeforeAction(DummyAction action)
+    {
+        yield return new WaitUntil(() => Input.anyKey);
+        _agentManager.GetJumpers()[action.AgentIndex].ConductSelectedAction(action);
+    }
+
+    #region GET
 
     public void ResetSkillCache()
     {
         m_ActionCache.Clear();    
     }
-    
-    public IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep)
+
+    private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep)
     {
         if (m_SkillSOs.Count < jumpStep || m_SkillSOs[jumpStep - 1] == null)
             return null;
@@ -109,4 +120,6 @@ public class SkillManager : MonoBehaviour
     {
         return m_SkillSOs[skillCount];
     }
+
+    #endregion
 }

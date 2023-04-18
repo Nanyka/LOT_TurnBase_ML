@@ -50,7 +50,7 @@ public class EnvironmentController : MonoBehaviour
             _currFaction = 0;
     }
 
-    public void ChangeFaction(bool isResetInstance)
+    public virtual void ChangeFaction(bool isResetInstance)
     {
         _step++;
         if (_step >= _maxStep)

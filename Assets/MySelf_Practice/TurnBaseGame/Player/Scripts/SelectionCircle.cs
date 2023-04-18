@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class SelectionCircle : MonoBehaviour
 {
-    [SerializeField] private Projector m_Projector;
+    [SerializeField] private DecalProjector m_Projector;
     [SerializeField] private Collider m_Collider;
 
     private Transform m_Transform;

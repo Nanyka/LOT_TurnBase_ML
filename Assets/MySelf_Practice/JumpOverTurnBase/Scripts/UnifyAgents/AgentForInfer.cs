@@ -10,7 +10,7 @@ public class AgentForInfer : AgentManager
     [SerializeField] private Material _factionMaterial;
 
     private Material _defaultMaterial;
-    [SerializeField] private List<JumperForGame> m_JumperForGames;
+    private List<JumperForGame> m_JumperForGames;
     private List<JumperForGame> _dummyJumper;
     private int _skillCount;
 
@@ -36,6 +36,7 @@ public class AgentForInfer : AgentManager
             m_JumperForGames.Add((JumperForGame) jumperController);
 
         InsertTempIndex();
+        m_SkillManager.Init();
     }
 
     private void InsertTempIndex()
@@ -66,9 +67,10 @@ public class AgentForInfer : AgentManager
         foreach (var jumperController in m_JumperForGames)
             jumperController.ResetMoveState(_factionMaterial);
 
-        KickOffUnitActions(); // kick off the first round of inferring action
+        KickOffUnitActions(); 
     }
 
+    // Select available agents and kick off the first inference after without-brain inference
     public override void KickOffUnitActions()
     {
         // Just select jumpers who still not move this turn
@@ -81,21 +83,36 @@ public class AgentForInfer : AgentManager
         {
             _skillCount = 0;
             m_SkillManager.ResetSkillCache();
+            SelfInferenceBrainStorming(_dummyJumper);
             StartInferAgentsAction(_dummyJumper);
         }
         else
             EndTurn();
     }
 
+    // Do inference without brain, just ask for all direction and collect relevant rewards
+    private void SelfInferenceBrainStorming(IEnumerable<JumperForGame> jumperForGames)
+    {
+        var jumpers = jumperForGames as JumperForGame[] ?? jumperForGames.ToArray();
+        foreach (var jumper in jumpers)
+        {
+            for (int i = 0; i <= 4; i++)
+            {
+                DummyAction action = new DummyAction(jumper.RespondFromAction(i));
+                m_SkillManager.AddActionToCache(action);
+            }
+        }
+    }
+
     private void StartInferAgentsAction(IEnumerable<JumperForGame> jumperForGames)
     {
         if (_skillCount < m_SkillManager.GetSkillAmount() && m_SkillManager.GetSkillByIndex(_skillCount) != null)
         {
-            var forGames = jumperForGames as JumperForGame[] ?? jumperForGames.ToArray();
+            var jumpers = jumperForGames as JumperForGame[] ?? jumperForGames.ToArray();
             // reset counter before collect action
             _responseCounter = 0;
             // Ask for action based on skill count if still not over all skill
-            foreach (var jumper in forGames)
+            foreach (var jumper in jumpers)
             {
                 // Infer action & add to jumper cache as currentAction when other idle
                 jumper.SetBrain(m_SkillManager.GetSkillByIndex(_skillCount).GetModel());
@@ -129,25 +146,29 @@ public class AgentForInfer : AgentManager
 
     protected override void EndTurn()
     {
+        int attackAmount = 0;
         // Attack nearby enemy
         foreach (var agent in m_JumperForGames)
         {
             if (agent.GetJumpStep() == 0)
                 continue;
 
+            attackAmount++;
             agent.Attack();
         }
 
-        foreach (var jumper in m_JumperForGames)
-            jumper.SetMaterial(_defaultMaterial);
-
         // call for the end-turn event
-        StartCoroutine(WaitForChangeFaction());
+        StartCoroutine(WaitForChangeFaction(attackAmount*1f));
     }
 
-    private IEnumerator WaitForChangeFaction()
+    private IEnumerator WaitForChangeFaction(float seconds)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(seconds);
+        
+        // Set all npc to default color to show it disable state
+        foreach (var jumper in m_JumperForGames)
+            jumper.SetMaterial(_defaultMaterial);
+        
         m_Environment.ChangeFaction();
         m_Environment.OnChangeFaction.Invoke();
     }
@@ -169,6 +190,11 @@ public class AgentForInfer : AgentManager
     }
 
     public List<JumperForGame> GetJumpers()
+    {
+        return m_JumperForGames;
+    }
+
+    public IEnumerable<JumperForGame> GetJumpersForGame()
     {
         return m_JumperForGames;
     }

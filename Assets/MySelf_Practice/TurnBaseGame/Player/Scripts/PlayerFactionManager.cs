@@ -69,9 +69,14 @@ public class PlayerFactionManager : MonoBehaviour
         var getUnitAtPos = GetUnitByPos(unitPos);
         if (getUnitAtPos == null) return;
 
+        HighlightSelectedUnit(getUnitAtPos);
+    }
+
+    private void HighlightSelectedUnit(UnitMovement getUnitAtPos)
+    {
         _currentUnit = getUnitAtPos;
         if (_currentUnit.IsAvailable())
-            m_Environment.OnShowMovingPath.Invoke(unitPos);
+            m_Environment.OnShowMovingPath.Invoke(_currentUnit.GetCurrentPosition());
         else
             m_Environment.OnHighlightUnit.Invoke(_currentUnit.GetCurrentPosition());
 
@@ -84,10 +89,6 @@ public class PlayerFactionManager : MonoBehaviour
 
         // Move unit along dedicated direction
         _currentUnit.MoveDirection(direction);
-
-        // "Don't move" button
-
-        // End turn
     }
 
     public void UnitMoved()
@@ -96,6 +97,17 @@ public class PlayerFactionManager : MonoBehaviour
 
         if (_countMovedUnit == _unitMovements.Count)
             EndTurn();
+        else
+        {
+            foreach (var unit in _unitMovements)
+            {
+                if (unit.IsAvailable())
+                {
+                    HighlightSelectedUnit(unit);
+                    break;
+                }
+            }
+        }
     }
 
     private void SetCurrentUnitIdle()

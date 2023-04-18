@@ -33,6 +33,7 @@ public class Skill_SO : ScriptableObject
 
     public IEnumerable<Vector3> CalculateSkillRange(Vector3 currPos, Vector3 direction)
     {
+        direction = direction.normalized;
         CheckSkillRangeNull();
         
         return _skillRange.CalculateSkillRange(currPos, direction, _numberOfSteps);

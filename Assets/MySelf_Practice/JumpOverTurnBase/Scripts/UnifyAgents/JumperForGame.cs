@@ -21,6 +21,17 @@ public class JumperForGame : SingleJumperController, IGetUnitInfo
 
     #region INFER PHASE
 
+    /// <summary>
+    ///   <para>Send an action to agent, instead of infer from a brain, and ask for its reaction</para>
+    /// </summary>
+    public DummyAction RespondFromAction(int action)
+    {
+        InferMoving.Action = action;
+        InferMoving.CurrentPos = _mTransform.position;
+        GetPositionByDirection(InferMoving.Action);
+        return InferMoving;
+    }
+
     public override void AskForAction()
     {
         m_Agent?.RequestDecision();
@@ -36,54 +47,13 @@ public class JumperForGame : SingleJumperController, IGetUnitInfo
 
     private void GetPositionByDirection(int direction)
     {
-        var curPos = InferMoving.CurrentPos;
-        // var newPos = curPos + DirectionToVector(direction);
         var movement = _environmentController.GetMovementCalculator()
             .MovingPath(_mTransform.position, direction, 0, 0);
         InferMoving.TargetPos = movement.returnPos;
         InferMoving.JumpCount = movement.jumpCount;
-        // MovingPath(curPos, newPos, direction, 0);
 
         if (InferMoving.TargetPos != _mTransform.position)
             InferMoving.Direction = InferMoving.TargetPos - _mTransform.position;
-    }
-
-    private void MovingPath(Vector3 curPos, Vector3 newPos, int direction, int jumpCount)
-    {
-        if (CheckAvailableMove(newPos))
-        {
-            InferMoving.TargetPos = jumpCount == 0 ? newPos : curPos;
-            InferMoving.JumpCount = jumpCount;
-            return;
-        }
-        
-        if (CheckInBoundary(newPos))
-        {
-            if (CheckAvailableMove(newPos))
-            {
-                InferMoving.TargetPos = jumpCount == 0 ? newPos : curPos;
-                InferMoving.JumpCount = jumpCount;
-                return;
-            }
-        }
-        else
-        {
-            InferMoving.TargetPos = curPos;
-            InferMoving.JumpCount = jumpCount;
-            return;
-        }
-
-        if (CheckAvailableMove(newPos + DirectionToVector(direction)))
-        {
-            jumpCount++;
-            curPos = newPos + DirectionToVector(direction);
-            newPos = curPos + DirectionToVector(direction);
-
-            MovingPath(curPos, newPos, direction, jumpCount);
-        }
-
-        InferMoving.TargetPos = curPos;
-        InferMoving.JumpCount = jumpCount;
     }
 
     public override int GetJumpStep()
@@ -132,6 +102,11 @@ public class JumperForGame : SingleJumperController, IGetUnitInfo
     public void Attack()
     {
         _unitEntity.Attack(this);
+    }
+
+    public void ShowAttackRange(IEnumerable<Vector3> attackRange)
+    {
+        _unitEntity.ShowAttackRange(attackRange);
     }
 
     #endregion
