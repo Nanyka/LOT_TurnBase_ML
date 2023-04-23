@@ -9,6 +9,18 @@ public class EnvironmentInGame : EnvironmentController
     [HideInInspector] public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingPath
     [HideInInspector] public UnityEvent<Vector3> OnHighlightUnit; // send to MovingPath; invoke at PlayerFactionManager
     
+    protected override void ResetEnvironment(int winFaction)
+    {
+        UIManager.Instance.OnGameOver.Invoke(winFaction);
+        StartCoroutine(WaitToReset());
+    }
+
+    private IEnumerator WaitToReset()
+    {
+        yield return new WaitForSeconds(3f);
+        ResetGame();
+    }
+
     public override void ChangeFaction(bool isResetInstance)
     {
         _step++;

@@ -28,7 +28,7 @@ public class EnvironmentController : MonoBehaviour
         OnOneTeamWin.AddListener(ResetEnvironment);
     }
 
-    private void ResetEnvironment(int winFaction)
+    protected virtual void ResetEnvironment(int winFaction)
     {
         _step = 0;
         if (_isSpawnObstale)
@@ -68,7 +68,7 @@ public class EnvironmentController : MonoBehaviour
             _currFaction = 0;
     }
 
-    private void ResetGame()
+    protected void ResetGame()
     {
         OnReset.Invoke();
         ResetEnvironment(0);
