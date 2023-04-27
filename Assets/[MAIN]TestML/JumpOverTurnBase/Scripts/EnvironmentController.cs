@@ -38,14 +38,30 @@ public class EnvironmentController : MonoBehaviour
     public virtual void ChangeFaction()
     {
         _step++;
+<<<<<<< HEAD
+        if (_step == _maxStep)
+        {
+            _step = 0;
+            OnReset.Invoke();
+            ResetEnvironment(0);
+        }
+=======
         if (_step >= _maxStep)
             ResetGame();
+>>>>>>> testSkillManager
 
         if (_currFaction == 0)
             _currFaction = 1;
         else
             _currFaction = 0;
 
+<<<<<<< HEAD
+        if (_isUseObstacle)
+        {
+            _currFaction = 0;
+            OnChangeFaction.Invoke();
+        }
+=======
         if (_isObstacleAsTeam1)
             _currFaction = 0;
     }
@@ -72,6 +88,7 @@ public class EnvironmentController : MonoBehaviour
     {
         OnReset.Invoke();
         ResetEnvironment(0);
+>>>>>>> testSkillManager
     }
 
     public void KickOffEnvironment()

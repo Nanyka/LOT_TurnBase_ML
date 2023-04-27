@@ -9,9 +9,14 @@ public class AgentManager : MonoBehaviour
     [Header("General control part")] [SerializeField]
     protected EnvironmentController m_Environment;
 
+<<<<<<< HEAD
+    [SerializeField] private int m_Faction;
+    [SerializeField] private List<SingleJumperController> m_JumpOverControllers;
+=======
     [SerializeField] protected int m_Faction;
     [SerializeField] protected bool _isResetInstance;
     [SerializeField] protected List<SingleJumperController> m_JumpOverControllers;
+>>>>>>> testSkillManager
 
     [Header("Attack part")] [SerializeField]
     protected UnitSkill m_UnitSkill;
@@ -89,6 +94,7 @@ public class AgentManager : MonoBehaviour
 
     public virtual void KickOffUnitActions()
     {
+        m_JumpOverControllers[_responseCounter].UseThisTurn = false;
         m_JumpOverControllers[_responseCounter].AskForAction();
 
         // Movement cost an amount of point
@@ -96,14 +102,33 @@ public class AgentManager : MonoBehaviour
         _visualGroupReward += -1f * _movementCost;
     }
 
+<<<<<<< HEAD
+    public void CollectUnitResponse(int responseReference)
+=======
     public virtual void CollectUnitResponse()
+>>>>>>> testSkillManager
     {
+        if (_movingOrder == null || _movingOrder.Count <= _responseCounter)
+            _movingOrder.Add(new(_responseCounter, responseReference));
+        else
+            _movingOrder[_responseCounter] = new(_responseCounter, responseReference);
+
         _responseCounter++;
 
         if (_responseCounter < m_JumpOverControllers.Count)
             KickOffUnitActions();
         else
-            EndTurn();
+            ExecuteAllAgent();
+    }
+
+    private void ExecuteAllAgent()
+    {
+        // sort and have unit move as an order
+        _movingOrder.Sort((x, y) => x.prefer.CompareTo(y.prefer));
+        foreach (var moving in _movingOrder)
+            m_JumpOverControllers[moving.unitIndex].MoveDirection();
+
+        EndTurn();
     }
 
     #endregion
@@ -111,7 +136,6 @@ public class AgentManager : MonoBehaviour
     protected virtual void EndTurn()
     {
         // Attack nearby enemy
-        int successAttacks = 0;
         foreach (var agent in m_JumpOverControllers)
         {
             if (agent.GetJumpStep() == 0)
@@ -121,12 +145,16 @@ public class AgentManager : MonoBehaviour
             if (attackPoints == null)
                 continue;
 
+            int successAttacks = 0;
             foreach (var attackPoint in attackPoints)
+<<<<<<< HEAD
+                if (_environmentController.CheckEnemy(attackPoint, m_Faction))
+=======
             {
                 // Debug.Log($"Attack at {attackPoint}");
                 if (m_Environment.CheckEnemy(attackPoint, m_Faction))
+>>>>>>> testSkillManager
                     successAttacks++;
-            }
 
             if (successAttacks > 0)
             {
@@ -135,15 +163,24 @@ public class AgentManager : MonoBehaviour
                                             m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
                 _visualGroupReward += _unitReward * successAttacks;
 
+<<<<<<< HEAD
+                _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+=======
                 m_Environment.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
                 // Debug.Log($"Group reward {_visualGroupReward}");
                 break;
+>>>>>>> testSkillManager
             }
         }
-        
+
         // call for the end-turn event
+<<<<<<< HEAD
+        _environmentController.ChangeFaction();
+        _environmentController.OnChangeFaction.Invoke();
+=======
         m_Environment.ChangeFaction(_isResetInstance && successAttacks>0);
         m_Environment.OnChangeFaction.Invoke();
+>>>>>>> testSkillManager
     }
 
     #region GET & SET

@@ -49,16 +49,21 @@ public class GroupActuator : IActuator
     public void OnActionReceived(ActionBuffers actionBuffers)
     {
         var movement = actionBuffers.DiscreteActions[1];
+        var direction = 0;
 
         switch (movement)
         {
             case 0:
+                direction = 0;
                 break;
             case 1:
+                direction = 1;
                 break;
             case 2:
+                direction = 2;
                 break;
             case 3:
+                direction = 3;
                 break;
         }
 
