@@ -65,6 +65,9 @@ public class Skill_SO : ScriptableObject
             case RangeType.FrontArea3D:
                 _skillRange = new FrontArea3D();
                 break;
+            case RangeType.SquareArea:
+                _skillRange = new SquareArea();
+                break;
         }
     }
 

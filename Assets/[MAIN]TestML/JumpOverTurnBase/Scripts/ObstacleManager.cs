@@ -7,20 +7,14 @@ using Random = UnityEngine.Random;
 
 public class ObstacleManager : MonoBehaviour
 {
-<<<<<<< HEAD
-    [SerializeField] private GameObject _obstacle;
-    [SerializeField] private Collider _platformColider;
-    [SerializeField] private int _numberOfObstacles;
-=======
     [SerializeField] protected GameObject _obstacle;
     [SerializeField] protected Collider _platformColider;
     [SerializeField] protected int _numberOfObstacles;
     [SerializeField] protected bool _isDecidePosition;
     [SerializeField] protected Vector3 _designatedPostion;
->>>>>>> testSkillManager
     [SerializeField] protected List<GameObject> _listTeam0 = new();
     [SerializeField] protected List<GameObject> _listTeam1 = new();
-    
+
     private int _maxX;
     private int _maxZ;
 
@@ -28,19 +22,25 @@ public class ObstacleManager : MonoBehaviour
     {
         SetUpPlatform();
 
-<<<<<<< HEAD
-        for (int i = 0; i < _numberOfObstacles; i++)
-=======
         foreach (var obstacle in _listTeam1)
             Destroy(obstacle);
         _listTeam1.Clear();
 
         if (_isDecidePosition)
->>>>>>> testSkillManager
         {
-            var spawnPos = GetAvailablePlot();
+            var spawnPos = _designatedPostion + _platformColider.transform.position;
+            spawnPos = new Vector3(spawnPos.x, 0f, spawnPos.z);
             var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
             _listTeam1.Add(obstacle);
+        }
+        else
+        {
+            for (int i = 0; i < _numberOfObstacles; i++)
+            {
+                var spawnPos = GetAvailablePlot();
+                var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
+                _listTeam1.Add(obstacle);
+            }
         }
     }
 
@@ -87,7 +87,7 @@ public class ObstacleManager : MonoBehaviour
     {
         return _listTeam1.Count;
     }
-    
+
     public virtual bool CheckTeam(Vector3 position, int faction)
     {
         return true;

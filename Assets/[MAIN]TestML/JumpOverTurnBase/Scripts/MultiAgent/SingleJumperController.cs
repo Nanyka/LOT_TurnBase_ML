@@ -8,41 +8,23 @@ using UnityEngine;
 
 public class SingleJumperController : MonoBehaviour
 {
-<<<<<<< HEAD
-    public bool UseThisTurn;
-
-    [SerializeField] private EnvironmentController _environmentController;
-    [SerializeField] private AgentManager m_AgentManager;
-=======
     [SerializeField] protected EnvironmentController _environmentController;
     [SerializeField] protected AgentManager m_AgentManager;
->>>>>>> testSkillManager
     [SerializeField] private Collider _platformColider;
     [SerializeField] protected Transform _rotatePart;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
-    [SerializeField] private float _showLocalReward;
 
     protected Agent m_Agent;
     private int _platformMaxCol;
     private int _platformMaxRow;
     private Vector3 _platformPos;
-<<<<<<< HEAD
-    private Transform _mTransfrom;
-    private Transform _smallGoalTransform;
-    private Transform _largeGoalTransform;
-=======
     protected Transform _mTransform;
->>>>>>> testSkillManager
     private (Vector3 targetPos, int jumpStep) _mMoving;
     private int _steps;
     private int _currentDirection;
     private Vector3 _defaultPos;
-<<<<<<< HEAD
-    private bool _isMoved;
-=======
     private bool _isUseThisTurn;
->>>>>>> testSkillManager
 
     public void Awake()
     {
@@ -60,8 +42,8 @@ public class SingleJumperController : MonoBehaviour
     public virtual void OnEnable()
     {
         m_Agent = GetComponent<Agent>();
-        _mTransfrom = transform;
-        _defaultPos = _mTransfrom.position;
+        _mTransform = transform;
+        _defaultPos = _mTransform.position;
         _platformPos = _platformColider.transform.position;
         _platformPos = new Vector3(_platformPos.x, 0f, _platformPos.z);
         _mMoving.targetPos = _defaultPos;
@@ -99,19 +81,11 @@ public class SingleJumperController : MonoBehaviour
     }
 
     // Receive action decision from ActuatorComponent
-<<<<<<< HEAD
-    public void ResponseAction(ActionBuffers responseAction)
-    {
-        _currentDirection = responseAction.DiscreteActions[0];
-        m_AgentManager.CollectUnitResponse(responseAction.DiscreteActions[1]); // finish this action and turn to the next agent
-        // MoveDirection();
-=======
     public virtual void ResponseAction(int direction)
     {
         _currentDirection = direction;
         MoveDirection();
         m_AgentManager.CollectUnitResponse(); // finish this action and turn to the next agent
->>>>>>> testSkillManager
     }
 
     /// <summary>
@@ -123,12 +97,10 @@ public class SingleJumperController : MonoBehaviour
         _mMoving = GetPositionByDirection(_currentDirection);
 
         // Change agent direction before the agent jump to the new position
-        if (_mMoving.targetPos != _mTransfrom.position)
-            _rotatePart.transform.forward = _mMoving.targetPos - _mTransfrom.position;
-        else
-            m_Agent.AddReward(-0.01f); // punish agent when it stand in place beside the edges
+        if (_mMoving.targetPos != _mTransform.position)
+            _rotatePart.forward = _mMoving.targetPos - _mTransform.position;
 
-        _mTransfrom.position = _mMoving.targetPos;
+        _mTransform.position = _mMoving.targetPos;
     }
 
     #endregion
@@ -212,12 +184,7 @@ public class SingleJumperController : MonoBehaviour
 
     public virtual void ResetAgent()
     {
-<<<<<<< HEAD
-        // m_Agent.EndEpisode(); // just use this one when training one one agent
-        _mTransfrom.position = _defaultPos;
-=======
         _mTransform.position = _defaultPos;
->>>>>>> testSkillManager
         _mMoving.targetPos = _defaultPos;
         _agentRenderer.material = _agentColor[0];
         _isUseThisTurn = false;
@@ -242,7 +209,7 @@ public class SingleJumperController : MonoBehaviour
 
     public Vector3 GetPosition()
     {
-        return _mTransfrom.position;
+        return _mTransform.position;
     }
 
     public virtual Vector3 GetDirection()
@@ -260,12 +227,6 @@ public class SingleJumperController : MonoBehaviour
         _agentRenderer.material = _agentColor[Mathf.Clamp(index, 0, _agentColor.Count - 1)];
     }
 
-<<<<<<< HEAD
-    private void UpdateLocalReward()
-    {
-        _showLocalReward = m_Agent.GetCumulativeReward();
-    }
-=======
     public void SetMaterial(Material setMaterial)
     {
         _agentRenderer.material = setMaterial;
@@ -293,5 +254,4 @@ public class SingleJumperController : MonoBehaviour
     }
 
     #endregion
->>>>>>> testSkillManager
 }

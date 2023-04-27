@@ -54,11 +54,6 @@ public class MultiAgentObsController : ObstacleManager
 
     public override bool CheckTeam(Vector3 position, int faction)
     {
-<<<<<<< HEAD
-        if (faction == 0)
-            return _listTeam0.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
-        return _listTeam1.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
-=======
         var returnValue = false;
         var listByFaction = faction == 0 ? _listTeam0 : _listTeam1;
         foreach (var item in listByFaction)
@@ -89,6 +84,5 @@ public class MultiAgentObsController : ObstacleManager
         }
 
         return returnValue;
->>>>>>> testSkillManager
     }
 }
