@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Barracuda;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,12 +10,15 @@ public class Skill_SO : ScriptableObject
 {
     //Manage attribute of unit's skills
     [Header("Skill variable")] 
-    [SerializeField] private int _powerCost;
+    [SerializeField] private string _animTrigger;
     [SerializeField] private float _magnitude;
     
     [Header("Skill range")]
     [SerializeField] private RangeType _rangeType;
     [SerializeField] private int _numberOfSteps;
+
+    [Header("ML property")] [SerializeField]
+    private NNModel MLModel;
 
     private SkillRange _skillRange;
 
@@ -29,6 +33,7 @@ public class Skill_SO : ScriptableObject
 
     public IEnumerable<Vector3> CalculateSkillRange(Vector3 currPos, Vector3 direction)
     {
+        direction = direction.normalized;
         CheckSkillRangeNull();
         
         return _skillRange.CalculateSkillRange(currPos, direction, _numberOfSteps);
@@ -68,5 +73,15 @@ public class Skill_SO : ScriptableObject
     public float GetMagnitude()
     {
         return _magnitude;
+    }
+
+    public NNModel GetModel()
+    {
+        return MLModel;
+    }
+
+    public string GetAnimation()
+    {
+        return _animTrigger;
     }
 }

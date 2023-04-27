@@ -9,67 +9,111 @@ public class EnvironmentController : MonoBehaviour
     [HideInInspector] public UnityEvent OnChangeFaction; // invoke at JumpOverActuation;
     [HideInInspector] public UnityEvent OnReset; // send to AgentManager
     [HideInInspector] public UnityEvent<int> OnOneTeamWin; // invoke at AgentManager; sent to all AgentManager 
-    [HideInInspector]
-    public UnityEvent<int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
+    [HideInInspector] public UnityEvent<int> OnPunishOppositeTeam; // invoke at SingleJumperController; send to AgentManager
 
+    [Header("Game Managers")]
     [SerializeField] private ObstacleManager _obstacleManager;
-    [SerializeField] private bool _isUseObstacle;
+    [SerializeField] private MovementCalculator _movementCalculator;
+
+    [Header("Game Configurations")] 
+    [SerializeField] private Collider _platformCollider;
+    [SerializeField] protected bool _isObstacleAsTeam1;
     [SerializeField] private bool _isSpawnObstale;
-    [SerializeField] private int _currFaction;
-    [SerializeField] private int _maxStep;
+    [SerializeField] protected int _currFaction;
+    [SerializeField] protected int _maxStep;
+    [SerializeField] protected int _step;
 
-    [SerializeField] private int _step;
-
-    private void Start()
+    protected virtual void Start()
     {
         OnOneTeamWin.AddListener(ResetEnvironment);
     }
 
-    private void ResetEnvironment(int winFaction)
+    protected virtual void ResetEnvironment(int winFaction)
     {
         _step = 0;
         if (_isSpawnObstale)
             _obstacleManager.SpawnObstacle();
     }
 
-    public void ChangeFaction()
+    public virtual void ChangeFaction()
     {
         _step++;
+<<<<<<< HEAD
         if (_step == _maxStep)
         {
             _step = 0;
             OnReset.Invoke();
             ResetEnvironment(0);
         }
+=======
+        if (_step >= _maxStep)
+            ResetGame();
+>>>>>>> testSkillManager
 
         if (_currFaction == 0)
             _currFaction = 1;
         else
             _currFaction = 0;
 
+<<<<<<< HEAD
         if (_isUseObstacle)
         {
             _currFaction = 0;
             OnChangeFaction.Invoke();
         }
+=======
+        if (_isObstacleAsTeam1)
+            _currFaction = 0;
     }
 
-    public int GetCurrFaction()
+    public virtual void ChangeFaction(bool isResetInstance)
     {
-        return _currFaction;
+        _step++;
+        if (_step >= _maxStep)
+            ResetGame();
+
+        if (isResetInstance)
+            ResetGame();
+
+        if (_currFaction == 0)
+            _currFaction = 1;
+        else
+            _currFaction = 0;
+
+        if (_isObstacleAsTeam1)
+            _currFaction = 0;
+    }
+
+    protected void ResetGame()
+    {
+        OnReset.Invoke();
+        ResetEnvironment(0);
+>>>>>>> testSkillManager
     }
 
     public void KickOffEnvironment()
     {
         if (_isSpawnObstale)
             _obstacleManager.SpawnObstacle();
-        
+
         OnChangeFaction.Invoke();
     }
+    
+    #region MOVEMENT CALCULATOR
 
-    public virtual bool FreeToMove(Vector3 checkPos)
+    public MovementCalculator GetMovementCalculator()
     {
-        return !_obstacleManager.CheckObstaclePlot(checkPos, false);
+        return _movementCalculator;
+    }
+
+    #endregion
+    
+    
+    #region OBSTACLES
+
+    public bool FreeToMove(Vector3 checkPos)
+    {
+        return !_obstacleManager.CheckObstaclePlot(checkPos);
     }
 
     public void DestroyObstacle(Vector3 position)
@@ -81,7 +125,7 @@ public class EnvironmentController : MonoBehaviour
     {
         return _obstacleManager.CountObstacle() == 0;
     }
-
+    
     public bool CheckObjectInTeam(Vector3 pos, int faction)
     {
         return _obstacleManager.CheckTeam(pos, faction);
@@ -91,4 +135,33 @@ public class EnvironmentController : MonoBehaviour
     {
         return _obstacleManager.CheckEnemy(pos, myFaction);
     }
+
+    public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
+    {
+        return _obstacleManager.GetEnemyByPosition(position, fromFaction);
+    }
+
+    public void RemoveObject(GameObject targetObject, int faction)
+    {
+        _obstacleManager.RemoveObject(targetObject,faction);
+        var checkWin = _obstacleManager.CheckWinCondition();
+        if (checkWin >=0)
+            OnOneTeamWin.Invoke(checkWin);
+    }
+
+    #endregion
+
+    #region GET
+
+    public int GetCurrFaction()
+    {
+        return _currFaction;
+    }
+
+    public Collider GetPlatformCollider()
+    {
+        return _platformCollider;
+    }
+    
+    #endregion
 }

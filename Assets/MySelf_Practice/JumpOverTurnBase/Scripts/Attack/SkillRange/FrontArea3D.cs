@@ -8,7 +8,7 @@ public class FrontArea3D : SkillRange
 
     public Vector3 InvokeAt(Vector3 currentPos, Vector3 direction)
     {
-        return currentPos + direction;
+        return currentPos;
     }
 
     public IEnumerable<Vector3> CalculateSkillRange(Vector3 currentPos, Vector3 direction, int step)

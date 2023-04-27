@@ -1,33 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Barracuda;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Policies;
 using UnityEngine;
 
 public class SingleJumperController : MonoBehaviour
 {
+<<<<<<< HEAD
     public bool UseThisTurn;
 
     [SerializeField] private EnvironmentController _environmentController;
     [SerializeField] private AgentManager m_AgentManager;
+=======
+    [SerializeField] protected EnvironmentController _environmentController;
+    [SerializeField] protected AgentManager m_AgentManager;
+>>>>>>> testSkillManager
     [SerializeField] private Collider _platformColider;
-    [SerializeField] private Transform _rotatePart;
+    [SerializeField] protected Transform _rotatePart;
     [SerializeField] private MeshRenderer _agentRenderer;
     [SerializeField] private List<Material> _agentColor;
     [SerializeField] private float _showLocalReward;
 
-    private Agent m_Agent;
+    protected Agent m_Agent;
     private int _platformMaxCol;
     private int _platformMaxRow;
     private Vector3 _platformPos;
+<<<<<<< HEAD
     private Transform _mTransfrom;
     private Transform _smallGoalTransform;
     private Transform _largeGoalTransform;
+=======
+    protected Transform _mTransform;
+>>>>>>> testSkillManager
     private (Vector3 targetPos, int jumpStep) _mMoving;
     private int _steps;
     private int _currentDirection;
     private Vector3 _defaultPos;
+<<<<<<< HEAD
     private bool _isMoved;
+=======
+    private bool _isUseThisTurn;
+>>>>>>> testSkillManager
 
     public void Awake()
     {
@@ -42,7 +57,7 @@ public class SingleJumperController : MonoBehaviour
 #endif
     }
 
-    public void OnEnable()
+    public virtual void OnEnable()
     {
         m_Agent = GetComponent<Agent>();
         _mTransfrom = transform;
@@ -55,7 +70,7 @@ public class SingleJumperController : MonoBehaviour
         SetUpPlatform();
     }
 
-    // REFACTORING: Access this information from AgentManager
+    // REFACTORING: Access this information from EnvironmentManager
     private void SetUpPlatform()
     {
         var platformSize = _platformColider.bounds.size;
@@ -66,7 +81,7 @@ public class SingleJumperController : MonoBehaviour
     #region Connect with BRAIN
 
     // Move the agent periodically
-    public void AskForAction()
+    public virtual void AskForAction()
     {
         if (m_Agent == null)
             return;
@@ -84,18 +99,26 @@ public class SingleJumperController : MonoBehaviour
     }
 
     // Receive action decision from ActuatorComponent
+<<<<<<< HEAD
     public void ResponseAction(ActionBuffers responseAction)
     {
         _currentDirection = responseAction.DiscreteActions[0];
         m_AgentManager.CollectUnitResponse(responseAction.DiscreteActions[1]); // finish this action and turn to the next agent
         // MoveDirection();
+=======
+    public virtual void ResponseAction(int direction)
+    {
+        _currentDirection = direction;
+        MoveDirection();
+        m_AgentManager.CollectUnitResponse(); // finish this action and turn to the next agent
+>>>>>>> testSkillManager
     }
 
     /// <summary>
     /// Controls the movement of the GameObject based on the actions received from agent manager.
     /// </summary>
     /// <param name="direction"></param>
-    public void MoveDirection()
+    public virtual void MoveDirection()
     {
         _mMoving = GetPositionByDirection(_currentDirection);
 
@@ -122,11 +145,12 @@ public class SingleJumperController : MonoBehaviour
 
     private (Vector3, int) MovingPath(Vector3 curPos, Vector3 newPos, int direction, int jumpCount)
     {
+        if (!CheckInBoundary(newPos)) return (curPos, jumpCount);
+        
         if (CheckAvailableMove(newPos))
         {
             if (jumpCount == 0)
                 return (newPos, jumpCount);
-
 
             return (curPos, jumpCount);
         }
@@ -145,9 +169,10 @@ public class SingleJumperController : MonoBehaviour
         }
 
         return (curPos, jumpCount);
+
     }
 
-    private Vector3 DirectionToVector(int direction)
+    protected Vector3 DirectionToVector(int direction)
     {
         var checkVector = Vector3.zero;
 
@@ -172,22 +197,42 @@ public class SingleJumperController : MonoBehaviour
         return checkVector;
     }
 
-    private bool CheckAvailableMove(Vector3 checkPos)
+    protected bool CheckAvailableMove(Vector3 checkPos)
+    {
+        return _environmentController.FreeToMove(checkPos) && CheckInBoundary(checkPos);
+    }
+
+    protected bool CheckInBoundary(Vector3 checkPos)
     {
         return Mathf.Abs(checkPos.x - _platformPos.x) <= _platformMaxCol &&
-               Mathf.Abs(checkPos.z - _platformPos.z) <= _platformMaxRow &&
-               _environmentController.FreeToMove(checkPos);
+               Mathf.Abs(checkPos.z - _platformPos.z) <= _platformMaxRow;
     }
 
     #endregion
 
-    public void ResetAgent()
+    public virtual void ResetAgent()
     {
+<<<<<<< HEAD
         // m_Agent.EndEpisode(); // just use this one when training one one agent
         _mTransfrom.position = _defaultPos;
+=======
+        _mTransform.position = _defaultPos;
+>>>>>>> testSkillManager
         _mMoving.targetPos = _defaultPos;
-        // _mMoving.targetPos = _defaultPos + _platformPos;
         _agentRenderer.material = _agentColor[0];
+        _isUseThisTurn = false;
+    }
+
+    #region GET & SET
+    
+    public MovementCalculator GetMovementCalculator()
+    {
+        return _environmentController.GetMovementCalculator();
+    }
+
+    public Material GetDefaultMaterial()
+    {
+        return _agentRenderer.material;
     }
 
     public Agent GetAgent()
@@ -200,12 +245,12 @@ public class SingleJumperController : MonoBehaviour
         return _mTransfrom.position;
     }
 
-    public Vector3 GetDirection()
+    public virtual Vector3 GetDirection()
     {
         return _rotatePart.transform.forward;
     }
 
-    public int GetJumpStep()
+    public virtual int GetJumpStep()
     {
         return _mMoving.jumpStep;
     }
@@ -215,8 +260,38 @@ public class SingleJumperController : MonoBehaviour
         _agentRenderer.material = _agentColor[Mathf.Clamp(index, 0, _agentColor.Count - 1)];
     }
 
+<<<<<<< HEAD
     private void UpdateLocalReward()
     {
         _showLocalReward = m_Agent.GetCumulativeReward();
     }
+=======
+    public void SetMaterial(Material setMaterial)
+    {
+        _agentRenderer.material = setMaterial;
+    }
+
+    public bool CheckUsedThisTurn()
+    {
+        return _isUseThisTurn;
+    }
+
+    protected void MarkAsUsedThisTurn()
+    {
+        _isUseThisTurn = true;
+    }
+
+    public void ResetMoveState()
+    {
+        _isUseThisTurn = false;
+    }
+
+    public void ResetMoveState(Material factionMaterial)
+    {
+        _isUseThisTurn = false;
+        _agentRenderer.material = factionMaterial;
+    }
+
+    #endregion
+>>>>>>> testSkillManager
 }

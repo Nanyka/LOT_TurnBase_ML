@@ -7,32 +7,38 @@ using UnityEngine;
 public class AgentManager : MonoBehaviour
 {
     [Header("General control part")] [SerializeField]
-    private EnvironmentController _environmentController;
+    protected EnvironmentController m_Environment;
 
+<<<<<<< HEAD
     [SerializeField] private int m_Faction;
     [SerializeField] private List<SingleJumperController> m_JumpOverControllers;
+=======
+    [SerializeField] protected int m_Faction;
+    [SerializeField] protected bool _isResetInstance;
+    [SerializeField] protected List<SingleJumperController> m_JumpOverControllers;
+>>>>>>> testSkillManager
 
     [Header("Attack part")] [SerializeField]
-    private UnitSkill m_UnitSkill;
+    protected UnitSkill m_UnitSkill;
 
     [Header("Reward part")] [SerializeField]
-    private float _unitReward;
+    protected float _unitReward;
 
     [SerializeField] private float _punishAmount;
-    [SerializeField] private float _movementCost = 0.01f;
-    [SerializeField] private float _visualGroupReward;
+    [SerializeField] protected float _movementCost = 0.01f;
+    [SerializeField] protected float _visualGroupReward;
 
     private List<(int unitIndex, int prefer)> _movingOrder = new();
-    private SimpleMultiAgentGroup m_AgentGroup;
-    private int _responseCounter;
+    protected SimpleMultiAgentGroup m_AgentGroup;
+    protected int _responseCounter;
     private bool _isMoved;
 
-    private void Start()
+    protected virtual void Start()
     {
-        _environmentController.OnChangeFaction.AddListener(ToMyTurn);
-        _environmentController.OnReset.AddListener(ResetAgents);
-        _environmentController.OnPunishOppositeTeam.AddListener(GetPunish);
-        _environmentController.OnOneTeamWin.AddListener(FinishRound);
+        m_Environment.OnChangeFaction.AddListener(ToMyTurn);
+        m_Environment.OnReset.AddListener(ResetAgents);
+        m_Environment.OnPunishOppositeTeam.AddListener(GetPunish);
+        m_Environment.OnOneTeamWin.AddListener(FinishRound);
 
         m_AgentGroup = new SimpleMultiAgentGroup();
         foreach (var singleJumperController in m_JumpOverControllers)
@@ -43,7 +49,7 @@ public class AgentManager : MonoBehaviour
         MultiJumperKickOff();
     }
 
-    private void ResetAgents()
+    protected virtual void ResetAgents()
     {
         foreach (var agent in m_JumpOverControllers)
             agent.ResetAgent();
@@ -53,7 +59,7 @@ public class AgentManager : MonoBehaviour
     }
 
     // Get punish whenever an agent jump over enemies
-    private void GetPunish(int faction)
+    protected void GetPunish(int faction)
     {
         if (faction == m_Faction)
             return;
@@ -63,18 +69,22 @@ public class AgentManager : MonoBehaviour
     }
 
     // KICK-OFF this MLAgents environment
-    private void MultiJumperKickOff()
+    protected void MultiJumperKickOff()
     {
         if (m_Faction == 0)
-            _environmentController.KickOffEnvironment();
+            m_Environment.KickOffEnvironment();
     }
 
     #region Ask for decision from agents
 
-    private void ToMyTurn()
+    protected virtual void ToMyTurn()
     {
-        if (_environmentController.GetCurrFaction() != m_Faction)
+        if (m_Environment.GetCurrFaction() != m_Faction)
             return;
+        
+        // reset all agent's moving state
+        foreach (var jumperController in m_JumpOverControllers)
+            jumperController.ResetMoveState();
 
         // reset counter before an iteration
         _responseCounter = 0;
@@ -82,7 +92,7 @@ public class AgentManager : MonoBehaviour
         KickOffUnitActions(); // kick off unit action recursion
     }
 
-    private void KickOffUnitActions()
+    public virtual void KickOffUnitActions()
     {
         m_JumpOverControllers[_responseCounter].UseThisTurn = false;
         m_JumpOverControllers[_responseCounter].AskForAction();
@@ -92,7 +102,11 @@ public class AgentManager : MonoBehaviour
         _visualGroupReward += -1f * _movementCost;
     }
 
+<<<<<<< HEAD
     public void CollectUnitResponse(int responseReference)
+=======
+    public virtual void CollectUnitResponse()
+>>>>>>> testSkillManager
     {
         if (_movingOrder == null || _movingOrder.Count <= _responseCounter)
             _movingOrder.Add(new(_responseCounter, responseReference));
@@ -119,7 +133,7 @@ public class AgentManager : MonoBehaviour
 
     #endregion
 
-    private void EndTurn()
+    protected virtual void EndTurn()
     {
         // Attack nearby enemy
         foreach (var agent in m_JumpOverControllers)
@@ -133,7 +147,13 @@ public class AgentManager : MonoBehaviour
 
             int successAttacks = 0;
             foreach (var attackPoint in attackPoints)
+<<<<<<< HEAD
                 if (_environmentController.CheckEnemy(attackPoint, m_Faction))
+=======
+            {
+                // Debug.Log($"Attack at {attackPoint}");
+                if (m_Environment.CheckEnemy(attackPoint, m_Faction))
+>>>>>>> testSkillManager
                     successAttacks++;
 
             if (successAttacks > 0)
@@ -143,13 +163,24 @@ public class AgentManager : MonoBehaviour
                                             m_UnitSkill.GetSkillMagnitude(agent.GetJumpStep()));
                 _visualGroupReward += _unitReward * successAttacks;
 
+<<<<<<< HEAD
                 _environmentController.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+=======
+                m_Environment.OnPunishOppositeTeam.Invoke(GetFaction()); // punish the opposite team
+                // Debug.Log($"Group reward {_visualGroupReward}");
+                break;
+>>>>>>> testSkillManager
             }
         }
 
         // call for the end-turn event
+<<<<<<< HEAD
         _environmentController.ChangeFaction();
         _environmentController.OnChangeFaction.Invoke();
+=======
+        m_Environment.ChangeFaction(_isResetInstance && successAttacks>0);
+        m_Environment.OnChangeFaction.Invoke();
+>>>>>>> testSkillManager
     }
 
     #region GET & SET
@@ -159,7 +190,12 @@ public class AgentManager : MonoBehaviour
         return m_Faction;
     }
 
-    private void FinishRound(int faction)
+    public EnvironmentController GetEnvironment()
+    {
+        return m_Environment;
+    }
+
+    protected virtual void FinishRound(int faction)
     {
         foreach (var agent in m_JumpOverControllers)
             agent.ResetAgent();
@@ -190,24 +226,14 @@ public class AgentManager : MonoBehaviour
 
     #region GET & SET
 
-    public float GetMaxReward()
-    {
-        return m_JumpOverControllers.Max(x => x.GetAgent().GetCumulativeReward());
-    }
-
-    public float GetMinReward()
-    {
-        return m_JumpOverControllers.Min(x => x.GetAgent().GetCumulativeReward());
-    }
-
     private float GetTotalReward()
     {
         return m_JumpOverControllers.Sum(x => x.GetAgent().GetCumulativeReward());
     }
 
-    public float GetIdlePunish()
+    public virtual void RemoveAgent(SingleJumperController jumper)
     {
-        return _movementCost;
+        m_JumpOverControllers.Remove(jumper);
     }
 
     #endregion
