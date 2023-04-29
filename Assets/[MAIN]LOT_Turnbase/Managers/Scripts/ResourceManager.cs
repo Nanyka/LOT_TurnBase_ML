@@ -7,7 +7,9 @@ namespace LOT_Turnbase
 {
     public class ResourceManager : MonoBehaviour, IStartUpLoadData
     {
-        private List<ResourceInGame> _resources;
+        [SerializeField] private ObjectPool _resoucePool;
+        
+        private List<ResourceData> _resourceDatas;
         
         private void Start()
         {
@@ -17,14 +19,20 @@ namespace LOT_Turnbase
         // Prepare data for game session
         public void StartUpLoadData<T>(T data)
         {
-            _resources = (List<ResourceInGame>)Convert.ChangeType(data, typeof(List<ResourceInGame>));
+            _resourceDatas = (List<ResourceData>)Convert.ChangeType(data, typeof(List<ResourceData>));
         }
 
         private void Init()
         {
-            foreach (var resource in _resources)
+            foreach (var resource in _resourceDatas)
             {
-                resource.Init();
+                var resourceObj = _resoucePool.GetObject();
+
+                if (resourceObj.TryGetComponent(out ResourceInGame resourceInGame))
+                {
+                    resourceInGame.gameObject.SetActive(true);
+                    resourceInGame.Init(resource);
+                }
             }
         }
     }
