@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SkillManager : MonoBehaviour
+public class NPCActionManager : MonoBehaviour
 {
     [Header("General control part")] 
     [SerializeField] private EnvironmentController _environmentController;

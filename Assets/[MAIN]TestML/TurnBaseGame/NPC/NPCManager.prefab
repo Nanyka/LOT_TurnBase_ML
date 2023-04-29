@@ -34,7 +34,7 @@ Transform:
   - {fileID: 7333309383225613674}
   - {fileID: 6564466356340860426}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1965326685923815715
 MonoBehaviour:
@@ -76,13 +76,14 @@ MonoBehaviour:
   _punishAmount: 0.1
   _movementCost: 0.006
   _visualGroupReward: 0
-  m_SkillManager: {fileID: 1965326685923815715}
+  npcActionManager: {fileID: 1965326685923815715}
   _factionMaterial: {fileID: 2100000, guid: ff6bdf93835694465845425e5995ebb3, type: 2}
 --- !u!1001 &6374661083816376441
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1814030843770287032}
     m_Modifications:
     - target: {fileID: 448891955693419017, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
@@ -146,6 +147,9 @@ PrefabInstance:
       value: NPCUnit (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
 --- !u!4 &6795246437186880112 stripped
 Transform:
@@ -168,6 +172,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1814030843770287032}
     m_Modifications:
     - target: {fileID: 448891955693419017, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
@@ -239,6 +244,9 @@ PrefabInstance:
       value: NPCUnit (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
 --- !u!4 &6564466356340860426 stripped
 Transform:
@@ -261,6 +269,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1814030843770287032}
     m_Modifications:
     - target: {fileID: 448891955693419017, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
@@ -332,6 +341,9 @@ PrefabInstance:
       value: NPCUnit (0)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07b75d944a976416fa84b66f4f8cbec1, type: 3}
 --- !u!114 &5122611903104724574 stripped
 MonoBehaviour:

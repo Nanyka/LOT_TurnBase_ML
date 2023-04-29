@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AgentForInfer : AgentManager
 {
-    [SerializeField] private SkillManager m_SkillManager;
+    [SerializeField] private NPCActionManager npcActionManager;
     [SerializeField] private Material _factionMaterial;
 
     private Material _defaultMaterial;
@@ -36,7 +36,7 @@ public class AgentForInfer : AgentManager
             m_JumperForGames.Add((JumperForGame) jumperController);
 
         InsertTempIndex();
-        m_SkillManager.Init();
+        npcActionManager.Init();
     }
 
     private void InsertTempIndex()
@@ -82,7 +82,7 @@ public class AgentForInfer : AgentManager
         if (_dummyJumper.Count > 0)
         {
             _skillCount = 0;
-            m_SkillManager.ResetSkillCache();
+            npcActionManager.ResetSkillCache();
             SelfInferenceBrainStorming(_dummyJumper);
             StartInferAgentsAction(_dummyJumper);
         }
@@ -99,14 +99,14 @@ public class AgentForInfer : AgentManager
             for (int i = 0; i <= 4; i++)
             {
                 DummyAction action = new DummyAction(jumper.RespondFromAction(i));
-                m_SkillManager.AddActionToCache(action);
+                npcActionManager.AddActionToCache(action);
             }
         }
     }
 
     private void StartInferAgentsAction(IEnumerable<JumperForGame> jumperForGames)
     {
-        if (_skillCount < m_SkillManager.GetSkillAmount() && m_SkillManager.GetSkillByIndex(_skillCount) != null)
+        if (_skillCount < npcActionManager.GetSkillAmount() && npcActionManager.GetSkillByIndex(_skillCount) != null)
         {
             var jumpers = jumperForGames as JumperForGame[] ?? jumperForGames.ToArray();
             // reset counter before collect action
@@ -115,13 +115,13 @@ public class AgentForInfer : AgentManager
             foreach (var jumper in jumpers)
             {
                 // Infer action & add to jumper cache as currentAction when other idle
-                jumper.SetBrain(m_SkillManager.GetSkillByIndex(_skillCount).GetModel());
+                jumper.SetBrain(npcActionManager.GetSkillByIndex(_skillCount).GetModel());
                 jumper.AskForAction();
             }
         }
         else
         {
-            m_SkillManager.ActionBrainstorming();
+            npcActionManager.ActionBrainstorming();
         }
     }
 
@@ -133,7 +133,7 @@ public class AgentForInfer : AgentManager
         if (_responseCounter != _dummyJumper.Count) return;
 
         foreach (var jumperForGame in _dummyJumper)
-            m_SkillManager.AddActionToCache(jumperForGame.InferMoving);
+            npcActionManager.AddActionToCache(jumperForGame.InferMoving);
 
         // Move to next skill
         _skillCount++;

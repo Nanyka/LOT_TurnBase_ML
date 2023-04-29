@@ -9,7 +9,7 @@ namespace LOT_Turnbase
         [SerializeField] private CurrencyType m_CurrencyType;
         [SerializeField] private int m_Level;
 
-        private Vector3 Position { get; set; }
+        public Vector3 Position { get; private set; }
         private int _currentHealth;
         private int _currentTurn;
 

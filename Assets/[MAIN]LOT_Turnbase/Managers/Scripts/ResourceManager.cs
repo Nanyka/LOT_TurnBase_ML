@@ -11,20 +11,21 @@ namespace LOT_Turnbase
         
         private void Start()
         {
-            StartUpProcessor.Instance.OnInitiateObjects.AddListener(SpawnResources);
+            StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
+        }
+        
+        // Prepare data for game session
+        public void StartUpLoadData<T>(T data)
+        {
+            _resources = (List<ResourceInGame>)Convert.ChangeType(data, typeof(List<ResourceInGame>));
         }
 
-        private void SpawnResources()
+        private void Init()
         {
             foreach (var resource in _resources)
             {
                 resource.Init();
             }
-        }
-
-        public void StartUpLoadData<T>(T data)
-        {
-            _resources = (List<ResourceInGame>)Convert.ChangeType(data, typeof(List<ResourceInGame>));
         }
     }
 }
