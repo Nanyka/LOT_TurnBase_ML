@@ -166,6 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 218828472}
   - component: {fileID: 218828473}
+  - component: {fileID: 218828474}
   m_Layer: 0
   m_Name: BuildingManager<3>
   m_TagString: Untagged
@@ -200,6 +201,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c204f18389db48c389b3952ce7358d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildingPool: {fileID: 218828474}
+--- !u!114 &218828474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218828471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d602a92ccdc744c9b1fc61148ff77fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - prefab: {fileID: 3955766802612495538, guid: 7812be7518498475b82a4dd1de204055, type: 3}
+    prefCollector: {fileID: 218828472}
+    amount: 1
+    expandable: 1
+  pooledItems: []
 --- !u!1 &231263776
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +384,7 @@ GameObject:
   m_Component:
   - component: {fileID: 384461262}
   - component: {fileID: 384461263}
+  - component: {fileID: 384461264}
   m_Layer: 0
   m_Name: ResourceManager<3>
   m_TagString: Untagged
@@ -398,6 +419,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fadc8836768d7444ab59ab001f6436a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _resoucePool: {fileID: 384461264}
+--- !u!114 &384461264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384461261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d602a92ccdc744c9b1fc61148ff77fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - prefab: {fileID: 7606181594612410114, guid: 0f6fa4d3ff80b47db95d294c581e5ac8, type: 3}
+    prefCollector: {fileID: 384461262}
+    amount: 1
+    expandable: 1
+  pooledItems: []
 --- !u!1 &450838785
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,7 +485,28 @@ MonoBehaviour:
   _tileManager: {fileID: 1300729468}
   _resourceManager: {fileID: 384461263}
   _buildingManager: {fileID: 218828473}
-  _unitManager: {fileID: 1029899312}
+  _creatureManager: {fileID: 1029899312}
+  _testResourceData:
+    Position: {x: 2, y: 0, z: 0}
+    ResourceType: 0
+    CurrentHealth: 0
+    CurrentTurn: 0
+    Level: 0
+  _testBuildingData:
+    Position: {x: 0, y: 0, z: 0}
+    BuildingType: 0
+    CurrentHp: 0
+    CurrentShield: 0
+    CurrentExp: 0
+    CurrentStorage: 0
+    TurnCount: 0
+  _testCreatureData:
+    Position: {x: 1, y: 0, z: 1}
+    CreatureType: 0
+    CurrentHp: 0
+    CurrentShield: 0
+    CurrentExp: 0
+    TurnCount: 0
 --- !u!1 &1029899310
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,8 +517,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1029899311}
   - component: {fileID: 1029899312}
+  - component: {fileID: 1029899313}
   m_Layer: 0
-  m_Name: UnitManager<3>
+  m_Name: CreatureManager<3>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -490,6 +552,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e39b288046347ff9f0af4f63873a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _creaturePool: {fileID: 1029899313}
+--- !u!114 &1029899313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029899310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d602a92ccdc744c9b1fc61148ff77fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - prefab: {fileID: 2681597311949171089, guid: d5273634fcfe5431aa95e5f2431a8d7a, type: 3}
+    prefCollector: {fileID: 1029899311}
+    amount: 1
+    expandable: 1
+  pooledItems: []
 --- !u!1 &1202650893
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +677,7 @@ MonoBehaviour:
   items:
   - prefab: {fileID: 412120653064907444, guid: f9fcd189556a5430db84149936575153, type: 3}
     prefCollector: {fileID: 1300729467}
-    amount: 4
+    amount: 1
     expandable: 1
   pooledItems: []
 --- !u!1 &1941560205
@@ -656,6 +737,7 @@ GameObject:
   - component: {fileID: 2060104825}
   - component: {fileID: 2060104824}
   - component: {fileID: 2060104823}
+  - component: {fileID: 2060104826}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -729,11 +811,54 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2060104822}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+--- !u!114 &2060104826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060104822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
