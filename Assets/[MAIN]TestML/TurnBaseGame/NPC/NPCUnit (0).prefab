@@ -258,9 +258,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3509283103570430522}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5662117469509082447
@@ -493,7 +501,7 @@ Transform:
   - {fileID: 51318349783648273}
   - {fileID: 1663517377482207654}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &9151947320647730362
 Animator:
@@ -515,6 +523,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4723316676739610103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,16 +643,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9abe20ff85fa14f27a47fa6e0d1172e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnUnitDie:
-    m_PersistentCalls:
-      m_Calls: []
   m_Animator: {fileID: 9151947320647730362}
   m_UnitStats: {fileID: 11400000, guid: 9bad3f5d5988b48248cf1ab22af19588, type: 2}
-  m_HealthComp: {fileID: 2414352965986549256}
   m_UnitSkill: {fileID: 3116377295217046558}
+  m_HealthComp: {fileID: 2414352965986549256}
   m_AttackComp: {fileID: 6748748229630513097}
   m_EffectComp: {fileID: 3822543972369740631}
   m_AttackPath: {fileID: 778783442260180594}
+  data:
+    CurrentHealth: 0
 --- !u!114 &2414352965986549256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,9 +805,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8488193846416948602}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9148731830791515388
@@ -890,6 +906,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7565218471269473676}
     m_Modifications:
     - target: {fileID: 3489398023960322257, guid: ea157f8c961ba4aca8a0ca4183eb1005, type: 3}
@@ -941,6 +958,9 @@ PrefabInstance:
       value: VFXs
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea157f8c961ba4aca8a0ca4183eb1005, type: 3}
 --- !u!4 &2556623988759106140 stripped
 Transform:
@@ -962,6 +982,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 448891955693419017}
     m_Modifications:
     - target: {fileID: 2721844665863182354, guid: 365cad1fb0c984f22ae463e73e9e42a1, type: 3}
@@ -1013,6 +1034,9 @@ PrefabInstance:
       value: AttackPath
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 365cad1fb0c984f22ae463e73e9e42a1, type: 3}
 --- !u!114 &778783442260180594 stripped
 MonoBehaviour:
@@ -1035,6 +1059,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 448891955693419017}
     m_Modifications:
     - target: {fileID: 2857167205712747752, guid: 6e0f6530d353145bd9d8bb3fe23521b8, type: 3}
@@ -1134,6 +1159,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e0f6530d353145bd9d8bb3fe23521b8, type: 3}
 --- !u!224 &51318349783648273 stripped
 RectTransform:

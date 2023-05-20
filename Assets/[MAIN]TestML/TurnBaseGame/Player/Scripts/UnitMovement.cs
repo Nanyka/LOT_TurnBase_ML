@@ -35,7 +35,7 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
             _rotatePart.forward = _movement.targetPos - m_Transform.position;
 
         _isUsed = true;
-        _unitEntity.SeWalkAnimation(true);
+        _unitEntity.SetWalkAnimation(true);
         StartCoroutine(MoveOverTime(_movement.targetPos));
     }
     
@@ -47,7 +47,7 @@ public class UnitMovement : MonoBehaviour, IGetUnitInfo
             yield return null;
         }
 
-        _unitEntity.SeWalkAnimation(false);
+        _unitEntity.SetWalkAnimation(false);
         m_FactionManager.UnitMoved();
     }
 

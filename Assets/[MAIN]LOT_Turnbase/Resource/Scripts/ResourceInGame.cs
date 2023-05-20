@@ -4,27 +4,14 @@ namespace LOT_Turnbase
 {
     public class ResourceInGame : MonoBehaviour
     {
-        [Header("Resource definition")] 
-        [SerializeField] private ResourceType m_ResourceType;
-        [SerializeField] private CurrencyType m_CurrencyType;
-        [SerializeField] private int m_Level;
+        [SerializeField] private ResourceType m_ResourceType; // define how resource interact with game
+        [SerializeField] private CurrencyType m_CurrencyType; // define what will be as loot for collecting
+        [SerializeField] private ResourceEntity m_Entity;
 
-        private Vector3 Position { get; set; }
-        private int _currentHealth;
-        private int _currentTurn;
-
-        public void Init()
+        public void Init(ResourceData resourceData)
         {
-            Debug.Log("Initiate this resource at " + Position);
+            m_Entity.Init(resourceData);
+            // Debug.Log("Initiate this resource at " + m_ResourceData.Position);
         }
-
-        #region SET
-
-        public void SetPosition(Vector3 pos)
-        {
-            Position = pos;
-        }
-
-        #endregion
     }
 }

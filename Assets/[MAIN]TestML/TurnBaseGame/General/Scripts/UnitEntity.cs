@@ -7,37 +7,38 @@ using UnityEngine.Events;
 
 public class UnitEntity : MonoBehaviour
 {
-    [HideInInspector] public UnityEvent OnUnitDie = new(); 
+    [NonSerialized] public UnityEvent OnUnitDie = new(); 
     
     [Header("Default components")] 
     [SerializeField] private Animator m_Animator;
     
     [Header("Custom components")]
     [SerializeField] private UnitStats m_UnitStats;
-    [SerializeField] private HealthComp m_HealthComp;
     [SerializeField] private UnitSkill m_UnitSkill;
+    [SerializeField] private HealthComp m_HealthComp;
     [SerializeField] private AttackComp m_AttackComp;
     [SerializeField] private EffectComp m_EffectComp;
     [SerializeField] private AttackPath m_AttackPath;
 
+    [SerializeField] private UnitData data;
     private IGetUnitInfo m_Info;
     private (Vector3 midPos, Vector3 direction, int jumpStep, int faction) _currentState;
 
     private void Start()
     {
-        m_HealthComp.Init(m_UnitStats.HealthPoint, OnUnitDie);
+        m_HealthComp.Init(m_UnitStats.HealthPoint, OnUnitDie, ref data);
     }
 
     #region HEALTH
 
     public void TakeDamage(int damage)
     {
-        m_HealthComp.TakeDamage(damage);
+        m_HealthComp.TakeDamage(damage, ref data);
     }
 
     public int GetCurrentHealth()
     {
-        return m_HealthComp.GetCurrentHealth();
+        return m_HealthComp.GetCurrentHealth(ref data);
     }
 
     #endregion
@@ -68,11 +69,7 @@ public class UnitEntity : MonoBehaviour
     {
         if (m_AttackPath is not null) m_AttackPath.AttackAt(attackRange);
     }
-
-    #endregion
-
-    #region GET & SET
-
+    
     public IEnumerable<Vector3> GetAttackPoint(Vector3 midPos, Vector3 direction, int jumpStep)
     {
         return m_UnitSkill.AttackPoints(midPos, direction, jumpStep);
@@ -83,19 +80,27 @@ public class UnitEntity : MonoBehaviour
         return m_UnitStats.Strengh;
     }
 
-    public void ResetEntity()
-    {
-        m_HealthComp.Reset();
-    }
+    #endregion
+
+    #region SKILL
     
     public IEnumerable<Skill_SO> GetSkills()
     {
         return m_UnitSkill.GetSkills();
     }
 
-    public void SeWalkAnimation(bool isWalk)
+    #endregion
+
+    #region GENERAL
+    
+    public void SetWalkAnimation(bool isWalk)
     {
         m_Animator.SetBool("Walk", isWalk);
+    }
+    
+    public void ResetEntity()
+    {
+        m_HealthComp.Reset(ref data);
     }
 
     #endregion

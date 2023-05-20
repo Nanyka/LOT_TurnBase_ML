@@ -9,29 +9,28 @@ public class HealthComp : MonoBehaviour
     [SerializeField] private Slider _hpSlider;
 
     private int m_MAXHp;
-    private int _currentHp;
     private UnityEvent _dieEvent;
 
-    public void Init(int maxHp, UnityEvent dieEvent)
+    public void Init(int maxHp, UnityEvent dieEvent, ref UnitData unitData)
     {
         m_MAXHp = maxHp;
-        _currentHp = m_MAXHp;
-        _hpSlider.value = _currentHp * 1f / m_MAXHp;
+        unitData.CurrentHealth = m_MAXHp;
+        _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
         _dieEvent = dieEvent;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, ref UnitData unitData)
     {
-        _currentHp -= damage;
-        _hpSlider.value = _currentHp * 1f / m_MAXHp;
+        unitData.CurrentHealth -= damage;
+        _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
 
-        if (_currentHp <= 0)
+        if (unitData.CurrentHealth <= 0)
             Die();
     }
 
-    public int GetCurrentHealth()
+    public int GetCurrentHealth(ref UnitData unitData)
     {
-        return _currentHp;
+        return unitData.CurrentHealth;
     }
 
     private void Die()
@@ -39,9 +38,9 @@ public class HealthComp : MonoBehaviour
         _dieEvent.Invoke();
     }
 
-    public void Reset()
+    public void Reset(ref UnitData unitData)
     {
-        _currentHp = m_MAXHp;
-        _hpSlider.value = _currentHp * 1f / m_MAXHp;
+        unitData.CurrentHealth = m_MAXHp;
+        _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
     }
 }
