@@ -13,24 +13,28 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] protected int _numberOfObstacles;
     [SerializeField] protected bool _isDecidePosition;
     [SerializeField] protected Vector3 _designatedPostion;
-    // [SerializeField] protected List<GameObject> _listTeam0 = new();
-    // [SerializeField] protected List<GameObject> _listTeam1 = new();
-    protected Dictionary<FactionType, List<GameObject>> _teams = new Dictionary<FactionType, List<GameObject>>();
+    protected Dictionary<FactionType, List<GameObject>> _teams;
 
     private int _maxX;
     private int _maxZ;
 
     private void Start()
     {
-        _teams.Add(FactionType.player,new List<GameObject>());
-        _teams.Add(FactionType.enemy,new List<GameObject>());
-        
-        // _teams.Add(FactionType.player,_listTeam0);
-        // _teams.Add(FactionType.enemy,_listTeam1);
+        ResetFactionDictionary();
+    }
+
+    private void ResetFactionDictionary()
+    {
+        _teams = new Dictionary<FactionType, List<GameObject>>
+        {
+            {FactionType.player, new List<GameObject>()}, {FactionType.enemy, new List<GameObject>()}
+        };
     }
 
     public void AddFaction(FactionType factionType, GameObject targetObject)
     {
+        if (_teams.ContainsKey(factionType) == false)
+            _teams.Add(factionType,new List<GameObject>());
         _teams[factionType].Add(targetObject);
     }
 
@@ -144,5 +148,10 @@ public class ObstacleManager : MonoBehaviour
         if (_teams[FactionType.player].Count == 0)
             return 1;
         return -1;
+    }
+
+    public int GetAmountOfFaction()
+    {
+        return _teams.Count;
     }
 }

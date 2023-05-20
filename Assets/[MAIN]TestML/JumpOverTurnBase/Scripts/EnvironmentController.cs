@@ -22,6 +22,7 @@ public class EnvironmentController : MonoBehaviour, ICheckEnemyPosition
     [SerializeField] protected int _currFaction;
     [SerializeField] protected int _maxStep;
     [SerializeField] protected int _step;
+    [SerializeField] protected int _currentScene;
 
     protected virtual void Start()
     {
@@ -81,7 +82,7 @@ public class EnvironmentController : MonoBehaviour, ICheckEnemyPosition
 
         OnChangeFaction.Invoke();
     }
-    
+
     #region MOVEMENT CALCULATOR
 
     public MovementCalculator GetMovementCalculator()
