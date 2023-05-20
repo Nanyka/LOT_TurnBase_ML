@@ -8,38 +8,54 @@ using Random = UnityEngine.Random;
 public class ObstacleManager : MonoBehaviour
 {
     [SerializeField] protected GameObject _obstacle;
+    [SerializeField] protected Transform _obstacleContainer;
     [SerializeField] protected Collider _platformColider;
     [SerializeField] protected int _numberOfObstacles;
     [SerializeField] protected bool _isDecidePosition;
     [SerializeField] protected Vector3 _designatedPostion;
-    [SerializeField] protected List<GameObject> _listTeam0 = new();
-    [SerializeField] protected List<GameObject> _listTeam1 = new();
+    // [SerializeField] protected List<GameObject> _listTeam0 = new();
+    // [SerializeField] protected List<GameObject> _listTeam1 = new();
+    protected Dictionary<FactionType, List<GameObject>> _teams = new Dictionary<FactionType, List<GameObject>>();
 
     private int _maxX;
     private int _maxZ;
+
+    private void Start()
+    {
+        _teams.Add(FactionType.player,new List<GameObject>());
+        _teams.Add(FactionType.enemy,new List<GameObject>());
+        
+        // _teams.Add(FactionType.player,_listTeam0);
+        // _teams.Add(FactionType.enemy,_listTeam1);
+    }
+
+    public void AddFaction(FactionType factionType, GameObject targetObject)
+    {
+        _teams[factionType].Add(targetObject);
+    }
 
     public virtual void SpawnObstacle()
     {
         SetUpPlatform();
 
-        foreach (var obstacle in _listTeam1)
+        foreach (var obstacle in _teams[FactionType.enemy])
             Destroy(obstacle);
-        _listTeam1.Clear();
+        _teams[FactionType.enemy].Clear();
 
         if (_isDecidePosition)
         {
             var spawnPos = _designatedPostion + _platformColider.transform.position;
             spawnPos = new Vector3(spawnPos.x, 0f, spawnPos.z);
-            var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
-            _listTeam1.Add(obstacle);
+            var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, _obstacleContainer);
+            _teams[FactionType.enemy].Add(obstacle);
         }
         else
         {
             for (int i = 0; i < _numberOfObstacles; i++)
             {
                 var spawnPos = GetAvailablePlot();
-                var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
-                _listTeam1.Add(obstacle);
+                var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, _obstacleContainer);
+                _teams[FactionType.enemy].Add(obstacle);
             }
         }
     }
@@ -72,20 +88,20 @@ public class ObstacleManager : MonoBehaviour
 
     public virtual bool CheckObstaclePlot(Vector3 plot)
     {
-        return _listTeam1.Find(x => Vector3.Distance(x.transform.position, plot) < Mathf.Epsilon);
+        return _teams[FactionType.enemy].Find(x => Vector3.Distance(x.transform.position, plot) < Mathf.Epsilon);
     }
 
     public void DestroyAtPosition(Vector3 position)
     {
-        var findPos = _listTeam1.Find(x => Vector3.Distance(x.transform.position, position) < Mathf.Epsilon);
+        var findPos = _teams[FactionType.enemy].Find(x => Vector3.Distance(x.transform.position, position) < Mathf.Epsilon);
         if (findPos == null) return;
         Destroy(findPos);
-        _listTeam1.Remove(findPos);
+        _teams[FactionType.enemy].Remove(findPos);
     }
 
     public int CountObstacle()
     {
-        return _listTeam1.Count;
+        return _teams[FactionType.enemy].Count;
     }
 
     public virtual bool CheckTeam(Vector3 position, int faction)
@@ -103,29 +119,29 @@ public class ObstacleManager : MonoBehaviour
     public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
     {
         if (fromFaction == 0)
-            return _listTeam1.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
-        return _listTeam0.Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
+            return _teams[FactionType.enemy].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
+        return _teams[FactionType.player].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
     }
 
     public void RemoveObject(GameObject targetObject, int faction)
     {
         if (faction == 0)
         {
-            _listTeam0.Remove(targetObject);
-            _listTeam0 = _listTeam0.Where(x => x != null).ToList();
+            _teams[FactionType.player].Remove(targetObject);
+            _teams[FactionType.player] = _teams[FactionType.player].Where(x => x != null).ToList();
         }
         else
         {
-            _listTeam1.Remove(targetObject);
-            _listTeam1 = _listTeam1.Where(x => x != null).ToList();
+            _teams[FactionType.enemy].Remove(targetObject);
+            _teams[FactionType.enemy] = _teams[FactionType.enemy].Where(x => x != null).ToList();
         }
     }
 
     public int CheckWinCondition()
     {
-        if (_listTeam1.Count == 0)
+        if (_teams[FactionType.enemy].Count == 0)
             return 0;
-        if (_listTeam0.Count == 0)
+        if (_teams[FactionType.player].Count == 0)
             return 1;
         return -1;
     }

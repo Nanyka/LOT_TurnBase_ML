@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.MLAgents;
 using UnityEngine;
 
-public class AgentForInfer : AgentManager
+public class AgentForInfer : AgentManager, IContributeFaction
 {
     [SerializeField] private NPCActionManager npcActionManager;
     [SerializeField] private Material _factionMaterial;
@@ -23,8 +23,21 @@ public class AgentForInfer : AgentManager
 
         _defaultMaterial = m_JumpOverControllers[0].GetDefaultMaterial();
 
+        ContributeEnemyUnits();
         InitiateJumperList();
         MultiJumperKickOff();
+    }
+
+    private void ContributeEnemyUnits()
+    {
+        foreach (var jumpOverController in m_JumpOverControllers)
+            ContributeFaction(m_Environment, FactionType.enemy, jumpOverController.gameObject);
+    }
+
+
+    public void ContributeFaction(EnvironmentController environment, FactionType factionType, GameObject targetObject)
+    {
+        environment.AddObjectToFaction(factionType,targetObject);
     }
 
     private void InitiateJumperList()

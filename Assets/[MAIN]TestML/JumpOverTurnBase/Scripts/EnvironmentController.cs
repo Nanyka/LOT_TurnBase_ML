@@ -94,6 +94,11 @@ public class EnvironmentController : MonoBehaviour, ICheckEnemyPosition
     
     #region OBSTACLES
 
+    public void AddObjectToFaction(FactionType faction, GameObject targetObject)
+    {
+        _obstacleManager.AddFaction(faction,targetObject);
+    }
+
     public bool FreeToMove(Vector3 checkPos)
     {
         return !_obstacleManager.CheckObstaclePlot(checkPos);

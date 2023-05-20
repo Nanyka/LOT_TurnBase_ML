@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerFactionManager : MonoBehaviour
+public class PlayerFactionManager : MonoBehaviour, IContributeFaction
 {
     [SerializeField] private EnvironmentInGame m_Environment;
     [SerializeField] private int m_Faction = 0;
@@ -27,7 +27,21 @@ public class PlayerFactionManager : MonoBehaviour
         _camera = Camera.main;
         _defaultMaterial = _unitMovements[0].GetMaterial();
 
+        ContributePlayerUnits();
         MultiJumperKickOff();
+    }
+
+    private void ContributePlayerUnits()
+    {
+        foreach (var unitMovement in _unitMovements)
+        {
+            ContributeFaction(m_Environment, FactionType.player, unitMovement.gameObject);
+        }
+    }
+
+    public void ContributeFaction(EnvironmentController environment, FactionType factionType, GameObject targetObject)
+    {
+        environment.AddObjectToFaction(factionType,targetObject);
     }
 
     #region ONE-TURN PIPELINE

@@ -15,7 +15,7 @@ public class MultiAgentObsController : ObstacleManager
         {
             var spawnPos = _designatedPostion + _platformColider.transform.position;
             spawnPos = new Vector3(spawnPos.x, 0f, spawnPos.z);
-            var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
+            var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, _obstacleContainer);
             if (obstacle.TryGetComponent(out Obstacle returnObstacle))
             {
                 var occupyRange = returnObstacle.GetOccupyRange();
@@ -28,7 +28,7 @@ public class MultiAgentObsController : ObstacleManager
             for (int i = 0; i < _numberOfObstacles; i++)
             {
                 var spawnPos = GetAvailablePlot();
-                var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
+                var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, _obstacleContainer);
                 if (obstacle.TryGetComponent(out Obstacle returnObstacle))
                 {
                     var occupyRange = returnObstacle.GetOccupyRange();
@@ -55,7 +55,7 @@ public class MultiAgentObsController : ObstacleManager
     public override bool CheckTeam(Vector3 position, int faction)
     {
         var returnValue = false;
-        var listByFaction = faction == 0 ? _listTeam0 : _listTeam1;
+        var listByFaction = faction == 0 ? _teams[FactionType.player] : _teams[FactionType.enemy];
         foreach (var item in listByFaction)
         {
             if (item == null)
