@@ -13,6 +13,7 @@ namespace LOT_Turnbase
         [SerializeField] private StorageComp m_StorageComp;
         [SerializeField] private LevelComp m_LevelComp;
         [SerializeField] private AttackPath m_AttackPath;
+        [SerializeField] private AnimateComp m_AnimateComp;
         
         private BuildingData m_BuildingData;
         

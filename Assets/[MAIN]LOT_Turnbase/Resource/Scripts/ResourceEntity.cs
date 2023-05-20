@@ -7,6 +7,7 @@ namespace LOT_Turnbase
         [Header("Custom components")]
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
+        [SerializeField] private AnimateComp m_AnimateComp;
         
         private ResourceData m_ResourceData;
 

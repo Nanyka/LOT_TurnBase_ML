@@ -10,6 +10,5 @@ namespace LOT_Turnbase
         
         [Header("Default components")] 
         [SerializeField] protected Transform m_Transform;
-        [SerializeField] protected Animator m_Animator;
     }
 }

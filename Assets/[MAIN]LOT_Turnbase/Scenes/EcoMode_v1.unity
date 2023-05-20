@@ -485,7 +485,7 @@ MonoBehaviour:
   _tileManager: {fileID: 1300729468}
   _resourceManager: {fileID: 384461263}
   _buildingManager: {fileID: 218828473}
-  _unitManager: {fileID: 1029899312}
+  _creatureManager: {fileID: 1029899312}
   _testResourceData:
     Position: {x: 2, y: 0, z: 0}
     ResourceType: 0
@@ -496,10 +496,17 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     BuildingType: 0
     CurrentHp: 0
+    CurrentShield: 0
     CurrentExp: 0
     CurrentStorage: 0
     TurnCount: 0
+  _testCreatureData:
+    Position: {x: 1, y: 0, z: 1}
+    CreatureType: 0
+    CurrentHp: 0
     CurrentShield: 0
+    CurrentExp: 0
+    TurnCount: 0
 --- !u!1 &1029899310
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,8 +517,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1029899311}
   - component: {fileID: 1029899312}
+  - component: {fileID: 1029899313}
   m_Layer: 0
-  m_Name: UnitManager<3>
+  m_Name: CreatureManager<3>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -544,6 +552,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e39b288046347ff9f0af4f63873a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _creaturePool: {fileID: 1029899313}
+--- !u!114 &1029899313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029899310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d602a92ccdc744c9b1fc61148ff77fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - prefab: {fileID: 2681597311949171089, guid: d5273634fcfe5431aa95e5f2431a8d7a, type: 3}
+    prefCollector: {fileID: 1029899311}
+    amount: 1
+    expandable: 1
+  pooledItems: []
 --- !u!1 &1202650893
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,9 +8,9 @@ namespace LOT_Turnbase
         public Vector3 Position;
         public BuildingType BuildingType;
         public int CurrentHp;
+        public int CurrentShield;
         public int CurrentExp;
         public int CurrentStorage;
         public int TurnCount;
-        public int CurrentShield;
     }
 }
