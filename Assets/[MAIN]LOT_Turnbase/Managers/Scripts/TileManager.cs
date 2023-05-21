@@ -15,6 +15,12 @@ namespace LOT_Turnbase
 
         public void Init(int tileAmount)
         {
+            SpawnTileMap(tileAmount);
+            StartUpProcessor.Instance.OnInitiateObjects.Invoke();
+        }
+
+        private void SpawnTileMap(int tileAmount)
+        {
             SpiralPatternConstructor(tileAmount);
 
             // Spawn tiles
@@ -22,10 +28,9 @@ namespace LOT_Turnbase
             {
                 var tile = _tilePool.GetObject();
                 tile.transform.position = _listTilePos[i].GetPosition(0f, 1f);
+                StartUpProcessor.Instance.OnUpdateTilePos.Invoke(tile.transform.position);
                 tile.SetActive(true);
             }
-            
-            StartUpProcessor.Instance.OnInitiateObjects.Invoke();
         }
 
         private void SpiralPatternConstructor(int tileAmount)

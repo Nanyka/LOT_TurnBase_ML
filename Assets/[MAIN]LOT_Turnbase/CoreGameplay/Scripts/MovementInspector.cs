@@ -11,7 +11,7 @@ namespace LOT_Turnbase
 
         // private float maxRow;
         // private float maxCol;
-        private Vector3 _platformPos;
+        // private Vector3 _platformPos;
 
         // private void Start()
         // {

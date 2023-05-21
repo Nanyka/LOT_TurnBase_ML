@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,62 +8,53 @@ namespace LOT_Turnbase
     public class DomainManager : MonoBehaviour
     {
         [SerializeField] protected GameObject _obstacle;
-        // [SerializeField] protected Collider _platformColider;
+        [SerializeField] protected Transform _obstacleContainer;
         [SerializeField] protected int _numberOfObstacles;
         [SerializeField] protected bool _isDecidePosition;
         [SerializeField] protected Vector3 _designatedPostion;
         [SerializeField] private int _maxX;
         [SerializeField] private int _maxZ;
 
-        private Dictionary<FactionType ,List<GameObject>> _domainOwners = new();
+        [SerializeField] protected GameObject _tileForTesting; // REMOVE when done environment testing
+        [SerializeField] protected Transform _tileContainer; // REMOVE when done environment testing
+
+        private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
         private List<Vector3> _obstacleAreas = new();
         private List<Vector3> _tileAreas = new();
 
         #region INIT SET UP
 
-        public void UpdateDomainOwner(GameObject domainOwner, FactionType factionType)
-        {
-            if (_domainOwners.ContainsKey(factionType) == false)
-                _domainOwners.Add(factionType, new List<GameObject>());
-            
-            _domainOwners[factionType].Add(domainOwner);
-        }
+        // public void SpawnObstacle()
+        // {
+        //     if (_isDecidePosition)
+        //     {
+        //         // var spawnPos = _designatedPostion + _platformColider.transform.position;
+        //         // spawnPos = new Vector3(spawnPos.x, 0f, spawnPos.z);
+        //         var obstacle = Instantiate(_obstacle, _designatedPostion, Quaternion.identity, _obstacleContainer);
+        //         if (!obstacle.TryGetComponent(out Obstacle returnObstacle)) return;
+        //         var occupyRange = returnObstacle.GetOccupyRange();
+        //         foreach (var occupy in occupyRange)
+        //             _obstacleAreas.Add(occupy);
+        //     }
+        //     else
+        //     {
+        //         for (int i = 0; i < _numberOfObstacles; i++)
+        //         {
+        //             var spawnPos = GetAvailablePlot();
+        //             var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, _obstacleContainer);
+        //             if (obstacle.TryGetComponent(out Obstacle returnObstacle))
+        //             {
+        //                 var occupyRange = returnObstacle.GetOccupyRange();
+        //                 foreach (var occupy in occupyRange)
+        //                     _obstacleAreas.Add(occupy);
+        //             }
+        //         }
+        //     }
+        // }
 
-        public void SpawnObstacle()
+        public void UpdateTileArea(Vector3 tilePos)
         {
-            UpdateTileArea();
-
-            if (_isDecidePosition)
-            {
-                // var spawnPos = _designatedPostion + _platformColider.transform.position;
-                // spawnPos = new Vector3(spawnPos.x, 0f, spawnPos.z);
-                var obstacle = Instantiate(_obstacle, _designatedPostion, Quaternion.identity, transform);
-                if (!obstacle.TryGetComponent(out Obstacle returnObstacle)) return;
-                var occupyRange = returnObstacle.GetOccupyRange();
-                foreach (var occupy in occupyRange)
-                    _obstacleAreas.Add(occupy);
-            }
-            else
-            {
-                for (int i = 0; i < _numberOfObstacles; i++)
-                {
-                    var spawnPos = GetAvailablePlot();
-                    var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, transform);
-                    if (obstacle.TryGetComponent(out Obstacle returnObstacle))
-                    {
-                        var occupyRange = returnObstacle.GetOccupyRange();
-                        foreach (var occupy in occupyRange)
-                            _obstacleAreas.Add(occupy);
-                    }
-                }
-            }
-        }
-
-        private void UpdateTileArea()
-        {
-            foreach (var x in Enumerable.Range(0,_maxX))
-                foreach (var z in Enumerable.Range(0,_maxZ))
-                    _tileAreas.Add(new Vector3(x,0,z));
+            _tileAreas.Add(tilePos);
         }
 
         private Vector3 GetAvailablePlot()
@@ -101,9 +90,10 @@ namespace LOT_Turnbase
 
         private bool CheckObstacleAreas(Vector3 checkPos)
         {
-            return _obstacleAreas.Any(area => Vector3.Distance(checkPos, area) < 0.1f);
+            return _domainOwners.Any(owners =>
+                owners.Value.Any(area => Vector3.Distance(checkPos, area.transform.position) < 0.1f));
         }
-        
+
         public bool CheckTeam(Vector3 position, int faction)
         {
             var returnValue = false;
@@ -134,9 +124,18 @@ namespace LOT_Turnbase
 
         #region UPDATE DOMAIN
 
+        public void UpdateDomainOwner(GameObject domainOwner, FactionType factionType)
+        {
+            if (_domainOwners.ContainsKey(factionType) == false)
+                _domainOwners.Add(factionType, new List<GameObject>());
+
+            _domainOwners[factionType].Add(domainOwner);
+        }
+
         public void DestroyAtPosition(Vector3 position)
         {
-            var findPos = _domainOwners[FactionType.Enemy].Find(x => Vector3.Distance(x.transform.position, position) < Mathf.Epsilon);
+            var findPos = _domainOwners[FactionType.Enemy]
+                .Find(x => Vector3.Distance(x.transform.position, position) < Mathf.Epsilon);
             if (findPos == null) return;
             Destroy(findPos);
             _domainOwners[FactionType.Enemy].Remove(findPos);
@@ -146,7 +145,7 @@ namespace LOT_Turnbase
         {
             return _domainOwners[FactionType.Enemy].Count;
         }
-        
+
         public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
         {
             return fromFaction == 0
@@ -154,18 +153,10 @@ namespace LOT_Turnbase
                 : _domainOwners[FactionType.Player].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
         }
 
-        public void RemoveObject(GameObject targetObject, int faction)
+        public void RemoveObject(GameObject targetObject, FactionType faction)
         {
-            if (faction == 0)
-            {
-                _domainOwners[FactionType.Player].Remove(targetObject);
-                _domainOwners[FactionType.Player] = _domainOwners[FactionType.Player].Where(x => x != null).ToList();
-            }
-            else
-            {
-                _domainOwners[FactionType.Enemy].Remove(targetObject);
-                _domainOwners[FactionType.Enemy] = _domainOwners[FactionType.Enemy].Where(x => x != null).ToList();
-            }
+            _domainOwners[faction].Remove(targetObject);
+            _domainOwners[faction] = _domainOwners[faction].Where(x => x != null).ToList();
         }
 
         #endregion

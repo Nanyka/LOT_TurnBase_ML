@@ -6,7 +6,7 @@ namespace LOT_Turnbase
     public class CreatureData
     {
         public Vector3 Position;
-        public CreatureType CreatureType;
+        public FactionType CreatureType;
         public int CurrentHp;
         public int CurrentShield;
         public int CurrentExp;

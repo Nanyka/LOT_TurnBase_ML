@@ -8,6 +8,7 @@ namespace LOT_Turnbase
     public class BuildingManager : MonoBehaviour, IStartUpLoadData
     {
         [SerializeField] private ObjectPool _buildingPool;
+        [SerializeField] private FactionType _faction;
         
         private List<BuildingData> _buildingDatas;
         
@@ -27,11 +28,11 @@ namespace LOT_Turnbase
             foreach (var building in _buildingDatas)
             {
                 var buildingObj = _buildingPool.GetObject();
+                StartUpProcessor.Instance.OnDomainRegister.Invoke(buildingObj, _faction);
 
                 if (buildingObj.TryGetComponent(out BuildingInGame buildingInGame))
                 {
                     buildingInGame.gameObject.SetActive(true);
-                    Debug.Log(buildingInGame);
                     buildingInGame.Init(building);
                 }
             }

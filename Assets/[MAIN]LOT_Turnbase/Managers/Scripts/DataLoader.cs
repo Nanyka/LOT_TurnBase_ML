@@ -15,7 +15,7 @@ namespace LOT_Turnbase
         [Header("Test data")]
         [SerializeField] private ResourceData _testResourceData;
         [SerializeField] private BuildingData _testBuildingData;
-        [SerializeField] private CreatureData _testCreatureData;
+        [SerializeField] private List<CreatureData> _testCreatureData;
         
         private void Start()
         {
@@ -30,11 +30,11 @@ namespace LOT_Turnbase
             // Load buildings
             List<BuildingData> testBuildings = new List<BuildingData> {_testBuildingData};
             // Load creatures
-            List<CreatureData> testCreatures = new List<CreatureData> {_testCreatureData};
+            // List<CreatureData> testCreatures = new List<CreatureData> {_testCreatureData};
 
             _resourceManager.StartUpLoadData(testResources);
             _buildingManager.StartUpLoadData(testBuildings);
-            _creatureManager.StartUpLoadData(testCreatures);
+            _creatureManager.StartUpLoadData(_testCreatureData);
             
             _tileManager.Init(7);
         }
