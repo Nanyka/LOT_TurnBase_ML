@@ -52,7 +52,7 @@ namespace LOT_Turnbase
         
         protected void ResetEnvironment(int winFaction)
         {
-            UIManager.Instance.OnGameOver.Invoke(winFaction);
+            MainUI.Instance.OnGameOver.Invoke(winFaction);
             StartCoroutine(WaitToReset());
         }
 
@@ -73,7 +73,7 @@ namespace LOT_Turnbase
             if (_isObstacleAsTeam1)
                 _currFaction = 0;
             
-            UIManager.Instance.OnRemainStep.Invoke(_maxStep - _step);
+            MainUI.Instance.OnRemainStep.Invoke(_maxStep - _step);
         }
 
         public void ChangeFaction(bool isResetInstance)

@@ -24,34 +24,6 @@ namespace LOT_Turnbase
 
         #region INIT SET UP
 
-        // public void SpawnObstacle()
-        // {
-        //     if (_isDecidePosition)
-        //     {
-        //         // var spawnPos = _designatedPostion + _platformColider.transform.position;
-        //         // spawnPos = new Vector3(spawnPos.x, 0f, spawnPos.z);
-        //         var obstacle = Instantiate(_obstacle, _designatedPostion, Quaternion.identity, _obstacleContainer);
-        //         if (!obstacle.TryGetComponent(out Obstacle returnObstacle)) return;
-        //         var occupyRange = returnObstacle.GetOccupyRange();
-        //         foreach (var occupy in occupyRange)
-        //             _obstacleAreas.Add(occupy);
-        //     }
-        //     else
-        //     {
-        //         for (int i = 0; i < _numberOfObstacles; i++)
-        //         {
-        //             var spawnPos = GetAvailablePlot();
-        //             var obstacle = Instantiate(_obstacle, spawnPos, Quaternion.identity, _obstacleContainer);
-        //             if (obstacle.TryGetComponent(out Obstacle returnObstacle))
-        //             {
-        //                 var occupyRange = returnObstacle.GetOccupyRange();
-        //                 foreach (var occupy in occupyRange)
-        //                     _obstacleAreas.Add(occupy);
-        //             }
-        //         }
-        //     }
-        // }
-
         public void UpdateTileArea(Vector3 tilePos)
         {
             _tileAreas.Add(tilePos);

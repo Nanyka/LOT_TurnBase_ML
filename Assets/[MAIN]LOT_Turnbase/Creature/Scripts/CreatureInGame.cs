@@ -15,18 +15,18 @@ namespace LOT_Turnbase
         [SerializeField] private Renderer _agentRenderer;
         [SerializeField] private CreatureEntity m_Entity;
 
-        private FactionController m_FactionController;
+        private PlayerFactionController _mPlayerFactionController;
         private Transform m_Transform;
         private Vector3 _defaultPos;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
         private bool _isUsed;
 
-        public void Init(CreatureData creatureData, FactionController faction)
+        public void Init(CreatureData creatureData, PlayerFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
-            m_FactionController = faction;
-            m_FactionController.AddCreatureToFaction(this);
+            _mPlayerFactionController = playerFaction;
+            _mPlayerFactionController.AddCreatureToFaction(this);
         }
 
         public void OnEnable()
@@ -39,7 +39,7 @@ namespace LOT_Turnbase
 
         public void MoveDirection(int moveDirection)
         {
-            _movement = m_FactionController.GetMovementCalculator()
+            _movement = _mPlayerFactionController.GetMovementCalculator()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
 
             // Change agent direction before the agent jump to the new position
@@ -60,7 +60,7 @@ namespace LOT_Turnbase
             }
 
             m_Entity.SetAnimation(AnimateType.Walk,false);
-            m_FactionController.UnitMoved();
+            _mPlayerFactionController.UnitMoved();
         }
 
         public void NewTurnReset(Material factionMaterial)
@@ -99,7 +99,7 @@ namespace LOT_Turnbase
             return m_Transform.position;
         }
 
-        public (string name, int health, int damage, int power) GetUnitInfo()
+        public (string name, int health, int damage, int power) GetCreatureInfo()
         {
             // return (name, m_Entity.GetCurrentHealth(), m_Entity.GetAttackDamage(), _movement.jumpCount);
             return (name, 0, 0, _movement.jumpCount);
@@ -107,12 +107,12 @@ namespace LOT_Turnbase
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
+            return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, _mPlayerFactionController.GetFaction());
         }
 
         public EnvironmentManager GetEnvironment()
         {
-            return m_FactionController.GetEnvironment();
+            return _mPlayerFactionController.GetEnvironment();
         }
 
         public int GetJumpStep()
@@ -132,7 +132,7 @@ namespace LOT_Turnbase
 
         private void UnitDie()
         {
-            m_FactionController.RemoveAgent(this);
+            _mPlayerFactionController.RemoveAgent(this);
             Destroy(gameObject, 1f);
         }
 

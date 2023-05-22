@@ -23,14 +23,13 @@ namespace LOT_Turnbase
         {
             m_Environment.OnShowMovingPath.AddListener(MovingRange);
             m_Environment.OnHighlightUnit.AddListener(HighlightUnit);
-            UIManager.Instance.OnClickIdleButton.AddListener(DisableMovingPath);
+            MainUI.Instance.OnClickIdleButton.AddListener(DisableMovingPath);
 
             _camera = Camera.main;
         }
 
         private void MovingRange(Vector3 middlePos)
         {
-            Debug.Log($"Show moving range at {middlePos}");
             for (int index = 0; index <= 3; index++)
             {
                 _movingPoints[index].SwitchProjector(false);
