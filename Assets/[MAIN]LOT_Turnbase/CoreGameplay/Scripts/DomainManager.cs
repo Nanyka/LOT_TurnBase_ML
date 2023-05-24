@@ -66,10 +66,10 @@ namespace LOT_Turnbase
                 owners.Value.Any(area => Vector3.Distance(checkPos, area.transform.position) < 0.1f));
         }
 
-        public bool CheckTeam(Vector3 position, int faction)
+        public bool CheckTeam(Vector3 position, FactionType faction)
         {
             var returnValue = false;
-            var listByFaction = faction == 0 ? _domainOwners[FactionType.Player] : _domainOwners[FactionType.Enemy];
+            var listByFaction = _domainOwners[faction];
             foreach (var item in listByFaction)
             {
                 if (item == null)
@@ -85,11 +85,11 @@ namespace LOT_Turnbase
             return returnValue;
         }
 
-        public bool CheckEnemy(Vector3 targetPos, int faction)
+        public bool CheckEnemy(Vector3 targetPos, FactionType faction)
         {
-            if (faction == 0)
-                return CheckTeam(targetPos, 1);
-            return CheckTeam(targetPos, 0);
+            if (faction == FactionType.Player)
+                return CheckTeam(targetPos, FactionType.Enemy);
+            return CheckTeam(targetPos, FactionType.Player);
         }
 
         #endregion

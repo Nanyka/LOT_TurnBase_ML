@@ -6,20 +6,26 @@ using UnityEngine.SceneManagement;
 
 namespace LOT_Turnbase
 {
-    public class PlayerFactionController : MonoBehaviour
+    public class PlayerFactionController : MonoBehaviour, IFactionController
     {
-        [SerializeField] private FactionType m_Faction = 0;
+        [SerializeField] private FactionType m_Faction = FactionType.Player;
+        [SerializeField] private List<CreatureInGame> _creatures;
         [SerializeField] private Material _factionMaterial;
-        [SerializeField] private List<CreatureInGame> _creatures = new(4);
         [SerializeField] private Material _defaultMaterial;
-        
+
         private EnvironmentManager m_Environment;
         private Camera _camera;
         private int _layerMask = 1 << 3;
         private CreatureInGame _currentUnit;
         private int _countMovedUnit;
 
-        private void Start()
+        // Add creature to this faction manager from it's Init()
+        public void AddCreatureToFaction(CreatureInGame creature)
+        {
+            _creatures.Add(creature);
+        }
+        
+        public void Init()
         {
             m_Environment = FindObjectOfType<EnvironmentManager>();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
@@ -27,31 +33,25 @@ namespace LOT_Turnbase
             // m_Environment.OnOneTeamWin.AddListener(EndGame);
             // m_Environment.OnReset.AddListener(ResetGame);
             MainUI.Instance.OnClickIdleButton.AddListener(SetCurrentUnitIdle);
-            
+
             _camera = Camera.main;
         }
 
-        // Add creature to this faction manager from it's Init()
-        public void AddCreatureToFaction(CreatureInGame creature)
-        {
-            _creatures.Add(creature);
-        }
-
-        public void FactionSetUp(List<CreatureInGame> creatureInGames)
-        {
-            _creatures = creatureInGames;
-            _defaultMaterial = _creatures[0].GetMaterial();
-            MultiJumperKickOff();
-        }
+        // public void FactionSetUp(List<CreatureInGame> creatureInGames)
+        // {
+        //     _creatures = creatureInGames;
+        //     _defaultMaterial = _creatures[0].GetMaterial();
+        //     StartTheGame();
+        // }
 
         #region ONE-TURN PIPELINE
 
         // Start game
-        private void MultiJumperKickOff()
-        {
-            if (m_Faction == 0)
-                m_Environment.KickOffEnvironment();
-        }
+        // private void StartTheGame()
+        // {
+        //     if (m_Faction == 0)
+        //         m_Environment.KickOffEnvironment();
+        // }
 
         public void Update()
         {
@@ -74,6 +74,11 @@ namespace LOT_Turnbase
             foreach (var unitMovement in _creatures)
                 unitMovement.NewTurnReset(_factionMaterial);
 
+            KickOffNewTurn();
+        }
+
+        public void KickOffNewTurn()
+        {
             _countMovedUnit = 0;
         }
 
@@ -89,7 +94,7 @@ namespace LOT_Turnbase
         private void HighlightSelectedUnit(CreatureInGame getUnitAtPos)
         {
             _currentUnit = getUnitAtPos;
-            
+
             if (_currentUnit.IsAvailable())
                 m_Environment.OnShowMovingPath.Invoke(_currentUnit.GetCurrentPosition());
             else
@@ -102,7 +107,7 @@ namespace LOT_Turnbase
         {
             if (m_Environment.GetCurrFaction() != m_Faction)
                 return;
-            
+
             //TODO Control player unit
             Debug.Log(_currentUnit);
 
@@ -110,7 +115,7 @@ namespace LOT_Turnbase
             _currentUnit.MoveDirection(direction);
         }
 
-        public void UnitMoved()
+        public void WaitForCreature()
         {
             _countMovedUnit++;
 
@@ -133,8 +138,8 @@ namespace LOT_Turnbase
         {
             if (_currentUnit == null || !_currentUnit.IsAvailable())
                 return;
-            _currentUnit.SetUsedState();
-            UnitMoved();
+            _currentUnit.MarkAsUsedThisTurn();
+            WaitForCreature();
         }
 
         private void EndTurn()
@@ -198,9 +203,9 @@ namespace LOT_Turnbase
         //     return m_Environment.GetPlatformCollider();
         // }
 
-        public MovementInspector GetMovementCalculator()
+        public MovementInspector GetMovementInspector()
         {
-            return m_Environment.GetMovementCalculator();
+            return m_Environment.GetMovementInspector();
         }
 
         private CreatureInGame GetUnitByPos(Vector3 unitPos)

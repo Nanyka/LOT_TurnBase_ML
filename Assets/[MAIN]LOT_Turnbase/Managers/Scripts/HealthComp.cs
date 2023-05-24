@@ -19,18 +19,18 @@ namespace LOT_Turnbase
             _dieEvent = dieEvent;
         }
 
-        public void TakeDamage(int damage, ref UnitData unitData)
+        public void TakeDamage(int damage, EntityData entityData)
         {
-            unitData.CurrentHealth -= damage;
-            _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
+            entityData.CurrentHp -= damage;
+            _hpSlider.value = entityData.CurrentHp * 1f / m_MAXHp;
 
-            if (unitData.CurrentHealth <= 0)
+            if (entityData.CurrentHp <= 0)
                 Die();
         }
 
-        public int GetCurrentHealth(ref UnitData unitData)
+        public int GetCurrentHealth(EntityData entityData)
         {
-            return unitData.CurrentHealth;
+            return entityData.CurrentHp;
         }
 
         private void Die()
@@ -38,10 +38,10 @@ namespace LOT_Turnbase
             _dieEvent.Invoke();
         }
 
-        public void Reset(ref UnitData unitData)
+        public void Reset(EntityData entityData)
         {
-            unitData.CurrentHealth = m_MAXHp;
-            _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
+            entityData.CurrentHp = m_MAXHp;
+            _hpSlider.value = entityData.CurrentHp * 1f / m_MAXHp;
         }
     }
 }

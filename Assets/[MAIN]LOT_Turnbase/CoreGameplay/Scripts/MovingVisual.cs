@@ -34,7 +34,7 @@ namespace LOT_Turnbase
             {
                 _movingPoints[index].SwitchProjector(false);
 
-                var currentMovement = m_Environment.GetMovementCalculator()
+                var currentMovement = m_Environment.GetMovementInspector()
                     .MovingPath(middlePos, index + 1, 0, 0); // use "index+1" to show just moving directions
 
                 if (Vector3.Distance(currentMovement.returnPos, middlePos) < Mathf.Epsilon)

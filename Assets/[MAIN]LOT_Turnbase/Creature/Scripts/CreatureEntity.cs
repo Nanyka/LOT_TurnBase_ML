@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LOT_Turnbase
@@ -9,6 +10,7 @@ namespace LOT_Turnbase
         [Header("Custom components")]
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
+        [SerializeField] private SkillComp m_SkillComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private LevelComp m_LevelComp;
         [SerializeField] private AttackPath m_AttackPath;
@@ -25,7 +27,7 @@ namespace LOT_Turnbase
         
         #region CREATURE DATA
 
-        private void Move(Vector3 position)
+        protected override void Move(Vector3 position)
         {
             m_Transform.position = position;
         }
@@ -34,33 +36,53 @@ namespace LOT_Turnbase
         
         #region HEALTH
 
-        // public void TakeDamage(int damage)
-        // {
-        //     m_HealthComp.TakeDamage(damage, ref data);
-        // }
-        //
-        // public int GetCurrentHealth()
-        // {
-        //     return m_HealthComp.GetCurrentHealth(ref data);
-        // }
+        public override void TakeDamage(int damage)
+        {
+            m_HealthComp.TakeDamage(damage, m_CreatureData);
+        }
+        
+        public override int GetCurrentHealth()
+        {
+            return m_HealthComp.GetCurrentHealth(m_CreatureData);
+        }
 
         #endregion
         
         #region ATTACK
         
-        public void Attack(IGetCreatureInfo unitInfo)
+        public override void Attack(IGetCreatureInfo unitInfo)
         {
+            Debug.Log($"{gameObject} attack");
             // m_Info = unitInfo;
             // _currentState = unitInfo.GetCurrentState();
             //
             // m_Animator.SetTrigger(m_UnitSkill.GetAttackAnimation(_currentState.jumpStep-1));
         }
 
+        public void ShowAttackRange(IEnumerable<Vector3> attackRange)
+        {
+            Debug.Log($"{gameObject} show attack range");
+        }
+
+        public override int GetAttackDamage()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+        
+        #region SKILL
+        
+        public override IEnumerable<Skill_SO> GetSkills()
+        {
+            return m_SkillComp.GetSkills();
+        }
+        
         #endregion
 
         #region ANIMATE COMPONENT
 
-        public void SetAnimation(AnimateType animation ,bool isTurnOn)
+        public override void SetAnimation(AnimateType animation ,bool isTurnOn)
         {
             m_AnimateComp.SetAnimation(animation,isTurnOn);
         }
@@ -69,7 +91,7 @@ namespace LOT_Turnbase
 
         #region GENERAL
 
-        public void ResetEntity()
+        public override void ResetEntity()
         {
             Debug.Log("Reset Health");
             // m_HealthComp.Reset(ref data);

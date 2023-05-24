@@ -9,24 +9,23 @@ namespace LOT_Turnbase
 
     public class CreatureInGame : MonoBehaviour, IGetCreatureInfo
     {
-        [Header("Unit Components")] [SerializeField]
-        private Transform _rotatePart;
-
+        [Header("Creature Components")] 
+        [SerializeField] protected Transform _rotatePart;
         [SerializeField] private Renderer _agentRenderer;
-        [SerializeField] private CreatureEntity m_Entity;
+        [SerializeField] protected CreatureEntity m_Entity;
 
-        private PlayerFactionController _mPlayerFactionController;
-        private Transform m_Transform;
+        protected IFactionController m_FactionController;
+        protected Transform m_Transform;
         private Vector3 _defaultPos;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
         private bool _isUsed;
 
-        public void Init(CreatureData creatureData, PlayerFactionController playerFaction)
+        public void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
-            _mPlayerFactionController = playerFaction;
-            _mPlayerFactionController.AddCreatureToFaction(this);
+            m_FactionController = playerFaction;
+            m_FactionController.AddCreatureToFaction(this);
         }
 
         public void OnEnable()
@@ -39,7 +38,7 @@ namespace LOT_Turnbase
 
         public void MoveDirection(int moveDirection)
         {
-            _movement = _mPlayerFactionController.GetMovementCalculator()
+            _movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
 
             // Change agent direction before the agent jump to the new position
@@ -60,7 +59,7 @@ namespace LOT_Turnbase
             }
 
             m_Entity.SetAnimation(AnimateType.Walk,false);
-            _mPlayerFactionController.UnitMoved();
+            m_FactionController.WaitForCreature();
         }
 
         public void NewTurnReset(Material factionMaterial)
@@ -107,17 +106,22 @@ namespace LOT_Turnbase
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, _mPlayerFactionController.GetFaction());
+            return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
         }
 
         public EnvironmentManager GetEnvironment()
         {
-            return _mPlayerFactionController.GetEnvironment();
+            return m_FactionController.GetEnvironment();
         }
 
         public int GetJumpStep()
         {
             return _movement.jumpCount;
+        }
+        
+        public bool CheckUsedThisTurn()
+        {
+            return _isUsed;
         }
 
         public void SetMaterial(Material setMaterial)
@@ -125,15 +129,21 @@ namespace LOT_Turnbase
             _agentRenderer.material = setMaterial;
         }
 
-        public void SetUsedState()
+        public void MarkAsUsedThisTurn()
         {
             _isUsed = true;
         }
 
         private void UnitDie()
         {
-            _mPlayerFactionController.RemoveAgent(this);
+            m_FactionController.RemoveAgent(this);
             Destroy(gameObject, 1f);
+        }
+
+        public void ResetMoveState(Material factionMaterial)
+        {
+            _isUsed = false;
+            _agentRenderer.material = factionMaterial;
         }
 
         #endregion

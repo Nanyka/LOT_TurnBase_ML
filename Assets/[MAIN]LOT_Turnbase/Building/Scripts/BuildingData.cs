@@ -3,11 +3,8 @@ using UnityEngine;
 namespace LOT_Turnbase
 {
     [System.Serializable]
-    public class BuildingData
+    public class BuildingData: EntityData
     {
-        public Vector3 Position;
-        public BuildingType BuildingType;
-        public int CurrentHp;
         public int CurrentShield;
         public int CurrentExp;
         public int CurrentStorage;

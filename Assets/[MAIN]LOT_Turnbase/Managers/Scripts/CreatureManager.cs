@@ -5,11 +5,12 @@ using UnityEngine;
 
 namespace LOT_Turnbase
 {
-    [RequireComponent(typeof(PlayerFactionController))]
+    [RequireComponent(typeof(IFactionController))]
     public class CreatureManager : MonoBehaviour, IStartUpLoadData
     {
         [SerializeField] private ObjectPool _creaturePool;
-        [SerializeField] private PlayerFactionController playerFaction;
+        
+        private IFactionController _playerFaction;
         private List<CreatureData> _creatureDatas;
         
         public void StartUpLoadData<T>(T data)
@@ -20,6 +21,7 @@ namespace LOT_Turnbase
         private void Start()
         {
             StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
+            _playerFaction = GetComponent<IFactionController>();
         }
 
         private void Init()
@@ -27,14 +29,16 @@ namespace LOT_Turnbase
             foreach (var creatureData in _creatureDatas)
             {
                 var creatureObj = _creaturePool.GetObject();
-                StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, playerFaction.GetFaction());
+                StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, _playerFaction.GetFaction());
 
                 if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))
                 {
                     creatureInGame.gameObject.SetActive(true);
-                    creatureInGame.Init(creatureData,playerFaction);
+                    creatureInGame.Init(creatureData,_playerFaction);
                 }
             }
+            
+            _playerFaction.Init();
         }
     }
 }

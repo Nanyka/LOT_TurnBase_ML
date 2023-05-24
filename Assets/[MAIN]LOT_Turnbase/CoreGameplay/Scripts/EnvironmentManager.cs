@@ -98,7 +98,7 @@ namespace LOT_Turnbase
 
         #region MOVEMENT CALCULATOR
 
-        public MovementInspector GetMovementCalculator()
+        public MovementInspector GetMovementInspector()
         {
             return _movementInspector;
         }
@@ -132,12 +132,12 @@ namespace LOT_Turnbase
             return _domainManager.CountObstacle() == 0;
         }
 
-        public bool CheckObjectInTeam(Vector3 pos, int faction)
+        public bool CheckObjectInTeam(Vector3 pos, FactionType faction)
         {
             return _domainManager.CheckTeam(pos, faction);
         }
 
-        public bool CheckEnemy(Vector3 pos, int myFaction)
+        public bool CheckEnemy(Vector3 pos, FactionType myFaction)
         {
             return _domainManager.CheckEnemy(pos, myFaction);
         }
