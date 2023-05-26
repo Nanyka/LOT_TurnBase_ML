@@ -129,7 +129,7 @@ public class AgentForInfer : AgentManager
     {
         _responseCounter++;
 
-        // if all agent response, add action to cache at skillManager
+        // if all agent response, add action to cache of NPCActionManager
         if (_responseCounter != _dummyJumper.Count) return;
 
         foreach (var jumperForGame in _dummyJumper)

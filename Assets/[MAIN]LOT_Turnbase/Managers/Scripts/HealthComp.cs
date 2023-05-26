@@ -10,38 +10,26 @@ namespace LOT_Turnbase
 
         private int m_MAXHp;
         private UnityEvent _dieEvent;
-
-        public void Init(int maxHp, UnityEvent dieEvent, ref UnitData unitData)
+        
+        public void Init(int maxHp, UnityEvent dieEvent, EntityData entityData)
         {
             m_MAXHp = maxHp;
-            unitData.CurrentHealth = m_MAXHp;
-            _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
+            _hpSlider.value = entityData.CurrentHp * 1f / m_MAXHp;
             _dieEvent = dieEvent;
         }
 
-        public void TakeDamage(int damage, ref UnitData unitData)
+        public void TakeDamage(int damage, EntityData entityData)
         {
-            unitData.CurrentHealth -= damage;
-            _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
+            entityData.CurrentHp -= damage;
+            _hpSlider.value = entityData.CurrentHp * 1f / m_MAXHp;
 
-            if (unitData.CurrentHealth <= 0)
+            if (entityData.CurrentHp <= 0)
                 Die();
-        }
-
-        public int GetCurrentHealth(ref UnitData unitData)
-        {
-            return unitData.CurrentHealth;
         }
 
         private void Die()
         {
             _dieEvent.Invoke();
-        }
-
-        public void Reset(ref UnitData unitData)
-        {
-            unitData.CurrentHealth = m_MAXHp;
-            _hpSlider.value = unitData.CurrentHealth * 1f / m_MAXHp;
         }
     }
 }

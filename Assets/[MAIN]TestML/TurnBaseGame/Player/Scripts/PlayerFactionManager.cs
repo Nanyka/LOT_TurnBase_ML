@@ -189,11 +189,11 @@ public class PlayerFactionManager : MonoBehaviour
         return _unitMovements.Find(x => Vector3.Distance(x.transform.position, unitPos) < Mathf.Epsilon);
     }
 
-    #endregion
-
     public void RemoveAgent(UnitMovement unitMovement)
     {
         m_Environment.RemoveObject(unitMovement.gameObject, m_Faction);
         _unitMovements.Remove(unitMovement);
     }
+
+    #endregion
 }

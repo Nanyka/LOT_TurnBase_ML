@@ -15,6 +15,12 @@ namespace LOT_Turnbase
 
         public void Init(int tileAmount)
         {
+            SpawnTileMap(tileAmount);
+            StartUpProcessor.Instance.OnInitiateObjects.Invoke();
+        }
+
+        private void SpawnTileMap(int tileAmount)
+        {
             SpiralPatternConstructor(tileAmount);
 
             // Spawn tiles
@@ -22,17 +28,15 @@ namespace LOT_Turnbase
             {
                 var tile = _tilePool.GetObject();
                 tile.transform.position = _listTilePos[i].GetPosition(0f, 1f);
+                StartUpProcessor.Instance.OnUpdateTilePos.Invoke(tile.transform.position);
                 tile.SetActive(true);
             }
-            
-            StartUpProcessor.Instance.OnInitiateObjects.Invoke();
         }
 
         private void SpiralPatternConstructor(int tileAmount)
         {
             _totalTile = tileAmount * _freeSpaceMul;
             var spiralSpace = Mathf.RoundToInt(Mathf.Sqrt(_totalTile)) + 1;
-            Debug.Log($"Spiral space: {spiralSpace}");
 
             int printValue = 0;
             int c1 = 0, c2 = 1;

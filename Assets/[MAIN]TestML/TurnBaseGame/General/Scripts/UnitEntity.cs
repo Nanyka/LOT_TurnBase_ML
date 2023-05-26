@@ -53,7 +53,7 @@ public class UnitEntity : MonoBehaviour
         m_Animator.SetTrigger(m_UnitSkill.GetAttackAnimation(_currentState.jumpStep-1));
     }
     
-    // Use animation's event to take damage enemy and keep effect be execute simultaneously
+    // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
     public void AttackInAnim()
     {
         var attackRange =

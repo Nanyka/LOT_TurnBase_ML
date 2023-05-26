@@ -7,7 +7,7 @@ namespace LOT_Turnbase
     [CreateAssetMenu(fileName = "ResourceStats", menuName = "TurnBase/ResourceStats", order = 3)]
     public class ResourceStats : ScriptableObject
     {
-        public int MaxHealth;
+        public int MaxHp;
         public bool IsLongLasting;
         [ShowIf("@IsLongLasting == false")] public int MaxTurnToDestroy;
         public ResourceType ResourceType;
