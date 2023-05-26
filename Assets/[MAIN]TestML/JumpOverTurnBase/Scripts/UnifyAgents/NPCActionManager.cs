@@ -90,7 +90,7 @@ public class NPCActionManager : MonoBehaviour
         // StartCoroutine(WaitBeforeAction(orderedAction)); // --TESTING--
     }
 
-    // just for testing purpose
+    // just for TESTING purpose
     private IEnumerator WaitBeforeAction(DummyAction action)
     {
         yield return new WaitUntil(() => Input.anyKey);

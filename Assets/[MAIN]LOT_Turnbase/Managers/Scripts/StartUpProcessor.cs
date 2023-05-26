@@ -10,6 +10,8 @@ namespace LOT_Turnbase
     {
         [NonSerialized] public UnityEvent OnLoadData = new(); // sent to DataManager
         [NonSerialized] public UnityEvent OnInitiateObjects = new(); // send to Managers; invoke from TileManager
+        [NonSerialized] public UnityEvent<Vector3> OnUpdateTilePos = new(); // send to EnvironmentManager; invoke at TileManager
+        [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
 
         private void Start()
         {

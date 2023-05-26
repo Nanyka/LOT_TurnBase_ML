@@ -27,6 +27,7 @@ namespace LOT_Turnbase
             foreach (var resource in _resourceDatas)
             {
                 var resourceObj = _resoucePool.GetObject();
+                StartUpProcessor.Instance.OnDomainRegister.Invoke(resourceObj, FactionType.Neutral);
 
                 if (resourceObj.TryGetComponent(out ResourceInGame resourceInGame))
                 {
