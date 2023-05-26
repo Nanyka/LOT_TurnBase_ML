@@ -28,7 +28,6 @@ namespace LOT_Turnbase
         {
             m_Environment = FindObjectOfType<EnvironmentManager>();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
-            m_Environment.OnReset.AddListener(ResetAgents);
             m_Environment.OnOneTeamWin.AddListener(FinishRound);
 
             m_NpcActionInferer = GetComponent<NPCActionInferer>();
@@ -38,11 +37,11 @@ namespace LOT_Turnbase
 
         private void InitiateNpcList()
         {
-            InsertTempIndex();
+            SetTempIndex();
             m_NpcActionInferer.Init();
         }
 
-        private void InsertTempIndex()
+        private void SetTempIndex()
         {
             for (int i = 0; i < m_Enemies.Count; i++)
             {
@@ -51,18 +50,11 @@ namespace LOT_Turnbase
             }
         }
 
-        private void ResetAgents()
-        {
-            foreach (var agent in m_Enemies)
-                agent.ResetAgent();
-        }
-
-
-        #region MY TURN
+        #region ONE TURN PIPELINE
 
         // Change unit colour from environmentManager when changing faction
 
-        protected void ToMyTurn()
+        private void ToMyTurn()
         {
             if (m_Environment.GetCurrFaction() != m_Faction)
                 return;
@@ -151,13 +143,10 @@ namespace LOT_Turnbase
 
         protected void EndTurn()
         {
-            int attackAmount = 0;
+            var attackAmount = 0;
             // Attack nearby enemy
-            foreach (var enemy in m_Enemies)
+            foreach (var enemy in m_Enemies.Where(enemy => enemy.GetJumpStep() != 0))
             {
-                if (enemy.GetJumpStep() == 0)
-                    continue;
-
                 attackAmount++;
                 enemy.Attack();
             }
@@ -197,20 +186,13 @@ namespace LOT_Turnbase
         {
             m_Environment.RemoveObject(jumper.gameObject, m_Faction);
             m_Enemies.Remove(jumper);
-            InsertTempIndex();
+            SetTempIndex();
         }
 
         public List<NPCInGame> GetEnemies()
         {
             return m_Enemies;
         }
-
-        public IEnumerable<NPCInGame> GetJumpersForGame()
-        {
-            return m_Enemies;
-        }
-        
-        
 
         public FactionType GetFaction()
         {
@@ -224,7 +206,10 @@ namespace LOT_Turnbase
 
         public void RemoveAgent(CreatureInGame creatureInGame)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Require some visual stuff here");
+            m_Environment.RemoveObject(creatureInGame.gameObject,m_Faction);
+            m_Enemies.Remove((NPCInGame) creatureInGame);
+            SetTempIndex();
         }
 
         #endregion

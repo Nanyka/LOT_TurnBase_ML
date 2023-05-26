@@ -15,9 +15,9 @@ namespace LOT_Turnbase
             MainUI.Instance.OnShowCreatureInfo.AddListener(ShowUnitInfo);
         }
     
-        private void ShowUnitInfo(IGetCreatureInfo unitInfoGetter)
+        private void ShowUnitInfo(IGetCreatureInfo infoGetter)
         {
-            ShowInfo(unitInfoGetter.GetCreatureInfo());
+            ShowInfo(infoGetter.InfoToShow());
         }
 
         private void ShowInfo((string name, int health, int damage, int power) info)

@@ -5,7 +5,7 @@ namespace LOT_Turnbase
 {
     public class ResourceEntity: Entity
     {
-        [Header("Custom components")]
+        [SerializeField] private ResourceStats m_ResourceStats;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
@@ -15,8 +15,8 @@ namespace LOT_Turnbase
         public void Init(ResourceData resourceData)
         {
             m_ResourceData = resourceData;
-            
             Move(m_ResourceData.Position);
+            RefreshEntity();
         }
 
         #region RESOURCE DATA
@@ -38,7 +38,7 @@ namespace LOT_Turnbase
             throw new System.NotImplementedException();
         }
 
-        public override void Attack(IGetCreatureInfo unitInfo)
+        public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
             throw new System.NotImplementedException();
         }
@@ -62,9 +62,9 @@ namespace LOT_Turnbase
             throw new System.NotImplementedException();
         }
 
-        public override void ResetEntity()
+        public override void RefreshEntity()
         {
-            throw new System.NotImplementedException();
+            m_HealthComp.Init(m_ResourceStats.MaxHp,OnUnitDie,m_ResourceData);
         }
     }
 }

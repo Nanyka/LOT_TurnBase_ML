@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,7 +9,7 @@ namespace LOT_Turnbase
     public class EnvironmentManager : MonoBehaviour
     {
         [HideInInspector] public UnityEvent OnChangeFaction; // invoke at JumpOverActuation;
-        [HideInInspector] public UnityEvent OnReset; // send to AgentManager
+        // [HideInInspector] public UnityEvent OnReset; // send to AgentManager
         [HideInInspector] public UnityEvent<int> OnOneTeamWin; // invoke at AgentManager; sent to all AgentManager 
         [HideInInspector] public UnityEvent<Vector3> OnShowMovingPath; // send to MovingVisual; invoke at FactionController
         [HideInInspector] public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingVisual
@@ -31,7 +30,7 @@ namespace LOT_Turnbase
             _movementInspector = GetComponent<MovementInspector>();
             _domainManager = GetComponent<DomainManager>();
             
-            OnOneTeamWin.AddListener(ResetEnvironment);
+            OnOneTeamWin.AddListener(OneTeamWin);
         }
 
         protected void Start()
@@ -49,24 +48,18 @@ namespace LOT_Turnbase
 
             OnChangeFaction.Invoke();
         }
-        
-        protected void ResetEnvironment(int winFaction)
+
+        private void OneTeamWin(int winFaction)
         {
             MainUI.Instance.OnGameOver.Invoke(winFaction);
-            StartCoroutine(WaitToReset());
-        }
-
-        private IEnumerator WaitToReset()
-        {
-            yield return new WaitForSeconds(3f);
-            ResetGame();
+            Debug.Log("Wait for player claim loot");
         }
 
         public void ChangeFaction()
         {
             _step++;
             if (_step >= _maxStep)
-                ResetGame();
+                Debug.Log("Run out of steps");
 
             _currFaction = _currFaction == FactionType.Player ? FactionType.Enemy : FactionType.Player;
 
@@ -86,12 +79,6 @@ namespace LOT_Turnbase
 
             if (_isObstacleAsTeam1)
                 _currFaction = 0;
-        }
-
-        private void ResetGame()
-        {
-            OnReset.Invoke();
-            Debug.Log("ResetGame");
         }
 
         #endregion
@@ -122,11 +109,6 @@ namespace LOT_Turnbase
             return _domainManager.CheckFreeToMove(checkPos);
         }
 
-        public void DestroyObstacle(Vector3 position)
-        {
-            _domainManager.DestroyAtPosition(position);
-        }
-
         public bool IsRunOutOfObstacle()
         {
             return _domainManager.CountObstacle() == 0;
@@ -142,7 +124,7 @@ namespace LOT_Turnbase
             return _domainManager.CheckEnemy(pos, myFaction);
         }
 
-        public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
+        public GameObject GetEnemyByPosition(Vector3 position, FactionType fromFaction)
         {
             return _domainManager.GetEnemyByPosition(position, fromFaction);
         }

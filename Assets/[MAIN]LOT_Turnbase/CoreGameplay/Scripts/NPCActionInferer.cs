@@ -22,7 +22,6 @@ namespace LOT_Turnbase
         {
             foreach (var enemy in _enemiesController.GetEnemies())
             {
-                Debug.Log($"Is it kick off for {enemy}");
                 foreach (var skill in enemy.GetEntity().GetSkills())
                 {
                     if (m_SkillSOs.Contains(skill))

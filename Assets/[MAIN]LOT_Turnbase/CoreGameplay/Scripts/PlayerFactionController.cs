@@ -30,28 +30,12 @@ namespace LOT_Turnbase
             m_Environment = FindObjectOfType<EnvironmentManager>();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
             m_Environment.OnTouchSelection.AddListener(MoveToward);
-            // m_Environment.OnOneTeamWin.AddListener(EndGame);
-            // m_Environment.OnReset.AddListener(ResetGame);
             MainUI.Instance.OnClickIdleButton.AddListener(SetCurrentUnitIdle);
 
             _camera = Camera.main;
         }
 
-        // public void FactionSetUp(List<CreatureInGame> creatureInGames)
-        // {
-        //     _creatures = creatureInGames;
-        //     _defaultMaterial = _creatures[0].GetMaterial();
-        //     StartTheGame();
-        // }
-
         #region ONE-TURN PIPELINE
-
-        // Start game
-        // private void StartTheGame()
-        // {
-        //     if (m_Faction == 0)
-        //         m_Environment.KickOffEnvironment();
-        // }
 
         public void Update()
         {
@@ -107,9 +91,6 @@ namespace LOT_Turnbase
         {
             if (m_Environment.GetCurrFaction() != m_Faction)
                 return;
-
-            //TODO Control player unit
-            Debug.Log(_currentUnit);
 
             // Move unit along dedicated direction
             _currentUnit.MoveDirection(direction);

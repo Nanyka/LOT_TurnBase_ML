@@ -16,7 +16,6 @@ namespace LOT_Turnbase
 
         protected IFactionController m_FactionController;
         protected Transform m_Transform;
-        private Vector3 _defaultPos;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
         private bool _isUsed;
@@ -33,7 +32,6 @@ namespace LOT_Turnbase
             m_Entity.OnUnitDie.AddListener(UnitDie);
 
             m_Transform = transform;
-            _defaultPos = m_Transform.position;
         }
 
         public void MoveDirection(int moveDirection)
@@ -68,17 +66,9 @@ namespace LOT_Turnbase
             SetMaterial(factionMaterial);
         }
 
-        public void ResetUnit()
-        {
-            m_Transform.position = _defaultPos;
-            _movement.targetPos = _defaultPos;
-            _isUsed = false;
-            m_Entity.ResetEntity();
-        }
-
         public void Attack()
         {
-            m_Entity.Attack(this);
+            m_Entity.AttackSetup(this);
         }
 
         #region GET & SET
@@ -98,10 +88,9 @@ namespace LOT_Turnbase
             return m_Transform.position;
         }
 
-        public (string name, int health, int damage, int power) GetCreatureInfo()
+        public (string name, int health, int damage, int power) InfoToShow()
         {
-            // return (name, m_Entity.GetCurrentHealth(), m_Entity.GetAttackDamage(), _movement.jumpCount);
-            return (name, 0, 0, _movement.jumpCount);
+            return (name, m_Entity.GetCurrentHealth(), m_Entity.GetAttackDamage(), _movement.jumpCount);
         }
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
@@ -134,7 +123,7 @@ namespace LOT_Turnbase
             _isUsed = true;
         }
 
-        private void UnitDie()
+        protected virtual void UnitDie()
         {
             m_FactionController.RemoveAgent(this);
             Destroy(gameObject, 1f);

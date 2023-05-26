@@ -28,7 +28,7 @@ namespace LOT_Turnbase
         
         #region ATTACK
         
-        public abstract void Attack(IGetCreatureInfo unitInfo);
+        public abstract void AttackSetup(IGetCreatureInfo unitInfo);
 
         public abstract int GetAttackDamage();
 
@@ -48,7 +48,7 @@ namespace LOT_Turnbase
 
         #region GENERAL
 
-        public abstract void ResetEntity();
+        public abstract void RefreshEntity();
 
         #endregion
     }

@@ -8,5 +8,6 @@ namespace LOT_Turnbase
         public int CurrentShield;
         public int CurrentExp;
         public int TurnCount;
+        public int CurrentDamage;
     }
 }

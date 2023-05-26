@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Barracuda;
 using Unity.MLAgents;
 using Unity.MLAgents.Policies;
@@ -35,14 +34,6 @@ namespace LOT_Turnbase
 
             m_Agent = GetComponent<Agent>();
             m_BehaviorParameters = GetComponent<BehaviorParameters>();
-            // _mTransform = transform;
-            // _defaultPos = _mTransform.position;
-            // _platformPos = _platformColider.transform.position;
-            // _platformPos = new Vector3(_platformPos.x, 0f, _platformPos.z);
-            // _mMoving.targetPos = _defaultPos;
-            // // _mMoving.targetPos = _defaultPos + _platformPos;
-            //
-            // SetUpPlatform();
         }
 
         #region INFER PHASE
@@ -127,19 +118,14 @@ namespace LOT_Turnbase
 
         public new void Attack()
         {
-            m_Entity.Attack(this);
-        }
-
-        public void ShowAttackRange(IEnumerable<Vector3> attackRange)
-        {
-            m_Entity.ShowAttackRange(attackRange);
+            m_Entity.AttackSetup(this);
         }
 
         #endregion
         
         #region GET & SET
 
-        public new (string name, int health, int damage, int power) GetCreatureInfo()
+        public new (string name, int health, int damage, int power) InfoToShow()
         {
             return (name ,m_Entity.GetCurrentHealth(), m_Entity.GetAttackDamage(), InferMoving.JumpCount);
         }
@@ -159,15 +145,10 @@ namespace LOT_Turnbase
             return m_Entity;
         }
 
-        public void ResetAgent()
+        protected override void UnitDie()
         {
-            m_Entity.ResetEntity();
-        }
-
-        private void UnitDie()
-        {
-            m_FactionController.RemoveAgent(this);
-            Destroy(gameObject,1f);
+            base.UnitDie();
+            Debug.Log("Do something when NPC die if needed");
         }
 
         #endregion

@@ -37,7 +37,6 @@ namespace LOT_Turnbase
         {
             _totalTile = tileAmount * _freeSpaceMul;
             var spiralSpace = Mathf.RoundToInt(Mathf.Sqrt(_totalTile)) + 1;
-            Debug.Log($"Spiral space: {spiralSpace}");
 
             int printValue = 0;
             int c1 = 0, c2 = 1;

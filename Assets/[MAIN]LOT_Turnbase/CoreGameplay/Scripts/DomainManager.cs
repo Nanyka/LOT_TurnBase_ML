@@ -104,25 +104,15 @@ namespace LOT_Turnbase
             _domainOwners[factionType].Add(domainOwner);
         }
 
-        public void DestroyAtPosition(Vector3 position)
-        {
-            var findPos = _domainOwners[FactionType.Enemy]
-                .Find(x => Vector3.Distance(x.transform.position, position) < Mathf.Epsilon);
-            if (findPos == null) return;
-            Destroy(findPos);
-            _domainOwners[FactionType.Enemy].Remove(findPos);
-        }
-
         public int CountObstacle()
         {
             return _domainOwners[FactionType.Enemy].Count;
         }
 
-        public GameObject GetEnemyByPosition(Vector3 position, int fromFaction)
+        public GameObject GetEnemyByPosition(Vector3 position, FactionType fromFaction)
         {
-            return fromFaction == 0
-                ? _domainOwners[FactionType.Enemy].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f)
-                : _domainOwners[FactionType.Player].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
+            var enemyFaction = fromFaction == FactionType.Player ? FactionType.Enemy : FactionType.Player;
+            return _domainOwners[enemyFaction].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
         }
 
         public void RemoveObject(GameObject targetObject, FactionType faction)

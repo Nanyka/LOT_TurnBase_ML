@@ -7,7 +7,7 @@ namespace LOT_Turnbase
 {
     public class BuildingEntity: Entity
     {
-        [Header("Custom components")]
+        [SerializeField] private BuildingStats m_BuildingStats;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private EffectComp m_EffectComp;
@@ -21,6 +21,7 @@ namespace LOT_Turnbase
         public void Init(BuildingData buildingData)
         {
             m_BuildingData = buildingData;
+            RefreshEntity();
         }
 
         protected override void Move(Vector3 position)
@@ -38,7 +39,7 @@ namespace LOT_Turnbase
             throw new NotImplementedException();
         }
 
-        public override void Attack(IGetCreatureInfo unitInfo)
+        public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
             throw new NotImplementedException();
         }
@@ -62,9 +63,9 @@ namespace LOT_Turnbase
             throw new NotImplementedException();
         }
 
-        public override void ResetEntity()
+        public override void RefreshEntity()
         {
-            throw new NotImplementedException();
+            m_HealthComp.Init(m_BuildingStats.MaxHp,OnUnitDie,m_BuildingData);
         }
     }
 }

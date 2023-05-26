@@ -15,6 +15,9 @@ namespace LOT_Turnbase
                 case AnimateType.Walk:
                     m_animator.SetBool("Walk",isOn);
                     break;
+                case AnimateType.Attack:
+                    m_animator.SetTrigger("Attack");
+                    break;
             }
         }
     }
