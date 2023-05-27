@@ -30,7 +30,6 @@ namespace LOT_Turnbase
         public void OnEnable()
         {
             m_Entity.OnUnitDie.AddListener(UnitDie);
-
             m_Transform = transform;
         }
 
@@ -50,9 +49,10 @@ namespace LOT_Turnbase
 
         private IEnumerator MoveOverTime(Vector3 targetPos)
         {
-            while (transform.position != targetPos)
+            m_Entity.UpdateTransform(targetPos, _rotatePart.eulerAngles);
+            while (m_Transform.position != targetPos)
             {
-                m_Transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime);
+                m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 5f * Time.deltaTime);
                 yield return null;
             }
 

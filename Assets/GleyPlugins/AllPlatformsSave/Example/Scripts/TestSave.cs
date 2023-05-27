@@ -14,7 +14,7 @@ public class TestSave : MonoBehaviour
     string fullPath;
 
     //if true data will be encripted with an XOR function
-    bool encrypt = false;
+    bool encrypt = true;
 
     //for debug purpose only
     static string logText = "";

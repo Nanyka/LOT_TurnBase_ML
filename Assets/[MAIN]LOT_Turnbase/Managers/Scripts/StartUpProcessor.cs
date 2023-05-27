@@ -15,6 +15,12 @@ namespace LOT_Turnbase
 
         private void Start()
         {
+            StartCoroutine(WaitToStartGame());
+        }
+
+        private IEnumerator WaitToStartGame()
+        {
+            yield return new WaitForSeconds(1f);
             OnLoadData.Invoke();
         }
     }

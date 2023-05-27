@@ -24,7 +24,7 @@ namespace LOT_Turnbase
             RefreshEntity();
         }
 
-        protected override void Move(Vector3 position)
+        public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             throw new NotImplementedException();
         }
@@ -65,6 +65,8 @@ namespace LOT_Turnbase
 
         public override void RefreshEntity()
         {
+            m_Transform.position = m_BuildingData.Position;
+            m_Transform.eulerAngles = m_BuildingData.Rotation;
             m_HealthComp.Init(m_BuildingStats.MaxHp,OnUnitDie,m_BuildingData);
         }
     }
