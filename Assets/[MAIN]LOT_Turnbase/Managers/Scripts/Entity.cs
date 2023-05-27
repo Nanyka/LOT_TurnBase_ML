@@ -14,7 +14,7 @@ namespace LOT_Turnbase
         
         #region CREATURE DATA
 
-        protected abstract void Move(Vector3 position);
+        public abstract void UpdateTransform(Vector3 position, Vector3 rotation);
 
         #endregion
         

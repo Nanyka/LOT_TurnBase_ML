@@ -152,6 +152,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1202650894}
+  - {fileID: 1491159638}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -343,7 +344,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 450838786}
   - {fileID: 1300729467}
   - {fileID: 384461262}
   - {fileID: 218828472}
@@ -535,97 +535,6 @@ MonoBehaviour:
     amount: 1
     expandable: 1
   pooledItems: []
---- !u!1 &450838785
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 450838786}
-  - component: {fileID: 450838787}
-  m_Layer: 0
-  m_Name: DataLoader<1>
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &450838786
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450838785}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 231263777}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &450838787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450838785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 918cc26dda7fe4f359de927d092cf88d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tileManager: {fileID: 1300729468}
-  _resourceManager: {fileID: 384461263}
-  _buildingManager: {fileID: 218828473}
-  _playerManager: {fileID: 1029899312}
-  _enemyManager: {fileID: 162778267}
-  _testResourceData:
-  - EntityName: 
-    Position: {x: 0, y: 0, z: 2}
-    CreatureType: 0
-    CurrentHp: 1
-    AccumulatedStep: 0
-    Level: 0
-  _testBuildingData:
-  - EntityName: 
-    Position: {x: 0, y: 0, z: 0}
-    CreatureType: 0
-    CurrentHp: 3
-    CurrentShield: 0
-    CurrentExp: 0
-    CurrentStorage: 0
-    TurnCount: 0
-  _testPlayerData:
-  - EntityName: 
-    Position: {x: 1, y: 0, z: 0}
-    CreatureType: 0
-    CurrentHp: 3
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 1
-  _testEnemyData:
-  - EntityName: 
-    Position: {x: 2, y: 0, z: 0}
-    CreatureType: 1
-    CurrentHp: 1
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 1
-  - EntityName: 
-    Position: {x: 0, y: 0, z: 1}
-    CreatureType: 0
-    CurrentHp: 2
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 1
 --- !u!1 &515565299
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,6 +856,103 @@ MonoBehaviour:
     amount: 1
     expandable: 1
   pooledItems: []
+--- !u!1 &1491159637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1491159638}
+  - component: {fileID: 1491159640}
+  - component: {fileID: 1491159639}
+  m_Layer: 0
+  m_Name: SavingSystem(Singleton)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1491159638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491159637}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 115597945}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1491159639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491159637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918cc26dda7fe4f359de927d092cf88d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileManager: {fileID: 1300729468}
+  _resourceManager: {fileID: 384461263}
+  _buildingManager: {fileID: 218828473}
+  _playerManager: {fileID: 1029899312}
+  _enemyManager: {fileID: 162778267}
+  _environmentDataData:
+    _testResourceData:
+    - EntityName: PalmTree
+      Position: {x: 0, y: 0, z: 2}
+      CreatureType: 2
+      CurrentHp: 2
+      AccumulatedStep: 0
+      Level: 0
+    _testBuildingData:
+    - EntityName: TestBuilding
+      Position: {x: 0, y: 0, z: 0}
+      CreatureType: 0
+      CurrentHp: 5
+      CurrentShield: 0
+      CurrentExp: 0
+      CurrentStorage: 0
+      TurnCount: 0
+    _testPlayerData:
+    - EntityName: TestPlayer
+      Position: {x: 1, y: 0, z: 0}
+      CreatureType: 0
+      CurrentHp: 3
+      CurrentShield: 0
+      CurrentExp: 0
+      TurnCount: 0
+      CurrentDamage: 1
+    _testEnemyData:
+    - EntityName: TestEnemy
+      Position: {x: 1, y: 0, z: 2}
+      CreatureType: 1
+      CurrentHp: 2
+      CurrentShield: 0
+      CurrentExp: 0
+      TurnCount: 0
+      CurrentDamage: 1
+--- !u!114 &1491159640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491159637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ebdd751b106454cb84a76ee769886e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1989427915
 GameObject:
   m_ObjectHideFlags: 0

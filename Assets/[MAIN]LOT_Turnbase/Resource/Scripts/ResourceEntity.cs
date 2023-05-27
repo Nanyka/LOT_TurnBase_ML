@@ -15,13 +15,12 @@ namespace LOT_Turnbase
         public void Init(ResourceData resourceData)
         {
             m_ResourceData = resourceData;
-            Move(m_ResourceData.Position);
             RefreshEntity();
         }
 
         #region RESOURCE DATA
-
-        protected override void Move(Vector3 position)
+        
+        public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             m_Transform.position = position;
         }
@@ -64,6 +63,8 @@ namespace LOT_Turnbase
 
         public override void RefreshEntity()
         {
+            m_Transform.position = m_ResourceData.Position;
+            m_Transform.eulerAngles = m_ResourceData.Rotation;
             m_HealthComp.Init(m_ResourceStats.MaxHp,OnUnitDie,m_ResourceData);
         }
     }

@@ -22,15 +22,16 @@ namespace LOT_Turnbase
         public void Init(CreatureData creatureData)
         {
             m_CreatureData = creatureData;
-            Move(m_CreatureData.Position);
             RefreshEntity();
         }
 
         #region CREATURE DATA
 
-        protected override void Move(Vector3 position)
+        public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
-            m_Transform.position = position;
+            m_CreatureData.Position = position;
+            m_CreatureData.Rotation = rotation;
+            SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         #endregion
@@ -41,6 +42,7 @@ namespace LOT_Turnbase
         {
             Debug.Log($"{gameObject} take {damage} damage");
             m_HealthComp.TakeDamage(damage, m_CreatureData);
+            SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         public override int GetCurrentHealth()
@@ -107,6 +109,8 @@ namespace LOT_Turnbase
 
         public override void RefreshEntity()
         {
+            m_Transform.position = m_CreatureData.Position;
+            m_Transform.eulerAngles = m_CreatureData.Rotation;
             m_HealthComp.Init(m_UnitStats.HealthPoint, OnUnitDie, m_CreatureData);
         }
 

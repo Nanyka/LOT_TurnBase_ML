@@ -19973,6 +19973,15 @@ MonoBehaviour:
   m_LevelComp: {fileID: 7860545976750885238}
   m_AttackPath: {fileID: 4022144889115625428}
   m_AnimateComp: {fileID: 742748416443724428}
+  m_CreatureData:
+    EntityName: 
+    Position: {x: 0, y: 0, z: 0}
+    CreatureType: 0
+    CurrentHp: 0
+    CurrentShield: 0
+    CurrentExp: 0
+    TurnCount: 0
+    CurrentDamage: 0
 --- !u!114 &3503953292606973887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25049,9 +25058,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4250043992255324333}
   - component: {fileID: 8508901883016309712}
-  m_Layer: 0
-  m_Name: TestCreature
-  m_TagString: Untagged
+  - component: {fileID: 4153061075878180639}
+  m_Layer: 7
+  m_Name: Body
+  m_TagString: block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25094,6 +25104,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &4153061075878180639
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3684254831415339396}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &3857390390089158408
 GameObject:
   m_ObjectHideFlags: 0
