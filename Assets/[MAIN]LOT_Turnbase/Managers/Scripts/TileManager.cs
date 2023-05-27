@@ -7,7 +7,7 @@ namespace LOT_Turnbase
 {
     public class TileManager : MonoBehaviour
     {
-        [SerializeField] private int _freeSpaceMul = 1;
+        [SerializeField] private int _freeSpaceMultiplier = 1;
         [SerializeField] private ObjectPool _tilePool;
 
         private int _totalTile;
@@ -35,7 +35,7 @@ namespace LOT_Turnbase
 
         private void SpiralPatternConstructor(int tileAmount)
         {
-            _totalTile = tileAmount * _freeSpaceMul;
+            _totalTile = tileAmount * _freeSpaceMultiplier;
             var spiralSpace = Mathf.RoundToInt(Mathf.Sqrt(_totalTile)) + 1;
 
             int printValue = 0;

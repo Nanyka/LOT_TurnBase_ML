@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc77170bad6744746aac64699ae733f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _freeSpaceMul: 2
+  _freeSpaceMultiplier: 2
   _tilePool: {fileID: 1300729469}
 --- !u!114 &1300729469
 MonoBehaviour:
@@ -906,41 +906,12 @@ MonoBehaviour:
   _buildingManager: {fileID: 218828473}
   _playerManager: {fileID: 1029899312}
   _enemyManager: {fileID: 162778267}
-  _environmentDataData:
-    _testResourceData:
-    - EntityName: PalmTree
-      Position: {x: 0, y: 0, z: 2}
-      CreatureType: 2
-      CurrentHp: 2
-      AccumulatedStep: 0
-      Level: 0
-    _testBuildingData:
-    - EntityName: TestBuilding
-      Position: {x: 0, y: 0, z: 0}
-      CreatureType: 0
-      CurrentHp: 5
-      CurrentShield: 0
-      CurrentExp: 0
-      CurrentStorage: 0
-      TurnCount: 0
-    _testPlayerData:
-    - EntityName: TestPlayer
-      Position: {x: 1, y: 0, z: 0}
-      CreatureType: 0
-      CurrentHp: 3
-      CurrentShield: 0
-      CurrentExp: 0
-      TurnCount: 0
-      CurrentDamage: 1
-    _testEnemyData:
-    - EntityName: TestEnemy
-      Position: {x: 1, y: 0, z: 2}
-      CreatureType: 1
-      CurrentHp: 2
-      CurrentShield: 0
-      CurrentExp: 0
-      TurnCount: 0
-      CurrentDamage: 1
+  _mapSize: 7
+  _environmentData:
+    _testResourceData: []
+    _testBuildingData: []
+    _testPlayerData: []
+    _testEnemyData: []
 --- !u!114 &1491159640
 MonoBehaviour:
   m_ObjectHideFlags: 0
