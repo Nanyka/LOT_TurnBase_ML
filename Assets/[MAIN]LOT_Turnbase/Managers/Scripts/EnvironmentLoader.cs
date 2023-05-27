@@ -14,6 +14,7 @@ namespace LOT_Turnbase
         [SerializeField] private CreatureManager _enemyManager;
 
         [Header("Test data")] 
+        [SerializeField] private int _mapSize;
         [SerializeField] private EnvironmentData _environmentData;
         
         private void Start()
@@ -31,7 +32,7 @@ namespace LOT_Turnbase
             _playerManager.StartUpLoadData(_environmentData._testPlayerData);
             _enemyManager.StartUpLoadData(_environmentData._testEnemyData);
             
-            _tileManager.Init(7);
+            _tileManager.Init(_mapSize);
         }
 
         public EnvironmentData GetData()
