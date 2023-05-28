@@ -1,4 +1,4 @@
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public enum BuildingType
     {

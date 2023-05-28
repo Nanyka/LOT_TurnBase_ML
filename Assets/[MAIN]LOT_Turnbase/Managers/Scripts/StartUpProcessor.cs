@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class StartUpProcessor : Singleton<StartUpProcessor>
     {

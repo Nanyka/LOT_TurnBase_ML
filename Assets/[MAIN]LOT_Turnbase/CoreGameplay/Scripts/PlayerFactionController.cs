@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class PlayerFactionController : MonoBehaviour, IFactionController
     {

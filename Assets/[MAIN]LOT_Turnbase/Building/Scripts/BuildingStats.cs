@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     [CreateAssetMenu(fileName = "BuildingStats", menuName = "TurnBase/BuildingStats", order = 4)]
     public class BuildingStats : ScriptableObject

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     [RequireComponent(typeof(MovementInspector))]
     [RequireComponent(typeof(DomainManager))]

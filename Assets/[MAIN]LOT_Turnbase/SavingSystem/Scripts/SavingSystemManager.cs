@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Windows;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public enum SavingPath
     {

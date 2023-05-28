@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using LOT_Turnbase;
+using JumpeeIsland;
 using TMPro;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.Events;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class MainUI : Singleton<MainUI>
     {

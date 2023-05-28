@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using LOT_Turnbase;
+using JumpeeIsland;
 using TMPro;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class CreatureInfoUI : MonoBehaviour
     {

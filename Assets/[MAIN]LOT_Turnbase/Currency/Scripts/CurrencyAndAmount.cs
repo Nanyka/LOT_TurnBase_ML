@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using LOT_Turnbase;
+using JumpeeIsland;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     [Serializable]
     public class CurrencyAndAmount

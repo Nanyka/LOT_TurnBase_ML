@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.MLAgents.Actuators;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class AICreatureActuatorComp : ActuatorComponent
     {

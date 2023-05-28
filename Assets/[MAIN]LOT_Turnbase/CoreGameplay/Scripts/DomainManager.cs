@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class DomainManager : MonoBehaviour
     {
