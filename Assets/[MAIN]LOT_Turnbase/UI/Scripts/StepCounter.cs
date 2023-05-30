@@ -14,7 +14,7 @@ namespace JumpeeIsland
             MainUI.Instance.OnRemainStep.AddListener(Show);
         }
 
-        public void Show(int info)
+        public void Show(long info)
         {
             _remainStepText.text = $"StepRemain:{info}";
         }

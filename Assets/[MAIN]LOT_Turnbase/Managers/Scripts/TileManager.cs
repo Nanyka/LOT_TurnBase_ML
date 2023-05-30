@@ -58,5 +58,11 @@ namespace JumpeeIsland
                 c2++;
             }
         }
+
+        public void Reset()
+        {
+            _tilePool.ResetPool();
+            _listTilePos = new();
+        }
     }
 }

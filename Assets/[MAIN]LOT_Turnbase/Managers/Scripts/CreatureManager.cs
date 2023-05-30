@@ -41,5 +41,11 @@ namespace JumpeeIsland
             
             _playerFaction.Init();
         }
+        
+        public void Reset()
+        {
+            _creaturePool.ResetPool();
+            _creatureDatas = new();
+        }
     }
 }

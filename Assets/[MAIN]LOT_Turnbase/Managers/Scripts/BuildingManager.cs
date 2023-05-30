@@ -37,5 +37,11 @@ namespace JumpeeIsland
                 }
             }
         }
+        
+        public void Reset()
+        {
+            _buildingPool.ResetPool();
+            _buildingDatas = new();
+        }
     }
 }

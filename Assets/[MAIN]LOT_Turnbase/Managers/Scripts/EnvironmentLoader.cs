@@ -17,27 +17,47 @@ namespace JumpeeIsland
         [SerializeField] private int _mapSize;
         [SerializeField] private EnvironmentData _environmentData;
         
-        private void Start()
+        private void Awake()
         {
-            StartUpProcessor.Instance.OnLoadData.AddListener(StartUpLoadData);
+            StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
         }
 
-        private void StartUpLoadData()
+        public void Init()
         {
-            Debug.Log("Load data into managers");
-            _environmentData = SavingSystemManager.Instance.LoadEnvironment();
+            Debug.Log("Load data into managers...");
+            ExecuteEnvData();
+        }
 
+        private void ResetData(EnvironmentData resetData)
+        {
+            Debug.Log("Reset game...");
+            _tileManager.Reset();
+            _resourceManager.Reset();
+            _playerManager.Reset();
+            _enemyManager.Reset();
+            
+            _environmentData = resetData;
+            ExecuteEnvData();
+        }
+
+        private void ExecuteEnvData()
+        {
             _resourceManager.StartUpLoadData(_environmentData._testResourceData);
             _buildingManager.StartUpLoadData(_environmentData._testBuildingData);
             _playerManager.StartUpLoadData(_environmentData._testPlayerData);
             _enemyManager.StartUpLoadData(_environmentData._testEnemyData);
-            
+
             _tileManager.Init(_mapSize);
         }
 
         public EnvironmentData GetData()
         {
             return _environmentData;
+        }
+
+        public void SetData(EnvironmentData environmentData)
+        {
+            _environmentData = environmentData;
         }
     }
 }

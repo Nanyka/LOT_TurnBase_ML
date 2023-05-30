@@ -8,20 +8,22 @@ namespace JumpeeIsland
 {
     public class StartUpProcessor : Singleton<StartUpProcessor>
     {
-        [NonSerialized] public UnityEvent OnLoadData = new(); // sent to DataManager
+        [NonSerialized] public UnityEvent OnLoadData = new(); // sent to EnvironmentLoader
+        [NonSerialized] public UnityEvent<EnvironmentData> OnResetData = new(); // sent to EnvironmentLoader
         [NonSerialized] public UnityEvent OnInitiateObjects = new(); // send to Managers; invoke from TileManager
         [NonSerialized] public UnityEvent<Vector3> OnUpdateTilePos = new(); // send to EnvironmentManager; invoke at TileManager
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
 
         private void Start()
         {
-            StartCoroutine(WaitToStartGame());
+            OnLoadData.Invoke();
+            // StartCoroutine(WaitToStartGame());
         }
 
-        private IEnumerator WaitToStartGame()
-        {
-            yield return new WaitForSeconds(1f);
-            OnLoadData.Invoke();
-        }
+        // private IEnumerator WaitToStartGame()
+        // {
+        //     yield return new WaitForSeconds(1f);
+        //     OnLoadData.Invoke();
+        // }
     }
 }

@@ -35,6 +35,8 @@ namespace JumpeeIsland
         const int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
         const int k_EconomyValidationExceptionStatusCode = 1007;
         const int k_RateLimitExceptionStatusCode = 50;
+        
+        #region CLOUDSAVE ENVIRONMENT DATA
 
         public async Task CallSaveEnvData(EnvironmentData environmentData)
         {
@@ -71,36 +73,59 @@ namespace JumpeeIsland
             }
         }
         
-        void HandleCloudCodeException(CloudCodeException e)
+        public async Task<EnvironmentData> CallResetStateEndpoint()
         {
-            if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
+            try
             {
-                Debug.Log("Cloud Code rate limit has been exceeded. " +
-                          $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<EnvironmentData>(
+                    "JumpeeIsland_ResetGame",
+                    new Dictionary<string, object>());
+                return updatedState;
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e,
+                    "Handled exception in CallGetUpdatedStateEndpoint.");
+            }
+        }
+
+        #endregion
+
+        #region CURRENCY COMMAND BATCH
+
+        public async Task CallProcessBatchEndpoint(string[] commands)
+        {
+            if (commands is null || commands.Length <= 0)
+            {
                 return;
             }
 
-            switch (e.ErrorCode)
+            try
             {
-                case k_CloudCodeUnprocessableEntityExceptionStatusCode:
-                    var cloudCodeCustomError = ConvertToActionableError(e);
-                    HandleCloudCodeScriptError(cloudCodeCustomError);
-                    break;
+                Debug.Log("Processing command batch via Cloud Code...");
 
-                case k_CloudCodeRateLimitExceptionStatusCode:
-                    Debug.Log("Rate Limit Exceeded. Try Again.");
-                    break;
+                await CloudCodeService.Instance.CallEndpointAsync(
+                    "JumpeeIsland_ProcessBatch",
+                    new Dictionary<string, object> { { "commands", commands } });
 
-                case k_CloudCodeMissingScriptExceptionStatusCode:
-                    Debug.Log("Couldn't find requested Cloud Code Script");
-                    break;
-
-                default:
-                    Debug.Log(e);
-                    break;
+                Debug.Log("Cloud Code successfully processed batch.");
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Problem calling cloud code endpoint: " + e.Message);
+                Debug.LogException(e);
             }
         }
-        
+
+        #endregion
+
+        #region HANDLE EXCEPTIONs
+
         static CloudCodeCustomError ConvertToActionableError(CloudCodeException e)
         {
             try
@@ -168,7 +193,7 @@ namespace JumpeeIsland
                 case k_HttpBadRequestStatusCode:
                     Debug.Log("A bad server request occurred during Cloud Code script execution: " +
                         $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                        $"{cloudCodeCustomError.details[0]}");
+                        $"{cloudCodeCustomError.details}");
                     break;
 
                 case k_EconomyPurchaseCostsNotMetStatusCode:
@@ -199,6 +224,38 @@ namespace JumpeeIsland
             }
         }
         
+        
+        
+        void HandleCloudCodeException(CloudCodeException e)
+        {
+            if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
+            {
+                Debug.Log("Cloud Code rate limit has been exceeded. " +
+                          $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                return;
+            }
+
+            switch (e.ErrorCode)
+            {
+                case k_CloudCodeUnprocessableEntityExceptionStatusCode:
+                    var cloudCodeCustomError = ConvertToActionableError(e);
+                    HandleCloudCodeScriptError(cloudCodeCustomError);
+                    break;
+
+                case k_CloudCodeRateLimitExceptionStatusCode:
+                    Debug.Log("Rate Limit Exceeded. Try Again.");
+                    break;
+
+                case k_CloudCodeMissingScriptExceptionStatusCode:
+                    Debug.Log("Couldn't find requested Cloud Code Script");
+                    break;
+
+                default:
+                    Debug.Log(e);
+                    break;
+            }
+        }
+        
         class CloudCodeCustomError : Exception
         {
             public int status;
@@ -218,5 +275,7 @@ namespace JumpeeIsland
                 details = new string[] { };
             }
         }
+
+        #endregion
     }
 }
