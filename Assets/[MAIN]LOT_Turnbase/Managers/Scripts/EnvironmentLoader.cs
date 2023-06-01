@@ -17,10 +17,10 @@ namespace JumpeeIsland
         [SerializeField] private int _mapSize;
         [SerializeField] private EnvironmentData _environmentData;
         
-        private void Awake()
-        {
-            StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
-        }
+        // private void Awake()
+        // {
+        //     StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
+        // }
 
         public void Init()
         {
@@ -28,16 +28,13 @@ namespace JumpeeIsland
             ExecuteEnvData();
         }
 
-        private void ResetData(EnvironmentData resetData)
+        public void ResetData()
         {
-            Debug.Log("Reset game...");
+            Debug.Log("Remove all environment to reset...");
             _tileManager.Reset();
             _resourceManager.Reset();
             _playerManager.Reset();
             _enemyManager.Reset();
-            
-            _environmentData = resetData;
-            ExecuteEnvData();
         }
 
         private void ExecuteEnvData()

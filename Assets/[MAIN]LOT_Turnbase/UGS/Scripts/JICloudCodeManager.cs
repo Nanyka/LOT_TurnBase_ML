@@ -73,14 +73,13 @@ namespace JumpeeIsland
             }
         }
         
-        public async Task<EnvironmentData> CallResetStateEndpoint()
+        public async Task CallResetStateEndpoint()
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<EnvironmentData>(
+                var updatedState = await CloudCodeService.Instance.CallEndpointAsync(
                     "JumpeeIsland_ResetGame",
                     new Dictionary<string, object>());
-                return updatedState;
             }
             catch (CloudCodeException e)
             {

@@ -123,13 +123,13 @@ namespace JumpeeIsland
 
         #endregion
 
-        public int CheckWinCondition()
+        public FactionType CheckWinCondition()
         {
             if (_domainOwners[FactionType.Enemy].Count == 0)
-                return 0;
+                return FactionType.Player;
             if (_domainOwners[FactionType.Player].Count == 0)
-                return 1;
-            return -1;
+                return FactionType.Enemy;
+            return FactionType.Neutral;
         }
     }
 }

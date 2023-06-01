@@ -9,8 +9,9 @@ namespace JumpeeIsland
 
     public class CreatureInGame : MonoBehaviour, IGetCreatureInfo
     {
-        [Header("Creature Components")] 
-        [SerializeField] protected Transform _rotatePart;
+        [Header("Creature Components")] [SerializeField]
+        protected Transform _rotatePart;
+
         [SerializeField] private Renderer _agentRenderer;
         [SerializeField] protected CreatureEntity m_Entity;
 
@@ -35,6 +36,8 @@ namespace JumpeeIsland
 
         public void MoveDirection(int moveDirection)
         {
+            if (_isUsed) return; // Avoid double moving
+
             _movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
 
@@ -43,20 +46,20 @@ namespace JumpeeIsland
                 _rotatePart.forward = _movement.targetPos - m_Transform.position;
 
             _isUsed = true;
-            m_Entity.SetAnimation(AnimateType.Walk,true);
+            m_Entity.SetAnimation(AnimateType.Walk, true);
+            m_Entity.UpdateTransform(_movement.targetPos, _rotatePart.eulerAngles);
             StartCoroutine(MoveOverTime(_movement.targetPos));
         }
 
         private IEnumerator MoveOverTime(Vector3 targetPos)
         {
-            m_Entity.UpdateTransform(targetPos, _rotatePart.eulerAngles);
             while (m_Transform.position != targetPos)
             {
                 m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 5f * Time.deltaTime);
                 yield return null;
             }
 
-            m_Entity.SetAnimation(AnimateType.Walk,false);
+            m_Entity.SetAnimation(AnimateType.Walk, false);
             m_FactionController.WaitForCreature();
         }
 
@@ -107,7 +110,7 @@ namespace JumpeeIsland
         {
             return _movement.jumpCount;
         }
-        
+
         public bool CheckUsedThisTurn()
         {
             return _isUsed;

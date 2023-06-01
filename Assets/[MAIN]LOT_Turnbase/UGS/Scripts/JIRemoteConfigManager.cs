@@ -38,7 +38,6 @@ namespace JumpeeIsland
         void GetAppConfigCommandRewardsAndProcess(string commandKey)
         {
             var json = RemoteConfigService.Instance.appConfig.GetJson(commandKey);
-            Debug.Log(json);
             var commandReward = JsonUtility.FromJson<CommandReward>(json);
             commandRewards[commandKey] = commandReward.rewards;
         }

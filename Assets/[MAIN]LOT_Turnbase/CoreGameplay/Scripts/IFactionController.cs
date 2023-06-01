@@ -12,5 +12,6 @@ namespace JumpeeIsland
         public FactionType GetFaction();
         public EnvironmentManager GetEnvironment();
         public void RemoveAgent(CreatureInGame creatureInGame);
+        public void ResetData();
     }
 }

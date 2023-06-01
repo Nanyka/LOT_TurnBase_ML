@@ -144,7 +144,7 @@ namespace JumpeeIsland
         {
             yield return new WaitForSeconds(1f);
             m_Environment.ChangeFaction();
-            m_Environment.OnChangeFaction.Invoke();
+            // m_Environment.OnChangeFaction.Invoke();
         }
 
         // private void EndGame(int winFaction)
@@ -198,6 +198,11 @@ namespace JumpeeIsland
         {
             m_Environment.RemoveObject(unitMovement.gameObject, m_Faction);
             _creatures.Remove(unitMovement);
+        }
+
+        public void ResetData()
+        {
+            _creatures = new List<CreatureInGame>();
         }
 
         #endregion

@@ -7,6 +7,7 @@ using Unity.Services.Core.Environments;
 using Unity.Services.Economy.Model;
 using Unity.Services.Samples.IdleClickerGame;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
@@ -50,8 +51,6 @@ namespace JumpeeIsland
                 await FetchUpdatedServicesData();
                 if (this == null) return;
 
-                ShowStateAndStartSimulating();
-
                 Debug.Log("Set UI interactable");
 
                 Debug.Log("Initialization and signin complete.");
@@ -84,15 +83,13 @@ namespace JumpeeIsland
             return null;
         }
         
-        void UpdateState(EnvironmentData updatedState)
+        async Task FetchUpdatedServicesData()
         {
-            Debug.Log($"Get cloudSave data with timestamp: {updatedState.timestamp}");
-            
-        }
-        
-        void ShowStateAndStartSimulating()
-        {
-            Debug.Log("Show state on game");
+            await Task.WhenAll(
+                _economyManager.RefreshCurrencyBalances(),
+                _remoteConfigManager.FetchConfigs()
+                // CloudSaveManager.instance.LoadAndCacheData()
+            );
         }
 
         #region ENVIRONMENT DATA
@@ -128,8 +125,8 @@ namespace JumpeeIsland
         {
             try
             {
-                var resetEnvData = await _cloudCodeManager.CallResetStateEndpoint();
-                StartUpProcessor.Instance.OnResetData.Invoke(resetEnvData);
+                await _cloudCodeManager.CallResetStateEndpoint();
+                StartUpProcessor.Instance.OnResetData.Invoke();
             }
             catch (Exception e)
             {
@@ -175,30 +172,23 @@ namespace JumpeeIsland
             }
         }
         
-        public void OnSpendMove()
+        public void OnSpendOneMove()
         {
-            try
-            {
-                var command = new SpendMove();
-                command.Execute(_commandBatchManager,_remoteConfigManager);
-                Debug.Log($"Number command: {_commandBatchManager.CountCommand()}");
-            }
-            catch (Exception e)
-            {
-                Debug.Log("There was a problem ending the game.");
-                Debug.LogException(e);
-            }
+            var command = new SpendMove();
+            command.Execute(_commandBatchManager,_remoteConfigManager);
+            Debug.Log($"Number command: {_commandBatchManager.CountCommand()}");
         }
-        
-        async Task FetchUpdatedServicesData()
-        {
-            await Task.WhenAll(
-                _economyManager.RefreshCurrencyBalances(),
-                _remoteConfigManager.FetchConfigs()
-                // CloudSaveManager.instance.LoadAndCacheData()
-            );
-        }
-        
+
+        // public CommandsCache GetCommandCache()
+        // {
+        //     return _commandBatchManager.GetCommandCache();
+        // }
+        //
+        // public void RestoreCommands(CommandsCache resetCommand)
+        // {
+        //     _commandBatchManager.SetCommandCache(resetCommand);
+        // }
+
         #endregion
     }
 }

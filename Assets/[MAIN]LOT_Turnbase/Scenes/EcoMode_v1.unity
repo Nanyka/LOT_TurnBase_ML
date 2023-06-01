@@ -685,7 +685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &505161027
 RectTransform:
   m_ObjectHideFlags: 0
@@ -922,10 +922,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1059691591669283071, guid: 0b8904c14d33645febe561311e6f3c60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1112521575482992543, guid: 0b8904c14d33645febe561311e6f3c60, type: 3}
-      propertyPath: _isObstacleAsTeam1
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8932641803637039507, guid: 0b8904c14d33645febe561311e6f3c60, type: 3}
@@ -1466,7 +1462,7 @@ MonoBehaviour:
   _mapSize: 7
   _environmentData:
     timestamp: 0
-    currencyBalance: 0
+    lastTimestamp: 0
     _testResourceData: []
     _testBuildingData: []
     _testPlayerData: []
@@ -1483,7 +1479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ebdd751b106454cb84a76ee769886e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cloudConnector: {fileID: 974339808}
+  cloudConnector: {fileID: 974339808}
 --- !u!114 &1491159641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1582,7 +1578,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 974339808}
         m_TargetAssemblyTypeName: JumpeeIsland.JICloudConnector, Assembly-CSharp
-        m_MethodName: OnSpendMove
+        m_MethodName: OnSpendOneMove
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

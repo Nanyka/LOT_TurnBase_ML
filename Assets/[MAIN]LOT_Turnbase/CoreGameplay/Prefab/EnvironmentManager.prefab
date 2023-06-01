@@ -496,7 +496,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8932641803637039507}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -573,9 +573,6 @@ MonoBehaviour:
   OnChangeFaction:
     m_PersistentCalls:
       m_Calls: []
-  OnReset:
-    m_PersistentCalls:
-      m_Calls: []
   OnOneTeamWin:
     m_PersistentCalls:
       m_Calls: []
@@ -588,8 +585,8 @@ MonoBehaviour:
   OnHighlightUnit:
     m_PersistentCalls:
       m_Calls: []
-  _isObstacleAsTeam1: 1
-  _isSpawnObstale: 1
+  _isObstacleAsTeam1: 0
   _currFaction: 0
-  _maxStep: 30
+  _minStep: 0
   _step: 0
+  refurbishPeriod: 180

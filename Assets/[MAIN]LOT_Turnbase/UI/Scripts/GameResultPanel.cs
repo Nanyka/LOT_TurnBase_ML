@@ -15,7 +15,7 @@ namespace JumpeeIsland
             MainUI.Instance.OnGameOver.AddListener(ShowGameOverPanel);
         }
 
-        private void ShowGameOverPanel(int winFaction)
+        private void ShowGameOverPanel(FactionType winFaction)
         {
             _gameoverText.text = $"Faction {winFaction} WIN";
             _gameoverPanel.SetActive(true);

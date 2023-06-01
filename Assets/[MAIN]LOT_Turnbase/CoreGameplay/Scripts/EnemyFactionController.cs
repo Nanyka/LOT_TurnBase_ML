@@ -164,10 +164,10 @@ namespace JumpeeIsland
                 enemy.SetMaterial(_defaultMaterial);
 
             m_Environment.ChangeFaction();
-            m_Environment.OnChangeFaction.Invoke();
+            // m_Environment.OnChangeFaction.Invoke();
         }
 
-        protected void FinishRound(int faction)
+        protected void FinishRound(FactionType faction)
         {
             Debug.Log("NPC end game");
         }
@@ -210,6 +210,12 @@ namespace JumpeeIsland
             m_Environment.RemoveObject(creatureInGame.gameObject,m_Faction);
             m_Enemies.Remove((NPCInGame) creatureInGame);
             SetTempIndex();
+        }
+
+        public void ResetData()
+        {
+            m_Enemies = new List<NPCInGame>();
+            _dummyNPCs = new List<NPCInGame>();
         }
 
         #endregion

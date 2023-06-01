@@ -20,7 +20,7 @@ namespace JumpeeIsland
         void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
         {
             var rewards = remoteConfigManager.commandRewards[key];
-            Debug.Log("Processing Defeat Red Enemy Command Locally");
+            Debug.Log("Processing spend one MOVE");
             // GameStateManager.instance.SetIsOpenChestValidMove(true);
         }
     }

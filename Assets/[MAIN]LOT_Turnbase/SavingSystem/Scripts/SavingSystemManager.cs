@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace JumpeeIsland
     public enum SavingPath
     {
         PlayerEnvData,
-        Currencies
+        CommandBatchCurrencies
     }
 
     [RequireComponent(typeof(EnvironmentLoader))]
@@ -19,12 +20,12 @@ namespace JumpeeIsland
     {
         // Save Player environment data whenever a creature move
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); // invoke at CreatureEntity
+        [NonSerialized] public UnityEvent OnUseOneMove = new(); // invoke at EnvironmentManager
 
-        [SerializeField] private JICloudConnector _cloudConnector;
+        [SerializeField] private JICloudConnector cloudConnector;
         private EnvironmentLoader _envLoader;
         private CurrencyLoader _currencyLoader;
 
-        // private EnvironmentData _environmentData;
         private string _gamePath;
         private bool encrypt = true;
 
@@ -35,7 +36,17 @@ namespace JumpeeIsland
             _envLoader = GetComponent<EnvironmentLoader>();
             _currencyLoader = GetComponent<CurrencyLoader>();
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
+            OnUseOneMove.AddListener(SpendOneMove);
             StartUpProcessor.Instance.OnLoadData.AddListener(StartUpLoadData);
+            StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
+        }
+
+        private void OnDisable()
+        {
+            Debug.Log($"Time from start game {Mathf.RoundToInt(Time.realtimeSinceStartup*1000000)}");
+            _envLoader.GetData().timestamp += Mathf.RoundToInt(Time.realtimeSinceStartup * 1000000);
+            SavePlayerEnv();
+            // SaveCommandBatch(cloudConnector.GetCommandCache());
         }
 
         private async void StartUpLoadData()
@@ -45,11 +56,18 @@ namespace JumpeeIsland
 
             await LoadCurrencies();
             _currencyLoader.Init();
+            
+            StartUpProcessor.Instance.OnStartGame.Invoke(_currencyLoader.GetMoveAmount());
+        }
+
+        private void ResetData()
+        {
+            _envLoader.ResetData();
+            StartUpLoadData();
         }
 
         #region ENVIRONMENT
 
-        // SAVE function
         private void SavePlayerEnv()
         {
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
@@ -67,14 +85,14 @@ namespace JumpeeIsland
         private async Task LoadEnvironment()
         {
             // Authenticate on UGS and get envData
-            await _cloudConnector.Init();
-            _envLoader.SetData(await _cloudConnector.OnLoadEnvData());
+            await cloudConnector.Init();
+            _envLoader.SetData(await cloudConnector.OnLoadEnvData());
             
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
-            SaveManager.Instance.Load<EnvironmentData>(envPath, DataWasLoaded, encrypt);
+            SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
         }
 
-        private void DataWasLoaded(EnvironmentData data, SaveResult result, string message)
+        private void EnvWasLoaded(EnvironmentData data, SaveResult result, string message)
         {
             Debug.Log($"Data Was Loaded:\n{result}\n{message}");
 
@@ -83,22 +101,62 @@ namespace JumpeeIsland
 
             if (result == SaveResult.Success)
             {
-                // Compare timestamp. Select the latest data
-                _envLoader.SetData(_envLoader.GetData().timestamp > data.timestamp ? _envLoader.GetData() : data);
+                // Save current timestamp as a cache data to update data.timestamp if it is assigned as envData
+                var dummyLastTimestamp = _envLoader.GetData().lastTimestamp;
+                // Check if the last session is not Internet connection
+                if (_envLoader.GetData().lastTimestamp < data.timestamp)
+                {
+                    _envLoader.SetData(data);
+                    data.lastTimestamp = dummyLastTimestamp;
+                }
             }
         }
 
         #endregion
 
         #region CURRENCIES
+        
+        private void SaveCommandBatch(CommandsCache commandsCache)
+        {
+            commandsCache.timestamp = _envLoader.GetData().timestamp;
+            var envPath = GetSavingPath(SavingPath.CommandBatchCurrencies);
+            SaveManager.Instance.Save(commandsCache, envPath, CommandBatchWasSaved, encrypt);
+        }
+
+        private void CommandBatchWasSaved(SaveResult result, string message)
+        {
+            if (result == SaveResult.Error)
+            {
+                Debug.LogError($"Error saving data:\n{result}\n{message}");
+            }
+        }
 
         private async Task LoadCurrencies()
         {
             // Authenticate on UGS and get envData
-            _currencyLoader.SetData(await _cloudConnector.OnLoadCurrency());
+            _currencyLoader.SetData(await cloudConnector.OnLoadCurrency());
             
-            // var envPath = GetSavingPath(SavingPath.Currencies);
-            // SaveManager.Instance.Load<EnvironmentData>(envPath, DataWasLoaded, encrypt);
+            // var commandPath = GetSavingPath(SavingPath.CommandBatchCurrencies);
+            // SaveManager.Instance.Load<CommandsCache>(commandPath, CommandWasLoaded, encrypt);
+        }
+
+        // private void CommandWasLoaded(CommandsCache commands, SaveResult result, string message)
+        // {
+        //     Debug.Log($"Data Was Loaded:\n{result}\n{message}");
+        //
+        //     if (result == SaveResult.EmptyData || result == SaveResult.Error)
+        //         Debug.LogError("No Data File Found -> Creating new data...");
+        //
+        //     if (result == SaveResult.Success)
+        //     {
+        //         // Compare timestamp. Select the latest data
+        //         cloudConnector.RestoreCommands(_envLoader.GetData().lastTimestamp > commands.timestamp ? null : commands);
+        //     }
+        // }
+
+        private void SpendOneMove()
+        {
+            cloudConnector.OnSpendOneMove();
         }
 
         #endregion

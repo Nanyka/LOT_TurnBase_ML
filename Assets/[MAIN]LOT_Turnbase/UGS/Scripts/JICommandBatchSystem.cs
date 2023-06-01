@@ -7,11 +7,12 @@ namespace JumpeeIsland
 {
     public class JICommandBatchSystem : MonoBehaviour
     {
-        readonly Queue<JICommand> commandBatch = new();
-        
+        // private Queue<JICommand> commandBatch = new();
+        readonly Queue<JICommand> _commands = new();
+
         public void EnqueueCommand(JICommand command)
         {
-            commandBatch.Enqueue(command);
+            _commands.Enqueue(command);
         }
 
         public async Task FlushBatch(JICloudCodeManager cloudCodeManager)
@@ -29,12 +30,12 @@ namespace JumpeeIsland
 
         string[] ConvertCommandBatchToCommandKeys()
         {
-            var batchSize = commandBatch.Count;
+            var batchSize = _commands.Count;
             var commandKeys = new string[batchSize];
 
             for (var i = 0; i < batchSize; i++)
             {
-                commandKeys[i] = commandBatch.Dequeue().GetKey();
+                commandKeys[i] = _commands.Dequeue().GetKey();
             }
 
             return commandKeys;
@@ -47,7 +48,7 @@ namespace JumpeeIsland
 
         public int CountCommand()
         {
-            return commandBatch.Count;
+            return _commands.Count;
         }
     }
 }
