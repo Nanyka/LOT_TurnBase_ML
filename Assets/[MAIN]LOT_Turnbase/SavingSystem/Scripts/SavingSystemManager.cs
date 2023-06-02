@@ -106,8 +106,8 @@ namespace JumpeeIsland
                 // Check if the last session is not Internet connection
                 if (_envLoader.GetData().lastTimestamp < data.timestamp)
                 {
-                    _envLoader.SetData(data);
                     data.lastTimestamp = dummyLastTimestamp;
+                    _envLoader.SetData(data);
                 }
             }
         }
