@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
+    [System.Serializable]
     public class SpendMove : JICommand
     {
         public new const string key = "JI_SPEND_MOVE";

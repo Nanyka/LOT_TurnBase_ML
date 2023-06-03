@@ -4,6 +4,7 @@ using Unity.Services.Samples.CommandBatching;
 
 namespace JumpeeIsland
 {
+    [System.Serializable]
     public abstract class JICommand
     {
         public const string key = "";

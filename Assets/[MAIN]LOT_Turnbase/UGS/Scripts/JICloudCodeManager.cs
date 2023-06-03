@@ -95,10 +95,9 @@ namespace JumpeeIsland
 
         public async Task CallProcessBatchEndpoint(string[] commands)
         {
+            Debug.Log($"Number of commands at cloudCodeManager: {commands.Length}");
             if (commands is null || commands.Length <= 0)
-            {
                 return;
-            }
 
             try
             {

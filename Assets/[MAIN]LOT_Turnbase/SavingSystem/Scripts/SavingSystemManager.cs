@@ -11,7 +11,8 @@ namespace JumpeeIsland
     public enum SavingPath
     {
         PlayerEnvData,
-        CommandBatchCurrencies
+        Currencies,
+        Commands
     }
 
     [RequireComponent(typeof(EnvironmentLoader))]
@@ -22,12 +23,16 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); // invoke at CreatureEntity
         [NonSerialized] public UnityEvent OnUseOneMove = new(); // invoke at EnvironmentManager
 
+        [NonSerialized]
+        public UnityEvent OnRestoreCommands = new(); // send to EnvironmentManager, invoke at CommandCache
+
         [SerializeField] private JICloudConnector cloudConnector;
         private EnvironmentLoader _envLoader;
         private CurrencyLoader _currencyLoader;
 
         private string _gamePath;
         private bool encrypt = true;
+        private bool _isLastSessionDisconnect;
 
         protected override void Awake()
         {
@@ -43,10 +48,12 @@ namespace JumpeeIsland
 
         private void OnDisable()
         {
-            Debug.Log($"Time from start game {Mathf.RoundToInt(Time.realtimeSinceStartup*1000000)}");
-            _envLoader.GetData().timestamp += Mathf.RoundToInt(Time.realtimeSinceStartup * 1000000);
+            Debug.Log($"Time from start game {Mathf.RoundToInt(Time.realtimeSinceStartup * 1000000)}");
+            _envLoader.GetData().timestamp +=
+                Mathf.RoundToInt(Mathf.Clamp(Time.realtimeSinceStartup - 10, 0, Time.realtimeSinceStartup - 10) *
+                                 1000000); // minus 10 second to ensure local always faster than cloud in timestamp 
             SavePlayerEnv();
-            // SaveCommandBatch(cloudConnector.GetCommandCache());
+            SaveCommandBatch(cloudConnector.GetCommands());
         }
 
         private async void StartUpLoadData()
@@ -56,7 +63,9 @@ namespace JumpeeIsland
 
             await LoadCurrencies();
             _currencyLoader.Init();
-            
+
+            await LoadCommands();
+
             StartUpProcessor.Instance.OnStartGame.Invoke(_currencyLoader.GetMoveAmount());
         }
 
@@ -87,7 +96,7 @@ namespace JumpeeIsland
             // Authenticate on UGS and get envData
             await cloudConnector.Init();
             _envLoader.SetData(await cloudConnector.OnLoadEnvData());
-            
+
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
             SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
         }
@@ -101,12 +110,13 @@ namespace JumpeeIsland
 
             if (result == SaveResult.Success)
             {
-                // Save current timestamp as a cache data to update data.timestamp if it is assigned as envData
-                var dummyLastTimestamp = _envLoader.GetData().lastTimestamp;
                 // Check if the last session is not Internet connection
                 if (_envLoader.GetData().lastTimestamp < data.timestamp)
+                    _isLastSessionDisconnect = true;
+
+                if (_isLastSessionDisconnect)
                 {
-                    data.lastTimestamp = dummyLastTimestamp;
+                    data.lastTimestamp = _envLoader.GetData().lastTimestamp;
                     _envLoader.SetData(data);
                 }
             }
@@ -115,12 +125,25 @@ namespace JumpeeIsland
         #endregion
 
         #region CURRENCIES
-        
+
+        private async Task LoadCurrencies()
+        {
+            _currencyLoader.SetData(await cloudConnector.OnLoadCurrency());
+        }
+
+        private void SpendOneMove()
+        {
+            cloudConnector.OnSpendOneMove();
+        }
+
+        #endregion
+
+        #region COMMAND
+
         private void SaveCommandBatch(CommandsCache commandsCache)
         {
-            commandsCache.timestamp = _envLoader.GetData().timestamp;
-            var envPath = GetSavingPath(SavingPath.CommandBatchCurrencies);
-            SaveManager.Instance.Save(commandsCache, envPath, CommandBatchWasSaved, encrypt);
+            var commandPath = GetSavingPath(SavingPath.Commands);
+            SaveManager.Instance.Save(commandsCache, commandPath, CommandBatchWasSaved, encrypt);
         }
 
         private void CommandBatchWasSaved(SaveResult result, string message)
@@ -131,38 +154,33 @@ namespace JumpeeIsland
             }
         }
 
-        private async Task LoadCurrencies()
+        private async Task LoadCommands()
         {
-            // Authenticate on UGS and get envData
-            _currencyLoader.SetData(await cloudConnector.OnLoadCurrency());
-            
-            // var commandPath = GetSavingPath(SavingPath.CommandBatchCurrencies);
-            // SaveManager.Instance.Load<CommandsCache>(commandPath, CommandWasLoaded, encrypt);
+            var commandPath = GetSavingPath(SavingPath.Commands);
+            SaveManager.Instance.Load<CommandsCache>(commandPath, CommandWasLoaded, encrypt);
         }
 
-        // private void CommandWasLoaded(CommandsCache commands, SaveResult result, string message)
-        // {
-        //     Debug.Log($"Data Was Loaded:\n{result}\n{message}");
-        //
-        //     if (result == SaveResult.EmptyData || result == SaveResult.Error)
-        //         Debug.LogError("No Data File Found -> Creating new data...");
-        //
-        //     if (result == SaveResult.Success)
-        //     {
-        //         // Compare timestamp. Select the latest data
-        //         cloudConnector.RestoreCommands(_envLoader.GetData().lastTimestamp > commands.timestamp ? null : commands);
-        //     }
-        // }
-
-        private void SpendOneMove()
+        private void CommandWasLoaded(CommandsCache commands, SaveResult result, string message)
         {
-            cloudConnector.OnSpendOneMove();
+            Debug.Log(
+                $"Data Was Loaded:{result}\nNumber of commands: {commands.commandList.Count}\nMessage: {message}");
+
+            if (result == SaveResult.EmptyData || result == SaveResult.Error)
+                Debug.LogError("No Data File Found -> Creating new data...");
+
+            if (result == SaveResult.Success)
+            {
+                Debug.Log("Restore command after a disconnected session");
+                // Just load command when the game disconnect in the latest session
+                if (_isLastSessionDisconnect)
+                    commands.ExecuteJICommands();
+            }
         }
 
         #endregion
 
         #region GET & SET
-        
+
         private string GetSavingPath(SavingPath tailPath)
         {
             var envPath = _gamePath + "/" + tailPath;

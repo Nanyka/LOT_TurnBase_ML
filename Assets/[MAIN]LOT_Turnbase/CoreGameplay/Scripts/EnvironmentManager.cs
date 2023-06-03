@@ -25,6 +25,7 @@ namespace JumpeeIsland
 
         private DomainManager _domainManager;
         private MovementInspector _movementInspector;
+        private int _lastSessionSteps;
         private bool _isInRefurbish;
 
         private void Awake()
@@ -40,13 +41,20 @@ namespace JumpeeIsland
             StartUpProcessor.Instance.OnStartGame.AddListener(Init);
             StartUpProcessor.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             StartUpProcessor.Instance.OnDomainRegister.AddListener(DomainRegister);
+            SavingSystemManager.Instance.OnRestoreCommands.AddListener(CacheLastSessionSteps);
+        }
+
+        private void CacheLastSessionSteps()
+        {
+            _lastSessionSteps++;
+            SavingSystemManager.Instance.OnUseOneMove.Invoke();
         }
 
         private void Init(long moveAmount)
         {
-            // TODO Load step from cloud & check offset timestamp
             Debug.Log("Load step from cloud");
             _step = (int) moveAmount;
+            _step -= _lastSessionSteps;
             MainUI.Instance.OnRemainStep.Invoke(_step);
 
             // Start refurbish loop
@@ -102,7 +110,6 @@ namespace JumpeeIsland
 
         private void SpendOneMove()
         {
-            Debug.Log("Debug move count down");
             _step--;
             SavingSystemManager.Instance.OnUseOneMove.Invoke();
             MainUI.Instance.OnRemainStep.Invoke(_step);

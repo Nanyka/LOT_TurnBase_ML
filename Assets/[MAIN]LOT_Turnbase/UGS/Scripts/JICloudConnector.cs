@@ -163,7 +163,7 @@ namespace JumpeeIsland
                 await FetchUpdatedServicesData();
                 if (this == null) return;
 
-                Debug.Log("Refresh currencyUI");
+                Debug.Log("Flush all command to cloud");
             }
             catch (Exception e)
             {
@@ -176,18 +176,12 @@ namespace JumpeeIsland
         {
             var command = new SpendMove();
             command.Execute(_commandBatchManager,_remoteConfigManager);
-            Debug.Log($"Number command: {_commandBatchManager.CountCommand()}");
         }
 
-        // public CommandsCache GetCommandCache()
-        // {
-        //     return _commandBatchManager.GetCommandCache();
-        // }
-        //
-        // public void RestoreCommands(CommandsCache resetCommand)
-        // {
-        //     _commandBatchManager.SetCommandCache(resetCommand);
-        // }
+        public CommandsCache GetCommands()
+        {
+            return _commandBatchManager.GetCommandsForSaving();
+        }
 
         #endregion
     }
