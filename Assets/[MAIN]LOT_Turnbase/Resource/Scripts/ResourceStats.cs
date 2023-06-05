@@ -11,7 +11,7 @@ namespace JumpeeIsland
         public bool IsLongLasting;
         [ShowIf("@IsLongLasting == false")] public int MaxTurnToDestroy;
         public ResourceType ResourceType;
-        [ShowIf("@ResourceType == LOT_Turnbase.ResourceType.Reward")]
+        [ShowIf("@ResourceType == JumpeeIsland.ResourceType.Reward")]
         public CurrencyAndAmount[] Reward =
         {
             new(CurrencyType.Food, 0), new(CurrencyType.Wood, 0), new(CurrencyType.Gold, 0), 

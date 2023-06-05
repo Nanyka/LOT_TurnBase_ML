@@ -23,12 +23,14 @@ namespace JumpeeIsland
         // Save Player environment data whenever a creature move
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); // invoke at CreatureEntity
         [NonSerialized] public UnityEvent OnUseOneMove = new(); // invoke at EnvironmentManager
-        [NonSerialized] public UnityEvent OnRestoreCommands = new(); // send to EnvironmentManager, invoke at CommandCache
 
-        [SerializeField] private JICloudConnector cloudConnector;
-        private EnvironmentLoader _envLoader;
-        private CurrencyLoader _currencyLoader;
-        
+        [NonSerialized]
+        public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
+
+        [SerializeField] private JICloudConnector m_CloudConnector;
+        private EnvironmentLoader m_EnvLoader;
+        private CurrencyLoader m_CurrencyLoader;
+
         private GameStateData _gameStateData = new();
         private string _gamePath;
         private bool encrypt = true;
@@ -38,8 +40,8 @@ namespace JumpeeIsland
         {
             base.Awake();
             _gamePath = Application.persistentDataPath;
-            _envLoader = GetComponent<EnvironmentLoader>();
-            _currencyLoader = GetComponent<CurrencyLoader>();
+            m_EnvLoader = GetComponent<EnvironmentLoader>();
+            m_CurrencyLoader = GetComponent<CurrencyLoader>();
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnUseOneMove.AddListener(SpendOneMove);
             StartUpProcessor.Instance.OnLoadData.AddListener(StartUpLoadData);
@@ -49,50 +51,46 @@ namespace JumpeeIsland
         private async void OnDisable()
         {
             SavePlayerEnv();
-            SaveCommandBatch(cloudConnector.GetCommands());
+            SaveCommandBatch(m_CloudConnector.GetCommands());
             await CheckInternetConnection();
         }
 
         private async Task CheckInternetConnection()
         {
-            if(Application.internetReachability == NetworkReachability.NotReachable)
+            if (Application.internetReachability == NetworkReachability.NotReachable)
             {
                 Debug.Log("Error. Check internet connection!");
-                await SaveDisconnectedState();
+                SaveDisconnectedState(true);
             }
         }
 
         private async void StartUpLoadData()
         {
             await LoadGameState();
-            
+
             await LoadEnvironment();
-            _envLoader.Init();
+            m_EnvLoader.Init();
 
             await LoadCurrencies();
-            _currencyLoader.Init();
+            m_CurrencyLoader.Init();
 
             await LoadCommands();
 
-            await FinishStartUp();
-        }
-
-        private async Task FinishStartUp()
-        {
-            StartUpProcessor.Instance.OnStartGame.Invoke(_currencyLoader.GetMoveAmount());
+            SaveDisconnectedState(false);
+            StartUpProcessor.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetMoveAmount());
         }
 
         private void ResetData()
         {
-            _envLoader.ResetData();
+            m_EnvLoader.ResetData();
             StartUpLoadData();
         }
 
         #region GAME STATE
 
-        private async Task SaveDisconnectedState()
+        private void SaveDisconnectedState(bool isDisconnected)
         {
-            _gameStateData.IsDisconnected = true;
+            _gameStateData.IsDisconnected = isDisconnected;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
             SaveManager.Instance.Save(_gameStateData, gameStatePath, GameStateWasSaved, encrypt);
         }
@@ -111,7 +109,8 @@ namespace JumpeeIsland
 
         private void GameStateWasLoaded(GameStateData gameState, SaveResult result, string message)
         {
-            Debug.Log($"GameState Was Loaded:\n{result}, last session disconnected is {gameState.IsDisconnected}\n{message}");
+            Debug.Log(
+                $"GameState Was Loaded:\n{result}, last session disconnected is {gameState.IsDisconnected}\n{message}");
 
             if (result == SaveResult.EmptyData || result == SaveResult.Error)
                 Debug.LogError("No Data File Found -> Creating new data...");
@@ -127,7 +126,7 @@ namespace JumpeeIsland
         private void SavePlayerEnv()
         {
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
-            SaveManager.Instance.Save(_envLoader.GetData(), envPath, DataWasSaved, encrypt);
+            SaveManager.Instance.Save(m_EnvLoader.GetData(), envPath, DataWasSaved, encrypt);
         }
 
         private void DataWasSaved(SaveResult result, string message)
@@ -141,8 +140,8 @@ namespace JumpeeIsland
         private async Task LoadEnvironment()
         {
             // Authenticate on UGS and get envData
-            await cloudConnector.Init();
-            _envLoader.SetData(await cloudConnector.OnLoadEnvData());
+            await m_CloudConnector.Init();
+            m_EnvLoader.SetData(await m_CloudConnector.OnLoadEnvData());
 
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
             SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
@@ -159,8 +158,8 @@ namespace JumpeeIsland
             {
                 if (!_gameStateData.IsDisconnected) return;
                 Debug.Log("Restore command after a disconnected session");
-                data.lastTimestamp = _envLoader.GetData().lastTimestamp;
-                _envLoader.SetData(data);
+                data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
+                m_EnvLoader.SetData(data);
             }
         }
 
@@ -170,7 +169,7 @@ namespace JumpeeIsland
 
         private async Task LoadCurrencies()
         {
-            _currencyLoader.SetData(await cloudConnector.OnLoadCurrency());
+            m_CurrencyLoader.SetData(await m_CloudConnector.OnLoadCurrency());
         }
 
         #endregion
@@ -179,9 +178,9 @@ namespace JumpeeIsland
 
         private void SpendOneMove()
         {
-            cloudConnector.OnSpendOneMove();
+            m_CloudConnector.OnSpendOneMove();
         }
-        
+
         private void SaveCommandBatch(CommandsCache commandsCache)
         {
             var commandPath = GetSavingPath(SavingPath.Commands);
@@ -200,12 +199,12 @@ namespace JumpeeIsland
         {
             var commandPath = GetSavingPath(SavingPath.Commands);
             SaveManager.Instance.Load<CommandsCache>(commandPath, CommandWasLoaded, encrypt);
-            
         }
 
         private void CommandWasLoaded(CommandsCache commands, SaveResult result, string message)
         {
-            Debug.Log($"Commands Was Loaded:{result}\nNumber of commands: {commands.commandList.Count}\nMessage: {message}");
+            Debug.Log(
+                $"Commands Was Loaded:{result}\nNumber of commands: {commands.commandList.Count}\nMessage: {message}");
 
             if (result == SaveResult.EmptyData || result == SaveResult.Error)
                 Debug.LogError("No Data File Found -> Creating new data...");
@@ -214,7 +213,11 @@ namespace JumpeeIsland
             {
                 // Just load command when the game disconnect in the latest session
                 if (_gameStateData.IsDisconnected)
-                    commands.ExecuteJICommands();
+                {
+                    for (int i = 0; i < commands.commandList.Count; i++)
+                        OnUpdateLocalMove.Invoke();
+                    m_CloudConnector.SubmitCommands(commands.commandList);
+                }
             }
         }
 
@@ -230,7 +233,7 @@ namespace JumpeeIsland
 
         public EnvironmentData GetEnvironmentData()
         {
-            return _envLoader.GetData();
+            return m_EnvLoader.GetData();
         }
 
         #endregion

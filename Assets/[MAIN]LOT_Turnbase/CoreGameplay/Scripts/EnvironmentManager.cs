@@ -41,14 +41,13 @@ namespace JumpeeIsland
             StartUpProcessor.Instance.OnStartGame.AddListener(Init);
             StartUpProcessor.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             StartUpProcessor.Instance.OnDomainRegister.AddListener(DomainRegister);
-            SavingSystemManager.Instance.OnRestoreCommands.AddListener(CacheLastSessionSteps);
+            SavingSystemManager.Instance.OnUpdateLocalMove.AddListener(CacheLastSessionSteps);
         }
 
         private void CacheLastSessionSteps()
         {
             Debug.Log("Load command after a disconnected session");
             _lastSessionSteps++;
-            SavingSystemManager.Instance.OnUseOneMove.Invoke();
         }
 
         private void Init(long moveAmount)

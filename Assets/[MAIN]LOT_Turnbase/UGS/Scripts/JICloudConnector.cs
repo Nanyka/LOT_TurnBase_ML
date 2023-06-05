@@ -171,6 +171,11 @@ namespace JumpeeIsland
             return _commandBatchManager.GetCommandsForSaving();
         }
 
+        public async void SubmitCommands(List<CommandName> commandNames)
+        {
+            await _commandBatchManager.SubmitListCommands(commandNames, _cloudCodeManager);
+        }
+
         #endregion
     }
 }

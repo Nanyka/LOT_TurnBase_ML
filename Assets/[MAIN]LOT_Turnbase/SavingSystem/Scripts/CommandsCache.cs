@@ -18,14 +18,16 @@ namespace JumpeeIsland
         }
 
         // Just translate when move through CloudManager
-        public void ExecuteJICommands()
+        public void TranslateJICommands()
         {
             foreach (var commandString in commandList)
             {
                 switch (commandString)
                 {
                     case CommandName.JI_SPEND_MOVE:
-                        SavingSystemManager.Instance.OnRestoreCommands.Invoke();
+                    {
+                        SavingSystemManager.Instance.OnUpdateLocalMove.Invoke();
+                    }
                         break;
                 }
             }

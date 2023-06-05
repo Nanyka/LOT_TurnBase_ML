@@ -7,7 +7,7 @@ namespace JumpeeIsland
     [System.Serializable]
     public abstract class JICommand
     {
-        public const string key = "";
+        // public const string key = "";
 
         public abstract void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager);
         public abstract CommandName GetKey();

@@ -38,7 +38,6 @@ namespace JumpeeIsland
             for (var i = 0; i < batchSize; i++)
             {
                 commandKeys[i] = _commands.commandBatch[i].GetKey().ToString();
-                // commandKeys[i] = _commands.Dequeue().GetKey();
             }
 
             return commandKeys;
@@ -53,6 +52,32 @@ namespace JumpeeIsland
         {
             _commands.CreateCommandList();
             return _commands;
+        }
+
+        public async Task SubmitListCommands(List<CommandName> commandNames, JICloudCodeManager cloudCodeManager)
+        {
+            try
+            {
+                var commandKeys = ConvertCommandNameToCommandKeys(commandNames);
+                await CallCloudCodeEndpoint(commandKeys, cloudCodeManager);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+        
+        string[] ConvertCommandNameToCommandKeys(List<CommandName> nameList)
+        {
+            var batchSize = nameList.Count;
+            var commandKeys = new string[batchSize];
+
+            for (var i = 0; i < batchSize; i++)
+            {
+                commandKeys[i] = nameList[i].ToString();
+            }
+
+            return commandKeys;
         }
     }
 }
