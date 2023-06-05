@@ -50,6 +50,11 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentHp;
         }
 
+        public override void DieCollect()
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
         #region ATTACK
@@ -112,6 +117,7 @@ namespace JumpeeIsland
             m_Transform.position = m_CreatureData.Position;
             m_Transform.eulerAngles = m_CreatureData.Rotation;
             m_HealthComp.Init(m_UnitStats.HealthPoint, OnUnitDie, m_CreatureData);
+            OnUnitDie.AddListener(DieCollect);
         }
 
         #endregion

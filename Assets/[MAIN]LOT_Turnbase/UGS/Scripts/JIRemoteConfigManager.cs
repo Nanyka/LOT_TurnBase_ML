@@ -32,7 +32,7 @@ namespace JumpeeIsland
         void GetConfigValues()
         {
             Debug.Log("Got config value");
-            GetAppConfigCommandRewardsAndProcess(SpendMove.key);
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_SPEND_MOVE.ToString());
         }
 
         void GetAppConfigCommandRewardsAndProcess(string commandKey)

@@ -10,7 +10,7 @@ namespace JumpeeIsland
         public const string key = "";
 
         public abstract void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager);
-        public abstract string GetKey();
+        public abstract CommandName GetKey();
 
         // internal void DistributeRewardsLocally(List<RemoteConfigManager.Reward> rewards)
         // {

@@ -129,7 +129,15 @@ namespace JumpeeIsland
         protected virtual void UnitDie()
         {
             m_FactionController.RemoveAgent(this);
-            Destroy(gameObject, 1f);
+            StartCoroutine(DieVisual());
+        }
+
+        private IEnumerator DieVisual()
+        {
+            // Collect currencies
+            // VFX
+            yield return new WaitForSeconds(1f);
+            gameObject.SetActive(false);
         }
 
         public void ResetMoveState(Material factionMaterial)

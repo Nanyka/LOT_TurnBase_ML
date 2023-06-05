@@ -5,7 +5,7 @@ namespace JumpeeIsland
     [System.Serializable]
     public class SpendMove : JICommand
     {
-        public new const string key = "JI_SPEND_MOVE";
+        public CommandName key = CommandName.JI_SPEND_MOVE;
 
         public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager)
         {
@@ -13,14 +13,14 @@ namespace JumpeeIsland
             ProcessCommandLocally(remoteConfigManager);
         }
 
-        public override string GetKey()
+        public override CommandName GetKey()
         {
             return key;
         }
 
         void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
         {
-            var rewards = remoteConfigManager.commandRewards[key];
+            var rewards = remoteConfigManager.commandRewards[GetKey().ToString()];
             Debug.Log("Processing spend one MOVE");
             // GameStateManager.instance.SetIsOpenChestValidMove(true);
         }

@@ -6,7 +6,7 @@ namespace JumpeeIsland
     public class CommandsCache
     {
         public List<JICommand> commandBatch = new();
-        public List<string> commandList = new();
+        public List<CommandName> commandList = new();
 
         // Just translate when move through CloudManager
         public void CreateCommandList()
@@ -24,7 +24,7 @@ namespace JumpeeIsland
             {
                 switch (commandString)
                 {
-                    case "JI_SPEND_MOVE":
+                    case CommandName.JI_SPEND_MOVE:
                         SavingSystemManager.Instance.OnRestoreCommands.Invoke();
                         break;
                 }

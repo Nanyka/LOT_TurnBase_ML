@@ -222,8 +222,6 @@ namespace JumpeeIsland
             }
         }
         
-        
-        
         void HandleCloudCodeException(CloudCodeException e)
         {
             if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
@@ -249,7 +247,9 @@ namespace JumpeeIsland
                     break;
 
                 default:
+                {
                     Debug.Log(e);
+                }
                     break;
             }
         }

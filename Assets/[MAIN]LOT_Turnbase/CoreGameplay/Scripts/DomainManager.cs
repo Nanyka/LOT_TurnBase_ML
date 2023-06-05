@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,19 +8,19 @@ namespace JumpeeIsland
 {
     public class DomainManager : MonoBehaviour
     {
-        [SerializeField] protected GameObject _obstacle;
-        [SerializeField] protected Transform _obstacleContainer;
-        [SerializeField] protected int _numberOfObstacles;
-        [SerializeField] protected bool _isDecidePosition;
-        [SerializeField] protected Vector3 _designatedPostion;
-        [SerializeField] private int _maxX;
-        [SerializeField] private int _maxZ;
-
-        [SerializeField] protected GameObject _tileForTesting; // REMOVE when done environment testing
-        [SerializeField] protected Transform _tileContainer; // REMOVE when done environment testing
+        // [SerializeField] protected GameObject _obstacle;
+        // [SerializeField] protected Transform _obstacleContainer;
+        // [SerializeField] protected int _numberOfObstacles;
+        // [SerializeField] protected bool _isDecidePosition;
+        // [SerializeField] protected Vector3 _designatedPostion;
+        // [SerializeField] private int _maxX;
+        // [SerializeField] private int _maxZ;
+        //
+        // [SerializeField] protected GameObject _tileForTesting; // REMOVE when done environment testing
+        // [SerializeField] protected Transform _tileContainer; // REMOVE when done environment testing
 
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
-        private List<Vector3> _obstacleAreas = new();
+        // private List<Vector3> _obstacleAreas = new();
         private List<Vector3> _tileAreas = new();
 
         #region INIT SET UP
@@ -29,26 +30,26 @@ namespace JumpeeIsland
             _tileAreas.Add(tilePos);
         }
 
-        private Vector3 GetAvailablePlot()
-        {
-            var xPos = Mathf.RoundToInt(Random.Range(-_maxX, _maxX));
-            var zPos = Mathf.RoundToInt(Random.Range(-_maxZ, _maxZ));
-            var newPos = new Vector3(xPos, 0f, zPos);
-            newPos = new Vector3(newPos.x, 0f, newPos.z);
-            return CheckFreeToMove(newPos, true) ? newPos : GetAvailablePlot();
-        }
+        // private Vector3 GetAvailablePlot()
+        // {
+        //     var xPos = Mathf.RoundToInt(Random.Range(-_maxX, _maxX));
+        //     var zPos = Mathf.RoundToInt(Random.Range(-_maxZ, _maxZ));
+        //     var newPos = new Vector3(xPos, 0f, zPos);
+        //     newPos = new Vector3(newPos.x, 0f, newPos.z);
+        //     return CheckFreeToMove(newPos, true) ? newPos : GetAvailablePlot();
+        // }
 
         #endregion
 
         #region CHECK DOMAIN
 
-        private bool CheckFreeToMove(Vector3 plot, bool isSpawningPhase)
-        {
-            if (isSpawningPhase && plot == Vector3.zero)
-                return true;
-
-            return CheckFreeToMove(plot);
-        }
+        // private bool CheckFreeToMove(Vector3 plot, bool isSpawningPhase)
+        // {
+        //     if (isSpawningPhase && plot == Vector3.zero)
+        //         return true;
+        //
+        //     return CheckFreeToMove(plot);
+        // }
 
         public bool CheckFreeToMove(Vector3 plot)
         {
@@ -69,7 +70,7 @@ namespace JumpeeIsland
         public bool CheckTeam(Vector3 position, FactionType faction)
         {
             var returnValue = false;
-            var listByFaction = _domainOwners[faction];
+            var listByFaction = GetListObjByFaction(faction);
             foreach (var item in listByFaction)
             {
                 if (item == null)
@@ -96,12 +97,16 @@ namespace JumpeeIsland
 
         #region UPDATE DOMAIN
 
-        public void UpdateDomainOwner(GameObject domainOwner, FactionType factionType)
+        private List<GameObject> GetListObjByFaction(FactionType factionType)
         {
             if (_domainOwners.ContainsKey(factionType) == false)
-                _domainOwners.Add(factionType, new List<GameObject>());
+                _domainOwners.Add(factionType,new());
+            return _domainOwners[factionType];
+        }
 
-            _domainOwners[factionType].Add(domainOwner);
+        public void UpdateDomainOwner(GameObject domainOwner, FactionType factionType)
+        {
+            GetListObjByFaction(factionType).Add(domainOwner);
         }
 
         public int CountObstacle()
@@ -109,10 +114,9 @@ namespace JumpeeIsland
             return _domainOwners[FactionType.Enemy].Count;
         }
 
-        public GameObject GetEnemyByPosition(Vector3 position, FactionType fromFaction)
+        public GameObject GetObjectByPosition(Vector3 position, FactionType fromFaction)
         {
-            var enemyFaction = fromFaction == FactionType.Player ? FactionType.Enemy : FactionType.Player;
-            return _domainOwners[enemyFaction].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
+            return _domainOwners[fromFaction].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
         }
 
         public void RemoveObject(GameObject targetObject, FactionType faction)

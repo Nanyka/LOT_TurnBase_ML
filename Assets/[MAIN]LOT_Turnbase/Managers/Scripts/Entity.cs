@@ -24,6 +24,8 @@ namespace JumpeeIsland
 
         public abstract int GetCurrentHealth();
 
+        public abstract void DieCollect();
+
         #endregion
         
         #region ATTACK

@@ -35,6 +35,7 @@ namespace JumpeeIsland
             _resourceManager.Reset();
             _playerManager.Reset();
             _enemyManager.Reset();
+            _buildingManager.Reset();
         }
 
         private void ExecuteEnvData()

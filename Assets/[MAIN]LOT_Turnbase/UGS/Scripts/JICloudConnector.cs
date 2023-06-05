@@ -94,18 +94,6 @@ namespace JumpeeIsland
 
         #region ENVIRONMENT DATA
 
-        public async void OnSaveEnvData()
-        {
-            try
-            {
-                await _cloudCodeManager.CallSaveEnvData(SavingSystemManager.Instance.GetEnvironmentData());
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-        
         public async Task<EnvironmentData> OnLoadEnvData()
         {
             try

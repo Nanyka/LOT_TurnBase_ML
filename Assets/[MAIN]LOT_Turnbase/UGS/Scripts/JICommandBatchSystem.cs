@@ -37,7 +37,7 @@ namespace JumpeeIsland
 
             for (var i = 0; i < batchSize; i++)
             {
-                commandKeys[i] = _commands.commandBatch[i].GetKey();
+                commandKeys[i] = _commands.commandBatch[i].GetKey().ToString();
                 // commandKeys[i] = _commands.Dequeue().GetKey();
             }
 

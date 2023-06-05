@@ -46,13 +46,14 @@ namespace JumpeeIsland
 
         private void CacheLastSessionSteps()
         {
+            Debug.Log("Load command after a disconnected session");
             _lastSessionSteps++;
             SavingSystemManager.Instance.OnUseOneMove.Invoke();
         }
 
         private void Init(long moveAmount)
         {
-            Debug.Log("Load step from cloud");
+            Debug.Log($"Load step from cloud with lasSessionStep: {_lastSessionSteps}");
             _step = (int) moveAmount;
             _step -= _lastSessionSteps;
             MainUI.Instance.OnRemainStep.Invoke(_step);
@@ -134,14 +135,17 @@ namespace JumpeeIsland
             return _domainManager.CheckFreeToMove(checkPos);
         }
 
-        public bool IsRunOutOfObstacle()
+        public FactionType CheckFaction(Vector3 objectPos)
         {
-            return _domainManager.CountObstacle() == 0;
-        }
+            var faction = FactionType.Neutral;
+            
+            if (_domainManager.CheckTeam(objectPos, FactionType.Player))
+                faction = FactionType.Player;
+            
+            if (_domainManager.CheckTeam(objectPos, FactionType.Enemy))
+                faction = FactionType.Enemy;
 
-        public bool CheckObjectInTeam(Vector3 pos, FactionType faction)
-        {
-            return _domainManager.CheckTeam(pos, faction);
+            return faction;
         }
 
         public bool CheckEnemy(Vector3 pos, FactionType myFaction)
@@ -149,9 +153,9 @@ namespace JumpeeIsland
             return _domainManager.CheckEnemy(pos, myFaction);
         }
 
-        public GameObject GetEnemyByPosition(Vector3 position, FactionType fromFaction)
+        public GameObject GetObjectByPosition(Vector3 position, FactionType fromFaction)
         {
-            return _domainManager.GetEnemyByPosition(position, fromFaction);
+            return _domainManager.GetObjectByPosition(position, fromFaction);
         }
 
         public void RemoveObject(GameObject targetObject, FactionType faction)

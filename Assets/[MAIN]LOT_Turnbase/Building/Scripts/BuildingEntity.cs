@@ -39,6 +39,11 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
+        public override void DieCollect()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
             throw new NotImplementedException();
@@ -68,6 +73,7 @@ namespace JumpeeIsland
             m_Transform.position = m_BuildingData.Position;
             m_Transform.eulerAngles = m_BuildingData.Rotation;
             m_HealthComp.Init(m_BuildingStats.MaxHp,OnUnitDie,m_BuildingData);
+            OnUnitDie.AddListener(DieCollect);
         }
     }
 }
