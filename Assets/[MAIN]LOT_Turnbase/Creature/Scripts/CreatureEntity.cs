@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class CreatureEntity : Entity
     {
@@ -48,6 +48,11 @@ namespace LOT_Turnbase
         public override int GetCurrentHealth()
         {
             return m_CreatureData.CurrentHp;
+        }
+
+        public override void DieCollect()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
@@ -112,6 +117,7 @@ namespace LOT_Turnbase
             m_Transform.position = m_CreatureData.Position;
             m_Transform.eulerAngles = m_CreatureData.Rotation;
             m_HealthComp.Init(m_UnitStats.HealthPoint, OnUnitDie, m_CreatureData);
+            OnUnitDie.AddListener(DieCollect);
         }
 
         #endregion

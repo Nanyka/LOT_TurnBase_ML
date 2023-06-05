@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class LevelComp : MonoBehaviour
     {

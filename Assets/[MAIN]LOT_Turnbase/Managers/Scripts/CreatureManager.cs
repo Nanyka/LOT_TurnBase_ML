@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     [RequireComponent(typeof(IFactionController))]
     [RequireComponent(typeof(ObjectPool))]
     public class CreatureManager : MonoBehaviour, IStartUpLoadData
     {
-        private IFactionController _playerFaction;
+        private IFactionController _factionController;
         private ObjectPool _creaturePool;
         private List<CreatureData> _creatureDatas;
         
@@ -21,7 +21,7 @@ namespace LOT_Turnbase
         private void Start()
         {
             StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
-            _playerFaction = GetComponent<IFactionController>();
+            _factionController = GetComponent<IFactionController>();
             _creaturePool = GetComponent<ObjectPool>();
         }
 
@@ -30,16 +30,23 @@ namespace LOT_Turnbase
             foreach (var creatureData in _creatureDatas)
             {
                 var creatureObj = _creaturePool.GetObject();
-                StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, _playerFaction.GetFaction());
+                StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
 
                 if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))
                 {
                     creatureInGame.gameObject.SetActive(true);
-                    creatureInGame.Init(creatureData,_playerFaction);
+                    creatureInGame.Init(creatureData,_factionController);
                 }
             }
             
-            _playerFaction.Init();
+            _factionController.Init();
+        }
+        
+        public void Reset()
+        {
+            _creaturePool.ResetPool();
+            _creatureDatas = new();
+            _factionController.ResetData();
         }
     }
 }

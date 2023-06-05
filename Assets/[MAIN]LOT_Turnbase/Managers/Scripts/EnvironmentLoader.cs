@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class EnvironmentLoader : MonoBehaviour
     {
@@ -17,27 +17,45 @@ namespace LOT_Turnbase
         [SerializeField] private int _mapSize;
         [SerializeField] private EnvironmentData _environmentData;
         
-        private void Start()
+        // private void Awake()
+        // {
+        //     StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
+        // }
+
+        public void Init()
         {
-            StartUpProcessor.Instance.OnLoadData.AddListener(StartUpLoadData);
+            Debug.Log("Load data into managers...");
+            ExecuteEnvData();
         }
 
-        private void StartUpLoadData()
+        public void ResetData()
         {
-            Debug.Log("Load data into managers");
-            _environmentData = SavingSystemManager.Instance.LoadEnvironment();
+            Debug.Log("Remove all environment to reset...");
+            _tileManager.Reset();
+            _resourceManager.Reset();
+            _playerManager.Reset();
+            _enemyManager.Reset();
+            _buildingManager.Reset();
+        }
 
+        private void ExecuteEnvData()
+        {
             _resourceManager.StartUpLoadData(_environmentData._testResourceData);
             _buildingManager.StartUpLoadData(_environmentData._testBuildingData);
             _playerManager.StartUpLoadData(_environmentData._testPlayerData);
             _enemyManager.StartUpLoadData(_environmentData._testEnemyData);
-            
+
             _tileManager.Init(_mapSize);
         }
 
         public EnvironmentData GetData()
         {
             return _environmentData;
+        }
+
+        public void SetData(EnvironmentData environmentData)
+        {
+            _environmentData = environmentData;
         }
     }
 }

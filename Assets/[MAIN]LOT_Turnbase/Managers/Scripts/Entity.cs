@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public abstract class Entity: MonoBehaviour
     {
@@ -23,6 +23,8 @@ namespace LOT_Turnbase
         public abstract void TakeDamage(int damage);
 
         public abstract int GetCurrentHealth();
+
+        public abstract void DieCollect();
 
         #endregion
         

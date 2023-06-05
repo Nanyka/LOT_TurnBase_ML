@@ -5,7 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Policies;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class NPCInGame : CreatureInGame, IGetCreatureInfo
     {

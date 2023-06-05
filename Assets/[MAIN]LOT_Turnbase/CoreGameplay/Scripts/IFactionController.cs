@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public interface IFactionController
     {
@@ -12,5 +12,6 @@ namespace LOT_Turnbase
         public FactionType GetFaction();
         public EnvironmentManager GetEnvironment();
         public void RemoveAgent(CreatureInGame creatureInGame);
+        public void ResetData();
     }
 }

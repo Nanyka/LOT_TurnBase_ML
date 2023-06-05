@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class BuildingEntity: Entity
     {
@@ -39,6 +39,11 @@ namespace LOT_Turnbase
             throw new NotImplementedException();
         }
 
+        public override void DieCollect()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
             throw new NotImplementedException();
@@ -68,6 +73,7 @@ namespace LOT_Turnbase
             m_Transform.position = m_BuildingData.Position;
             m_Transform.eulerAngles = m_BuildingData.Rotation;
             m_HealthComp.Init(m_BuildingStats.MaxHp,OnUnitDie,m_BuildingData);
+            OnUnitDie.AddListener(DieCollect);
         }
     }
 }

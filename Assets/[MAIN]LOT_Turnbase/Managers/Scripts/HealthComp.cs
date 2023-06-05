@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class HealthComp : MonoBehaviour
     {

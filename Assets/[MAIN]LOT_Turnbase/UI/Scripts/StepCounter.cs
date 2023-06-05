@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class StepCounter : MonoBehaviour
     {
@@ -14,7 +14,7 @@ namespace LOT_Turnbase
             MainUI.Instance.OnRemainStep.AddListener(Show);
         }
 
-        public void Show(int info)
+        public void Show(long info)
         {
             _remainStepText.text = $"StepRemain:{info}";
         }

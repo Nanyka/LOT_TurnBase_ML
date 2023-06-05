@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class ResourceManager : MonoBehaviour, IStartUpLoadData
     {
@@ -35,6 +35,12 @@ namespace LOT_Turnbase
                     resourceInGame.Init(resource);
                 }
             }
+        }
+        
+        public void Reset()
+        {
+            _resoucePool.ResetPool();
+            _resourceDatas = new();
         }
     }
 }

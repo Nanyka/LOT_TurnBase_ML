@@ -99,4 +99,10 @@ public class ObjectPool : MonoBehaviour
         else
             return null;
     }
+
+    public void ResetPool()
+    {
+        foreach (var item in pooledItems)
+            item.SetActive(false);
+    }
 }

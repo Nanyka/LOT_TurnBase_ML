@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class ResourceEntity: Entity
     {
@@ -27,15 +27,28 @@ namespace LOT_Turnbase
         
         #endregion
 
+        #region HEALTH DATA
+
         public override void TakeDamage(int damage)
         {
-            throw new System.NotImplementedException();
+            Debug.Log($"{gameObject} take {damage} damage");
+            m_HealthComp.TakeDamage(damage, m_ResourceData);
+            SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         public override int GetCurrentHealth()
         {
             throw new System.NotImplementedException();
         }
+
+        public override void DieCollect()
+        {
+            
+        }
+
+        #endregion
+
+        #region ATTACK
 
         public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
@@ -46,6 +59,8 @@ namespace LOT_Turnbase
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion
         
         #region SKILL
         
@@ -56,16 +71,21 @@ namespace LOT_Turnbase
         
         #endregion
 
+        #region ANIMATION
+
         public override void SetAnimation(AnimateType animation, bool isTurnOn)
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion
 
         public override void RefreshEntity()
         {
             m_Transform.position = m_ResourceData.Position;
             m_Transform.eulerAngles = m_ResourceData.Rotation;
             m_HealthComp.Init(m_ResourceStats.MaxHp,OnUnitDie,m_ResourceData);
+            OnUnitDie.AddListener(DieCollect);
         }
     }
 }

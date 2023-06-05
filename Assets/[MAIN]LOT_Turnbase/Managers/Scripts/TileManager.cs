@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LOT_Turnbase
+namespace JumpeeIsland
 {
     public class TileManager : MonoBehaviour
     {
@@ -57,6 +57,12 @@ namespace LOT_Turnbase
                 c1--;
                 c2++;
             }
+        }
+
+        public void Reset()
+        {
+            _tilePool.ResetPool();
+            _listTilePos = new();
         }
     }
 }
