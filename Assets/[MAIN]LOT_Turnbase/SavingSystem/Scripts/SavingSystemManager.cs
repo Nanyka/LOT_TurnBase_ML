@@ -23,9 +23,8 @@ namespace JumpeeIsland
         // Save Player environment data whenever a creature move
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); // invoke at CreatureEntity
         [NonSerialized] public UnityEvent OnUseOneMove = new(); // invoke at EnvironmentManager
-
-        [NonSerialized]
-        public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
+        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // send to EnvironmentLoader, invoke at ResourceInGame;
+        [NonSerialized] public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
 
         [SerializeField] private JICloudConnector m_CloudConnector;
         private EnvironmentLoader m_EnvLoader;
@@ -235,6 +234,8 @@ namespace JumpeeIsland
         {
             return m_EnvLoader.GetData();
         }
+        
+        
 
         #endregion
     }

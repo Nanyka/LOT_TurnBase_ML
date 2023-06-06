@@ -5,15 +5,17 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ResourceManager : MonoBehaviour, IStartUpLoadData
+    public class ResourceLoader : MonoBehaviour, IStartUpLoadData
     {
         [SerializeField] private ObjectPool _resoucePool;
-        
-        private List<ResourceData> _resourceDatas;
+
+        private ResourceController _resourceController;
+        [SerializeField] private List<ResourceData> _resourceDatas;
         
         private void Start()
         {
             StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
+            _resourceController = GetComponent<ResourceController>();
         }
         
         // Prepare data for game session
@@ -27,16 +29,18 @@ namespace JumpeeIsland
             foreach (var resource in _resourceDatas)
             {
                 var resourceObj = _resoucePool.GetObject();
-                StartUpProcessor.Instance.OnDomainRegister.Invoke(resourceObj, FactionType.Neutral);
+                StartUpProcessor.Instance.OnDomainRegister.Invoke(resourceObj, resource.CreatureType);
 
                 if (resourceObj.TryGetComponent(out ResourceInGame resourceInGame))
                 {
                     resourceInGame.gameObject.SetActive(true);
-                    resourceInGame.Init(resource);
+                    resourceInGame.Init(resource, _resourceController);
                 }
             }
+
+            _resourceController.Init();
         }
-        
+
         public void Reset()
         {
             _resoucePool.ResetPool();

@@ -12,7 +12,7 @@ namespace JumpeeIsland
         [Header("Default components")] 
         [SerializeField] protected Transform m_Transform;
         
-        #region CREATURE DATA
+        #region ENTITY DATA
 
         public abstract void UpdateTransform(Vector3 position, Vector3 rotation);
 

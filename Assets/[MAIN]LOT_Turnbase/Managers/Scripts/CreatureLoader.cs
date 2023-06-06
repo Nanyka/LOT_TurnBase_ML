@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     [RequireComponent(typeof(IFactionController))]
     [RequireComponent(typeof(ObjectPool))]
-    public class CreatureManager : MonoBehaviour, IStartUpLoadData
+    public class CreatureLoader : MonoBehaviour, IStartUpLoadData
     {
         private IFactionController _factionController;
         private ObjectPool _creaturePool;
@@ -30,6 +30,7 @@ namespace JumpeeIsland
             foreach (var creatureData in _creatureDatas)
             {
                 var creatureObj = _creaturePool.GetObject();
+                creatureData.CreatureType = _factionController.GetFaction(); // adjust Faction to ensure it did not went wrong during customization
                 StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
 
                 if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))

@@ -34,6 +34,11 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
+        public CreatureData GetData()
+        {
+            return m_CreatureData;
+        }
+
         #endregion
 
         #region HEALTH

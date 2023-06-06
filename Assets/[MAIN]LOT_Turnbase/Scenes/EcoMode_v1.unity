@@ -617,6 +617,7 @@ GameObject:
   - component: {fileID: 384461262}
   - component: {fileID: 384461263}
   - component: {fileID: 384461264}
+  - component: {fileID: 384461265}
   m_Layer: 0
   m_Name: ResourceManager<3>
   m_TagString: Untagged
@@ -652,6 +653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resoucePool: {fileID: 384461264}
+  _resourceDatas: []
 --- !u!114 &384461264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,6 +672,18 @@ MonoBehaviour:
     amount: 1
     expandable: 1
   pooledItems: []
+--- !u!114 &384461265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384461261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1db745ff83f745d8a837e3f88e638d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &505161026
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,7 +1143,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Faction: 0
-  _creatures: []
   _factionMaterial: {fileID: 2100000, guid: c9fa44c2c3f8ce74ca39a3355ea42631, type: 2}
   _defaultMaterial: {fileID: 2100000, guid: bbb71e91b4d8a44999b1f690a488dc5a, type: 2}
 --- !u!1 &1138509663
@@ -1455,16 +1468,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 1300729468}
-  _resourceManager: {fileID: 384461263}
-  _buildingManager: {fileID: 218828473}
-  _playerManager: {fileID: 1029899312}
-  _enemyManager: {fileID: 162778267}
+  resourceLoader: {fileID: 384461263}
+  buildingLoader: {fileID: 218828473}
+  playerLoader: {fileID: 1029899312}
+  enemyLoader: {fileID: 162778267}
   _mapSize: 10
   _environmentData:
     timestamp: 0
     lastTimestamp: 0
     moveTimestamp: 0
-    _testResourceData: []
+    _testResourceData:
+    - EntityName: 
+      Position: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      CreatureType: 0
+      CurrentHp: 0
+      AccumulatedStep: 0
+      Level: 0
     _testBuildingData: []
     _testPlayerData: []
     _testEnemyData: []
@@ -1480,7 +1500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ebdd751b106454cb84a76ee769886e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cloudConnector: {fileID: 974339808}
+  m_CloudConnector: {fileID: 974339808}
 --- !u!114 &1491159641
 MonoBehaviour:
   m_ObjectHideFlags: 0

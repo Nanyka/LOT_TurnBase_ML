@@ -18,21 +18,21 @@ namespace JumpeeIsland
         }
 
         // Just translate when move through CloudManager
-        public void TranslateJICommands()
-        {
-            foreach (var commandString in commandList)
-            {
-                switch (commandString)
-                {
-                    case CommandName.JI_SPEND_MOVE:
-                    {
-                        SavingSystemManager.Instance.OnUpdateLocalMove.Invoke();
-                    }
-                        break;
-                }
-            }
-
-            commandList = new();
-        }
+        // public void TranslateJICommands()
+        // {
+        //     foreach (var commandString in commandList)
+        //     {
+        //         switch (commandString)
+        //         {
+        //             case CommandName.JI_SPEND_MOVE:
+        //             {
+        //                 SavingSystemManager.Instance.OnUpdateLocalMove.Invoke();
+        //             }
+        //                 break;
+        //         }
+        //     }
+        //
+        //     commandList = new();
+        // }
     }
 }

@@ -17,7 +17,6 @@ namespace JumpeeIsland
                 if (attackFaction != mFaction)
                 {
                     var enemy = mEnvironment.GetObjectByPosition(attackPoint, attackFaction);
-                    Debug.Log($"Return enemy: {enemy}");
                     if (enemy == null)
                         continue;
 

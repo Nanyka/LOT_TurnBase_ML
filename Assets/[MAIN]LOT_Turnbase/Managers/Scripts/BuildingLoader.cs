@@ -5,11 +5,10 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class BuildingManager : MonoBehaviour, IStartUpLoadData
+    public class BuildingLoader : MonoBehaviour, IStartUpLoadData
     {
         [SerializeField] private ObjectPool _buildingPool;
-        [SerializeField] private FactionType _faction;
-        
+
         private List<BuildingData> _buildingDatas;
         
         public void StartUpLoadData<T>(T data)
@@ -28,7 +27,7 @@ namespace JumpeeIsland
             foreach (var building in _buildingDatas)
             {
                 var buildingObj = _buildingPool.GetObject();
-                StartUpProcessor.Instance.OnDomainRegister.Invoke(buildingObj, _faction);
+                StartUpProcessor.Instance.OnDomainRegister.Invoke(buildingObj, building.CreatureType);
 
                 if (buildingObj.TryGetComponent(out BuildingInGame buildingInGame))
                 {

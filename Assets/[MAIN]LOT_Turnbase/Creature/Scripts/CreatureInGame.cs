@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     // TODO replicate UnitMovement
 
-    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo
+    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IRemoveEntity
     {
         [Header("Creature Components")] [SerializeField]
         protected Transform _rotatePart;
@@ -138,6 +138,12 @@ namespace JumpeeIsland
             // VFX
             yield return new WaitForSeconds(1f);
             gameObject.SetActive(false);
+        }
+
+        public void Remove(EnvironmentData environmentData)
+        {
+            if (m_FactionController.GetFaction() == FactionType.Player)
+                environmentData._testPlayerData.Remove(m_Entity.GetData());
         }
 
         public void ResetMoveState(Material factionMaterial)
