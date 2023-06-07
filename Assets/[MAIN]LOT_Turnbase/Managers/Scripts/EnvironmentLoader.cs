@@ -41,10 +41,10 @@ namespace JumpeeIsland
 
         private void ExecuteEnvData()
         {
-            resourceLoader.StartUpLoadData(_environmentData._testResourceData);
-            buildingLoader.StartUpLoadData(_environmentData._testBuildingData);
-            playerLoader.StartUpLoadData(_environmentData._testPlayerData);
-            enemyLoader.StartUpLoadData(_environmentData._testEnemyData);
+            resourceLoader.StartUpLoadData(_environmentData.ResourceData);
+            buildingLoader.StartUpLoadData(_environmentData.BuildingData);
+            playerLoader.StartUpLoadData(_environmentData.PlayerData);
+            enemyLoader.StartUpLoadData(_environmentData.EnemyData);
 
             _tileManager.Init(_mapSize);
         }

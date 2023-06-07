@@ -171,6 +171,9 @@ namespace JumpeeIsland
                 case CommandName.JI_NEUTRAL_WOOD_1_0:
                     command = new NeutralWood010();
                     break;
+                case CommandName.JI_NEUTRAL_FOOD_1_0:
+                    command = new NeutralFood010();
+                    break;
             }
 
             if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager);

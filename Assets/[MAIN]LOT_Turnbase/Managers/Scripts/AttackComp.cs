@@ -5,7 +5,7 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
-        public void Attack(IEnumerable<Vector3> attackPoints, FactionType mFaction, int damage,
+        public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int damage,
             EnvironmentManager mEnvironment)
         {
             if (attackPoints == null)
@@ -14,14 +14,14 @@ namespace JumpeeIsland
             foreach (var attackPoint in attackPoints)
             {
                 var attackFaction = mEnvironment.CheckFaction(attackPoint);
-                if (attackFaction != mFaction)
+                if (attackFaction != mEntity.GetFaction())
                 {
                     var enemy = mEnvironment.GetObjectByPosition(attackPoint, attackFaction);
                     if (enemy == null)
                         continue;
 
                     if (enemy.TryGetComponent(out Entity enemyEntity))
-                        enemyEntity.TakeDamage(damage, mFaction);
+                        enemyEntity.TakeDamage(damage, mEntity);
                 }
             }
         }

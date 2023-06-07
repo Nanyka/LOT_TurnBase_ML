@@ -34,6 +34,7 @@ namespace JumpeeIsland
             Debug.Log("Got config value");
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_SPEND_MOVE.ToString());
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_WOOD_1_0.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_FOOD_1_0.ToString());
         }
 
         void GetAppConfigCommandRewardsAndProcess(string commandKey)

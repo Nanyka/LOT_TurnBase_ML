@@ -8,9 +8,9 @@ namespace JumpeeIsland
         public long timestamp;
         public long lastTimestamp;
         public long moveTimestamp;
-        public List<ResourceData> _testResourceData;
-        public List<BuildingData> _testBuildingData;
-        public List<CreatureData> _testPlayerData;
-        public List<CreatureData> _testEnemyData;
+        public List<ResourceData> ResourceData;
+        public List<BuildingData> BuildingData;
+        public List<CreatureData> PlayerData;
+        public List<CreatureData> EnemyData;
     }
 }

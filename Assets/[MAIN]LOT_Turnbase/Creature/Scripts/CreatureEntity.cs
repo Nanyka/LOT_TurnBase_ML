@@ -44,14 +44,24 @@ namespace JumpeeIsland
             return m_UnitStats.Command;
         }
 
+        public override FactionType GetFaction()
+        {
+            return m_CreatureData.CreatureType;
+        }
+
+        public override void CollectExp(int expAmount)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
         #region HEALTH
 
-        public override void TakeDamage(int damage, FactionType fromFaction)
+        public override void TakeDamage(int damage, Entity fromEntity)
         {
             Debug.Log($"{gameObject} take {damage} damage");
-            m_HealthComp.TakeDamage(damage, m_CreatureData, fromFaction);
+            m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -60,7 +70,7 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentHp;
         }
 
-        public override void DieCollect(FactionType killedByFaction)
+        public override void DieCollect(Entity killedByEntity)
         {
             // Set animation and effect when entity die here
             m_AnimateComp.SetAnimation(AnimateType.Die, true);
@@ -85,9 +95,9 @@ namespace JumpeeIsland
             var attackRange =
                 m_SkillComp.AttackPoints(currentState.midPos, currentState.direction, currentState.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
-            m_AttackComp.Attack(attackPoints, currentState.faction, m_CreatureData.CurrentDamage , m_Info.GetEnvironment());
+            m_AttackComp.Attack(attackPoints, this, m_CreatureData.CurrentDamage , m_Info.GetEnvironment());
+
             ShowAttackRange(attackPoints);
-        
             m_EffectComp.AttackVFX(currentState.jumpStep);
         }
 

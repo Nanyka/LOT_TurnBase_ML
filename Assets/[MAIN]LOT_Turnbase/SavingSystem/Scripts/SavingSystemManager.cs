@@ -109,9 +109,7 @@ namespace JumpeeIsland
 
         private void GameStateWasLoaded(GameStateData gameState, SaveResult result, string message)
         {
-            Debug.Log(
-                $"GameState Was Loaded:\n{result}, last session disconnected is {gameState.IsDisconnected}\n{message}");
-
+            // Debug.Log($"GameState Was Loaded:\n{result}, last session disconnected is {gameState.IsDisconnected}\n{message}");
             if (result == SaveResult.EmptyData || result == SaveResult.Error)
                 Debug.LogError("No Data File Found -> Creating new data...");
 

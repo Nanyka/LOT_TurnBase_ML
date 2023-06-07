@@ -66,6 +66,8 @@ namespace JumpeeIsland
         public void NewTurnReset(Material factionMaterial)
         {
             _isUsed = false;
+            _movement.jumpCount = 0;
+            _movement.overEnemy = 0;
             SetMaterial(factionMaterial);
         }
 
@@ -79,11 +81,6 @@ namespace JumpeeIsland
         public bool IsAvailable()
         {
             return !_isUsed;
-        }
-
-        public Material GetMaterial()
-        {
-            return _agentRenderer.material;
         }
 
         public Vector3 GetCurrentPosition()
@@ -126,8 +123,13 @@ namespace JumpeeIsland
             _isUsed = true;
         }
 
-        protected virtual void UnitDie(FactionType killedByFaction)
+        protected virtual void UnitDie(Entity killedByEntity)
         {
+            // just contribute resource when it is killed by player faction
+            if (killedByEntity.GetFaction() == FactionType.Player)
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
+            
+            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             m_FactionController.RemoveAgent(this);
             StartCoroutine(DieVisual());
         }
@@ -142,8 +144,11 @@ namespace JumpeeIsland
 
         public void Remove(EnvironmentData environmentData)
         {
+            // TODO Check why it still not update in environmentData
             if (m_FactionController.GetFaction() == FactionType.Player)
-                environmentData._testPlayerData.Remove(m_Entity.GetData());
+                environmentData.PlayerData.Remove(m_Entity.GetData());
+            if (m_FactionController.GetFaction() == FactionType.Enemy)
+                environmentData.EnemyData.Remove(m_Entity.GetData());
         }
 
         public void ResetMoveState(Material factionMaterial)

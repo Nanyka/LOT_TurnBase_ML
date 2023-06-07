@@ -34,7 +34,17 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public override void TakeDamage(int damage, FactionType fromFaction)
+        public override FactionType GetFaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CollectExp(int expAmount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void TakeDamage(int damage, Entity fromEntity)
         {
             throw new NotImplementedException();
         }
@@ -44,7 +54,7 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public override void DieCollect(FactionType killedByFaction)
+        public override void DieCollect(Entity killedByEntity)
         {
             throw new NotImplementedException();
         }

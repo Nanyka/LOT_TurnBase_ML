@@ -9,25 +9,25 @@ namespace JumpeeIsland
         [SerializeField] private Slider _hpSlider;
 
         private int m_MAXHp;
-        private UnityEvent<FactionType> _dieEvent;
+        private UnityEvent<Entity> _dieEvent;
         
-        public void Init(int maxHp, UnityEvent<FactionType> dieEvent, EntityData entityData)
+        public void Init(int maxHp, UnityEvent<Entity> dieEvent, EntityData entityData)
         {
             m_MAXHp = maxHp;
             _hpSlider.value = entityData.CurrentHp * 1f / m_MAXHp;
             _dieEvent = dieEvent;
         }
 
-        public void TakeDamage(int damage, EntityData entityData, FactionType killedByFaction)
+        public void TakeDamage(int damage, EntityData entityData, Entity killedBy)
         {
             entityData.CurrentHp -= damage;
             _hpSlider.value = entityData.CurrentHp * 1f / m_MAXHp;
 
             if (entityData.CurrentHp <= 0)
-                Die(killedByFaction);
+                Die(killedBy);
         }
 
-        private void Die(FactionType killedByFaction)
+        private void Die(Entity killedByFaction)
         {
             _dieEvent.Invoke(killedByFaction);
         }

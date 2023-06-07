@@ -146,9 +146,9 @@ namespace JumpeeIsland
             return m_Entity;
         }
 
-        protected override void UnitDie(FactionType killedByFaction)
+        protected override void UnitDie(Entity killedByEntity)
         {
-            base.UnitDie(killedByFaction);
+            base.UnitDie(killedByEntity);
             Debug.Log("Do something when NPC die if needed");
         }
 
