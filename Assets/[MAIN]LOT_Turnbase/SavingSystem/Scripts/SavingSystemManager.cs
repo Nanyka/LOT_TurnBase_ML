@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Services.Economy.Model;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,8 +23,8 @@ namespace JumpeeIsland
     {
         // Save Player environment data whenever a creature move
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); // invoke at CreatureEntity
-        [NonSerialized] public UnityEvent OnUseOneMove = new(); // invoke at EnvironmentManager
-        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // send to EnvironmentLoader, invoke at ResourceInGame;
+        [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new(); // invoke at EnvironmentManager
+        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // invoke at ResourceInGame;
         [NonSerialized] public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
 
         [SerializeField] private JICloudConnector m_CloudConnector;
@@ -42,7 +43,7 @@ namespace JumpeeIsland
             m_EnvLoader = GetComponent<EnvironmentLoader>();
             m_CurrencyLoader = GetComponent<CurrencyLoader>();
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
-            OnUseOneMove.AddListener(SpendOneMove);
+            OnContributeCommand.AddListener(StackUpCommand);
             StartUpProcessor.Instance.OnLoadData.AddListener(StartUpLoadData);
             StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
         }
@@ -75,7 +76,7 @@ namespace JumpeeIsland
 
             await LoadCommands();
 
-            SaveDisconnectedState(false);
+            SaveDisconnectedState(false); // set it as connected state when loaded all disconnected session's data
             StartUpProcessor.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetMoveAmount());
         }
 
@@ -171,13 +172,23 @@ namespace JumpeeIsland
             m_CurrencyLoader.SetData(await m_CloudConnector.OnLoadCurrency());
         }
 
+        public void IncrementLocalCurrency(string rewardID, int rewardAmount)
+        {
+            m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
+        }
+
+        public IEnumerable<PlayerBalance> GetCurrencies()
+        {
+            return m_CurrencyLoader.GetCurrencies();
+        }
+
         #endregion
 
         #region COMMAND
 
-        private void SpendOneMove()
+        private void StackUpCommand(CommandName commandName)
         {
-            m_CloudConnector.OnSpendOneMove();
+            m_CloudConnector.OnCommandStackUp(commandName);
         }
 
         private void SaveCommandBatch(CommandsCache commandsCache)
@@ -234,9 +245,6 @@ namespace JumpeeIsland
         {
             return m_EnvLoader.GetData();
         }
-        
-        
-
         #endregion
     }
 }

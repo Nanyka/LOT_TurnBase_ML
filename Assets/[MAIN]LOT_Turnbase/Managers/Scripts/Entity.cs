@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     public abstract class Entity: MonoBehaviour
     {
-        [NonSerialized] public UnityEvent OnUnitDie = new();
+        [NonSerialized] public UnityEvent<FactionType> OnUnitDie = new();
         
         [Header("Default components")] 
         [SerializeField] protected Transform m_Transform;
@@ -16,15 +16,17 @@ namespace JumpeeIsland
 
         public abstract void UpdateTransform(Vector3 position, Vector3 rotation);
 
+        public abstract CommandName GetCommand();
+
         #endregion
         
         #region HEALTH
 
-        public abstract void TakeDamage(int damage);
+        public abstract void TakeDamage(int damage, FactionType fromFaction);
 
         public abstract int GetCurrentHealth();
 
-        public abstract void DieCollect();
+        public abstract void DieCollect(FactionType killedByFaction);
 
         #endregion
         

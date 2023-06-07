@@ -18,6 +18,9 @@ namespace JumpeeIsland
                 case AnimateType.Attack:
                     m_animator.SetTrigger("Attack");
                     break;
+                case AnimateType.Die:
+                    m_animator.SetTrigger("Die");
+                    break;
             }
         }
     }

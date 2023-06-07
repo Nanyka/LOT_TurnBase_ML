@@ -111,7 +111,7 @@ namespace JumpeeIsland
         private void SpendOneMove()
         {
             _step--;
-            SavingSystemManager.Instance.OnUseOneMove.Invoke();
+            SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE);
             MainUI.Instance.OnRemainStep.Invoke(_step);
         }
 
@@ -161,7 +161,7 @@ namespace JumpeeIsland
         {
             _domainManager.RemoveObject(targetObject, faction);
             var checkWin = _domainManager.CheckWinCondition();
-            if (checkWin >= 0)
+            if (checkWin != FactionType.Neutral)
                 OnOneTeamWin.Invoke(checkWin);
         }
 

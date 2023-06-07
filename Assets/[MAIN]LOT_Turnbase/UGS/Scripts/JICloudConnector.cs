@@ -160,10 +160,20 @@ namespace JumpeeIsland
             }
         }
         
-        public void OnSpendOneMove()
+        public void OnCommandStackUp(CommandName commandName)
         {
-            var command = new SpendMove();
-            command.Execute(_commandBatchManager,_remoteConfigManager);
+            JICommand command = null;
+            switch (commandName)
+            {
+                case CommandName.JI_SPEND_MOVE:
+                    command = new SpendMove();
+                    break;
+                case CommandName.JI_NEUTRAL_WOOD_1_0:
+                    command = new NeutralWood010();
+                    break;
+            }
+
+            if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager);
         }
 
         public CommandsCache GetCommands()

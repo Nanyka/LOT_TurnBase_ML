@@ -39,14 +39,19 @@ namespace JumpeeIsland
             return m_CreatureData;
         }
 
+        public override CommandName GetCommand()
+        {
+            return m_UnitStats.Command;
+        }
+
         #endregion
 
         #region HEALTH
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(int damage, FactionType fromFaction)
         {
             Debug.Log($"{gameObject} take {damage} damage");
-            m_HealthComp.TakeDamage(damage, m_CreatureData);
+            m_HealthComp.TakeDamage(damage, m_CreatureData, fromFaction);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -55,9 +60,10 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentHp;
         }
 
-        public override void DieCollect()
+        public override void DieCollect(FactionType killedByFaction)
         {
-            throw new System.NotImplementedException();
+            // Set animation and effect when entity die here
+            m_AnimateComp.SetAnimation(AnimateType.Die, true);
         }
 
         #endregion
@@ -126,5 +132,6 @@ namespace JumpeeIsland
         }
 
         #endregion
+
     }
 }

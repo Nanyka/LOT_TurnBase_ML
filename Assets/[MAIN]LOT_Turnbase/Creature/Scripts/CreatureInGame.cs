@@ -126,7 +126,7 @@ namespace JumpeeIsland
             _isUsed = true;
         }
 
-        protected virtual void UnitDie()
+        protected virtual void UnitDie(FactionType killedByFaction)
         {
             m_FactionController.RemoveAgent(this);
             StartCoroutine(DieVisual());

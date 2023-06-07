@@ -26,9 +26,7 @@ namespace JumpeeIsland
                 return;
 
             foreach (var resource in m_Resources)
-            {
                 resource.DurationDeduct();
-            }
         }
 
         public void RemoveResource(ResourceInGame resource)

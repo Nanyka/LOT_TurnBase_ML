@@ -4,6 +4,7 @@ namespace JumpeeIsland
     {
         Idle,
         Walk,
-        Attack
+        Attack,
+        Die
     }
 }

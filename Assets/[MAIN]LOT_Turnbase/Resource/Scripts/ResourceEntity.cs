@@ -32,7 +32,7 @@ namespace JumpeeIsland
 
             m_ResourceData.AccumulatedStep++;
             if (m_ResourceData.AccumulatedStep >= m_ResourceStats.MaxTurnToDestroy)
-                OnUnitDie.Invoke();
+                OnUnitDie.Invoke(m_ResourceData.CreatureType);
         }
 
         public ResourceData GetResourceData()
@@ -40,13 +40,18 @@ namespace JumpeeIsland
             return m_ResourceData;
         }
 
+        public override CommandName GetCommand()
+        {
+            return m_ResourceStats.Command;
+        }
+
         #endregion
 
         #region HEALTH DATA
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(int damage, FactionType fromFaction)
         {
-            m_HealthComp.TakeDamage(damage, m_ResourceData);
+            m_HealthComp.TakeDamage(damage, m_ResourceData, fromFaction);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -55,9 +60,9 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override void DieCollect()
+        public override void DieCollect(FactionType killedByFaction)
         {
-            
+            // TODO add animation or effect here
         }
 
         #endregion

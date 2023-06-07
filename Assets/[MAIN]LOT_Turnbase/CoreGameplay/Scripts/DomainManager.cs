@@ -20,6 +20,7 @@ namespace JumpeeIsland
         // [SerializeField] protected Transform _tileContainer; // REMOVE when done environment testing
 
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
+
         // private List<Vector3> _obstacleAreas = new();
         private List<Vector3> _tileAreas = new();
 
@@ -100,7 +101,7 @@ namespace JumpeeIsland
         private List<GameObject> GetListObjByFaction(FactionType factionType)
         {
             if (_domainOwners.ContainsKey(factionType) == false)
-                _domainOwners.Add(factionType,new());
+                _domainOwners.Add(factionType, new());
             return _domainOwners[factionType];
         }
 
@@ -116,6 +117,9 @@ namespace JumpeeIsland
 
         public GameObject GetObjectByPosition(Vector3 position, FactionType fromFaction)
         {
+            if (_domainOwners.ContainsKey(fromFaction) == false)
+                _domainOwners.Add(fromFaction, new List<GameObject>());
+
             return _domainOwners[fromFaction].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
         }
 

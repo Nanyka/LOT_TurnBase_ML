@@ -8,12 +8,10 @@ namespace JumpeeIsland
     public class JICommandBatchSystem : MonoBehaviour
     {
         readonly CommandsCache _commands = new();
-        // readonly Queue<JICommand> _commands = new();
 
         public void EnqueueCommand(JICommand command)
         {
             _commands.commandBatch.Add(command);
-            // _commands.Enqueue(command);
             Debug.Log($"Number of commands: {_commands.commandBatch.Count}");
         }
 

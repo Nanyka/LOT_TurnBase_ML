@@ -24,18 +24,22 @@ namespace JumpeeIsland
             m_Entity.DurationDeduct();
         }
 
-        private void DestroyResource()
+        private void DestroyResource(FactionType killedByFaction)
         {
+            // just contribute resource when it is killed by player faction
+            if (killedByFaction == FactionType.Player)
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
+            
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
-            _resourceController.RemoveResource(this);
             StartCoroutine(DestroyVisual());
         }
-        
+
         private IEnumerator DestroyVisual()
         {
             // Collect currencies
             // VFX
             yield return new WaitForSeconds(1f);
+            _resourceController.RemoveResource(this);
             gameObject.SetActive(false);
         }
 

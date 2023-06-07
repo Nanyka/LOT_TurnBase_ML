@@ -17,9 +17,14 @@ namespace JumpeeIsland
             Debug.Log("Load currencies...");
         }
 
-        public long GetCurrency(string currencyId)
+        private long GetCurrency(string currencyId)
         {
             return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance;
+        }
+
+        public IEnumerable<PlayerBalance> GetCurrencies()
+        {
+            return m_Currencies;
         }
 
         public long GetMoveAmount()
@@ -30,6 +35,14 @@ namespace JumpeeIsland
         public void SetData(List<PlayerBalance> currencies)
         {
             m_Currencies = currencies;
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
+        }
+        
+        // Update local currencies to have it match with cloud data when the command is still not flushed up
+        public void IncrementCurrency(string rewardID, int rewardAmount)
+        {
+            m_Currencies.Find(t => t.CurrencyId == rewardID).Balance += rewardAmount;
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
     }
 }
