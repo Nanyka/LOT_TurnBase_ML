@@ -25,6 +25,11 @@ namespace JumpeeIsland
             m_Transform.position = position;
         }
 
+        public override EntityData GetData()
+        {
+            return m_ResourceData;
+        }
+
         public void DurationDeduct()
         {
             if (m_ResourceStats.IsLongLasting)
@@ -35,10 +40,10 @@ namespace JumpeeIsland
                 OnUnitDie.Invoke(this);
         }
 
-        public ResourceData GetResourceData()
-        {
-            return m_ResourceData;
-        }
+        // public ResourceData GetResourceData()
+        // {
+        //     return m_ResourceData;
+        // }
 
         public override CommandName GetCommand()
         {
@@ -48,6 +53,11 @@ namespace JumpeeIsland
         public override FactionType GetFaction()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override int GetExpReward()
+        {
+            return m_ResourceStats.ExpReward;
         }
 
         public override void CollectExp(int expAmount)

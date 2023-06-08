@@ -127,7 +127,7 @@ namespace JumpeeIsland
         {
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
+                SavingSystemManager.Instance.OnContributeFromEntity.Invoke(m_Entity);
             
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             m_FactionController.RemoveAgent(this);
@@ -144,11 +144,10 @@ namespace JumpeeIsland
 
         public void Remove(EnvironmentData environmentData)
         {
-            // TODO Check why it still not update in environmentData
             if (m_FactionController.GetFaction() == FactionType.Player)
-                environmentData.PlayerData.Remove(m_Entity.GetData());
+                environmentData.PlayerData.Remove((CreatureData)m_Entity.GetData());
             if (m_FactionController.GetFaction() == FactionType.Enemy)
-                environmentData.EnemyData.Remove(m_Entity.GetData());
+                environmentData.EnemyData.Remove((CreatureData)m_Entity.GetData());
         }
 
         public void ResetMoveState(Material factionMaterial)

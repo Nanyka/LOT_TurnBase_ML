@@ -34,7 +34,7 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
-        public CreatureData GetData()
+        public override EntityData GetData()
         {
             return m_CreatureData;
         }
@@ -49,9 +49,23 @@ namespace JumpeeIsland
             return m_CreatureData.CreatureType;
         }
 
+        public override int GetExpReward()
+        {
+            switch (hideFlags)
+            {
+                
+            }
+            
+            return m_UnitStats.ExpReward;
+        }
+
         public override void CollectExp(int expAmount)
         {
-            throw new System.NotImplementedException();
+            m_CreatureData.CurrentExp += expAmount;
+            if (m_CreatureData.CurrentExp >= m_UnitStats.ExpToLevelUp)
+            {
+                // Level up
+            }
         }
 
         #endregion

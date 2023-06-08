@@ -13,6 +13,11 @@ namespace JumpeeIsland
             ProcessCommandLocally(remoteConfigManager);
         }
 
+        public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager, Vector3 fromPos)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override CommandName GetKey()
         {
             return key;

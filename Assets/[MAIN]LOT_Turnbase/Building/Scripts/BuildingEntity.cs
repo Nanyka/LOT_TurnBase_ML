@@ -16,7 +16,7 @@ namespace JumpeeIsland
         [SerializeField] private AttackPath m_AttackPath;
         [SerializeField] private AnimateComp m_AnimateComp;
         
-        private BuildingData m_BuildingData;
+        private BuildingData m_BuildingData { get; set; }
         
         public void Init(BuildingData buildingData)
         {
@@ -24,11 +24,18 @@ namespace JumpeeIsland
             RefreshEntity();
         }
 
+        #region BUILDING DATA
+        
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             throw new NotImplementedException();
         }
 
+        public override EntityData GetData()
+        {
+            return m_BuildingData;
+        }
+        
         public override CommandName GetCommand()
         {
             throw new NotImplementedException();
@@ -39,10 +46,41 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
+        public override int GetExpReward()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void CollectExp(int expAmount)
         {
             throw new NotImplementedException();
         }
+
+        public int GetStorageSpace(CurrencyType currencyType, ref Queue<BuildingEntity> selectedBuildings)
+        {
+            if (currencyType != m_BuildingStats.StoreCurrency)
+                return 0;
+
+            selectedBuildings.Enqueue(this);
+            return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
+        }
+        
+        public int GetStorageSpace(CurrencyType currencyType)
+        {
+            if (currencyType != m_BuildingStats.StoreCurrency)
+                return 0;
+
+            return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
+        }
+
+        public void StoreCurrency(int amount)
+        {
+            m_BuildingData.CurrentStorage += amount;
+        }
+        
+        #endregion
+
+        #region HEALTH
 
         public override void TakeDamage(int damage, Entity fromEntity)
         {
@@ -59,10 +97,16 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region ATTACK
+        
         public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
             throw new NotImplementedException();
         }
+
+        #endregion
         
         #region SKILL
         
@@ -73,6 +117,8 @@ namespace JumpeeIsland
         
         #endregion
 
+        #region ANIMATION
+        
         public override int GetAttackDamage()
         {
             throw new NotImplementedException();
@@ -82,6 +128,8 @@ namespace JumpeeIsland
         {
             throw new NotImplementedException();
         }
+
+        #endregion
 
         public override void RefreshEntity()
         {

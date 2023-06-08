@@ -11,8 +11,12 @@ namespace JumpeeIsland
         // public const string key = "";
 
         public abstract void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager);
+        
+        public abstract void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager, Vector3 fromPos);
+        
         public abstract CommandName GetKey();
 
+        // Use for currencies that do not require storing at building
         internal void DistributeRewardsLocally(List<JIRemoteConfigManager.Reward> rewards)
         {
             foreach (var reward in rewards)
@@ -22,24 +26,20 @@ namespace JumpeeIsland
                     case "currency":
                         SavingSystemManager.Instance.IncrementLocalCurrency(reward.id, reward.amount);
                         break;
+                }
+            }
+        }
         
-                    // case "cloudSave":
-                    //     switch (reward.id)
-                    //     {
-                    //         case CloudSaveManager.xpKey:
-                    //             GameStateManager.instance.xp += reward.amount;
-                    //             break;
-                    //
-                    //         case CloudSaveManager.goalsAchievedKey:
-                    //             GameStateManager.instance.goalsAchieved += reward.amount;
-                    //             break;
-                    //
-                    //         default:
-                    //             Debug.Log($"No local disbursement action exists for the reward {reward.id}");
-                    //             break;
-                    //     }
-                    //
-                    //     break;
+        // Use for currencies that require storing at building
+        internal void DistributeRewardsLocally(List<JIRemoteConfigManager.Reward> rewards, Vector3 fromPos)
+        {
+            foreach (var reward in rewards)
+            {
+                switch (reward.service)
+                {
+                    case "currency":
+                        SavingSystemManager.Instance.StoreCurrencyAtBuildings(reward.id, reward.amount, fromPos);
+                        break;
                 }
             }
         }

@@ -28,7 +28,11 @@ namespace JumpeeIsland
         {
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
+                SavingSystemManager.Instance.OnContributeFromEntity.Invoke(m_Entity);
+            
+            // Add exp for entity who killed this resource
+            if (killedByEntity != m_Entity)
+                killedByEntity.CollectExp(m_Entity.GetExpReward());
             
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             StartCoroutine(DestroyVisual());
@@ -45,7 +49,7 @@ namespace JumpeeIsland
 
         public void Remove(EnvironmentData environmentData)
         {
-            environmentData.ResourceData.Remove(m_Entity.GetResourceData());
+            environmentData.ResourceData.Remove((ResourceData)m_Entity.GetData());
         }
     }
 }

@@ -8,8 +8,13 @@ namespace JumpeeIsland
 
         public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager)
         {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager, Vector3 fromPos)
+        {
             commandBatchSystem.EnqueueCommand(this);
-            ProcessCommandLocally(remoteConfigManager);
+            ProcessCommandLocally(remoteConfigManager, fromPos);
         }
 
         public override CommandName GetKey()
@@ -17,11 +22,11 @@ namespace JumpeeIsland
             return key;
         }
 
-        void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
+        void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager, Vector3 fromPos)
         {
             var rewards = remoteConfigManager.commandRewards[GetKey().ToString()];
             Debug.Log("Processing collect one neutralWood");
-            DistributeRewardsLocally(rewards);
+            DistributeRewardsLocally(rewards,fromPos);
             // GameStateManager.instance.SetIsOpenChestValidMove(true);
         }
     }

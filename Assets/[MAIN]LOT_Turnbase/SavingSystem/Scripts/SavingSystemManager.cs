@@ -24,7 +24,8 @@ namespace JumpeeIsland
         // Save Player environment data whenever a creature move
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); // invoke at CreatureEntity
         [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new(); // invoke at EnvironmentManager
-        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // invoke at ResourceInGame;
+        [NonSerialized] public UnityEvent<Entity> OnContributeFromEntity = new(); // invoke at ResourceInGame
+        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // send to EnvironmentLoader, invoke at ResourceInGame;
         [NonSerialized] public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
 
         [SerializeField] private JICloudConnector m_CloudConnector;
@@ -44,6 +45,7 @@ namespace JumpeeIsland
             m_CurrencyLoader = GetComponent<CurrencyLoader>();
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
+            OnContributeFromEntity.AddListener(StackUpFromEntity);
             StartUpProcessor.Instance.OnLoadData.AddListener(StartUpLoadData);
             StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
         }
@@ -188,6 +190,11 @@ namespace JumpeeIsland
         {
             m_CloudConnector.OnCommandStackUp(commandName);
         }
+        
+        private void StackUpFromEntity(Entity fromEntity)
+        {
+            m_CloudConnector.OnCommandStackUp(fromEntity);
+        }
 
         private void SaveCommandBatch(CommandsCache commandsCache)
         {
@@ -242,6 +249,11 @@ namespace JumpeeIsland
         public EnvironmentData GetEnvironmentData()
         {
             return m_EnvLoader.GetData();
+        }
+
+        public void StoreCurrencyAtBuildings(string currency, int amount, Vector3 fromPos)
+        {
+            m_EnvLoader.StoreRewardToBuildings(currency, amount, fromPos);
         }
         #endregion
     }

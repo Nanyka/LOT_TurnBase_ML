@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     public class EnvironmentLoader : MonoBehaviour
     {
-        [SerializeField] private TileManager _tileManager;
+        [SerializeField] private TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
         [SerializeField] private BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
@@ -32,7 +32,7 @@ namespace JumpeeIsland
         public void ResetData()
         {
             Debug.Log("Remove all environment to reset...");
-            _tileManager.Reset();
+            tileManager.Reset();
             resourceLoader.Reset();
             playerLoader.Reset();
             enemyLoader.Reset();
@@ -46,7 +46,7 @@ namespace JumpeeIsland
             playerLoader.StartUpLoadData(_environmentData.PlayerData);
             enemyLoader.StartUpLoadData(_environmentData.EnemyData);
 
-            _tileManager.Init(_mapSize);
+            tileManager.Init(_mapSize);
         }
 
         public EnvironmentData GetData()
@@ -63,5 +63,14 @@ namespace JumpeeIsland
         {
             removeInterface.Remove(_environmentData);
         }
+
+        #region BUILDINGS
+
+        public void StoreRewardToBuildings(string currencyId, int amount, Vector3 fromPos)
+        {
+            buildingLoader.GetController().StoreRewardToBuildings(currencyId, amount, fromPos);
+        }
+
+        #endregion
     }
 }

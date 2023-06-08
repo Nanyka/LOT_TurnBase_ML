@@ -8,17 +8,6 @@ namespace JumpeeIsland
 {
     public class DomainManager : MonoBehaviour
     {
-        // [SerializeField] protected GameObject _obstacle;
-        // [SerializeField] protected Transform _obstacleContainer;
-        // [SerializeField] protected int _numberOfObstacles;
-        // [SerializeField] protected bool _isDecidePosition;
-        // [SerializeField] protected Vector3 _designatedPostion;
-        // [SerializeField] private int _maxX;
-        // [SerializeField] private int _maxZ;
-        //
-        // [SerializeField] protected GameObject _tileForTesting; // REMOVE when done environment testing
-        // [SerializeField] protected Transform _tileContainer; // REMOVE when done environment testing
-
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
 
         // private List<Vector3> _obstacleAreas = new();

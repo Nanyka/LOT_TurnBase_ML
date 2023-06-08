@@ -179,6 +179,25 @@ namespace JumpeeIsland
             if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager);
         }
 
+        public void OnCommandStackUp(Entity entity)
+        {
+            JICommand command = null;
+            switch (entity.GetCommand())
+            {
+                case CommandName.JI_SPEND_MOVE:
+                    command = new SpendMove();
+                    break;
+                case CommandName.JI_NEUTRAL_WOOD_1_0:
+                    command = new NeutralWood010();
+                    break;
+                case CommandName.JI_NEUTRAL_FOOD_1_0:
+                    command = new NeutralFood010();
+                    break;
+            }
+
+            if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager, entity.GetData().Position);
+        }
+
         public CommandsCache GetCommands()
         {
             return _commandBatchManager.GetCommandsForSaving();

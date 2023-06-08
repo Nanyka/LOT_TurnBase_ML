@@ -11,7 +11,9 @@ namespace JumpeeIsland
         public bool IsLongLasting;
         [ShowIf("@IsLongLasting == false")] public int MaxTurnToDestroy;
         public CommandName Command;
-        
+        [Tooltip("Amount of exp that entity destroying this resource can collect")]
+        public int ExpReward;
+
         // public ResourceType ResourceType;
         // [ShowIf("@ResourceType == JumpeeIsland.ResourceType.Reward")]
         // public CurrencyAndAmount[] Reward =

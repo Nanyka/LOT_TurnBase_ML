@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 218828472}
   - component: {fileID: 218828473}
   - component: {fileID: 218828474}
+  - component: {fileID: 218828475}
   m_Layer: 0
   m_Name: BuildingManager<3>
   m_TagString: Untagged
@@ -314,7 +315,23 @@ MonoBehaviour:
     prefCollector: {fileID: 218828472}
     amount: 1
     expandable: 1
+  - prefab: {fileID: 3955766802612495538, guid: c9e8d5f181a114ed18b649fd4c96215a, type: 3}
+    prefCollector: {fileID: 218828472}
+    amount: 1
+    expandable: 1
   pooledItems: []
+--- !u!114 &218828475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218828471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98da4a35e364cd6b27252e5c346f7cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &227879237
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,7 +745,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resoucePool: {fileID: 384461264}
-  _resourceDatas: []
 --- !u!114 &384461264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1677,7 +1693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918cc26dda7fe4f359de927d092cf88d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileManager: {fileID: 1300729468}
+  tileManager: {fileID: 1300729468}
   resourceLoader: {fileID: 384461263}
   buildingLoader: {fileID: 218828473}
   playerLoader: {fileID: 1029899312}
@@ -1687,17 +1703,10 @@ MonoBehaviour:
     timestamp: 0
     lastTimestamp: 0
     moveTimestamp: 0
-    _testResourceData:
-    - EntityName: 
-      Position: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-      CreatureType: 0
-      CurrentHp: 0
-      AccumulatedStep: 0
-      Level: 0
-    _testBuildingData: []
-    _testPlayerData: []
-    _testEnemyData: []
+    ResourceData: []
+    BuildingData: []
+    PlayerData: []
+    EnemyData: []
 --- !u!114 &1491159640
 MonoBehaviour:
   m_ObjectHideFlags: 0

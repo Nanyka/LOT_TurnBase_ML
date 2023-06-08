@@ -16,9 +16,13 @@ namespace JumpeeIsland
 
         public abstract void UpdateTransform(Vector3 position, Vector3 rotation);
 
+        public abstract EntityData GetData();
+
         public abstract CommandName GetCommand();
 
         public abstract FactionType GetFaction();
+
+        public abstract int GetExpReward();
 
         public abstract void CollectExp(int expAmount);
 

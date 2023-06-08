@@ -10,7 +10,7 @@ namespace JumpeeIsland
         [SerializeField] private ObjectPool _resoucePool;
 
         private ResourceController _resourceController;
-        [SerializeField] private List<ResourceData> _resourceDatas;
+        private List<ResourceData> _resourceDatas;
         
         private void Start()
         {

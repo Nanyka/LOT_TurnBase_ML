@@ -8,6 +8,7 @@ namespace JumpeeIsland
         public int CurrentShield;
         public int CurrentExp;
         public int CurrentStorage;
+        public int StorageCapacity;
         public int TurnCount;
     }
 }

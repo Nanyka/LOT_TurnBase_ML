@@ -2,11 +2,11 @@ namespace JumpeeIsland
 {
     public enum CurrencyType
     {
-        None,
-        Food,
-        Wood,
-        Gold,
-        Diamond,
-        Step
+        NONE,
+        FOOD,
+        WOOD,
+        GOLD,
+        DIAMOND,
+        STEP
     }
 }
