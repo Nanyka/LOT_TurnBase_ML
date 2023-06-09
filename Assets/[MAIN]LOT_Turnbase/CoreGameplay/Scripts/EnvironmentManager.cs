@@ -10,18 +10,18 @@ namespace JumpeeIsland
     public class EnvironmentManager : MonoBehaviour
     {
         [HideInInspector] public UnityEvent OnChangeFaction; // invoke at EnemyFactionController, PlayerFactionController;
-        [HideInInspector] public UnityEvent<FactionType> OnOneTeamWin; // invoke at AgentManager; sent to all AgentManager 
+        [HideInInspector] public UnityEvent<FactionType> OnOneTeamWin; // sent to all FactionManagers 
         [HideInInspector] public UnityEvent<Vector3> OnShowMovingPath; // send to MovingVisual; invoke at FactionController
         [HideInInspector] public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingVisual
         [HideInInspector] public UnityEvent<Vector3> OnHighlightUnit; // send to MovingVisual; invoke at FactionController
 
-        [Header("Game Configurations")] [SerializeField]
-        protected bool _isObstacleAsTeam1;
-
+        [Header("Game Configurations")] 
+        [SerializeField] protected bool _isObstacleAsTeam1;
         [SerializeField] protected FactionType _currFaction;
         [SerializeField] protected int _minStep;
         [SerializeField] protected int _step;
         [SerializeField] protected float refurbishPeriod;
+        [SerializeField] protected bool _isBattleMode;
 
         private DomainManager _domainManager;
         private MovementInspector _movementInspector;
@@ -41,14 +41,13 @@ namespace JumpeeIsland
             StartUpProcessor.Instance.OnStartGame.AddListener(Init);
             StartUpProcessor.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             StartUpProcessor.Instance.OnDomainRegister.AddListener(DomainRegister);
-            SavingSystemManager.Instance.OnRestoreCommands.AddListener(CacheLastSessionSteps);
+            SavingSystemManager.Instance.OnUpdateLocalMove.AddListener(CacheLastSessionSteps);
         }
 
         private void CacheLastSessionSteps()
         {
             Debug.Log("Load command after a disconnected session");
             _lastSessionSteps++;
-            SavingSystemManager.Instance.OnUseOneMove.Invoke();
         }
 
         private void Init(long moveAmount)
@@ -112,7 +111,7 @@ namespace JumpeeIsland
         private void SpendOneMove()
         {
             _step--;
-            SavingSystemManager.Instance.OnUseOneMove.Invoke();
+            SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE);
             MainUI.Instance.OnRemainStep.Invoke(_step);
         }
 
@@ -161,9 +160,12 @@ namespace JumpeeIsland
         public void RemoveObject(GameObject targetObject, FactionType faction)
         {
             _domainManager.RemoveObject(targetObject, faction);
-            var checkWin = _domainManager.CheckWinCondition();
-            if (checkWin >= 0)
-                OnOneTeamWin.Invoke(checkWin);
+            if (_isBattleMode)
+            {
+                var checkWin = _domainManager.CheckWinCondition();
+                if (checkWin != FactionType.Neutral)
+                    OnOneTeamWin.Invoke(checkWin);
+            }
         }
 
         #endregion

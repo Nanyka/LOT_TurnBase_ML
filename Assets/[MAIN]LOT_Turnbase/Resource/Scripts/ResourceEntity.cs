@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ResourceEntity: Entity
+    public class ResourceEntity : Entity
     {
         [SerializeField] private ResourceStats m_ResourceStats;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
-        
+
         private ResourceData m_ResourceData;
 
         public void Init(ResourceData resourceData)
@@ -19,20 +19,59 @@ namespace JumpeeIsland
         }
 
         #region RESOURCE DATA
-        
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             m_Transform.position = position;
         }
-        
+
+        public override EntityData GetData()
+        {
+            return m_ResourceData;
+        }
+
+        public void DurationDeduct()
+        {
+            if (m_ResourceStats.IsLongLasting)
+                return;
+
+            m_ResourceData.AccumulatedStep++;
+            if (m_ResourceData.AccumulatedStep >= m_ResourceStats.MaxTurnToDestroy)
+                OnUnitDie.Invoke(this);
+        }
+
+        // public ResourceData GetResourceData()
+        // {
+        //     return m_ResourceData;
+        // }
+
+        public override CommandName GetCommand()
+        {
+            return m_ResourceStats.Command;
+        }
+
+        public override FactionType GetFaction()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override int GetExpReward()
+        {
+            return m_ResourceStats.ExpReward;
+        }
+
+        public override void CollectExp(int expAmount)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
         #region HEALTH DATA
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(int damage, Entity fromEntity)
         {
-            Debug.Log($"{gameObject} take {damage} damage");
-            m_HealthComp.TakeDamage(damage, m_ResourceData);
+            m_HealthComp.TakeDamage(damage, m_ResourceData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -41,9 +80,9 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override void DieCollect()
+        public override void DieCollect(Entity killedByEntity)
         {
-            
+            // TODO add animation or effect here
         }
 
         #endregion
@@ -61,14 +100,14 @@ namespace JumpeeIsland
         }
 
         #endregion
-        
+
         #region SKILL
-        
+
         public override IEnumerable<Skill_SO> GetSkills()
         {
             throw new System.NotImplementedException();
         }
-        
+
         #endregion
 
         #region ANIMATION
@@ -84,7 +123,7 @@ namespace JumpeeIsland
         {
             m_Transform.position = m_ResourceData.Position;
             m_Transform.eulerAngles = m_ResourceData.Rotation;
-            m_HealthComp.Init(m_ResourceStats.MaxHp,OnUnitDie,m_ResourceData);
+            m_HealthComp.Init(m_ResourceStats.MaxHp, OnUnitDie, m_ResourceData);
             OnUnitDie.AddListener(DieCollect);
         }
     }

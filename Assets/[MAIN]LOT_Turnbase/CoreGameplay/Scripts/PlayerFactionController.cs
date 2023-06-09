@@ -9,10 +9,10 @@ namespace JumpeeIsland
     public class PlayerFactionController : MonoBehaviour, IFactionController
     {
         [SerializeField] private FactionType m_Faction = FactionType.Player;
-        [SerializeField] private List<CreatureInGame> _creatures;
         [SerializeField] private Material _factionMaterial;
         [SerializeField] private Material _defaultMaterial;
-
+        
+        private List<CreatureInGame> _creatures = new();
         private EnvironmentManager m_Environment;
         private Camera _camera;
         private int _layerMask = 1 << 3;
@@ -144,26 +144,7 @@ namespace JumpeeIsland
         {
             yield return new WaitForSeconds(1f);
             m_Environment.ChangeFaction();
-            // m_Environment.OnChangeFaction.Invoke();
         }
-
-        // private void EndGame(int winFaction)
-        // {
-        //     Debug.Log($"End game from player faction");
-        //     // UIManager.Instance.OnGameOver.Invoke(winFaction);
-        //     // StartCoroutine(WaitToReset());
-        // }
-        //
-        // private IEnumerator WaitToReset()
-        // {
-        //     yield return new WaitForSeconds(3f);
-        //     ResetGame();
-        // }
-
-        // private void ResetGame()
-        // {
-        //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        // }
 
         #endregion
 
@@ -178,11 +159,6 @@ namespace JumpeeIsland
         {
             return m_Faction;
         }
-
-        // public Collider GetPlatformCollider()
-        // {
-        //     return m_Environment.GetPlatformCollider();
-        // }
 
         public MovementInspector GetMovementInspector()
         {

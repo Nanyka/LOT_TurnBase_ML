@@ -7,11 +7,11 @@ namespace JumpeeIsland
 {
     public class EnvironmentLoader : MonoBehaviour
     {
-        [SerializeField] private TileManager _tileManager;
-        [SerializeField] private ResourceManager _resourceManager;
-        [SerializeField] private BuildingManager _buildingManager;
-        [SerializeField] private CreatureManager _playerManager;
-        [SerializeField] private CreatureManager _enemyManager;
+        [SerializeField] private TileManager tileManager;
+        [SerializeField] private ResourceLoader resourceLoader;
+        [SerializeField] private BuildingLoader buildingLoader;
+        [SerializeField] private CreatureLoader playerLoader;
+        [SerializeField] private CreatureLoader enemyLoader;
 
         [Header("Test data")] 
         [SerializeField] private int _mapSize;
@@ -24,6 +24,7 @@ namespace JumpeeIsland
 
         public void Init()
         {
+            SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
             Debug.Log("Load data into managers...");
             ExecuteEnvData();
         }
@@ -31,21 +32,21 @@ namespace JumpeeIsland
         public void ResetData()
         {
             Debug.Log("Remove all environment to reset...");
-            _tileManager.Reset();
-            _resourceManager.Reset();
-            _playerManager.Reset();
-            _enemyManager.Reset();
-            _buildingManager.Reset();
+            tileManager.Reset();
+            resourceLoader.Reset();
+            playerLoader.Reset();
+            enemyLoader.Reset();
+            buildingLoader.Reset();
         }
 
         private void ExecuteEnvData()
         {
-            _resourceManager.StartUpLoadData(_environmentData._testResourceData);
-            _buildingManager.StartUpLoadData(_environmentData._testBuildingData);
-            _playerManager.StartUpLoadData(_environmentData._testPlayerData);
-            _enemyManager.StartUpLoadData(_environmentData._testEnemyData);
+            resourceLoader.StartUpLoadData(_environmentData.ResourceData);
+            buildingLoader.StartUpLoadData(_environmentData.BuildingData);
+            playerLoader.StartUpLoadData(_environmentData.PlayerData);
+            enemyLoader.StartUpLoadData(_environmentData.EnemyData);
 
-            _tileManager.Init(_mapSize);
+            tileManager.Init(_mapSize);
         }
 
         public EnvironmentData GetData()
@@ -57,5 +58,19 @@ namespace JumpeeIsland
         {
             _environmentData = environmentData;
         }
+        
+        private void RemoveDestroyedEntity(IRemoveEntity removeInterface)
+        {
+            removeInterface.Remove(_environmentData);
+        }
+
+        #region BUILDINGS
+
+        public void StoreRewardToBuildings(string currencyId, int amount, Vector3 fromPos)
+        {
+            buildingLoader.GetController().StoreRewardToBuildings(currencyId, amount, fromPos);
+        }
+
+        #endregion
     }
 }

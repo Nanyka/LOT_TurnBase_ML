@@ -34,14 +34,48 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
+        public override EntityData GetData()
+        {
+            return m_CreatureData;
+        }
+
+        public override CommandName GetCommand()
+        {
+            return m_UnitStats.Command;
+        }
+
+        public override FactionType GetFaction()
+        {
+            return m_CreatureData.CreatureType;
+        }
+
+        public override int GetExpReward()
+        {
+            switch (hideFlags)
+            {
+                
+            }
+            
+            return m_UnitStats.ExpReward;
+        }
+
+        public override void CollectExp(int expAmount)
+        {
+            m_CreatureData.CurrentExp += expAmount;
+            if (m_CreatureData.CurrentExp >= m_UnitStats.ExpToLevelUp)
+            {
+                // Level up
+            }
+        }
+
         #endregion
 
         #region HEALTH
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(int damage, Entity fromEntity)
         {
             Debug.Log($"{gameObject} take {damage} damage");
-            m_HealthComp.TakeDamage(damage, m_CreatureData);
+            m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -50,9 +84,10 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentHp;
         }
 
-        public override void DieCollect()
+        public override void DieCollect(Entity killedByEntity)
         {
-            throw new System.NotImplementedException();
+            // Set animation and effect when entity die here
+            m_AnimateComp.SetAnimation(AnimateType.Die, true);
         }
 
         #endregion
@@ -74,9 +109,9 @@ namespace JumpeeIsland
             var attackRange =
                 m_SkillComp.AttackPoints(currentState.midPos, currentState.direction, currentState.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
-            m_AttackComp.Attack(attackPoints, currentState.faction, m_CreatureData.CurrentDamage , m_Info.GetEnvironment());
+            m_AttackComp.Attack(attackPoints, this, m_CreatureData.CurrentDamage , m_Info.GetEnvironment());
+
             ShowAttackRange(attackPoints);
-        
             m_EffectComp.AttackVFX(currentState.jumpStep);
         }
 
@@ -121,5 +156,6 @@ namespace JumpeeIsland
         }
 
         #endregion
+
     }
 }

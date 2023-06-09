@@ -160,15 +160,52 @@ namespace JumpeeIsland
             }
         }
         
-        public void OnSpendOneMove()
+        public void OnCommandStackUp(CommandName commandName)
         {
-            var command = new SpendMove();
-            command.Execute(_commandBatchManager,_remoteConfigManager);
+            JICommand command = null;
+            switch (commandName)
+            {
+                case CommandName.JI_SPEND_MOVE:
+                    command = new SpendMove();
+                    break;
+                case CommandName.JI_NEUTRAL_WOOD_1_0:
+                    command = new NeutralWood010();
+                    break;
+                case CommandName.JI_NEUTRAL_FOOD_1_0:
+                    command = new NeutralFood010();
+                    break;
+            }
+
+            if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager);
+        }
+
+        public void OnCommandStackUp(Entity entity)
+        {
+            JICommand command = null;
+            switch (entity.GetCommand())
+            {
+                case CommandName.JI_SPEND_MOVE:
+                    command = new SpendMove();
+                    break;
+                case CommandName.JI_NEUTRAL_WOOD_1_0:
+                    command = new NeutralWood010();
+                    break;
+                case CommandName.JI_NEUTRAL_FOOD_1_0:
+                    command = new NeutralFood010();
+                    break;
+            }
+
+            if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager, entity.GetData().Position);
         }
 
         public CommandsCache GetCommands()
         {
             return _commandBatchManager.GetCommandsForSaving();
+        }
+
+        public async void SubmitCommands(List<CommandName> commandNames)
+        {
+            await _commandBatchManager.SubmitListCommands(commandNames, _cloudCodeManager);
         }
 
         #endregion

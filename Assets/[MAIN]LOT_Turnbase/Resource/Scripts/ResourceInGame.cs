@@ -1,17 +1,55 @@
+using System.Collections;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ResourceInGame : MonoBehaviour
+    public class ResourceInGame : MonoBehaviour, IRemoveEntity
     {
         [SerializeField] private ResourceType m_ResourceType; // define how resource interact with game
-        [SerializeField] private CurrencyType m_CurrencyType; // define what will be as loot for collecting
         [SerializeField] private ResourceEntity m_Entity;
 
-        public void Init(ResourceData resourceData)
+        private ResourceController _resourceController;
+
+        public void Init(ResourceData resourceData, ResourceController resourceController)
         {
             m_Entity.Init(resourceData);
-            // Debug.Log("Initiate this resource at " + m_ResourceData.Position);
+            m_Entity.OnUnitDie.AddListener(DestroyResource);
+
+            _resourceController = resourceController;
+            _resourceController.AddResourceToList(this);
+        }
+
+        public void DurationDeduct()
+        {
+            m_Entity.DurationDeduct();
+        }
+
+        private void DestroyResource(Entity killedByEntity)
+        {
+            // just contribute resource when it is killed by player faction
+            if (killedByEntity.GetFaction() == FactionType.Player)
+                SavingSystemManager.Instance.OnContributeFromEntity.Invoke(m_Entity);
+            
+            // Add exp for entity who killed this resource
+            if (killedByEntity != m_Entity)
+                killedByEntity.CollectExp(m_Entity.GetExpReward());
+            
+            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
+            StartCoroutine(DestroyVisual());
+        }
+
+        private IEnumerator DestroyVisual()
+        {
+            // Collect currencies
+            // VFX
+            yield return new WaitForSeconds(1f);
+            _resourceController.RemoveResource(this);
+            gameObject.SetActive(false);
+        }
+
+        public void Remove(EnvironmentData environmentData)
+        {
+            environmentData.ResourceData.Remove((ResourceData)m_Entity.GetData());
         }
     }
 }

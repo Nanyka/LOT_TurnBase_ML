@@ -8,6 +8,7 @@ namespace JumpeeIsland
     public class BuildingStats : ScriptableObject
     {
         public BuildingType BuildingType;
+        public CurrencyType StoreCurrency;
         public int MaxHp;
         public int Level;
         public int ExpToUpdate;
