@@ -76,6 +76,7 @@ namespace JumpeeIsland
         public void StoreCurrency(int amount)
         {
             m_BuildingData.CurrentStorage += amount;
+            m_BuildingData.CurrentExp += amount;
         }
         
         #endregion

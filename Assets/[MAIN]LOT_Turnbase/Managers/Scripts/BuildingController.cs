@@ -22,15 +22,11 @@ namespace JumpeeIsland
             Queue<BuildingEntity> selectedBuildings = new Queue<BuildingEntity>();
             float nearestDistance = Mathf.Infinity;
             if (Enum.TryParse(currencyId, out CurrencyType currency))
-            {
-                Debug.Log($"Test currencyId at building controller: {currency}, amount: {amount}");
                 foreach (var t in m_buildings)
                     currentStorage += t.GetStoreSpace(currency, ref selectedBuildings);
-            }
             
             amount = amount > currentStorage ? currentStorage : amount;
 
-            Debug.Log($"Amount of selected buildings: {selectedBuildings.Count}");
             if (amount == 0 || selectedBuildings.Count == 0)
                 return;
 
@@ -41,10 +37,9 @@ namespace JumpeeIsland
                 var storeAmount = building.GetStorageSpace(currency);
                 storeAmount = storeAmount > amount ? amount : storeAmount;
                 building.StoreCurrency(storeAmount);
+                SavingSystemManager.Instance.IncrementLocalCurrency(currencyId, storeAmount); // Update UI
                 amount -= storeAmount;
             }
-
-            // Update UI
         }
     }
 }

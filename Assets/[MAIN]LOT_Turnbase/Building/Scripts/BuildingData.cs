@@ -10,5 +10,6 @@ namespace JumpeeIsland
         public int CurrentStorage;
         public int StorageCapacity;
         public int TurnCount;
+        public CurrencyType StorageCurrency;
     }
 }
