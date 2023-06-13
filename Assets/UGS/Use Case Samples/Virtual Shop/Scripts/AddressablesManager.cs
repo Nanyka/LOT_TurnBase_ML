@@ -13,14 +13,12 @@ namespace Unity.Services.Samples.VirtualShop
 
         // Dictionary of Addressables Addresses to preloaded sprites.
         // Note: this dictionary just saves executing an async wait whenever a preloaded sprite is needed.
-        public Dictionary<string, Sprite> preloadedSpritesByAddress { get; } =
-            new Dictionary<string, Sprite>();
+        public Dictionary<string, Sprite> preloadedSpritesByAddress { get; } = new();
 
         // Dictionary of all economy items (Currencies and Items) to associated Sprite.
         // Note: this dictionary is a quick-n-dirty way to find the icon associated with any Currency
         //       or Inventory Item that has Custom Data correctly setup on the Economy Service.
-        public Dictionary<string, Sprite> preloadedSpritesByEconomyId { get; } =
-            new Dictionary<string, Sprite>();
+        public Dictionary<string, Sprite> preloadedSpritesByEconomyId { get; } = new();
 
         void Awake()
         {
