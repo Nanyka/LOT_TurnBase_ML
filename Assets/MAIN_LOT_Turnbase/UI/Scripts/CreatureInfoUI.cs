@@ -12,17 +12,12 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            MainUI.Instance.OnShowCreatureInfo.AddListener(ShowUnitInfo);
+            MainUI.Instance.OnShowInfo.AddListener(ShowUnitInfo);
         }
     
-        private void ShowUnitInfo(IGetCreatureInfo infoGetter)
+        private void ShowUnitInfo(IShowInfo infoGetter)
         {
-            ShowInfo(infoGetter.InfoToShow());
-        }
-
-        private void ShowInfo((string name, int health, int damage, int power) info)
-        {
-            _unitInfoText.text = $"{info.name}\nHealth: {info.health}\nDamage:{info.damage}\nPower:{info.power}";
+            _unitInfoText.text = infoGetter.ShowInfo();
         }
     }
 }

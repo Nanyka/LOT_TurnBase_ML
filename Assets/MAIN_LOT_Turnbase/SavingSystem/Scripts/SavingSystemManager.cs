@@ -25,7 +25,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); // invoke at CreatureEntity
         [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new(); // invoke at EnvironmentManager
         [NonSerialized] public UnityEvent<Entity> OnContributeFromEntity = new(); // invoke at ResourceInGame
-        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // send to EnvironmentLoader, invoke at ResourceInGame;
+        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
         [NonSerialized] public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
 
         [SerializeField] private JICloudConnector m_CloudConnector;
@@ -45,7 +45,7 @@ namespace JumpeeIsland
             m_EnvLoader = GetComponent<EnvironmentLoader>();
             m_CurrencyLoader = GetComponent<CurrencyLoader>();
             m_InventoryLoader = GetComponent<InventoryLoader>();
-            
+
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
             OnContributeFromEntity.AddListener(StackUpFromEntity);
@@ -73,10 +73,10 @@ namespace JumpeeIsland
         private async void StartUpLoadData()
         {
             await LoadGameState();
-            
+
             // mark as starting point of loading phase.
             // If this process is not complete, the environment will not be save at OnDisable()
-            SetInLoadingState(true); 
+            SetInLoadingState(true);
 
             await LoadEnvironment();
             m_EnvLoader.Init();
@@ -88,7 +88,7 @@ namespace JumpeeIsland
 
             SaveDisconnectedState(false); // set it as connected state when loaded all disconnected session's data
             SetInLoadingState(false); // Finish loading phase
-            
+
             StartUpProcessor.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetMoveAmount());
         }
 
@@ -122,7 +122,7 @@ namespace JumpeeIsland
             if (result == SaveResult.Success)
                 _gameStateData = gameState;
         }
-        
+
         private void SaveDisconnectedState(bool isDisconnected)
         {
             _gameStateData.IsDisconnectedLastSession = isDisconnected;
@@ -185,10 +185,44 @@ namespace JumpeeIsland
             }
         }
 
-        public void OnPlaceABuilding(string buildingName, string skinAddress, Vector3 position)
+        public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)
         {
-            var newBuilding = new BuildingData {EntityName = buildingName, SkinAddress = skinAddress, Position = position};
+            var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(inventoryItem.virtualPurchaseId);
+            if (purchaseHandler == null)
+            {
+                Debug.Log("Show \"Lack of currency\" panel");
+                return;
+            }
+            
+            // Pay for constructing the building...
+            var constructingCost = m_CloudConnector.GetVirtualPurchaseCost(inventoryItem.virtualPurchaseId);
+            foreach (var cost in constructingCost)
+            {
+                m_CurrencyLoader.IncrementCurrency(cost.id,cost.amount * -1);
+            }
+            
+            // ...and get the building in place
+            var newBuilding = new BuildingData
+            {
+                EntityName = inventoryItem.inventoryName, SkinAddress = inventoryItem.skinAddress, Position = position
+            };
             m_EnvLoader.PlaceABuilding(newBuilding);
+        }
+        
+        public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position)
+        {
+            var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(inventoryItem.virtualPurchaseId);
+            if (purchaseHandler == null)
+            {
+                Debug.Log("Show \"Lack of currency\" panel");
+                return;
+            }
+            
+            var newCreature = new CreatureData()
+            {
+                EntityName = inventoryItem.inventoryName, SkinAddress = inventoryItem.skinAddress, Position = position
+            };
+            m_EnvLoader.TrainACreature(newCreature);
         }
 
         #endregion
@@ -212,15 +246,31 @@ namespace JumpeeIsland
             return m_CurrencyLoader.GetCurrencies();
         }
 
+        public bool CheckEnoughCurrency(string currencyId, int currencyAmount)
+        {
+            return m_CurrencyLoader.CheckEnoughCurrency(currencyId, currencyAmount);
+        }
+
+        public void GrantCurrency(string currencyId, int amount)
+        {
+            m_CloudConnector.OnGrantCurrency(currencyId,amount);
+            m_CurrencyLoader.IncrementCurrency(currencyId,amount);
+        }
+
         #endregion
 
         #region INVENTORY LOADER
-        
+
         public void OnAskForShowingBuildingMenu()
         {
-            m_InventoryLoader.SendInventoriesToMenu();
+            m_InventoryLoader.SendInventoriesToBuildingMenu();
         }
         
+        public void OnAskForShowingCreatureMenu()
+        {
+            m_InventoryLoader.SendInventoriesToCreatureMenu();
+        }
+
         #endregion
 
         #region COMMAND
@@ -229,7 +279,7 @@ namespace JumpeeIsland
         {
             m_CloudConnector.OnCommandStackUp(commandName);
         }
-        
+
         private void StackUpFromEntity(Entity fromEntity)
         {
             m_CloudConnector.OnCommandStackUp(fromEntity);
@@ -294,6 +344,7 @@ namespace JumpeeIsland
         {
             m_EnvLoader.StoreRewardToBuildings(currency, amount, fromPos);
         }
+
         #endregion
     }
 }

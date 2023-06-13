@@ -78,5 +78,15 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        #region CREATURES
+
+        public void TrainACreature(CreatureData creatureData)
+        {
+            _environmentData.AddPlayerData(creatureData);
+            playerLoader.PlaceNewObject(creatureData);
+        }
+
+        #endregion
     }
 }

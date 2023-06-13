@@ -23,5 +23,10 @@ namespace JumpeeIsland
                     break;
             }
         }
+
+        public void SetAnimator(Animator animator)
+        {
+            m_animator = animator;
+        }
     }
 }

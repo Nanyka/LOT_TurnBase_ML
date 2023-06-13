@@ -16,7 +16,7 @@ namespace JumpeeIsland
         
 
         private AsyncOperationHandle m_UCDObjectLoadingHandle;
-        private BuildingMenu m_BuildingMenu;
+        private BuyBuildingMenu _mBuyBuildingMenu;
         private JIInventoryItem m_BuidlingItem;
         private Vector3 _buildingPosition;
         private int _layerMask = 1 << 6;
@@ -27,13 +27,13 @@ namespace JumpeeIsland
             _camera = Camera.main;
         }
 
-        public void TurnOn(JIInventoryItem buildingItem, BuildingMenu buildingMenu)
+        public void TurnOn(JIInventoryItem buildingItem, BuyBuildingMenu buyBuildingMenu)
         {
             m_BuidlingItem = buildingItem;
             m_ItemName.text = m_BuidlingItem.inventoryName;
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(m_BuidlingItem.spriteAddress);
-            if (m_BuildingMenu == null)
-                m_BuildingMenu = buildingMenu;
+            if (_mBuyBuildingMenu == null)
+                _mBuyBuildingMenu = buyBuildingMenu;
 
             m_Container.SetActive(true);
         }
@@ -45,7 +45,7 @@ namespace JumpeeIsland
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            m_BuildingMenu.StartADeal(m_BuidlingItem.skinAddress);
+            _mBuyBuildingMenu.StartADeal(m_BuidlingItem.skinAddress);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -54,7 +54,7 @@ namespace JumpeeIsland
             if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
                 return;
             
-            m_BuildingMenu.SelectLocation(collidedTile.transform.position);
+            _mBuyBuildingMenu.SelectLocation(collidedTile.transform.position);
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -64,12 +64,12 @@ namespace JumpeeIsland
                 return;
 
             _buildingPosition = collidedTile.transform.position;
-            m_BuildingMenu.EndDeal(this);
+            _mBuyBuildingMenu.EndDeal(this);
         }
 
         public void ClickYes()
         {
-            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem.inventoryName,m_BuidlingItem.skinAddress,_buildingPosition);
+            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition);
         }
     }
 }

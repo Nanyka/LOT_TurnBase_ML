@@ -8,6 +8,7 @@ namespace JumpeeIsland
     public class CreatureEntity : Entity
     {
         [SerializeField] private UnitStats m_UnitStats;
+        [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private SkillComp m_SkillComp;
@@ -66,6 +67,15 @@ namespace JumpeeIsland
             {
                 // Level up
             }
+        }
+
+        #endregion
+
+        #region SKIN
+
+        public void SetSkinMaterial(Material material)
+        {
+            m_SkinComp.SetMaterial(material);
         }
 
         #endregion
@@ -149,8 +159,17 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
+            // Initiate entity data if it's new
+            if (m_CreatureData.CurrentHp <= 0)
+            {
+                m_CreatureData.CurrentHp = m_UnitStats.HealthPoint;
+                m_CreatureData.CurrentDamage = m_UnitStats.Strengh;
+            }
+            
+            // Retrieve entity data
             m_Transform.position = m_CreatureData.Position;
             m_Transform.eulerAngles = m_CreatureData.Rotation;
+            m_SkinComp.Initiate(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_UnitStats.HealthPoint, OnUnitDie, m_CreatureData);
             OnUnitDie.AddListener(DieCollect);
         }

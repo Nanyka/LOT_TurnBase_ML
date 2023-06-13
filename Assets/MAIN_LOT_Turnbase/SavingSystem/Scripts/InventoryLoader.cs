@@ -16,17 +16,23 @@ namespace JumpeeIsland
                 m_Inventories.Add(item.GetItemDefinition().CustomDataDeserializable.GetAs<JIInventoryItem>());
         }
 
-        public void SendInventoriesToMenu()
+        public void SendInventoriesToBuildingMenu()
         {
-            MainUI.Instance.OnShowBuildingMenu.Invoke(m_Inventories);
+            MainUI.Instance.OnBuyBuildingMenu.Invoke(m_Inventories);
+        }
+        
+        public void SendInventoriesToCreatureMenu()
+        {
+            MainUI.Instance.OnShowCreatureMenu.Invoke(m_Inventories);
         }
     }
 
     public class JIInventoryItem
     {
         public string inventoryName;
-        public InventoryType inventoryType;
+        public InventoryType inventoryType; // To decide which category this inventory item is
         public string spriteAddress;
+        public string virtualPurchaseId; // How much does it cost to place this item in game
         public string skinAddress;
     }
 
@@ -34,6 +40,6 @@ namespace JumpeeIsland
     {
         None,
         Building,
-        Unit
+        Creature
     }
 }

@@ -17,5 +17,10 @@ namespace JumpeeIsland
         {
             BuildingData.Add(data);
         }
+
+        public void AddPlayerData(CreatureData data)
+        {
+            PlayerData.Add(data);
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace JumpeeIsland
 
         public override FactionType GetFaction()
         {
-            throw new NotImplementedException();
+            return m_BuildingData.CreatureType;
         }
 
         public override int GetExpReward()
@@ -78,6 +78,16 @@ namespace JumpeeIsland
         {
             m_BuildingData.CurrentStorage += amount;
             m_BuildingData.CurrentExp += amount;
+        }
+
+        public int CalculateSellingPrice()
+        {
+            return m_BuildingStats.Level * m_BuildingData.TurnCount;
+        }
+        
+        public void DurationDeduct()
+        {
+            m_BuildingData.TurnCount++;
         }
         
         #endregion
@@ -135,6 +145,19 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
+            // Set default information to buildingData
+            m_BuildingData.StorageCapacity = m_BuildingStats.StorageCapacity;
+            m_BuildingData.StorageCurrency = m_BuildingData.StorageCurrency;
+            
+            // Set initiate data if it's new
+            if (m_BuildingData.CurrentHp == 0)
+            {
+                m_BuildingData.CurrentHp = m_BuildingStats.MaxHp;
+                m_BuildingData.StorageCurrency = m_BuildingStats.StoreCurrency;
+                m_BuildingData.StorageCapacity = m_BuildingStats.StorageCapacity;
+            }
+            
+            // Load data to entity
             m_Transform.position = m_BuildingData.Position;
             m_Transform.eulerAngles = m_BuildingData.Rotation;
             m_SkinComp.Initiate(m_BuildingData.SkinAddress);

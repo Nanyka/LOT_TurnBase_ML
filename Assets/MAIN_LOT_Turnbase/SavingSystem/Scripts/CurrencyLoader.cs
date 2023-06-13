@@ -39,10 +39,16 @@ namespace JumpeeIsland
         }
         
         // Update local currencies to have it match with cloud data when the command is still not flushed up
-        public void IncrementCurrency(string rewardID, int rewardAmount)
+        public void IncrementCurrency(string currencyId, int currencyAmount)
         {
-            m_Currencies.Find(t => t.CurrencyId == rewardID).Balance += rewardAmount;
+            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
+        }
+        
+        // Check amount of a particular currency is affordable for a purchase or not
+        public bool CheckEnoughCurrency(string currencyId, int currencyAmount)
+        {
+            return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance > currencyAmount;
         }
     }
 }

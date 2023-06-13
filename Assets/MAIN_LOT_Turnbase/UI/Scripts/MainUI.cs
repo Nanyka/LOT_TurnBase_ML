@@ -6,29 +6,33 @@ using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    [RequireComponent(typeof(BuildingMenu))]
+    [RequireComponent(typeof(BuyBuildingMenu))]
     public class MainUI : Singleton<MainUI>
     {
-        [NonSerialized] public UnityEvent<IGetCreatureInfo> OnShowCreatureInfo = new(); // send to CreatureInfoUI; invoke at CreatureInGame
+        [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
         [NonSerialized] public UnityEvent OnUpdateCurrencies = new(); // send to CurrenciesInfo; invoke at SavingSystemManager
         [NonSerialized] public UnityEvent OnClickIdleButton = new(); // send to PlayerFactionManager; invoke at DontMoveButton & MovingPath
         [NonSerialized] public UnityEvent<FactionType> OnGameOver = new(); // send to GameOverAnnouncer; invoke at PlayerFactionManager
-        [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnShowBuildingMenu = new(); // send to BuildingMenu, invoke at InventoryLoader
+        [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnBuyBuildingMenu = new(); // send to BuyBuildingMenu, invoke at InventoryLoader
+        [NonSerialized] public UnityEvent<IConfirmFunction> OnSellBuildingMenu = new(); // send to SellBuildingMenu, invoke at BuildingController
+        [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnShowCreatureMenu = new(); // send to CreatureMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
-        private BuildingMenu _buildingMenu;
+        private BuyBuildingMenu _buyBuildingMenu;
+        private CreatureMenu _creatureMenu;
 
         private void Start()
         {
-            _buildingMenu = GetComponent<BuildingMenu>();
+            _buyBuildingMenu = GetComponent<BuyBuildingMenu>();
+            _creatureMenu = GetComponent<CreatureMenu>();
         }
 
         private void Update()
         {
             if (Input.GetMouseButton(0))
             {
-                if (PointingChecker.IsPointerOverUIObject() || _buildingMenu.IsInADeal())
+                if (PointingChecker.IsPointerOverUIObject() || _buyBuildingMenu.IsInADeal() || _creatureMenu.IsInADeal())
                     return;
                 
                 OnHideAllMenu.Invoke();

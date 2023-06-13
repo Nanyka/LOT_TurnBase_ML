@@ -31,6 +31,21 @@ namespace JumpeeIsland
 
             Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
         }
+        
+        // Get skin for animated objects
+        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp, AnimateComp animateComp)
+        {
+            m_LogPrefab = objectKey;
+
+            //Add private token to addressable web request header
+            Addressables.WebRequestOverride = AddPrivateToken;
+
+            var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
+            var skin = handle.WaitForCompletion();
+            animateComp.SetAnimator(skin.GetComponent<Animator>());
+            //TODO: refactor renderer directory to something more general
+            skinComp.SetRenderer(skin.transform.Find("Bodyparts").Find("Bodypart01").GetComponent<Renderer>());
+        }
 
         private void AddPrivateToken(UnityWebRequest request)
         {

@@ -11,11 +11,11 @@ namespace JumpeeIsland
     public class JIEconomyManager : MonoBehaviour
     {
         // Dictionary of all Virtual Purchase transactions ids to lists of costs & rewards.
-        public Dictionary<string, (List<JIItemAndAmountSpec> costs, List<JIItemAndAmountSpec> rewards)>
-            virtualPurchaseTransactions { get; private set; }
+        private Dictionary<string, (List<JIItemAndAmountSpec> costs, List<JIItemAndAmountSpec> rewards)>
+            virtualPurchaseTransactions { get; set; }
 
-        public List<CurrencyDefinition> currencyDefinitions { get; private set; }
-        public List<InventoryItemDefinition> inventoryItemDefinitions { get; private set; }
+        private List<CurrencyDefinition> currencyDefinitions { get; set; }
+        private List<InventoryItemDefinition> inventoryItemDefinitions { get; set; }
 
         [SerializeField] private int _debugCurrencyAmount = 10;
         [SerializeField] private int _debugInventoryAmount = 1;
@@ -71,13 +71,12 @@ namespace JumpeeIsland
             return EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
         }
 
-        // This method is used to help test this Use Case sample by giving some currency to permit
-        // transactions to be completed.
-        private async Task GrantDebugCurrency(string currencyId)
+        // Add currency when sell a building
+        private async Task GrantCurrency(string currencyId, int amount)
         {
             try
             {
-                await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync(currencyId, _debugCurrencyAmount);
+                await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync(currencyId, amount);
             }
             catch (Exception e)
             {
@@ -85,9 +84,9 @@ namespace JumpeeIsland
             }
         }
         
-        public async void OnGrantCurrency(string currencyId)
+        public async void OnGrantCurrency(string currencyId, int amount)
         {
-            await GrantDebugInventory(currencyId);
+            await GrantCurrency(currencyId, amount);
         }
 
         #endregion
@@ -117,12 +116,6 @@ namespace JumpeeIsland
 
             if (this == null || inventoryResult == null)
                 return null;
-            
-            // if (inventoryResult.PlayersInventoryItems[0].GetItemDefinition().CustomDataDeserializable.GetAs<Dictionary<string, string>>() is
-            //         { } customData && customData.TryGetValue("skinAddress", out var skinAddress))
-            // {
-            //     Debug.Log($"Get inventory addressable asset: {skinAddress}");
-            // }
 
             return inventoryResult.PlayersInventoryItems;
         }
@@ -176,9 +169,11 @@ namespace JumpeeIsland
 
             foreach (var transaction in virtualPurchaseTransactions)
             {
-                Debug.Log($"Virtual purchase Id: {transaction.Key}" +
-                          $"Reward: {transaction.Value.rewards[0].id}, Amount: {transaction.Value.rewards[0].amount}" +
-                          $"Cost: {transaction.Value.costs[0].id}, Amount: {transaction.Value.costs[0].amount}");
+                Debug.Log($"Virtual purchase Id: {transaction.Key}");
+                
+                // Debug.Log($"Virtual purchase Id: {transaction.Key}" +
+                //           $"Reward: {transaction.Value.rewards[0].id}, Amount: {transaction.Value.rewards[0].amount}" +
+                //           $"Cost: {transaction.Value.costs[0].id}, Amount: {transaction.Value.costs[0].amount}");
             }
         }
 
@@ -199,6 +194,11 @@ namespace JumpeeIsland
         {
             try
             {
+                var costs = virtualPurchaseTransactions[virtualPurchaseId].costs;
+                foreach (var cost in costs)
+                    if (SavingSystemManager.Instance.CheckEnoughCurrency(cost.id, cost.amount) == false)
+                        return null;
+                
                 return await EconomyService.Instance.Purchases.MakeVirtualPurchaseAsync(virtualPurchaseId);
             }
             catch (EconomyException e)
@@ -212,6 +212,11 @@ namespace JumpeeIsland
                 Debug.LogException(e);
                 return default;
             }
+        }
+
+        public List<JIItemAndAmountSpec> GetVirtualPurchaseCost(string virtualPurchaseId)
+        {
+            return virtualPurchaseTransactions[virtualPurchaseId].costs;
         }
 
         #endregion

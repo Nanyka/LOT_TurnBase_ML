@@ -215,6 +215,11 @@ namespace JumpeeIsland
             await _commandBatchManager.SubmitListCommands(commandNames, _cloudCodeManager);
         }
 
+        public void OnGrantCurrency(string currencyId, int amount)
+        {
+            _economyManager.OnGrantCurrency(currencyId, amount);
+        }
+
         #endregion
 
         #region INVENTORY DATA
@@ -240,6 +245,16 @@ namespace JumpeeIsland
         public void OnLoadVirtualPurchase()
         {
             _economyManager.InitializeVirtualPurchaseLookup();
+        }
+
+        public async Task<MakeVirtualPurchaseResult> OnMakeAPurchase(string virtualPurchaseId)
+        {
+            return await _economyManager.MakeVirtualPurchaseAsync(virtualPurchaseId);
+        }
+        
+        public List<JIItemAndAmountSpec> GetVirtualPurchaseCost(string virtualPurchaseId)
+        {
+            return _economyManager.GetVirtualPurchaseCost(virtualPurchaseId);
         }
 
         #endregion

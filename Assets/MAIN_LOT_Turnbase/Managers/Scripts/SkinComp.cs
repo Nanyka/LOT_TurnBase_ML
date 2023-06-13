@@ -8,6 +8,8 @@ namespace JumpeeIsland
     public class SkinComp : MonoBehaviour
     {
         [SerializeField] private Transform m_SkinAnchor;
+        
+        [SerializeField] private Renderer _agentRenderer;
 
         public void Initiate(string skinAddress)
         {
@@ -15,6 +17,24 @@ namespace JumpeeIsland
                 return;
             
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor);
+        }
+        
+        public void Initiate(string skinAddress, AnimateComp animateComp)
+        {
+            if (skinAddress.IsNullOrEmpty())
+                return;
+            
+            AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this, animateComp);
+        }
+
+        public void SetRenderer(Renderer renderer)
+        {
+            _agentRenderer = renderer;
+        }
+
+        public void SetMaterial(Material material)
+        {
+            _agentRenderer.material = material;
         }
     }
 }

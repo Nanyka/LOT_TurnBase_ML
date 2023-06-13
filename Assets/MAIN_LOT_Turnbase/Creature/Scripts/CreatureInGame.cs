@@ -7,12 +7,12 @@ namespace JumpeeIsland
 {
     // TODO replicate UnitMovement
 
-    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IRemoveEntity
+    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity
     {
         [Header("Creature Components")] [SerializeField]
         protected Transform _rotatePart;
 
-        [SerializeField] private Renderer _agentRenderer;
+        // [SerializeField] private Renderer _agentRenderer;
         [SerializeField] protected CreatureEntity m_Entity;
 
         protected IFactionController m_FactionController;
@@ -88,9 +88,11 @@ namespace JumpeeIsland
             return m_Transform.position;
         }
 
-        public (string name, int health, int damage, int power) InfoToShow()
+        public string ShowInfo()
         {
-            return (name, m_Entity.GetCurrentHealth(), m_Entity.GetAttackDamage(), _movement.jumpCount);
+            var data = (CreatureData)m_Entity.GetData();
+            return
+                $"{data.EntityName}\nHp:{data.CurrentHp}\nDamage:{data.CurrentDamage}\nJumpCount:{_movement.jumpCount}";
         }
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
@@ -115,7 +117,7 @@ namespace JumpeeIsland
 
         public void SetMaterial(Material setMaterial)
         {
-            _agentRenderer.material = setMaterial;
+            m_Entity.SetSkinMaterial(setMaterial);
         }
 
         public void MarkAsUsedThisTurn()
@@ -128,7 +130,7 @@ namespace JumpeeIsland
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
                 SavingSystemManager.Instance.OnContributeFromEntity.Invoke(m_Entity);
-            
+
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             m_FactionController.RemoveAgent(this);
             StartCoroutine(DieVisual());
@@ -145,15 +147,15 @@ namespace JumpeeIsland
         public void Remove(EnvironmentData environmentData)
         {
             if (m_FactionController.GetFaction() == FactionType.Player)
-                environmentData.PlayerData.Remove((CreatureData)m_Entity.GetData());
+                environmentData.PlayerData.Remove((CreatureData) m_Entity.GetData());
             if (m_FactionController.GetFaction() == FactionType.Enemy)
-                environmentData.EnemyData.Remove((CreatureData)m_Entity.GetData());
+                environmentData.EnemyData.Remove((CreatureData) m_Entity.GetData());
         }
 
         public void ResetMoveState(Material factionMaterial)
         {
             _isUsed = false;
-            _agentRenderer.material = factionMaterial;
+            m_Entity.SetSkinMaterial(factionMaterial);
         }
 
         #endregion

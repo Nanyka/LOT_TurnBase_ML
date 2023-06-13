@@ -85,6 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1477718803691780370}
+  - component: {fileID: 3625949663670154315}
   - component: {fileID: 2743831474480865830}
   - component: {fileID: 4254030499193475456}
   - component: {fileID: 6399824172501684373}
@@ -95,7 +96,7 @@ GameObject:
   - component: {fileID: 126811913570602412}
   - component: {fileID: 5263130835656515206}
   - component: {fileID: 7701744138358367976}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WoodStorage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,6 +120,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3625949663670154315
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059673418706724716}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.9, y: 0.1, z: 0.9}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2743831474480865830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 6310286560813265472}
+  _agentRenderer: {fileID: 0}
 --- !u!114 &1899224532496428306
 MonoBehaviour:
   m_ObjectHideFlags: 0

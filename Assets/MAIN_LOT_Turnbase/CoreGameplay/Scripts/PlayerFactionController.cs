@@ -11,11 +11,11 @@ namespace JumpeeIsland
         [SerializeField] private FactionType m_Faction = FactionType.Player;
         [SerializeField] private Material _factionMaterial;
         [SerializeField] private Material _defaultMaterial;
-        
+
         private List<CreatureInGame> _creatures = new();
         private EnvironmentManager m_Environment;
         private Camera _camera;
-        private int _layerMask = 1 << 3;
+        private int _layerMask = 1 << 7;
         private CreatureInGame _currentUnit;
         private int _countMovedUnit;
 
@@ -24,7 +24,7 @@ namespace JumpeeIsland
         {
             _creatures.Add(creature);
         }
-        
+
         public void Init()
         {
             m_Environment = FindObjectOfType<EnvironmentManager>();
@@ -39,8 +39,11 @@ namespace JumpeeIsland
 
         public void Update()
         {
-            if (Input.GetMouseButtonDown(0) && m_Environment.GetCurrFaction() == m_Faction)
+            if (Input.GetMouseButtonDown(0))
             {
+                if (m_Environment.GetCurrFaction() != m_Faction)
+                    return;
+
                 var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
                 if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
                     return;
@@ -84,7 +87,7 @@ namespace JumpeeIsland
             else
                 m_Environment.OnHighlightUnit.Invoke(_currentUnit.GetCurrentPosition());
 
-            MainUI.Instance.OnShowCreatureInfo.Invoke(getUnitAtPos);
+            MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
         }
 
         private void MoveToward(int direction)

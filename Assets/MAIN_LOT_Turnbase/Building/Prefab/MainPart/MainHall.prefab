@@ -354,6 +354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5917505786496129982}
+  - component: {fileID: 4775177049109048805}
   - component: {fileID: 8093400847287719461}
   - component: {fileID: 7125051389675565385}
   - component: {fileID: 3677784085646803465}
@@ -364,7 +365,7 @@ GameObject:
   - component: {fileID: 2546377071808114139}
   - component: {fileID: 7380320511996273459}
   - component: {fileID: 4221870581281864083}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MainHall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,6 +389,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4775177049109048805
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3955766802612495538}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.9, y: 0.1, z: 0.9}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8093400847287719461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,6 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 2670404836229931697}
+  _agentRenderer: {fileID: 0}
 --- !u!114 &4908626877808582869
 MonoBehaviour:
   m_ObjectHideFlags: 0

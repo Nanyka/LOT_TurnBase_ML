@@ -18,11 +18,6 @@ namespace JumpeeIsland
             _creatureDatas = (List<CreatureData>)Convert.ChangeType(data, typeof(List<CreatureData>));
         }
 
-        public void PlaceNewObject<T>(T data)
-        {
-            throw new NotImplementedException();
-        }
-
         private void Start()
         {
             StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
@@ -33,19 +28,29 @@ namespace JumpeeIsland
         private void Init()
         {
             foreach (var creatureData in _creatureDatas)
-            {
-                var creatureObj = _creaturePool.GetObject();
-                creatureData.CreatureType = _factionController.GetFaction(); // adjust Faction to ensure it did not went wrong during customization
-                StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
-
-                if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))
-                {
-                    creatureInGame.gameObject.SetActive(true);
-                    creatureInGame.Init(creatureData,_factionController);
-                }
-            }
+                TrainANewCreature(creatureData);
             
             _factionController.Init();
+        }
+
+        public void PlaceNewObject<T>(T data)
+        {
+            var creatureData = (CreatureData)Convert.ChangeType(data, typeof(CreatureData));
+            TrainANewCreature(creatureData);
+        }
+
+        private void TrainANewCreature(CreatureData creatureData)
+        {
+            var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
+            creatureData.CreatureType =
+                _factionController.GetFaction(); // adjust Faction to ensure it did not went wrong during customization
+            StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
+
+            if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))
+            {
+                creatureInGame.gameObject.SetActive(true);
+                creatureInGame.Init(creatureData, _factionController);
+            }
         }
         
         public void Reset()

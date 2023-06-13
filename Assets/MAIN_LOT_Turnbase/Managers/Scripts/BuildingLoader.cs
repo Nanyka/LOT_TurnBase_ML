@@ -26,9 +26,9 @@ namespace JumpeeIsland
         private void Init()
         {
             foreach (var building in _buildingDatas)
-            {
                 ConstructBuilding(building);
-            }
+
+            _buildingController.Init();
         }
 
         // TODO Add new building
