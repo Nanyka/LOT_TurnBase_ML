@@ -8,18 +8,24 @@ namespace JumpeeIsland
         public CurrencyType Currency;
         [Tooltip("True if current balance lower than this amount")]
         public int CurrencyAmount;
+        
         public CurrencyType Storage;
         [Tooltip("True if current storage larger than this amount")]
         public int StorageAmount;
+        
+        public CurrencyType Resource;
+        [Tooltip("True if current resource lower than this amount")]
+        public int ResourceAmount;
 
         public bool PassCondition()
         {
-            return CheckCurrency() && CheckBuilding();
+            Debug.Log($"Check currency: {CheckCurrency()}, check building: {CheckBuilding()}, check resource: {CheckResource()}");
+            return CheckCurrency() && CheckBuilding() && CheckResource();
         }
 
         private bool CheckCurrency()
         {
-            if (CurrencyAmount <= 0)
+            if (Currency == CurrencyType.NONE)
                 return true;
             
             return !SavingSystemManager.Instance.CheckEnoughCurrency(Currency.ToString(), CurrencyAmount);
@@ -27,7 +33,7 @@ namespace JumpeeIsland
 
         private bool CheckBuilding()
         {
-            if (StorageAmount <= 0)
+            if (Storage == CurrencyType.NONE)
                 return true;
             
             var buildings = SavingSystemManager.Instance.GetEnvironmentData().BuildingData;
@@ -36,6 +42,19 @@ namespace JumpeeIsland
                 if (building.StorageCurrency == Storage)
                     totalStorage += building.StorageCapacity - building.CurrentStorage;
             return totalStorage >= StorageAmount;
+        }
+
+        private bool CheckResource()
+        {
+            if (Resource == CurrencyType.NONE)
+                return true;
+            
+            var resources = SavingSystemManager.Instance.GetEnvironmentData().ResourceData;
+            int totalAmount = 0;
+            foreach (var resource in resources)
+                if (resource.CollectedCurrency == Resource)
+                    totalAmount++;
+            return totalAmount < ResourceAmount;
         }
     }
 }

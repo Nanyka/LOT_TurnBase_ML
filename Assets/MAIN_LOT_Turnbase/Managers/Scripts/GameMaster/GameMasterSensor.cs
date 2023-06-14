@@ -13,6 +13,8 @@ namespace JumpeeIsland
     
         public void DetectEnvironment(WorldStates beliefs)
         {
+            beliefs.ClearStates();
+            
             foreach (var decision in _decisions)
             {
                 var responseDecision = decision.MakeDecision();

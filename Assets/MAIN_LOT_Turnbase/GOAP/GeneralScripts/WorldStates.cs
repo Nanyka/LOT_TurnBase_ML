@@ -39,12 +39,9 @@ namespace GOAP
                 _states.Remove(key);
         }
 
-        public void SetState(string key, int value)
+        public void ClearStates()
         {
-            if (_states.ContainsKey(key))
-                _states[key] = value;
-            else
-                _states.Add(key, value);
+            _states.Clear();
         }
 
         public Dictionary<string, int> GetStates()
