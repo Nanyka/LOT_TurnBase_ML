@@ -31,13 +31,11 @@ namespace JumpeeIsland
         public override void SelfInfer(NPCActionInferer inferer)
         {
             _currenInferer = inferer;
-            Debug.Log("Ask GOAP Brain for an action");
             m_Brain.BrainInProcess();
         }
 
         public override void ResponseAction(int direction)
         {
-            Debug.Log($"Response action from GOAP brain: {direction}");
             InferMoving.Action = direction;
             InferMoving.CurrentPos = m_Transform.position;
             GetPositionByDirection(InferMoving.Action);

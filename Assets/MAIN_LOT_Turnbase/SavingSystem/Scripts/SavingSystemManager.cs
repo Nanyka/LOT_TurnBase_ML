@@ -188,8 +188,6 @@ namespace JumpeeIsland
         public void OnSpawnResource(InventoryType inventoryType, Vector3 position)
         {
             var inventoryItem = m_InventoryLoader.GetInventoriesByType(inventoryType);
-            Debug.Log(inventoryItem);
-            //TODO bug here
             
             var newResource = new ResourceData()
             {

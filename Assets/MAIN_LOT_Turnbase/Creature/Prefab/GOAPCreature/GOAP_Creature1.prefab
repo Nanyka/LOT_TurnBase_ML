@@ -19766,9 +19766,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4449383041397115435}
   - component: {fileID: 5583329498526231191}
-  - component: {fileID: 1834678237908064564}
+  - component: {fileID: 2816079410773242160}
   - component: {fileID: 1516550204108572484}
+  - component: {fileID: 7075646322966708306}
   - component: {fileID: 1982783401986911912}
+  - component: {fileID: 4272915881295469431}
+  - component: {fileID: 8546751165269547794}
+  - component: {fileID: 2289589028041877587}
   m_Layer: 3
   m_Name: GOAPBrain
   m_TagString: Untagged
@@ -19804,10 +19808,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mCurrentGoal:
-  - GoalId: IDLE
+  - GoalId: GOAWAY
     Remove: 0
     Weight: 1
---- !u!114 &1834678237908064564
+--- !u!114 &2816079410773242160
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19816,9 +19820,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1339657351565428511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd86cddd3bb49dd91a0763039841442, type: 3}
+  m_Script: {fileID: 11500000, guid: 473f9a78b39148519a757a80f252d668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkingRadius: 2
 --- !u!114 &1516550204108572484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19839,7 +19844,30 @@ MonoBehaviour:
     Weight: 0
   finishDistance: 3
   m_GoalManager: {fileID: 5583329498526231191}
-  m_Sensor: {fileID: 1834678237908064564}
+  m_Sensor: {fileID: 2816079410773242160}
+--- !u!114 &7075646322966708306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339657351565428511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62a0dae0f894abdad468577f508cf13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Action
+  Cost: 5
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  PreConditions: []
+  AfterEffects:
+  - key: GOAWAY
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
 --- !u!114 &1982783401986911912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19857,9 +19885,86 @@ MonoBehaviour:
   Target: {fileID: 0}
   TargetTag: 
   Duration: 0
-  PreConditions: []
+  PreConditions:
+  - key: GOLEFT
+    value: 0
   AfterEffects:
-  - key: IDLE
+  - key: GOAWAY
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
+--- !u!114 &4272915881295469431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339657351565428511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e4108f9d054bc28af6d4e629fa37ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Action
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  PreConditions:
+  - key: GORIGHT
+    value: 0
+  AfterEffects:
+  - key: GOAWAY
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
+--- !u!114 &8546751165269547794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339657351565428511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a6636589fc4c48b436f884f31e6210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Go backward
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  PreConditions:
+  - key: GOBACKWARD
+    value: 0
+  AfterEffects:
+  - key: GOAWAY
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
+--- !u!114 &2289589028041877587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339657351565428511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b5690d1de142d3a78fb495efe1a8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Action
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  PreConditions:
+  - key: GOFORWARD
+    value: 0
+  AfterEffects:
+  - key: GOAWAY
     value: 0
   mNavMeshAgent: {fileID: 0}
   running: 0
@@ -62742,8 +62847,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillSOs:
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
   - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
+  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
   - {fileID: 11400000, guid: fa1e369e9f75345c99e19f4db8a46893, type: 2}
 --- !u!114 &8881933207685990883
 MonoBehaviour:

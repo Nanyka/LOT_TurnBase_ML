@@ -31,7 +31,6 @@ namespace JumpeeIsland
 
         public void BrainInProcess()
         {
-            Debug.Log($"Brain of {name} is in process...");
             m_Sensor.DetectEnvironment(Beliefs);
             APlusAlgorithm();
         }
@@ -47,14 +46,12 @@ namespace JumpeeIsland
         {
             if (CurrentAction != null && CurrentAction.running)
             {
-                Debug.Log($"Check condition: isDone: {_isDone}, invoke: {isInvoke}");
                 if (_isDone)
                 {
                     _isDone = false;
                     _actionQueue = null;
                     if (!isInvoke)
                     {
-                        Debug.Log($"Complete the action {CurrentAction.ActionName}");
                         isInvoke = true;
                         CompleteAction();
                     }
@@ -122,6 +119,11 @@ namespace JumpeeIsland
         public void ResponseToCreature(int actionIndex)
         {
             m_Creature.ResponseAction(actionIndex);
+        }
+
+        public GOAPCreatureInGame GetCreature()
+        {
+            return m_Creature;
         }
 
         #endregion
