@@ -20,7 +20,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
+            GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
             _factionController = GetComponent<IFactionController>();
             _creaturePool = GetComponent<ObjectPool>();
         }
@@ -44,7 +44,7 @@ namespace JumpeeIsland
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             creatureData.CreatureType =
                 _factionController.GetFaction(); // adjust Faction to ensure it did not went wrong during customization
-            StartUpProcessor.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
+            GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
 
             if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))
             {

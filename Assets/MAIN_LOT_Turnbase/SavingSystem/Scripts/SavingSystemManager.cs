@@ -49,8 +49,8 @@ namespace JumpeeIsland
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
             OnContributeFromEntity.AddListener(StackUpFromEntity);
-            StartUpProcessor.Instance.OnLoadData.AddListener(StartUpLoadData);
-            StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
+            GameFlowManager.Instance.OnLoadData.AddListener(StartUpLoadData);
+            GameFlowManager.Instance.OnResetData.AddListener(ResetData);
         }
 
         private async void OnDisable()
@@ -89,7 +89,7 @@ namespace JumpeeIsland
             SaveDisconnectedState(false); // set it as connected state when loaded all disconnected session's data
             SetInLoadingState(false); // Finish loading phase
 
-            StartUpProcessor.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetMoveAmount());
+            GameFlowManager.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetMoveAmount());
         }
 
         private void ResetData()
@@ -183,6 +183,19 @@ namespace JumpeeIsland
                 data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
                 m_EnvLoader.SetData(data);
             }
+        }
+
+        public void OnSpawnResource(InventoryType inventoryType, Vector3 position)
+        {
+            var inventoryItem = m_InventoryLoader.GetInventoriesByType(inventoryType);
+            Debug.Log(inventoryItem);
+            //TODO bug here
+            
+            var newResource = new ResourceData()
+            {
+                EntityName = inventoryItem.inventoryName, SkinAddress = inventoryItem.skinAddress, Position = position
+            };
+            m_EnvLoader.SpawnResource(newResource);
         }
 
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)

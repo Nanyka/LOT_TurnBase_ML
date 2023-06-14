@@ -9,7 +9,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private Transform m_SkinAnchor;
         
-        [SerializeField] private Renderer _agentRenderer;
+        private Renderer _agentRenderer;
 
         public void Initiate(string skinAddress)
         {

@@ -6,6 +6,7 @@ namespace JumpeeIsland
     public class ResourceEntity : Entity
     {
         [SerializeField] private ResourceStats m_ResourceStats;
+        [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
@@ -121,8 +122,17 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
+            // Initiate entity data if it's new
+            if (m_ResourceData.CurrentHp <= 0)
+            {
+                m_ResourceData.CurrentHp = m_ResourceStats.MaxHp;
+                m_ResourceData.CollectedCurrency = m_ResourceStats.CollectedCurrency;
+            }
+            
+            // Retrieve entity data
             m_Transform.position = m_ResourceData.Position;
             m_Transform.eulerAngles = m_ResourceData.Rotation;
+            m_SkinComp.Initiate(m_ResourceData.SkinAddress);
             m_HealthComp.Init(m_ResourceStats.MaxHp, OnUnitDie, m_ResourceData);
             OnUnitDie.AddListener(DieCollect);
         }

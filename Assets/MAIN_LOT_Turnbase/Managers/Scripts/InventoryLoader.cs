@@ -25,6 +25,11 @@ namespace JumpeeIsland
         {
             MainUI.Instance.OnShowCreatureMenu.Invoke(m_Inventories);
         }
+        
+        public JIInventoryItem GetInventoriesByType(InventoryType inventoryType)
+        {
+            return m_Inventories.Find(t => t.inventoryType == inventoryType);
+        }
     }
 
     public class JIInventoryItem
@@ -40,6 +45,7 @@ namespace JumpeeIsland
     {
         None,
         Building,
-        Creature
+        Creature,
+        Resource
     }
 }

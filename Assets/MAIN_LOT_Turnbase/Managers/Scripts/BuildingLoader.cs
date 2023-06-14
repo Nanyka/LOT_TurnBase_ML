@@ -19,7 +19,7 @@ namespace JumpeeIsland
         
         private void Start()
         {
-            StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
+            GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
             _buildingController = GetComponent<BuildingController>();
         }
         
@@ -31,7 +31,6 @@ namespace JumpeeIsland
             _buildingController.Init();
         }
 
-        // TODO Add new building
         public void PlaceNewObject<T>(T data)
         { 
             var buildingData = (BuildingData)Convert.ChangeType(data, typeof(BuildingData));
@@ -52,7 +51,7 @@ namespace JumpeeIsland
         private void ConstructBuilding(BuildingData building)
         {
             var buildingObj = _buildingPool.GetObject(building.EntityName);
-            StartUpProcessor.Instance.OnDomainRegister.Invoke(buildingObj, building.CreatureType);
+            GameFlowManager.Instance.OnDomainRegister.Invoke(buildingObj, building.CreatureType);
 
             if (buildingObj.TryGetComponent(out BuildingInGame buildingInGame))
             {

@@ -10,6 +10,7 @@ namespace JumpeeIsland
         public int MaxHp;
         public bool IsLongLasting;
         [ShowIf("@IsLongLasting == false")] public int MaxTurnToDestroy;
+        public CurrencyType CollectedCurrency;
         public CommandName Command;
         [Tooltip("Amount of exp that entity destroying this resource can collect")]
         public int ExpReward;

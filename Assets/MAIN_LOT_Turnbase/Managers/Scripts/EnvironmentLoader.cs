@@ -64,6 +64,16 @@ namespace JumpeeIsland
             removeInterface.Remove(_environmentData);
         }
 
+        #region RESOURCE
+
+        public void SpawnResource(ResourceData resourceData)
+        {
+            _environmentData.AddResourceData(resourceData);
+            resourceLoader.PlaceNewObject(resourceData);
+        }
+
+        #endregion
+
         #region BUILDINGS
 
         public void PlaceABuilding(BuildingData buildingData)

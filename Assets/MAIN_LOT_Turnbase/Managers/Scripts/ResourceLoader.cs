@@ -14,7 +14,7 @@ namespace JumpeeIsland
         
         private void Start()
         {
-            StartUpProcessor.Instance.OnInitiateObjects.AddListener(Init);
+            GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
             _resourceController = GetComponent<ResourceController>();
         }
         
@@ -24,27 +24,34 @@ namespace JumpeeIsland
             _resourceDatas = (List<ResourceData>)Convert.ChangeType(data, typeof(List<ResourceData>));
         }
 
-        public void PlaceNewObject<T>(T data)
-        {
-            throw new NotImplementedException();
-        }
-
         private void Init()
         {
             foreach (var resource in _resourceDatas)
             {
-                var resourceObj = _resoucePool.GetObject();
-                StartUpProcessor.Instance.OnDomainRegister.Invoke(resourceObj, resource.CreatureType);
-
-                if (resourceObj.TryGetComponent(out ResourceInGame resourceInGame))
-                {
-                    resourceInGame.gameObject.SetActive(true);
-                    resourceInGame.Init(resource, _resourceController);
-                }
+                SpawnResource(resource);
             }
 
             _resourceController.Init();
         }
+
+        public void PlaceNewObject<T>(T data)
+        {
+            var resourceData = (ResourceData)Convert.ChangeType(data, typeof(ResourceData));
+            SpawnResource(resourceData);
+        }
+
+        private void SpawnResource(ResourceData resource)
+        {
+            var resourceObj = _resoucePool.GetObject();
+            GameFlowManager.Instance.OnDomainRegister.Invoke(resourceObj, resource.CreatureType);
+
+            if (resourceObj.TryGetComponent(out ResourceInGame resourceInGame))
+            {
+                resourceInGame.gameObject.SetActive(true);
+                resourceInGame.Init(resource, _resourceController);
+            }
+        }
+
 
         public void Reset()
         {

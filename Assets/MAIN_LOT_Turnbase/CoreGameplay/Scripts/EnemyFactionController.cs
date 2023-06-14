@@ -26,7 +26,7 @@ namespace JumpeeIsland
         
         public void Init()
         {
-            m_Environment = FindObjectOfType<EnvironmentManager>();
+            m_Environment = GameFlowManager.Instance.GetEnvManager();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
             m_Environment.OnOneTeamWin.AddListener(FinishRound);
 
