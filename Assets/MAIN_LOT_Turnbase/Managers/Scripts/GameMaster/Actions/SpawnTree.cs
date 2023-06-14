@@ -4,27 +4,22 @@ using GOAP;
 using JumpeeIsland;
 using UnityEngine;
 
-public class SpawnTree : GAction
+namespace JumpeeIsland
 {
-    public override bool PrePerform()
+    public class SpawnTree : GAction
     {
-        var availableTile = GameFlowManager.Instance.GetEnvManager().GetAvailableTile();
-        if (availableTile == Vector3.negativeInfinity)
+        public override bool PrePerform()
         {
-            Debug.Log("No any available tile");
-        }
-        else
-        {
-            Debug.Log($"Start spawn tree");
-            SavingSystemManager.Instance.OnSpawnResource(InventoryType.Resource,availableTile);
-        }
+            var availableTile = GameFlowManager.Instance.GetEnvManager().GetAvailableTile();
+            if (availableTile != Vector3.negativeInfinity)
+                SavingSystemManager.Instance.OnSpawnResource(InventoryType.Resource,availableTile);
         
-        return true;
-    }
+            return true;
+        }
 
-    public override bool PostPerform()
-    {
-        Debug.Log("End spawn tree");
-        return true;
+        public override bool PostPerform()
+        {
+            return true;
+        }
     }
 }

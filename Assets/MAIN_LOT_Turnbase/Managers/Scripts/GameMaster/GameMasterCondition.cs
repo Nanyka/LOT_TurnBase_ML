@@ -19,7 +19,6 @@ namespace JumpeeIsland
 
         public bool PassCondition()
         {
-            Debug.Log($"Check currency: {CheckCurrency()}, check building: {CheckBuilding()}, check resource: {CheckResource()}");
             return CheckCurrency() && CheckBuilding() && CheckResource();
         }
 

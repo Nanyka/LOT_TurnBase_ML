@@ -10,12 +10,13 @@ namespace JumpeeIsland
     public class NPCInGame : CreatureInGame, IGetCreatureInfo
     {
         public DummyAction InferMoving;
+        public bool _isSwitchBrain = true;
 
         private BehaviorParameters m_BehaviorParameters;
         private Agent m_Agent;
         private int _currentDirection;
 
-        public void Awake()
+        public virtual void Awake()
         {
             // Since this example does not inherit from the Agent class, explicit registration
             // of the RpcCommunicator is required. The RPCCommunicator should only be compiled
@@ -41,7 +42,16 @@ namespace JumpeeIsland
         /// <summary>
         ///   <para>Send an action to agent, instead of asking for inferring from a brain, and ask for its reaction</para>
         /// </summary>
-        public DummyAction RespondFromAction(int action)
+        public virtual void SelfInfer(NPCActionInferer inferer)
+        {
+            for (int i = 0; i <= 4; i++) // check all direction and record what will happen for each one
+            {
+                DummyAction action = new DummyAction(SelfResponseAction(i));
+                inferer.AddActionToCache(action);
+            }
+        }
+
+        private DummyAction SelfResponseAction(int action)
         {
             InferMoving.Action = action;
             InferMoving.CurrentPos = m_Transform.position;
@@ -49,12 +59,12 @@ namespace JumpeeIsland
             return InferMoving;
         }
 
-        public void AskForAction()
+        public virtual void AskForAction()
         {
             m_Agent?.RequestDecision();
         }
 
-        public void ResponseAction(int direction)
+        public virtual void ResponseAction(int direction)
         {
             InferMoving.Action = direction;
             InferMoving.CurrentPos = m_Transform.position;
@@ -62,7 +72,7 @@ namespace JumpeeIsland
             m_FactionController.WaitForCreature();
         }
 
-        private void GetPositionByDirection(int direction)
+        protected virtual void GetPositionByDirection(int direction)
         {
             var movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, direction, 0, 0);
@@ -89,27 +99,28 @@ namespace JumpeeIsland
         }
 
         #endregion
-        
+
         #region ACTION PHASE
 
         public void ConductSelectedAction(DummyAction selectedAction)
         {
             MarkAsUsedThisTurn();
             InferMoving = selectedAction;
-        
+
             // Change agent direction before the agent jump to the new position
             if (selectedAction.TargetPos != m_Transform.position)
                 _rotatePart.forward = selectedAction.TargetPos - m_Transform.position;
 
             StartCoroutine(MoveOverTime());
         }
-    
+
         private IEnumerator MoveOverTime()
         {
             m_Entity.UpdateTransform(InferMoving.TargetPos, _rotatePart.eulerAngles);
             while (transform.position != InferMoving.TargetPos)
             {
-                m_Transform.position = Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 10f * Time.deltaTime);
+                m_Transform.position =
+                    Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 10f * Time.deltaTime);
                 yield return null;
             }
 
@@ -123,12 +134,12 @@ namespace JumpeeIsland
         }
 
         #endregion
-        
+
         #region GET & SET
 
         public new (string name, int health, int damage, int power) InfoToShow()
         {
-            return (name ,m_Entity.GetCurrentHealth(), m_Entity.GetAttackDamage(), InferMoving.JumpCount);
+            return (name, m_Entity.GetCurrentHealth(), m_Entity.GetAttackDamage(), InferMoving.JumpCount);
         }
 
         public new (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()

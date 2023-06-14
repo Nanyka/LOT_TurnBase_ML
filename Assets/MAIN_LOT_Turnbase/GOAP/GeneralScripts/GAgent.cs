@@ -102,7 +102,7 @@ namespace GOAP
                         if (identifiedDestination != null)
                             destination = identifiedDestination.position;
 
-                        CurrentAction.Agent.SetDestination(destination);
+                        CurrentAction.mNavMeshAgent.SetDestination(destination);
                     }
                 }
                 else
@@ -112,7 +112,7 @@ namespace GOAP
             }
         }
 
-        private void CompleteAction()
+        protected void CompleteAction()
         {
             CurrentAction.running = false;
             CurrentAction.PostPerform();

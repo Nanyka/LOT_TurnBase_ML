@@ -873,7 +873,11 @@ MonoBehaviour:
   items:
   - prefab: {fileID: 526198340007786470, guid: 0dbe373d93af744f7acb7a36034469d2, type: 3}
     prefCollector: {fileID: 162778264}
-    amount: 1
+    amount: 0
+    expandable: 1
+  - prefab: {fileID: 8029324093239343947, guid: 3df451448cf1c478299ff2a2e9cbf5b6, type: 3}
+    prefCollector: {fileID: 162778264}
+    amount: 0
     expandable: 1
   pooledItems: []
 --- !u!114 &162778267
@@ -4882,7 +4886,7 @@ GameObject:
   - component: {fileID: 1202650894}
   - component: {fileID: 1202650895}
   m_Layer: 0
-  m_Name: StartUpProcessor(Singleton)
+  m_Name: GameFlowManager(Singleton)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

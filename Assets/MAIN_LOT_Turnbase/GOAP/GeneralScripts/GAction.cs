@@ -15,13 +15,14 @@ namespace GOAP
         
         public WorldState[] PreConditions;
         public WorldState[] AfterEffects;
-        [HideInInspector] public NavMeshAgent Agent;
+        [HideInInspector] public NavMeshAgent mNavMeshAgent;
         public Dictionary<string, int> DicPreConditions;
         public Dictionary<string, int> DicAfterEffects;
         private WorldStates AgentBeliefs;
 
-        public GInventory Inventory;
-        public WorldStates Beliefs;
+        protected GAgent m_GAgent;
+        // public GInventory Inventory;
+        // public WorldStates Beliefs;
 
         public bool running = false;
 
@@ -33,7 +34,7 @@ namespace GOAP
 
         private void Awake()
         {
-            Agent = GetComponent<NavMeshAgent>();
+            mNavMeshAgent = GetComponent<NavMeshAgent>();
 
             if (PreConditions != null)
             {
@@ -51,8 +52,9 @@ namespace GOAP
                 }   
             }
 
-            Inventory = GetComponent<GAgent>().Inventory;
-            Beliefs = GetComponent<GAgent>().Beliefs;
+            m_GAgent = GetComponent<GAgent>();
+            // Inventory = GetComponent<GAgent>().Inventory;
+            // Beliefs = GetComponent<GAgent>().Beliefs;
         }
 
         public bool IsAchievable()

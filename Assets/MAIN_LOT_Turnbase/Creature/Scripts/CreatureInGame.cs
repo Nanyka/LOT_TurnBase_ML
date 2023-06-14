@@ -21,7 +21,7 @@ namespace JumpeeIsland
         private int _currentPower;
         private bool _isUsed;
 
-        public void Init(CreatureData creatureData, IFactionController playerFaction)
+        public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
             m_FactionController = playerFaction;

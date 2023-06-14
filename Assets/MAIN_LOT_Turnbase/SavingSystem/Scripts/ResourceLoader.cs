@@ -51,8 +51,7 @@ namespace JumpeeIsland
                 resourceInGame.Init(resource, _resourceController);
             }
         }
-
-
+        
         public void Reset()
         {
             _resoucePool.ResetPool();

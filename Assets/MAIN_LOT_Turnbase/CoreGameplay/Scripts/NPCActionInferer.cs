@@ -115,6 +115,7 @@ namespace JumpeeIsland
 
         public Skill_SO GetSkillByIndex(int skillCount)
         {
+            Debug.Log($"Get skill {skillCount}");
             return m_SkillSOs[skillCount];
         }
 
