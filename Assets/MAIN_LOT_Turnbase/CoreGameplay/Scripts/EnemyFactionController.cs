@@ -18,20 +18,20 @@ namespace JumpeeIsland
         private List<NPCInGame> _dummyNPCs = new();
         private int _skillCount;
         private int _responseCounter;
-        
+
         public void AddCreatureToFaction(CreatureInGame creatureInGame)
         {
             m_Enemies.Add((NPCInGame) creatureInGame);
         }
-        
+
         public void Init()
         {
-            m_Environment = FindObjectOfType<EnvironmentManager>();
+            m_Environment = GameFlowManager.Instance.GetEnvManager();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
             m_Environment.OnOneTeamWin.AddListener(FinishRound);
 
             m_NpcActionInferer = GetComponent<NPCActionInferer>();
-            
+
             InitiateNpcList();
         }
 
@@ -87,17 +87,11 @@ namespace JumpeeIsland
         }
 
         // Do inference without brain, just ask for all direction and collect relevant rewards
-        private void SelfInferenceBrainStorming(IEnumerable<NPCInGame> jumperForGames)
+        private void SelfInferenceBrainStorming(IEnumerable<NPCInGame> npcJumpers)
         {
-            var jumpers = jumperForGames as NPCInGame[] ?? jumperForGames.ToArray();
+            var jumpers = npcJumpers as NPCInGame[] ?? npcJumpers.ToArray();
             foreach (var jumper in jumpers)
-            {
-                for (int i = 0; i <= 4; i++)
-                {
-                    DummyAction action = new DummyAction(jumper.RespondFromAction(i));
-                    m_NpcActionInferer.AddActionToCache(action);
-                }
-            }
+                jumper.SelfInfer(m_NpcActionInferer);
         }
 
         private void StartInferAgentsAction(IEnumerable<NPCInGame> jumperForGames)
@@ -112,7 +106,8 @@ namespace JumpeeIsland
                 foreach (var jumper in jumpers)
                 {
                     // Infer action & add to jumper cache as currentAction when other idle
-                    jumper.SetBrain(m_NpcActionInferer.GetSkillByIndex(_skillCount).GetModel());
+                    if (jumper._isSwitchBrain)
+                        jumper.SetBrain(m_NpcActionInferer.GetSkillByIndex(_skillCount).GetModel());
                     jumper.AskForAction();
                 }
             }
@@ -130,7 +125,8 @@ namespace JumpeeIsland
             if (_responseCounter != _dummyNPCs.Count) return;
 
             foreach (var jumperForGame in _dummyNPCs)
-                m_NpcActionInferer.AddActionToCache(jumperForGame.InferMoving);
+                if (jumperForGame._isSwitchBrain)
+                    m_NpcActionInferer.AddActionToCache(jumperForGame.InferMoving);
 
             // Move to next skill
             _skillCount++;
@@ -207,7 +203,7 @@ namespace JumpeeIsland
         public void RemoveAgent(CreatureInGame creatureInGame)
         {
             Debug.Log("Require some visual stuff here");
-            m_Environment.RemoveObject(creatureInGame.gameObject,m_Faction);
+            m_Environment.RemoveObject(creatureInGame.gameObject, m_Faction);
             m_Enemies.Remove((NPCInGame) creatureInGame);
             SetTempIndex();
         }

@@ -166,15 +166,6 @@ namespace JumpeeIsland
 
                 virtualPurchaseTransactions[virtualPurchaseDefinition.Id] = (costs, rewards);
             }
-
-            foreach (var transaction in virtualPurchaseTransactions)
-            {
-                Debug.Log($"Virtual purchase Id: {transaction.Key}");
-                
-                // Debug.Log($"Virtual purchase Id: {transaction.Key}" +
-                //           $"Reward: {transaction.Value.rewards[0].id}, Amount: {transaction.Value.rewards[0].amount}" +
-                //           $"Cost: {transaction.Value.costs[0].id}, Amount: {transaction.Value.costs[0].amount}");
-            }
         }
 
         List<JIItemAndAmountSpec> ParseEconomyItems(List<PurchaseItemQuantity> itemQuantities)

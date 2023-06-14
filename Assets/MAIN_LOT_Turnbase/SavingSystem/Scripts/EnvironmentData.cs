@@ -22,5 +22,10 @@ namespace JumpeeIsland
         {
             PlayerData.Add(data);
         }
+
+        public void AddResourceData(ResourceData resourceData)
+        {
+            ResourceData.Add(resourceData);
+        }
     }
 }

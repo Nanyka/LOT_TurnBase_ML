@@ -84,7 +84,6 @@ namespace JumpeeIsland
 
         public override void TakeDamage(int damage, Entity fromEntity)
         {
-            Debug.Log($"{gameObject} take {damage} damage");
             m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }

@@ -26,7 +26,6 @@ namespace JumpeeIsland
         void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
         {
             var rewards = remoteConfigManager.commandRewards[GetKey().ToString()];
-            Debug.Log("Processing spend one MOVE");
             DistributeRewardsLocally(rewards);
             // GameStateManager.instance.SetIsOpenChestValidMove(true);
         }

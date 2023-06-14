@@ -96,7 +96,8 @@ namespace JumpeeIsland
 
         public override void TakeDamage(int damage, Entity fromEntity)
         {
-            throw new NotImplementedException();
+            m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+            SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         public override int GetCurrentHealth()

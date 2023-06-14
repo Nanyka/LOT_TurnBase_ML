@@ -12,7 +12,6 @@ namespace JumpeeIsland
         public void EnqueueCommand(JICommand command)
         {
             _commands.commandBatch.Add(command);
-            Debug.Log($"Number of commands: {_commands.commandBatch.Count}");
         }
 
         public async Task FlushBatch(JICloudCodeManager cloudCodeManager)

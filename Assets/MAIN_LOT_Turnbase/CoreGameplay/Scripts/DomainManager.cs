@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 namespace JumpeeIsland
 {
@@ -10,7 +10,6 @@ namespace JumpeeIsland
     {
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
 
-        // private List<Vector3> _obstacleAreas = new();
         private List<Vector3> _tileAreas = new();
 
         #region INIT SET UP
@@ -20,26 +19,35 @@ namespace JumpeeIsland
             _tileAreas.Add(tilePos);
         }
 
-        // private Vector3 GetAvailablePlot()
-        // {
-        //     var xPos = Mathf.RoundToInt(Random.Range(-_maxX, _maxX));
-        //     var zPos = Mathf.RoundToInt(Random.Range(-_maxZ, _maxZ));
-        //     var newPos = new Vector3(xPos, 0f, zPos);
-        //     newPos = new Vector3(newPos.x, 0f, newPos.z);
-        //     return CheckFreeToMove(newPos, true) ? newPos : GetAvailablePlot();
-        // }
+        public Vector3 GetAvailableTile()
+        {
+            Shuffle(_tileAreas);
+
+            foreach (var tile in _tileAreas)
+                if (CheckFreeToMove(tile))
+                    return tile;
+            
+            return Vector3.negativeInfinity;
+        }
+        
+        // Using the Fisher-Yates shuffle algorithm
+        public static void Shuffle<T>(List<T> list)
+        {
+            Random random = new Random();
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
 
         #endregion
 
         #region CHECK DOMAIN
-
-        // private bool CheckFreeToMove(Vector3 plot, bool isSpawningPhase)
-        // {
-        //     if (isSpawningPhase && plot == Vector3.zero)
-        //         return true;
-        //
-        //     return CheckFreeToMove(plot);
-        // }
 
         public bool CheckFreeToMove(Vector3 plot)
         {

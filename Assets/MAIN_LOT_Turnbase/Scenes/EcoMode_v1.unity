@@ -657,7 +657,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: CREATURE1
+          m_StringArgument: TREE1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &141754029
@@ -873,7 +873,11 @@ MonoBehaviour:
   items:
   - prefab: {fileID: 526198340007786470, guid: 0dbe373d93af744f7acb7a36034469d2, type: 3}
     prefCollector: {fileID: 162778264}
-    amount: 1
+    amount: 0
+    expandable: 1
+  - prefab: {fileID: 8029324093239343947, guid: 3df451448cf1c478299ff2a2e9cbf5b6, type: 3}
+    prefCollector: {fileID: 162778264}
+    amount: 0
     expandable: 1
   pooledItems: []
 --- !u!114 &162778267
@@ -1508,6 +1512,7 @@ Transform:
   - {fileID: 1029899311}
   - {fileID: 162778264}
   - {fileID: 870244092}
+  - {fileID: 666026841}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2121,7 +2126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - prefab: {fileID: 7606181594612410114, guid: 0f6fa4d3ff80b47db95d294c581e5ac8, type: 3}
+  - prefab: {fileID: 7219380861596647775, guid: 0f6fa4d3ff80b47db95d294c581e5ac8, type: 3}
     prefCollector: {fileID: 384461262}
     amount: 1
     expandable: 1
@@ -2960,6 +2965,131 @@ RectTransform:
   m_AnchoredPosition: {x: -30, y: 0}
   m_SizeDelta: {x: 60, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &666026840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 666026841}
+  - component: {fileID: 666026843}
+  - component: {fileID: 666026847}
+  - component: {fileID: 666026842}
+  - component: {fileID: 666026845}
+  - component: {fileID: 666026846}
+  m_Layer: 0
+  m_Name: GameMaster<4>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &666026841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666026840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 231263777}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &666026842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666026840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52de22d14e994b1bb91eb56eaffac37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Actions: []
+  CurrentAction: {fileID: 0}
+  CurrentGoal:
+    GoalId: 
+    Remove: 0
+    Weight: 0
+  finishDistance: 3
+  m_GoalManager: {fileID: 666026847}
+  m_Sensor: {fileID: 666026843}
+--- !u!114 &666026843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666026840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584c1d20e0f414adaa5759c96e60425c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _decisions:
+  - {fileID: 11400000, guid: ad91f494d16d3427ba7e4f2bb5c3c66d, type: 2}
+--- !u!114 &666026845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666026840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd659d3dc95d4239997abc770b7c55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Spawn tree
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  PreConditions:
+  - key: NEEDTREE
+    value: 0
+  AfterEffects:
+  - key: SPAWNTREE
+    value: 0
+  Agent: {fileID: 0}
+  running: 0
+--- !u!114 &666026846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666026840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc26d35c3de2646da9d4dee12fd157d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisAgent: {fileID: 666026842}
+--- !u!114 &666026847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666026840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ac63be36732455aa4f22c1140c67ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mCurrentGoal:
+  - GoalId: SPAWNTREE
+    Remove: 0
+    Weight: 1
 --- !u!1 &721311392
 GameObject:
   m_ObjectHideFlags: 0
@@ -4756,7 +4886,7 @@ GameObject:
   - component: {fileID: 1202650894}
   - component: {fileID: 1202650895}
   m_Layer: 0
-  m_Name: StartUpProcessor(Singleton)
+  m_Name: GameFlowManager(Singleton)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

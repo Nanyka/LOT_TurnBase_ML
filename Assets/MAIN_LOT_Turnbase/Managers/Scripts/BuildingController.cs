@@ -15,7 +15,7 @@ namespace JumpeeIsland
         public void Init()
         {
             _camera = Camera.main;
-            m_Environment = FindObjectOfType<EnvironmentManager>();
+            m_Environment = GameFlowManager.Instance.GetEnvManager();
             m_Environment.OnChangeFaction.AddListener(DurationDeduct);
         }
         

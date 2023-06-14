@@ -38,9 +38,9 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            StartUpProcessor.Instance.OnStartGame.AddListener(Init);
-            StartUpProcessor.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
-            StartUpProcessor.Instance.OnDomainRegister.AddListener(DomainRegister);
+            GameFlowManager.Instance.OnStartGame.AddListener(Init);
+            GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
+            GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
             SavingSystemManager.Instance.OnUpdateLocalMove.AddListener(CacheLastSessionSteps);
         }
 
@@ -127,6 +127,11 @@ namespace JumpeeIsland
         public void DomainRegister(GameObject domainOwner, FactionType factionType)
         {
             _domainManager.UpdateDomainOwner(domainOwner, factionType);
+        }
+
+        public Vector3 GetAvailableTile()
+        {
+            return _domainManager.GetAvailableTile();
         }
 
         public bool FreeToMove(Vector3 checkPos)

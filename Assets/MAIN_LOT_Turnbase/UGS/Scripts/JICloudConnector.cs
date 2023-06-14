@@ -121,7 +121,7 @@ namespace JumpeeIsland
             try
             {
                 await _cloudCodeManager.CallResetStateEndpoint();
-                StartUpProcessor.Instance.OnResetData.Invoke();
+                GameFlowManager.Instance.OnResetData.Invoke();
             }
             catch (Exception e)
             {

@@ -7,5 +7,6 @@ namespace JumpeeIsland
     {
         public int AccumulatedStep;
         public int Level;
+        public CurrencyType CollectedCurrency;
     }
 }

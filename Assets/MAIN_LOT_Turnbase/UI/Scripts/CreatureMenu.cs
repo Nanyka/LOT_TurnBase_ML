@@ -26,13 +26,12 @@ namespace JumpeeIsland
             foreach (var buyButton in _buyButtons)
                 buyButton.TurnOff();
 
-            for (int i = 0; i < inventories.Count; i++)
+            var index = 0;
+            foreach (var inventory in inventories)
             {
-                var inventory = inventories[i];
                 if (inventory.inventoryType != InventoryType.Creature)
                     continue;
-
-                _buyButtons[i].TurnOn(inventory, this);
+                _buyButtons[index++].TurnOn(inventory, this);
             }
 
             _creatureMenu.SetActive(true);

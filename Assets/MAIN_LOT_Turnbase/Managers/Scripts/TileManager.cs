@@ -16,7 +16,7 @@ namespace JumpeeIsland
         public void Init(int tileAmount)
         {
             SpawnTileMap(tileAmount);
-            StartUpProcessor.Instance.OnInitiateObjects.Invoke();
+            GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
         private void SpawnTileMap(int tileAmount)
@@ -28,7 +28,7 @@ namespace JumpeeIsland
             {
                 var tile = _tilePool.GetObject();
                 tile.transform.position = _listTilePos[i].GetPosition(0f, 1f);
-                StartUpProcessor.Instance.OnUpdateTilePos.Invoke(tile.transform.position);
+                GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile.transform.position);
                 tile.SetActive(true);
             }
         }
