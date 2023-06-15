@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Economy.Model;
+using Unity.Services.Leaderboards.Models;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -148,7 +149,7 @@ namespace JumpeeIsland
         private void SavePlayerEnv()
         {
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
-            SaveManager.Instance.Save(m_EnvLoader.GetData(), envPath, DataWasSaved, encrypt);
+            SaveManager.Instance.Save(m_EnvLoader.GetDataForSave(), envPath, DataWasSaved, encrypt);
         }
 
         private void DataWasSaved(SaveResult result, string message)
@@ -338,6 +339,15 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region LEADERBOARD
+
+        public async Task<EnvironmentData> GetEnemyEnv()
+        {
+            return await m_CloudConnector.GetEnemyEnvironment();
+        }
+
+        #endregion
+
         #region GET & SET
 
         private string GetSavingPath(SavingPath tailPath)
@@ -349,6 +359,11 @@ namespace JumpeeIsland
         public EnvironmentData GetEnvironmentData()
         {
             return m_EnvLoader.GetData();
+        }
+        
+        public EnvironmentData GetEnvDataForSave()
+        {
+            return m_EnvLoader.GetDataForSave();
         }
 
         public void StoreCurrencyAtBuildings(string currency, int amount, Vector3 fromPos)

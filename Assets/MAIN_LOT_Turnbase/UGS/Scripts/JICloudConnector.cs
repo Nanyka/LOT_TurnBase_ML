@@ -5,6 +5,8 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Economy.Model;
+using Unity.Services.Leaderboards;
+using Unity.Services.Leaderboards.Models;
 using Unity.Services.Samples.IdleClickerGame;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,9 +17,9 @@ namespace JumpeeIsland
     {
         [SerializeField] private JIEconomyManager _economyManager;
         [SerializeField] private JICloudCodeManager _cloudCodeManager;
-        [SerializeField] private JISimulatedCurrencyManager _simulatedCurrencyManager;
         [SerializeField] private JICommandBatchSystem _commandBatchManager;
         [SerializeField] private JIRemoteConfigManager _remoteConfigManager;
+        [SerializeField] private JILeaderboardManager _leaderboardManager;
         
         private async void OnDisable()
         {
@@ -25,7 +27,7 @@ namespace JumpeeIsland
                 return;
             
             await Task.WhenAll(
-                _cloudCodeManager.CallSaveEnvData(SavingSystemManager.Instance.GetEnvironmentData()),
+                _cloudCodeManager.CallSaveEnvData(SavingSystemManager.Instance.GetEnvDataForSave()),
                 HandleCommandBatch()
             ) ;
         }
@@ -255,6 +257,17 @@ namespace JumpeeIsland
         public List<JIItemAndAmountSpec> GetVirtualPurchaseCost(string virtualPurchaseId)
         {
             return _economyManager.GetVirtualPurchaseCost(virtualPurchaseId);
+        }
+
+        #endregion
+
+        #region LEADERBOARD
+
+        public async Task<EnvironmentData> GetEnemyEnvironment()
+        {
+            var getPlayerRange = await _leaderboardManager.GetPlayerRange();
+
+            return await _cloudCodeManager.CallGetEnemyEnvironment(getPlayerRange[5].PlayerId);
         }
 
         #endregion

@@ -122,6 +122,28 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region LEADERBOARD
+
+        public async Task<EnvironmentData> CallGetEnemyEnvironment(string enemyId)
+        {
+            try
+            {
+                var enemyEnv = await CloudCodeService.Instance.CallEndpointAsync<EnvironmentData>(
+                    "JumpeeIsland_GetMapById",
+                    new Dictionary<string, object>{{"enemyId",enemyId}});
+
+                return enemyEnv;
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e,
+                    "Handled exception in CallGetEnemyEnvironment.");
+            }
+        }
+
+        #endregion
+
         #region HANDLE EXCEPTIONs
 
         static CloudCodeCustomError ConvertToActionableError(CloudCodeException e)

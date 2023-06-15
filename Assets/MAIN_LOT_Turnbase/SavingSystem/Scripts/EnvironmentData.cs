@@ -8,6 +8,7 @@ namespace JumpeeIsland
         public long timestamp;
         public long lastTimestamp;
         public long moveTimestamp;
+        public int mapSize;
         public List<ResourceData> ResourceData;
         public List<BuildingData> BuildingData;
         public List<CreatureData> PlayerData;
@@ -26,6 +27,15 @@ namespace JumpeeIsland
         public void AddResourceData(ResourceData resourceData)
         {
             ResourceData.Add(resourceData);
+        }
+
+        public void PrepareForBattleMode(List<CreatureData> playerData)
+        {
+            EnemyData.Clear();
+            foreach (var creatureData in PlayerData)
+                EnemyData.Add(creatureData);
+
+            PlayerData.Clear();
         }
     }
 }
