@@ -10,6 +10,7 @@ using Unity.Services.Leaderboards.Models;
 using Unity.Services.Samples.IdleClickerGame;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
@@ -278,8 +279,7 @@ namespace JumpeeIsland
         public async Task<EnvironmentData> GetEnemyEnvironment()
         {
             var getPlayerRange = await _leaderboardManager.GetPlayerRange();
-
-            return await _cloudCodeManager.CallGetEnemyEnvironment(getPlayerRange[5].PlayerId);
+            return await _cloudCodeManager.CallGetEnemyEnvironment(getPlayerRange[Random.Range(0,getPlayerRange.Count)].PlayerId);
         }
 
         #endregion

@@ -29,7 +29,7 @@ namespace JumpeeIsland
             // Send creature data to Creature menu as JIInventoryItem
             foreach (var creatureData in _playerEnvCache.PlayerData)
                 _spawnList.Add(creatureData.ConvertToInventoryItem());
-
+            
             ExecuteEnvData();
         }
 
