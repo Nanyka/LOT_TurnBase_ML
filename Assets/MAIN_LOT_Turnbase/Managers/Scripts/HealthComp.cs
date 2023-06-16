@@ -22,7 +22,7 @@ namespace JumpeeIsland
         {
             entityData.CurrentHp -= damage;
             _hpSlider.value = entityData.CurrentHp * 1f / m_MAXHp;
-
+            
             if (entityData.CurrentHp <= 0)
                 Die(killedBy);
         }

@@ -12,11 +12,10 @@ namespace JumpeeIsland
         [SerializeField] private TextMeshProUGUI m_ItemName;
         [SerializeField] private Image m_ItemIcon;
         
-
-        private AsyncOperationHandle m_UCDObjectLoadingHandle;
-        private CreatureMenu m_CreatureMenu;
-        private JIInventoryItem m_CreatureItem;
-        private Vector3 _spawnPosition;
+        // private AsyncOperationHandle m_UCDObjectLoadingHandle;
+        protected CreatureMenu m_CreatureMenu;
+        protected JIInventoryItem m_CreatureItem;
+        protected Vector3 _spawnPosition;
         private int _layerMask = 1 << 6;
         private Camera _camera;
 
@@ -25,7 +24,7 @@ namespace JumpeeIsland
             _camera = Camera.main;
         }
 
-        public void TurnOn(JIInventoryItem creatureItem, CreatureMenu creatureMenu)
+        public virtual void TurnOn(JIInventoryItem creatureItem, CreatureMenu creatureMenu)
         {
             m_CreatureItem = creatureItem;
             m_ItemName.text = m_CreatureItem.inventoryName;
@@ -65,9 +64,9 @@ namespace JumpeeIsland
             m_CreatureMenu.EndDeal(this);
         }
 
-        public void ClickYes()
+        public virtual void ClickYes()
         {
-            SavingSystemManager.Instance.OnTrainACreature(m_CreatureItem,_spawnPosition);
+            SavingSystemManager.Instance.OnTrainACreature(m_CreatureItem,_spawnPosition, true);
         }
     }
 }

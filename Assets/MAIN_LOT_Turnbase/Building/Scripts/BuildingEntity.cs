@@ -146,6 +146,7 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
+            Debug.Log("Building reset phase");
             // Set default information to buildingData
             m_BuildingData.StorageCapacity = m_BuildingStats.StorageCapacity;
             m_BuildingData.StorageCurrency = m_BuildingData.StorageCurrency;

@@ -9,5 +9,11 @@ namespace JumpeeIsland
         public int CurrentExp;
         public int TurnCount;
         public int CurrentDamage;
+
+        // Just used for BattleMode
+        public JIInventoryItem ConvertToInventoryItem()
+        {
+            return SavingSystemManager.Instance.ConvertToInventoryItem(this);
+        }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Economy.Model;
+using Unity.Services.Leaderboards.Models;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,7 +29,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
         [NonSerialized] public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
 
-        [SerializeField] private JICloudConnector m_CloudConnector;
+        [SerializeField] protected JICloudConnector m_CloudConnector;
         private EnvironmentLoader m_EnvLoader;
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
@@ -56,7 +57,7 @@ namespace JumpeeIsland
         private async void OnDisable()
         {
             if (!CheckLoadingPhaseFinished()) return;
-            SavePlayerEnv();
+            SavePlayerEnvAtEndGame();
             SaveCommandBatch(m_CloudConnector.GetCommands());
             await CheckInternetConnection();
         }
@@ -151,6 +152,12 @@ namespace JumpeeIsland
             SaveManager.Instance.Save(m_EnvLoader.GetData(), envPath, DataWasSaved, encrypt);
         }
 
+        private void SavePlayerEnvAtEndGame()
+        {
+            var envPath = GetSavingPath(SavingPath.PlayerEnvData);
+            SaveManager.Instance.Save(m_EnvLoader.GetDataForSave(), envPath, DataWasSaved, encrypt);
+        }
+
         private void DataWasSaved(SaveResult result, string message)
         {
             if (result == SaveResult.Error)
@@ -220,13 +227,16 @@ namespace JumpeeIsland
             m_EnvLoader.PlaceABuilding(newBuilding);
         }
         
-        public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position)
+        public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isEcoMode)
         {
-            var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(inventoryItem.virtualPurchaseId);
-            if (purchaseHandler == null)
+            if (isEcoMode)
             {
-                Debug.Log("Show \"Lack of currency\" panel");
-                return;
+                var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(inventoryItem.virtualPurchaseId);
+                if (purchaseHandler == null)
+                {
+                    Debug.Log("Show \"Lack of currency\" panel");
+                    return;
+                }
             }
             
             var newCreature = new CreatureData()
@@ -270,7 +280,7 @@ namespace JumpeeIsland
 
         #endregion
 
-        #region INVENTORY LOADER
+        #region INVENTORY
 
         public void OnAskForShowingBuildingMenu()
         {
@@ -280,6 +290,11 @@ namespace JumpeeIsland
         public void OnAskForShowingCreatureMenu()
         {
             m_InventoryLoader.SendInventoriesToCreatureMenu();
+        }
+        
+        public JIInventoryItem ConvertToInventoryItem(EntityData data)
+        {
+            return m_CloudConnector.ConvertToInventoryItem(data);
         }
 
         #endregion
@@ -338,6 +353,15 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region LEADERBOARD
+
+        public async Task<EnvironmentData> GetEnemyEnv()
+        {
+            return await m_CloudConnector.GetEnemyEnvironment();
+        }
+
+        #endregion
+
         #region GET & SET
 
         private string GetSavingPath(SavingPath tailPath)
@@ -349,6 +373,11 @@ namespace JumpeeIsland
         public EnvironmentData GetEnvironmentData()
         {
             return m_EnvLoader.GetData();
+        }
+        
+        public EnvironmentData GetEnvDataForSave()
+        {
+            return m_EnvLoader.GetDataForSave();
         }
 
         public void StoreCurrencyAtBuildings(string currency, int amount, Vector3 fromPos)

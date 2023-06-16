@@ -8,8 +8,9 @@ namespace JumpeeIsland
     public class SkinComp : MonoBehaviour
     {
         [SerializeField] private Transform m_SkinAnchor;
+        [SerializeField] private Mesh m_BodyMesh;
 
-        private Renderer _agentRenderer;
+        [SerializeField] private Renderer _factionRenderer;
 
         public void Initiate(string skinAddress)
         {
@@ -27,17 +28,28 @@ namespace JumpeeIsland
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this, animateComp);
         }
 
-        public void SetRenderer(Renderer renderer)
+        public void ModifyBodyMesh(SkinnedMeshRenderer renderer)
         {
-            _agentRenderer = renderer;
+            if (renderer == null)
+                return;
+            
+            renderer.sharedMesh = m_BodyMesh;
+        }
+
+        public void SetFactionRenderer(Renderer renderer)
+        {
+            if (renderer == null)
+                return;
+            
+            _factionRenderer = renderer;
         }
 
         public void SetMaterial(Material material)
         {
-            if (_agentRenderer == null)
+            if (_factionRenderer == null)
                 return;
 
-            _agentRenderer.material = material;
+            _factionRenderer.material = material;
         }
     }
 }

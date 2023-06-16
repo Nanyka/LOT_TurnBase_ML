@@ -562,7 +562,7 @@ Transform:
   - {fileID: 1491159638}
   - {fileID: 1887702935}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &141754026
 GameObject:
@@ -1514,7 +1514,7 @@ Transform:
   - {fileID: 870244092}
   - {fileID: 666026841}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &247996013
 GameObject:
@@ -2128,7 +2128,7 @@ MonoBehaviour:
   items:
   - prefab: {fileID: 7219380861596647775, guid: 0f6fa4d3ff80b47db95d294c581e5ac8, type: 3}
     prefCollector: {fileID: 384461262}
-    amount: 1
+    amount: 0
     expandable: 1
   pooledItems: []
 --- !u!114 &384461265
@@ -2313,7 +2313,10 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.39999998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2429541426039442955}
+  - {fileID: 2136329095}
+  - {fileID: 1989427918}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3059,7 +3062,7 @@ MonoBehaviour:
   AfterEffects:
   - key: SPAWNTREE
     value: 0
-  Agent: {fileID: 0}
+  mNavMeshAgent: {fileID: 0}
   running: 0
 --- !u!114 &666026846
 MonoBehaviour:
@@ -3784,6 +3787,7 @@ GameObject:
   - component: {fileID: 974339809}
   - component: {fileID: 974339813}
   - component: {fileID: 974339812}
+  - component: {fileID: 974339814}
   m_Layer: 0
   m_Name: JumpeeIslandSceneManager
   m_TagString: Untagged
@@ -3820,9 +3824,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _economyManager: {fileID: 974339811}
   _cloudCodeManager: {fileID: 974339810}
-  _simulatedCurrencyManager: {fileID: 974339809}
   _commandBatchManager: {fileID: 974339813}
   _remoteConfigManager: {fileID: 974339812}
+  _leaderboardManager: {fileID: 974339814}
 --- !u!114 &974339809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3885,6 +3889,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d68a15d33f2d4cdc96e52c5126396a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &974339814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974339806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c784a5875f141568a382f7a34720e29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leaderboardId: my-first-leaderboard
+  _rangeLimit: 5
 --- !u!1 &976234612
 GameObject:
   m_ObjectHideFlags: 0
@@ -4161,7 +4179,7 @@ MonoBehaviour:
   items:
   - prefab: {fileID: 6139275472149662902, guid: d5273634fcfe5431aa95e5f2431a8d7a, type: 3}
     prefCollector: {fileID: 1029899311}
-    amount: 1
+    amount: 0
     expandable: 1
   pooledItems: []
 --- !u!114 &1029899314
@@ -4699,7 +4717,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1165519451
 GameObject:
@@ -5882,11 +5900,11 @@ MonoBehaviour:
   buildingLoader: {fileID: 218828473}
   playerLoader: {fileID: 1029899312}
   enemyLoader: {fileID: 162778267}
-  _mapSize: 10
   _environmentData:
     timestamp: 0
     lastTimestamp: 0
     moveTimestamp: 0
+    mapSize: 0
     ResourceData: []
     BuildingData: []
     PlayerData: []
@@ -6796,13 +6814,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989427915}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.39999998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 515565300}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2017423999
 GameObject:
@@ -7212,13 +7230,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136329094}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.39999998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 451773532}
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 515565300}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &103059435366551279
 RectTransform:
@@ -7702,8 +7720,8 @@ RectTransform:
   - {fileID: 65316015}
   - {fileID: 1165519452}
   - {fileID: 959735593199267580}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 515565300}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

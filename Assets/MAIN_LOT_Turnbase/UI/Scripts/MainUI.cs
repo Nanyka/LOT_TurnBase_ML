@@ -6,9 +6,10 @@ using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    [RequireComponent(typeof(BuyBuildingMenu))]
     public class MainUI : Singleton<MainUI>
     {
+
+        [NonSerialized] public UnityEvent OnEnableInteract = new(); // send to DontMoveButton; invoke here in EcoMode and at CreatureMenu in BattleMode
         [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
         [NonSerialized] public UnityEvent OnUpdateCurrencies = new(); // send to CurrenciesInfo; invoke at SavingSystemManager
@@ -20,15 +21,22 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
         private BuyBuildingMenu _buyBuildingMenu;
-        private CreatureMenu _creatureMenu;
+        protected CreatureMenu _creatureMenu;
 
-        private void Start()
+        protected virtual void Start()
         {
             _buyBuildingMenu = GetComponent<BuyBuildingMenu>();
             _creatureMenu = GetComponent<CreatureMenu>();
+            
+            GameFlowManager.Instance.OnStartGame.AddListener(EnableInteract);
         }
 
-        private void Update()
+        private void EnableInteract(long arg0)
+        {
+            OnEnableInteract.Invoke();
+        }
+
+        protected virtual void Update()
         {
             if (Input.GetMouseButton(0))
             {

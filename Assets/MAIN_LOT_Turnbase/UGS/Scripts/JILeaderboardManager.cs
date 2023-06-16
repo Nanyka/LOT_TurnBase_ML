@@ -1,0 +1,46 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Unity.Services.Leaderboards;
+using Unity.Services.Leaderboards.Models;
+using UnityEngine;
+
+namespace JumpeeIsland
+{
+    public class JILeaderboardManager : MonoBehaviour
+    {
+        [SerializeField] private string _leaderboardId;
+        [Tooltip("Returns a total of rangeLimit*2+1 entries (the given player plus rangeLimit on either side)")]
+        [SerializeField] private int _rangeLimit = 5;
+        
+        public async void AddScore()
+        {
+            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, 102);
+            Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        }
+
+        public async void GetScores()
+        {
+            var scoresResponse =
+                await LeaderboardsService.Instance.GetScoresAsync(_leaderboardId);
+            Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+        }
+
+        public async void GetPlayerScore()
+        {
+            var scoreResponse =
+                await LeaderboardsService.Instance.GetPlayerScoreAsync(_leaderboardId);
+            Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        }
+        
+        public async Task<List<LeaderboardEntry>> GetPlayerRange()
+        {
+            var scoresResponse = await LeaderboardsService.Instance.GetPlayerRangeAsync(
+                _leaderboardId,
+                new GetPlayerRangeOptions{ RangeLimit = _rangeLimit }
+            );
+            
+            return scoresResponse.Results;
+        }
+    }
+}

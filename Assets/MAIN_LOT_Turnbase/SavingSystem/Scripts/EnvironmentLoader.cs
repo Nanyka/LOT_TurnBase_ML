@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -12,17 +13,9 @@ namespace JumpeeIsland
         [SerializeField] private BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
         [SerializeField] private CreatureLoader enemyLoader;
+        [SerializeField] protected EnvironmentData _environmentData;
 
-        [Header("Test data")] 
-        [SerializeField] private int _mapSize;
-        [SerializeField] private EnvironmentData _environmentData;
-        
-        // private void Awake()
-        // {
-        //     StartUpProcessor.Instance.OnResetData.AddListener(ResetData);
-        // }
-
-        public void Init()
+        public virtual void Init()
         {
             SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
             Debug.Log("Load data into managers...");
@@ -39,17 +32,23 @@ namespace JumpeeIsland
             buildingLoader.Reset();
         }
 
-        private void ExecuteEnvData()
+        protected void ExecuteEnvData()
         {
             resourceLoader.StartUpLoadData(_environmentData.ResourceData);
             buildingLoader.StartUpLoadData(_environmentData.BuildingData);
             playerLoader.StartUpLoadData(_environmentData.PlayerData);
             enemyLoader.StartUpLoadData(_environmentData.EnemyData);
 
-            tileManager.Init(_mapSize);
+            tileManager.Init(_environmentData.mapSize);
         }
 
         public EnvironmentData GetData()
+        {
+            return _environmentData;
+        }
+
+        // Use a distinct function to get data for saving and override it in BattleEnvLoader
+        public virtual EnvironmentData GetDataForSave()
         {
             return _environmentData;
         }
@@ -58,8 +57,8 @@ namespace JumpeeIsland
         {
             _environmentData = environmentData;
         }
-        
-        private void RemoveDestroyedEntity(IRemoveEntity removeInterface)
+
+        protected void RemoveDestroyedEntity(IRemoveEntity removeInterface)
         {
             removeInterface.Remove(_environmentData);
         }
