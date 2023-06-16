@@ -7,8 +7,15 @@ namespace JumpeeIsland
         protected override void Start()
         {
             _creatureMenu = GetComponent<CreatureMenu>();
+            
+            OnEnableInteract.AddListener(SetInteractable);
         }
-        
+
+        private void SetInteractable()
+        {
+            IsInteractable = true;
+        }
+
         protected override void Update() { }
     }
 }

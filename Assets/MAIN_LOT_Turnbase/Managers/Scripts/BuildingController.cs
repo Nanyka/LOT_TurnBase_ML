@@ -11,20 +11,20 @@ namespace JumpeeIsland
         private EnvironmentManager m_Environment;
         private Camera _camera;
         private int _layerMask = 1 << 9;
-        
+
         public void Init()
         {
             _camera = Camera.main;
             m_Environment = GameFlowManager.Instance.GetEnvManager();
             m_Environment.OnChangeFaction.AddListener(DurationDeduct);
         }
-        
+
         private void DurationDeduct()
         {
             foreach (var building in m_buildings)
                 building.DurationDeduct(m_Environment.GetCurrFaction());
         }
-        
+
         public void AddBuildingToList(BuildingInGame building)
         {
             m_buildings.Add(building);
@@ -34,6 +34,8 @@ namespace JumpeeIsland
         {
             if (Input.GetMouseButtonDown(0))
             {
+                if (MainUI.Instance.IsInteractable == false)
+                    return;
                 
                 var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
                 if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
@@ -43,7 +45,7 @@ namespace JumpeeIsland
                 SelectUnit(new Vector3(Mathf.RoundToInt(pos.x), 0f, Mathf.RoundToInt(pos.z)));
             }
         }
-        
+
         private void SelectUnit(Vector3 unitPos)
         {
             var getUnitAtPos = GetUnitByPos(unitPos);
@@ -51,12 +53,12 @@ namespace JumpeeIsland
 
             HighlightSelectedUnit(getUnitAtPos);
         }
-        
+
         private BuildingInGame GetUnitByPos(Vector3 unitPos)
         {
             return m_buildings.Find(x => Vector3.Distance(x.transform.position, unitPos) < Mathf.Epsilon);
         }
-        
+
         private void HighlightSelectedUnit(BuildingInGame getUnitAtPos)
         {
             MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
@@ -71,7 +73,7 @@ namespace JumpeeIsland
             if (Enum.TryParse(currencyId, out CurrencyType currency))
                 foreach (var t in m_buildings)
                     currentStorage += t.GetStoreSpace(currency, ref selectedBuildings);
-            
+
             amount = amount > currentStorage ? currentStorage : amount;
 
             if (amount == 0 || selectedBuildings.Count == 0)

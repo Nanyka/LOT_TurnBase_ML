@@ -41,6 +41,9 @@ namespace JumpeeIsland
         {
             if (Input.GetMouseButtonDown(0))
             {
+                if (MainUI.Instance.IsInteractable == false)
+                    return;
+                
                 if (m_Environment.GetCurrFaction() != m_Faction)
                     return;
 
