@@ -10,7 +10,7 @@ namespace JumpeeIsland
         [SerializeField] private Transform m_SkinAnchor;
         [SerializeField] private Mesh m_BodyMesh;
 
-        private Renderer _factionRenderer;
+        [SerializeField] private Renderer _factionRenderer;
 
         public void Initiate(string skinAddress)
         {
@@ -28,10 +28,11 @@ namespace JumpeeIsland
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this, animateComp);
         }
 
-        public void SetBodyMesh(SkinnedMeshRenderer renderer)
+        public void ModifyBodyMesh(SkinnedMeshRenderer renderer)
         {
             if (renderer == null)
                 return;
+            
             renderer.sharedMesh = m_BodyMesh;
         }
 
@@ -39,6 +40,7 @@ namespace JumpeeIsland
         {
             if (renderer == null)
                 return;
+            
             _factionRenderer = renderer;
         }
 

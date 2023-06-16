@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -9,8 +10,10 @@ namespace JumpeeIsland
         [SerializeField] private GameObject _confirmPanel;
         [SerializeField] private List<CreatureBuyButton> _buyButtons;
         [SerializeField] private Transform _settlePoint;
-        
+
         private int _layerMask = 1 << 6;
+        private List<JIInventoryItem> m_Inventory;
+        private Dictionary<string, int> m_Menu = new();
         private CreatureBuyButton _selectedCreature;
         private IConfirmFunction _currentConfirm;
         private bool _isInADeal;
@@ -23,16 +26,24 @@ namespace JumpeeIsland
 
         private void ShowCreatureMenu(List<JIInventoryItem> inventories)
         {
+            m_Inventory = inventories;
             foreach (var buyButton in _buyButtons)
                 buyButton.TurnOff();
 
-            var index = 0;
-            foreach (var inventory in inventories)
+            foreach (var inventory in m_Inventory)
             {
                 if (inventory.inventoryType != InventoryType.Creature)
                     continue;
-                _buyButtons[index++].TurnOn(inventory, this);
+
+                if (m_Menu.ContainsKey(inventory.inventoryName) == false)
+                    m_Menu.Add(inventory.inventoryName, 1);
+                else
+                    m_Menu[inventory.inventoryName]++;
             }
+
+            var index = 0;
+            foreach (var item in m_Menu)
+                _buyButtons[index++].TurnOn(m_Inventory.Find(t => t.inventoryName == item.Key), this);
 
             _creatureMenu.SetActive(true);
         }
@@ -41,6 +52,30 @@ namespace JumpeeIsland
         {
             _creatureMenu.SetActive(false);
         }
+
+        #region MANAGE MENU
+
+        public int GetAmountById(string itemId)
+        {
+            return m_Menu[itemId];
+        }
+
+        public void DecreaseAmount(string itemId)
+        {
+            m_Menu[itemId]--;
+        }
+
+        // Just use this in BattleMode
+        public void CheckEmptyMenu()
+        {
+            if (m_Menu.Sum(t => t.Value) > 0)
+                return;
+            
+            HideCreatureMenu();
+            MainUI.Instance.OnEnableInteract.Invoke();
+        }
+
+        #endregion
 
         #region IN A DEAL
 
@@ -54,7 +89,7 @@ namespace JumpeeIsland
         {
             _settlePoint.position = position;
         }
-        
+
         public void EndDeal(IConfirmFunction confirmFunction)
         {
             _isInADeal = false;

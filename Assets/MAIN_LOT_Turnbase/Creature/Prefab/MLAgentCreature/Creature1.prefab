@@ -14768,7 +14768,6 @@ GameObject:
   - component: {fileID: 6379566714131875508}
   - component: {fileID: 8770669470631813934}
   - component: {fileID: -5818561843208793975}
-  - component: {fileID: 3803787540057786489}
   - component: {fileID: -5030173592278888721}
   - component: {fileID: 517405128496297875}
   - component: {fileID: -7475780726954439476}
@@ -14886,19 +14885,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: -5030173592278888721}
---- !u!114 &3803787540057786489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 526198340007786470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a6da8f78a394c6ab027688eab81e04d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugCommandLineOverride: 
 --- !u!114 &-5030173592278888721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14971,6 +14957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 8025859403504390436}
   m_BodyMesh: {fileID: -9000052448125618310, guid: 503415fc3fea44f7bb0eebf41e58e8be, type: 3}
+  _factionRenderer: {fileID: 0}
 --- !u!114 &1391275525393167770
 MonoBehaviour:
   m_ObjectHideFlags: 0

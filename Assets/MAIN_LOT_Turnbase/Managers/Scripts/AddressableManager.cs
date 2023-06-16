@@ -33,8 +33,7 @@ namespace JumpeeIsland
         }
 
         // Get skin for animated objects
-        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp,
-            AnimateComp animateComp)
+        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp, AnimateComp animateComp)
         {
             m_LogPrefab = objectKey;
 
@@ -48,11 +47,11 @@ namespace JumpeeIsland
             var bodyRenderer = skin.transform.Find("Body");
             if (bodyRenderer != null)
                 if (bodyRenderer.TryGetComponent(out SkinnedMeshRenderer body))
-                    skinComp.SetBodyMesh(body);
+                    skinComp.ModifyBodyMesh(body);
 
             var factionPart = skin.transform.Find("FactionPart");
             if (factionPart != null)
-                if (bodyRenderer.TryGetComponent(out Renderer part))
+                if (factionPart.TryGetComponent(out Renderer part))
                     skinComp.SetFactionRenderer(part);
         }
 

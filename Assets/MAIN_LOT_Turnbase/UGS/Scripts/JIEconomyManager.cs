@@ -102,11 +102,11 @@ namespace JumpeeIsland
 
             try
             {
-                inventoryResult = await GetEconomyPlayerInventory();
+                inventoryResult = await GetPlayerInventory();
             }
             catch (EconomyRateLimitedException e)
             {
-                inventoryResult = await JIUtils.RetryEconomyFunction(GetEconomyPlayerInventory, e.RetryAfter);
+                inventoryResult = await JIUtils.RetryEconomyFunction(GetPlayerInventory, e.RetryAfter);
             }
             catch (Exception e)
             {
@@ -120,10 +120,15 @@ namespace JumpeeIsland
             return inventoryResult.PlayersInventoryItems;
         }
 
-        private Task<GetInventoryResult> GetEconomyPlayerInventory()
+        private Task<GetInventoryResult> GetPlayerInventory()
         {
             var options = new GetInventoryOptions {ItemsPerFetch = 100};
             return EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
+        }
+
+        public List<InventoryItemDefinition> GetInventoryDefinitions()
+        {
+            return inventoryItemDefinitions;
         }
 
         // This method is used to help test this Use Case sample by giving some currency to permit

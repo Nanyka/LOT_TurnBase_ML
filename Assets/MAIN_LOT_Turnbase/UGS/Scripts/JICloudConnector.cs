@@ -15,7 +15,7 @@ namespace JumpeeIsland
 {
     public class JICloudConnector : MonoBehaviour
     {
-        [SerializeField] private JIEconomyManager _economyManager;
+        [SerializeField] protected JIEconomyManager _economyManager;
         [SerializeField] private JICloudCodeManager _cloudCodeManager;
         [SerializeField] private JICommandBatchSystem _commandBatchManager;
         [SerializeField] private JIRemoteConfigManager _remoteConfigManager;
@@ -238,6 +238,18 @@ namespace JumpeeIsland
                 Debug.LogException(e);
                 return null;
             }
+        }
+        
+        public JIInventoryItem ConvertToInventoryItem(EntityData entityData)
+        {
+            var inventoryDefinitions = _economyManager.GetInventoryDefinitions();
+            foreach (var itemDefinition in inventoryDefinitions)
+            {
+                if (itemDefinition.Name.Equals(entityData.EntityName))
+                    return itemDefinition.CustomDataDeserializable.GetAs<JIInventoryItem>();
+            }
+
+            return null;
         }
 
         #endregion

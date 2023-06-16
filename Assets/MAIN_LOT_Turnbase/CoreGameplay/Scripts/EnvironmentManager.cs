@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -76,14 +77,18 @@ namespace JumpeeIsland
 
         public void ChangeFaction()
         {
-            if (_step <= _minStep && _currFaction == FactionType.Player)
+            // Just use MOVE currency in EcoMode
+            if (GameFlowManager.Instance.IsEcoMode)
             {
-                Debug.Log("Run out of steps");
-                return;
+                if (_step <= _minStep && _currFaction == FactionType.Player)
+                {
+                    Debug.Log("Run out of steps");
+                    return;
+                }
+
+                if (_currFaction == FactionType.Player)
+                    SpendOneMove();
             }
-            
-            if (_currFaction == FactionType.Player)
-                SpendOneMove();
 
             _currFaction = _currFaction == FactionType.Player ? FactionType.Enemy : FactionType.Player;
 
@@ -181,11 +186,6 @@ namespace JumpeeIsland
         {
             return _currFaction;
         }
-
-        // public Collider GetPlatformCollider()
-        // {
-        //     return _domainManager.GetPlatformCollider();
-        // }
 
         #endregion
     }
