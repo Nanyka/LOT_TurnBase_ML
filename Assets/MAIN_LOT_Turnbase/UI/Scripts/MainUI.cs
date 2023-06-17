@@ -20,6 +20,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnShowCreatureMenu = new(); // send to CreatureMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
+        public bool IsInteractable;
+        
         private BuyBuildingMenu _buyBuildingMenu;
         protected CreatureMenu _creatureMenu;
 
