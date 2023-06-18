@@ -55,6 +55,8 @@ namespace JumpeeIsland
 
         public void SetData(EnvironmentData environmentData)
         {
+            if (environmentData == null)
+                return;
             _environmentData = environmentData;
         }
 

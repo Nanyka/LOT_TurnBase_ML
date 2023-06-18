@@ -119,16 +119,16 @@ namespace JumpeeIsland
             return null;
         }
         
-        public async void OnResetEnvData()
+        public async Task<EnvironmentData> OnResetEnvData()
         {
             try
             {
-                await _cloudCodeManager.CallResetStateEndpoint();
-                GameFlowManager.Instance.OnResetData.Invoke();
+                return await _cloudCodeManager.CallResetStateEndpoint();
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
+                return null;
             }
         }
 
@@ -251,6 +251,11 @@ namespace JumpeeIsland
             }
 
             return null;
+        }
+
+        public async void OnGrantInventory(string inventoryId)
+        {
+            await _economyManager.OnGrantInventory(inventoryId);
         }
 
         #endregion

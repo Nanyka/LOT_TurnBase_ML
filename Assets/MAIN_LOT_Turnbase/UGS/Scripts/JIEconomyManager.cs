@@ -145,7 +145,7 @@ namespace JumpeeIsland
             }
         }
 
-        public async void OnGrantInventory(string inventoryId)
+        public async Task OnGrantInventory(string inventoryId)
         {
             await GrantDebugInventory(inventoryId);
         }

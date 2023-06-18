@@ -2762,9 +2762,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 974339808}
-        m_TargetAssemblyTypeName: JumpeeIsland.JumpeeInslandSceneManager, Assembly-CSharp
-        m_MethodName: OnResetEnvData
+      - m_Target: {fileID: 1491159640}
+        m_TargetAssemblyTypeName: JumpeeIsland.SavingSystemManager, Assembly-CSharp
+        m_MethodName: OnResetData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6110,6 +6110,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CloudConnector: {fileID: 974339808}
+  m_BasicInventory:
+  - FOODSTORAGEDEFAULT0
+  - WOODSTORAGEDEFAULT0
+  - CREATURE1
+  - TREE1
 --- !u!114 &1491159641
 MonoBehaviour:
   m_ObjectHideFlags: 0
