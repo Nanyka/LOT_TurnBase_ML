@@ -6,14 +6,12 @@ namespace JumpeeIsland
 {
     public class NeutralWood010 : JICommand
     {
-        public CommandName key = CommandName.JI_NEUTRAL_WOOD_1_0;
+        private CommandName key = CommandName.JI_NEUTRAL_WOOD_1_0;
 
-        public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager) { }
-
-        public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager, Vector3 fromPos)
+        public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager)
         {
             commandBatchSystem.EnqueueCommand(this);
-            ProcessCommandLocally(remoteConfigManager, fromPos);
+            // ProcessCommandLocally(remoteConfigManager);
         }
 
         public override CommandName GetKey()
@@ -21,15 +19,11 @@ namespace JumpeeIsland
             return key;
         }
 
-        void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager, Vector3 fromPos)
+        public override void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
         {
             var rewards = remoteConfigManager.commandRewards[GetKey().ToString()];
             Debug.Log("Processing collect one neutralWood");
-            DistributeRewardsLocally(rewards,fromPos);
-            
-            // Check available stock from BuildingManager
-            
-            // Stock currencies from near to far
+            DistributeRewardsLocally(rewards);
             
         }
     }

@@ -28,7 +28,10 @@ namespace JumpeeIsland
         {
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
-                SavingSystemManager.Instance.OnContributeFromEntity.Invoke(m_Entity);
+            {
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand(), false);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(m_Entity.GetCommand().ToString(),m_Entity.GetData().Position);
+            }
             
             // Add exp for entity who killed this resource
             if (killedByEntity != m_Entity)

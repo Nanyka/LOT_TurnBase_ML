@@ -21,17 +21,6 @@ namespace JumpeeIsland
         [SerializeField] private JICommandBatchSystem _commandBatchManager;
         [SerializeField] private JIRemoteConfigManager _remoteConfigManager;
         [SerializeField] private JILeaderboardManager _leaderboardManager;
-        
-        private async void OnDisable()
-        {
-            if (!SavingSystemManager.Instance.CheckLoadingPhaseFinished())
-                return;
-            
-            await Task.WhenAll(
-                _cloudCodeManager.CallSaveEnvData(SavingSystemManager.Instance.GetEnvDataForSave()),
-                HandleCommandBatch()
-            ) ;
-        }
 
         public async Task Init()
         {
@@ -104,6 +93,11 @@ namespace JumpeeIsland
 
         #region ENVIRONMENT DATA
 
+        public async Task OnSaveEnvData()
+        {
+            await _cloudCodeManager.CallSaveEnvData(SavingSystemManager.Instance.GetEnvDataForSave());
+        }
+
         public async Task<EnvironmentData> OnLoadEnvData()
         {
             try
@@ -123,7 +117,8 @@ namespace JumpeeIsland
         {
             try
             {
-                return await _cloudCodeManager.CallResetStateEndpoint();
+                var returnEnvData = await _cloudCodeManager.CallResetStateEndpoint();
+                return returnEnvData;
             }
             catch (Exception e)
             {
@@ -151,26 +146,38 @@ namespace JumpeeIsland
             return null;
         }
         
-        private async Task HandleCommandBatch()
+        // private async Task HandleCommandBatch()
+        // {
+        //     try
+        //     {
+        //         await _commandBatchManager.FlushBatch(_cloudCodeManager);
+        //         if (this == null) return;
+        //
+        //         await FetchUpdatedServicesData();
+        //         if (this == null) return;
+        //
+        //         Debug.Log("Flush all command to cloud");
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Debug.Log("There was a problem communicating with the server.");
+        //         Debug.LogException(e);
+        //     }
+        // }
+        
+        public void OnCommandStackUp(CommandName commandName, bool isEconomyDirectInteract)
         {
-            try
-            {
-                await _commandBatchManager.FlushBatch(_cloudCodeManager);
-                if (this == null) return;
+            var command = GetCommandByName(commandName);
 
-                await FetchUpdatedServicesData();
-                if (this == null) return;
-
-                Debug.Log("Flush all command to cloud");
-            }
-            catch (Exception e)
+            if (command != null)
             {
-                Debug.Log("There was a problem communicating with the server.");
-                Debug.LogException(e);
+                command.Execute(_commandBatchManager, _remoteConfigManager);
+                if (isEconomyDirectInteract)
+                    command.ProcessCommandLocally(_remoteConfigManager);
             }
         }
         
-        public void OnCommandStackUp(CommandName commandName)
+        private JICommand GetCommandByName(CommandName commandName)
         {
             JICommand command = null;
             switch (commandName)
@@ -186,26 +193,7 @@ namespace JumpeeIsland
                     break;
             }
 
-            if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager);
-        }
-
-        public void OnCommandStackUp(Entity entity)
-        {
-            JICommand command = null;
-            switch (entity.GetCommand())
-            {
-                case CommandName.JI_SPEND_MOVE:
-                    command = new SpendMove();
-                    break;
-                case CommandName.JI_NEUTRAL_WOOD_1_0:
-                    command = new NeutralWood010();
-                    break;
-                case CommandName.JI_NEUTRAL_FOOD_1_0:
-                    command = new NeutralFood010();
-                    break;
-            }
-
-            if (command != null) command.Execute(_commandBatchManager, _remoteConfigManager, entity.GetData().Position);
+            return command;
         }
 
         public CommandsCache GetCommands()
@@ -213,9 +201,9 @@ namespace JumpeeIsland
             return _commandBatchManager.GetCommandsForSaving();
         }
 
-        public async void SubmitCommands(List<CommandName> commandNames)
+        public async void SubmitCommands(CommandsCache commandCache)
         {
-            await _commandBatchManager.SubmitListCommands(commandNames, _cloudCodeManager);
+            await _commandBatchManager.SubmitListCommands(commandCache, _cloudCodeManager, _remoteConfigManager);
         }
 
         public void OnGrantCurrency(string currencyId, int amount)
@@ -227,6 +215,14 @@ namespace JumpeeIsland
 
         #region INVENTORY DATA
 
+        public async Task OnResetBasicInventory(List<string> basicInventory)
+        {
+            await _economyManager.ResetInventory();
+            
+            foreach (var inventoryId in basicInventory)
+                OnGrantInventory(inventoryId);
+        }
+        
         public async Task<List<PlayersInventoryItem>> OnLoadInventory()
         {
             try
@@ -253,7 +249,7 @@ namespace JumpeeIsland
             return null;
         }
 
-        public async void OnGrantInventory(string inventoryId)
+        private async void OnGrantInventory(string inventoryId)
         {
             await _economyManager.OnGrantInventory(inventoryId);
         }
@@ -275,6 +271,15 @@ namespace JumpeeIsland
         public List<JIItemAndAmountSpec> GetVirtualPurchaseCost(string virtualPurchaseId)
         {
             return _economyManager.GetVirtualPurchaseCost(virtualPurchaseId);
+        }
+
+        #endregion
+
+        #region REMOTE CONFIG
+
+        public List<JIRemoteConfigManager.Reward> GetRewardByCommandId(string commandId)
+        {
+            return _remoteConfigManager.commandRewards[commandId];
         }
 
         #endregion

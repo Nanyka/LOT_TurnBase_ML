@@ -10,12 +10,7 @@ namespace JumpeeIsland
         public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager)
         {
             commandBatchSystem.EnqueueCommand(this);
-            ProcessCommandLocally(remoteConfigManager);
-        }
-
-        public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager, Vector3 fromPos)
-        {
-            throw new System.NotImplementedException();
+            // ProcessCommandLocally(remoteConfigManager);
         }
 
         public override CommandName GetKey()
@@ -23,11 +18,10 @@ namespace JumpeeIsland
             return key;
         }
 
-        void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
+        public override void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
         {
             var rewards = remoteConfigManager.commandRewards[GetKey().ToString()];
             DistributeRewardsLocally(rewards);
-            // GameStateManager.instance.SetIsOpenChestValidMove(true);
         }
     }
 }

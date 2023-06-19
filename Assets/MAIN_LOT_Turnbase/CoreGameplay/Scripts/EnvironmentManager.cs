@@ -42,21 +42,21 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
-            SavingSystemManager.Instance.OnUpdateLocalMove.AddListener(CacheLastSessionSteps);
+            // SavingSystemManager.Instance.OnUpdateLocalMove.AddListener(CacheLastSessionSteps);
         }
 
-        private void CacheLastSessionSteps()
-        {
-            Debug.Log("Load command after a disconnected session");
-            _lastSessionSteps++;
-        }
+        // private void CacheLastSessionSteps()
+        // {
+        //     Debug.Log("Load command after a disconnected session");
+        //     _lastSessionSteps++;
+        // }
 
         private void Init(long moveAmount)
         {
-            Debug.Log($"Load step from cloud with lasSessionStep: {_lastSessionSteps}");
+            // Debug.Log($"Load step from cloud with lasSessionStep: {_lastSessionSteps}");
             _step = (int) moveAmount;
-            _step -= _lastSessionSteps;
-            MainUI.Instance.OnRemainStep.Invoke(_step);
+            // _step -= _lastSessionSteps;
+            // MainUI.Instance.OnRemainStep.Invoke(_step);
 
             // Start refurbish loop
             InvokeRepeating(nameof(WaitToAddMove), refurbishPeriod, refurbishPeriod);
@@ -116,8 +116,10 @@ namespace JumpeeIsland
         private void SpendOneMove()
         {
             _step--;
-            SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE);
-            MainUI.Instance.OnRemainStep.Invoke(_step);
+            SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE, true);
+            // MainUI.Instance.OnRemainStep.Invoke(_step);
+
+            // SavingSystemManager.Instance.OnRecordMove();
         }
 
         #endregion
