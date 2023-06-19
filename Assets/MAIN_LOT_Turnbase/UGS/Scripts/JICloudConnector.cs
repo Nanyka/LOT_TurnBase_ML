@@ -5,11 +5,8 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Economy.Model;
-using Unity.Services.Leaderboards;
-using Unity.Services.Leaderboards.Models;
 using Unity.Services.Samples.IdleClickerGame;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
@@ -84,11 +81,11 @@ namespace JumpeeIsland
         
         async Task FetchUpdatedServicesData()
         {
-            await Task.WhenAll(
-                _economyManager.RefreshCurrencyBalances(),
-                _remoteConfigManager.FetchConfigs()
-                // CloudSaveManager.instance.LoadAndCacheData()
-            );
+            await _remoteConfigManager.FetchConfigs();
+            // await Task.WhenAll(
+            //     _economyManager.RefreshCurrencyBalances(),
+            //     _remoteConfigManager.FetchConfigs()
+            // );
         }
 
         #region ENVIRONMENT DATA
@@ -145,35 +142,14 @@ namespace JumpeeIsland
 
             return null;
         }
-        
-        // private async Task HandleCommandBatch()
-        // {
-        //     try
-        //     {
-        //         await _commandBatchManager.FlushBatch(_cloudCodeManager);
-        //         if (this == null) return;
-        //
-        //         await FetchUpdatedServicesData();
-        //         if (this == null) return;
-        //
-        //         Debug.Log("Flush all command to cloud");
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Debug.Log("There was a problem communicating with the server.");
-        //         Debug.LogException(e);
-        //     }
-        // }
-        
-        public void OnCommandStackUp(CommandName commandName, bool isEconomyDirectInteract)
+
+        public void OnCommandStackUp(CommandName commandName)
         {
             var command = GetCommandByName(commandName);
 
             if (command != null)
             {
                 command.Execute(_commandBatchManager, _remoteConfigManager);
-                if (isEconomyDirectInteract)
-                    command.ProcessCommandLocally(_remoteConfigManager);
             }
         }
         

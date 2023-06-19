@@ -11,7 +11,7 @@ namespace JumpeeIsland
         public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager)
         {
             commandBatchSystem.EnqueueCommand(this);
-            // ProcessCommandLocally(remoteConfigManager);
+            ProcessCommandLocally(remoteConfigManager);
         }
 
         public override CommandName GetKey()
@@ -22,7 +22,6 @@ namespace JumpeeIsland
         public override void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager)
         {
             var rewards = remoteConfigManager.commandRewards[GetKey().ToString()];
-            Debug.Log("Processing collect one neutralWood");
             DistributeRewardsLocally(rewards);
             
         }

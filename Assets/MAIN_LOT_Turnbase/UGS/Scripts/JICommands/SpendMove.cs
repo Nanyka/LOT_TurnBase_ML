@@ -10,7 +10,7 @@ namespace JumpeeIsland
         public override void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager)
         {
             commandBatchSystem.EnqueueCommand(this);
-            // ProcessCommandLocally(remoteConfigManager);
+            ProcessCommandLocally(remoteConfigManager);
         }
 
         public override CommandName GetKey()

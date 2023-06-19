@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -86,7 +84,7 @@ namespace JumpeeIsland
                     return;
                 }
 
-                if (_currFaction == FactionType.Player)
+                if (_currFaction == FactionType.Enemy)
                     SpendOneMove();
             }
 
@@ -116,10 +114,7 @@ namespace JumpeeIsland
         private void SpendOneMove()
         {
             _step--;
-            SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE, true);
-            // MainUI.Instance.OnRemainStep.Invoke(_step);
-
-            // SavingSystemManager.Instance.OnRecordMove();
+            SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE);
         }
 
         #endregion
