@@ -48,7 +48,7 @@ namespace JumpeeIsland
         // Check amount of a particular currency is affordable for a purchase or not
         public bool CheckEnoughCurrency(string currencyId, int currencyAmount)
         {
-            return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance > currencyAmount;
+            return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance >= currencyAmount;
         }
     }
 }

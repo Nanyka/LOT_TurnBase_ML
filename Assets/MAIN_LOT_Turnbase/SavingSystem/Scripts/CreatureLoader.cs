@@ -42,8 +42,7 @@ namespace JumpeeIsland
         private void TrainANewCreature(CreatureData creatureData)
         {
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
-            creatureData.CreatureType =
-                _factionController.GetFaction(); // adjust Faction to ensure it did not went wrong during customization
+            creatureData.CreatureType = _factionController.GetFaction(); // assign Faction
             GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
 
             if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))

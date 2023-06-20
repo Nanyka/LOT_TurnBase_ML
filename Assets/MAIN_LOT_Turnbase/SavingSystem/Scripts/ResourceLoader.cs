@@ -40,15 +40,16 @@ namespace JumpeeIsland
             SpawnResource(resourceData);
         }
 
-        private void SpawnResource(ResourceData resource)
+        private void SpawnResource(ResourceData resourceData)
         {
             var resourceObj = _resoucePool.GetObject();
-            GameFlowManager.Instance.OnDomainRegister.Invoke(resourceObj, resource.CreatureType);
+            resourceData.CreatureType = FactionType.Neutral; // assign Faction
+            GameFlowManager.Instance.OnDomainRegister.Invoke(resourceObj, resourceData.CreatureType);
 
             if (resourceObj.TryGetComponent(out ResourceInGame resourceInGame))
             {
                 resourceInGame.gameObject.SetActive(true);
-                resourceInGame.Init(resource, _resourceController);
+                resourceInGame.Init(resourceData, _resourceController);
             }
         }
         

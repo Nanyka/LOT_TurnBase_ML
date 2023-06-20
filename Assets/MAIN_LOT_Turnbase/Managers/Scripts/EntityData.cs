@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -11,5 +12,6 @@ namespace JumpeeIsland
         public Vector3 Rotation;
         public FactionType CreatureType;
         public int CurrentHp;
+        public int CurrentLevel;
     }
 }

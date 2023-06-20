@@ -129,7 +129,7 @@ namespace JumpeeIsland
         {
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
-                SavingSystemManager.Instance.OnContributeFromEntity.Invoke(m_Entity);
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
 
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             m_FactionController.RemoveAgent(this);

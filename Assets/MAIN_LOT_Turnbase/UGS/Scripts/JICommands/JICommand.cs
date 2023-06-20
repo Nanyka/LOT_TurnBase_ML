@@ -12,9 +12,9 @@ namespace JumpeeIsland
 
         public abstract void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager);
         
-        public abstract void Execute(JICommandBatchSystem commandBatchSystem, JIRemoteConfigManager remoteConfigManager, Vector3 fromPos);
-        
         public abstract CommandName GetKey();
+
+        public abstract void ProcessCommandLocally(JIRemoteConfigManager remoteConfigManager);
 
         // Use for currencies that do not require storing at building
         internal void DistributeRewardsLocally(List<JIRemoteConfigManager.Reward> rewards)
@@ -25,20 +25,6 @@ namespace JumpeeIsland
                 {
                     case "currency":
                         SavingSystemManager.Instance.IncrementLocalCurrency(reward.id, reward.amount);
-                        break;
-                }
-            }
-        }
-        
-        // Use for currencies that require storing at building
-        internal void DistributeRewardsLocally(List<JIRemoteConfigManager.Reward> rewards, Vector3 fromPos)
-        {
-            foreach (var reward in rewards)
-            {
-                switch (reward.service)
-                {
-                    case "currency":
-                        SavingSystemManager.Instance.StoreCurrencyAtBuildings(reward.id, reward.amount, fromPos);
                         break;
                 }
             }

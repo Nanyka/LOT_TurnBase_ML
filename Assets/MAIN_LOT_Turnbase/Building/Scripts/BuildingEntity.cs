@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     public class BuildingEntity: Entity
     {
-        [SerializeField] private BuildingStats m_BuildingStats;
+        [SerializeField] private BuildingStats[] m_BuildingStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
@@ -18,6 +18,7 @@ namespace JumpeeIsland
         [SerializeField] private AnimateComp m_AnimateComp;
         
         private BuildingData m_BuildingData { get; set; }
+        private BuildingStats m_CurrentStats;
         
         public void Init(BuildingData buildingData)
         {
@@ -59,7 +60,7 @@ namespace JumpeeIsland
 
         public int GetStorageSpace(CurrencyType currencyType, ref Queue<BuildingEntity> selectedBuildings)
         {
-            if (currencyType != m_BuildingStats.StoreCurrency)
+            if (currencyType != m_CurrentStats.StoreCurrency)
                 return 0;
 
             selectedBuildings.Enqueue(this);
@@ -68,7 +69,7 @@ namespace JumpeeIsland
         
         public int GetStorageSpace(CurrencyType currencyType)
         {
-            if (currencyType != m_BuildingStats.StoreCurrency)
+            if (currencyType != m_CurrentStats.StoreCurrency)
                 return 0;
 
             return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
@@ -82,7 +83,7 @@ namespace JumpeeIsland
 
         public int CalculateSellingPrice()
         {
-            return m_BuildingStats.Level * m_BuildingData.TurnCount;
+            return m_CurrentStats.Level * m_BuildingData.TurnCount;
         }
         
         public void DurationDeduct()
@@ -146,24 +147,29 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
-            Debug.Log("Building reset phase");
+            // Set entity stats
+            m_CurrentStats = m_BuildingStats[m_BuildingData.CurrentLevel];
+            
             // Set default information to buildingData
-            m_BuildingData.StorageCapacity = m_BuildingStats.StorageCapacity;
+            m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
             m_BuildingData.StorageCurrency = m_BuildingData.StorageCurrency;
             
             // Set initiate data if it's new
+            
+            var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
+            m_BuildingData.SkinAddress = inventoryItem.skinAddress[m_BuildingData.CurrentLevel];
             if (m_BuildingData.CurrentHp == 0)
             {
-                m_BuildingData.CurrentHp = m_BuildingStats.MaxHp;
-                m_BuildingData.StorageCurrency = m_BuildingStats.StoreCurrency;
-                m_BuildingData.StorageCapacity = m_BuildingStats.StorageCapacity;
+                m_BuildingData.CurrentHp = m_CurrentStats.MaxHp;
+                m_BuildingData.StorageCurrency = m_CurrentStats.StoreCurrency;
+                m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
             }
             
             // Load data to entity
             m_Transform.position = m_BuildingData.Position;
             m_Transform.eulerAngles = m_BuildingData.Rotation;
             m_SkinComp.Initiate(m_BuildingData.SkinAddress);
-            m_HealthComp.Init(m_BuildingStats.MaxHp,OnUnitDie,m_BuildingData);
+            m_HealthComp.Init(m_CurrentStats.MaxHp,OnUnitDie,m_BuildingData);
             OnUnitDie.AddListener(DieCollect);
         }
     }

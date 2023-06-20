@@ -36,6 +36,7 @@ namespace JumpeeIsland
         private void EnableInteract(long arg0)
         {
             OnEnableInteract.Invoke();
+            IsInteractable = true;
         }
 
         protected virtual void Update()

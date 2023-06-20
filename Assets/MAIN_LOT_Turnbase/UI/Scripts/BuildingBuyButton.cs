@@ -45,7 +45,7 @@ namespace JumpeeIsland
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            _mBuyBuildingMenu.StartADeal(m_BuidlingItem.skinAddress);
+            _mBuyBuildingMenu.StartADeal(m_BuidlingItem.skinAddress[0]);
         }
 
         public void OnDrag(PointerEventData eventData)

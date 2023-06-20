@@ -65,7 +65,7 @@ namespace JumpeeIsland
             MainUI.Instance.OnSellBuildingMenu.Invoke(getUnitAtPos);
         }
 
-        public void StoreRewardToBuildings(string currencyId, int amount, Vector3 fromPos)
+        public void StoreRewardToBuildings(string currencyId, int amount)
         {
             // Check if enough storage space
             int currentStorage = 0;
@@ -86,9 +86,18 @@ namespace JumpeeIsland
                 var storeAmount = building.GetStorageSpace(currency);
                 storeAmount = storeAmount > amount ? amount : storeAmount;
                 building.StoreCurrency(storeAmount);
-                SavingSystemManager.Instance.IncrementLocalCurrency(currencyId, storeAmount); // Update UI
                 amount -= storeAmount;
             }
+        }
+
+        public int GetStorageSpace(string currencyId)
+        {
+            int storageSpace = 0;
+            Queue<BuildingEntity> selectedBuildings = new Queue<BuildingEntity>();
+            if (Enum.TryParse(currencyId, out CurrencyType currency))
+                foreach (var t in m_buildings)
+                    storageSpace += t.GetStoreSpace(currency, ref selectedBuildings);
+            return storageSpace;
         }
 
         public void RemoveBuilding(BuildingInGame building)

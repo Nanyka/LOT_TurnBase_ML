@@ -16,7 +16,8 @@ namespace JumpeeIsland
 
         private List<CurrencyDefinition> currencyDefinitions { get; set; }
         private List<InventoryItemDefinition> inventoryItemDefinitions { get; set; }
-
+        private List<PlayersInventoryItem> _playersInventory;
+        
         [SerializeField] private int _debugCurrencyAmount = 10;
         [SerializeField] private int _debugInventoryAmount = 1;
 
@@ -116,8 +117,10 @@ namespace JumpeeIsland
 
             if (this == null || inventoryResult == null)
                 return null;
+            
+            _playersInventory = inventoryResult.PlayersInventoryItems;
 
-            return inventoryResult.PlayersInventoryItems;
+            return _playersInventory;
         }
 
         private Task<GetInventoryResult> GetPlayerInventory()
@@ -129,6 +132,15 @@ namespace JumpeeIsland
         public List<InventoryItemDefinition> GetInventoryDefinitions()
         {
             return inventoryItemDefinitions;
+        }
+
+        public async Task ResetInventory()
+        {
+            if (_playersInventory == null)
+                return;
+            
+            foreach (var inventory in _playersInventory)
+                await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory.PlayersInventoryItemId);
         }
 
         // This method is used to help test this Use Case sample by giving some currency to permit
@@ -145,7 +157,7 @@ namespace JumpeeIsland
             }
         }
 
-        public async void OnGrantInventory(string inventoryId)
+        public async Task OnGrantInventory(string inventoryId)
         {
             await GrantDebugInventory(inventoryId);
         }

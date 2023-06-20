@@ -10,7 +10,6 @@ namespace JumpeeIsland
     {
         [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
         [NonSerialized] public UnityEvent<long> OnStartGame = new(); // send to EnvironmentManager, invoke at SavingSystemManager
-        [NonSerialized] public UnityEvent OnResetData = new(); // sent to EnvironmentLoader
         [NonSerialized] public UnityEvent OnInitiateObjects = new(); // send to Managers; invoke from TileManager
         [NonSerialized] public UnityEvent<Vector3> OnUpdateTilePos = new(); // send to EnvironmentManager; invoke at TileManager
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager

@@ -11,9 +11,9 @@ namespace JumpeeIsland
         public int CurrentDamage;
 
         // Just used for BattleMode
-        public JIInventoryItem ConvertToInventoryItem()
+        public JIInventoryItem GetInventoryItem()
         {
-            return SavingSystemManager.Instance.ConvertToInventoryItem(this);
+            return SavingSystemManager.Instance.GetInventoryItemByName(EntityName);
         }
     }
 }

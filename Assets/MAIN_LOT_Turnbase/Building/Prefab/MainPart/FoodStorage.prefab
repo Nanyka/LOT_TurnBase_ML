@@ -436,7 +436,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 5917505786496129982}
-  m_BuildingStats: {fileID: 11400000, guid: 452dd924e7c2d4d289559735c993a678, type: 2}
+  m_BuildingStats:
+  - {fileID: 11400000, guid: 452dd924e7c2d4d289559735c993a678, type: 2}
   m_SkinComp: {fileID: 3677784085646803465}
   m_HealthComp: {fileID: 4908626877808582869}
   m_AttackComp: {fileID: 1721955814617319090}
@@ -458,7 +459,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 2670404836229931697}
-  _agentRenderer: {fileID: 0}
+  m_BodyMesh: {fileID: 0}
+  _factionRenderer: {fileID: 0}
 --- !u!114 &4908626877808582869
 MonoBehaviour:
   m_ObjectHideFlags: 0

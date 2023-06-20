@@ -58840,7 +58840,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 8146165233202564024}
-  m_UnitStats: {fileID: 11400000, guid: dc99744dff0564c65af4ca79342af4e0, type: 2}
+  m_UnitStats:
+  - {fileID: 11400000, guid: dc99744dff0564c65af4ca79342af4e0, type: 2}
   m_SkinComp: {fileID: 1525852778422184258}
   m_HealthComp: {fileID: 4459933769199049472}
   m_AttackComp: {fileID: 6625931869561286292}
@@ -58856,6 +58857,7 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0}
     CreatureType: 0
     CurrentHp: 0
+    CurrentLevel: 0
     CurrentShield: 0
     CurrentExp: 0
     TurnCount: 0
@@ -58874,6 +58876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 2372388447127918000}
   m_BodyMesh: {fileID: 8826819741920641263, guid: 503415fc3fea44f7bb0eebf41e58e8be, type: 3}
+  _factionRenderer: {fileID: 0}
 --- !u!114 &4459933769199049472
 MonoBehaviour:
   m_ObjectHideFlags: 0
