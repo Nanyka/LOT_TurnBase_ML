@@ -4917,7 +4917,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8025859403504390436}
   m_Layer: 0
-  m_Name: Skin
+  m_Name: RotatePart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4935,6 +4935,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6359714013908694933}
   - {fileID: 3351401582707710659}
   m_Father: {fileID: 7475062596460948279}
   m_RootOrder: -1
@@ -14957,7 +14958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f980495a2f874f22a583003b5575a7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkinAnchor: {fileID: 8025859403504390436}
+  m_SkinAnchor: {fileID: 6359714013908694933}
   m_BodyMesh: {fileID: -9000052448125618310, guid: 503415fc3fea44f7bb0eebf41e58e8be, type: 3}
   _factionRenderer: {fileID: 0}
 --- !u!114 &1391275525393167770
@@ -25023,6 +25024,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Projector: {fileID: 5845299185552565000}
   m_Collider: {fileID: 5169837306807863837}
+--- !u!1 &3088892010290137718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6359714013908694933}
+  m_Layer: 0
+  m_Name: Skin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6359714013908694933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088892010290137718}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8025859403504390436}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3143232430984675623
 GameObject:
   m_ObjectHideFlags: 0

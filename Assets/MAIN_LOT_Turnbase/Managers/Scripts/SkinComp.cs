@@ -12,7 +12,7 @@ namespace JumpeeIsland
 
         [SerializeField] private Renderer _factionRenderer;
 
-        public void Initiate(string skinAddress)
+        public void Init(string skinAddress)
         {
             if (skinAddress.IsNullOrEmpty())
                 return;
@@ -20,7 +20,7 @@ namespace JumpeeIsland
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor);
         }
 
-        public void Initiate(string skinAddress, AnimateComp animateComp)
+        public void Init(string skinAddress, AnimateComp animateComp)
         {
             if (skinAddress.IsNullOrEmpty())
                 return;

@@ -33,12 +33,15 @@ namespace JumpeeIsland
             Addressables.WebRequestOverride = AddPrivateToken;
 #endif
 
+            // Reset spawnTransform
+            foreach (Transform child in spawnTransform)
+                Destroy(child.gameObject);
+            
             Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
         }
 
         // Get skin for animated objects
-        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp,
-            AnimateComp animateComp)
+        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp, AnimateComp animateComp)
         {
             m_LogPrefab = objectKey;
 
@@ -46,6 +49,10 @@ namespace JumpeeIsland
             //Add private token to addressable web request header
             Addressables.WebRequestOverride = AddPrivateToken;
 #endif
+
+            // Reset spawnTransform
+            foreach (Transform child in spawnTransform)
+                Destroy(child.gameObject);
 
             var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
             var skin = handle.WaitForCompletion();

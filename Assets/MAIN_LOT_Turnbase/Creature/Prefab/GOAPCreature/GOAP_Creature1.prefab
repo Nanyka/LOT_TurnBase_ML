@@ -4908,6 +4908,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &262188094847835957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2599643715655663291}
+  m_Layer: 0
+  m_Name: Skin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2599643715655663291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262188094847835957}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2372388447127918000}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &606489815922342563
 GameObject:
   m_ObjectHideFlags: 0
@@ -29184,7 +29215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2372388447127918000}
   m_Layer: 0
-  m_Name: Skin
+  m_Name: RotatePart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29202,6 +29233,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2599643715655663291}
   - {fileID: 3360726399992130299}
   m_Father: {fileID: 8146165233202564024}
   m_RootOrder: -1
@@ -58874,7 +58906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f980495a2f874f22a583003b5575a7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkinAnchor: {fileID: 2372388447127918000}
+  m_SkinAnchor: {fileID: 2599643715655663291}
   m_BodyMesh: {fileID: 8826819741920641263, guid: 503415fc3fea44f7bb0eebf41e58e8be, type: 3}
   _factionRenderer: {fileID: 0}
 --- !u!114 &4459933769199049472

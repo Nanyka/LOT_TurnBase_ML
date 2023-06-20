@@ -138,7 +138,7 @@ namespace JumpeeIsland
             // Retrieve entity data
             m_Transform.position = m_ResourceData.Position;
             m_Transform.eulerAngles = m_ResourceData.Rotation;
-            m_SkinComp.Initiate(m_ResourceData.SkinAddress);
+            m_SkinComp.Init(m_ResourceData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);
             OnUnitDie.AddListener(DieCollect);
         }

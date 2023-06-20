@@ -55,7 +55,18 @@ namespace JumpeeIsland
 
         public override void CollectExp(int expAmount)
         {
-            throw new NotImplementedException();
+            m_BuildingData.CurrentExp += expAmount;
+            if (m_BuildingData.CurrentExp >= m_CurrentStats.ExpToUpdate && m_BuildingData.CurrentLevel + 1 < m_BuildingStats.Length)
+            {
+                // Level up
+                m_BuildingData.CurrentLevel++;
+                
+                // Reset stats and appearance
+                m_CurrentStats = m_BuildingStats[m_BuildingData.CurrentLevel];
+                var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
+                m_BuildingData.SkinAddress = inventoryItem.skinAddress[m_BuildingData.CurrentLevel];
+                m_SkinComp.Init(m_BuildingData.SkinAddress);
+            }
         }
 
         public int GetStorageSpace(CurrencyType currencyType, ref Queue<BuildingEntity> selectedBuildings)
@@ -79,6 +90,7 @@ namespace JumpeeIsland
         {
             m_BuildingData.CurrentStorage += amount;
             m_BuildingData.CurrentExp += amount;
+            CollectExp(amount);
         }
 
         public int CalculateSellingPrice()
@@ -168,7 +180,7 @@ namespace JumpeeIsland
             // Load data to entity
             m_Transform.position = m_BuildingData.Position;
             m_Transform.eulerAngles = m_BuildingData.Rotation;
-            m_SkinComp.Initiate(m_BuildingData.SkinAddress);
+            m_SkinComp.Init(m_BuildingData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp,OnUnitDie,m_BuildingData);
             OnUnitDie.AddListener(DieCollect);
         }

@@ -53,20 +53,23 @@ namespace JumpeeIsland
 
         public override int GetExpReward()
         {
-            switch (hideFlags)
-            {
-                
-            }
-            
             return m_CurrentStats.ExpReward;
         }
 
         public override void CollectExp(int expAmount)
         {
             m_CreatureData.CurrentExp += expAmount;
-            if (m_CreatureData.CurrentExp >= m_CurrentStats.ExpToLevelUp)
+            if (m_CreatureData.CurrentExp >= m_CurrentStats.ExpToLevelUp && m_CreatureData.CurrentLevel + 1 < m_UnitStats.Length)
             {
                 // Level up
+                m_CreatureData.CurrentLevel++;
+                
+                // Reset stats and appearance
+                m_CurrentStats = m_UnitStats[m_CreatureData.CurrentLevel];
+                var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
+                m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
+                m_CreatureData.CurrentDamage = m_CurrentStats.Strengh;
+                m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             }
         }
 
@@ -174,7 +177,7 @@ namespace JumpeeIsland
             // Retrieve entity data
             m_Transform.position = m_CreatureData.Position;
             m_Transform.eulerAngles = m_CreatureData.Rotation;
-            m_SkinComp.Initiate(m_CreatureData.SkinAddress, m_AnimateComp);
+            m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStats.HealthPoint, OnUnitDie, m_CreatureData);
             OnUnitDie.AddListener(DieCollect);
         }
