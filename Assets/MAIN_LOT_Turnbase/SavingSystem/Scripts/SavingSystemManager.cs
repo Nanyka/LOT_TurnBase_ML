@@ -213,6 +213,7 @@ namespace JumpeeIsland
                 m_EnvLoader.SetData(cloudEnvData);
                 SavePlayerEnv();
                 await m_CloudConnector.OnResetBasicInventory(m_BasicInventory.ToList());
+                m_CloudConnector.PlayerRecordScore(0);
             }
         }
 

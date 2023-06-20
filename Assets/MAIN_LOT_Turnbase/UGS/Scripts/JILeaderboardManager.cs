@@ -13,24 +13,24 @@ namespace JumpeeIsland
         [Tooltip("Returns a total of rangeLimit*2+1 entries (the given player plus rangeLimit on either side)")]
         [SerializeField] private int _rangeLimit = 5;
         
-        public async void AddScore()
+        public async void AddScore(int playerScore)
         {
-            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, 102);
-            Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, playerScore);
+            // Debug.Log(JsonConvert.SerializeObject(scoreResponse));
         }
 
         public async void GetScores()
         {
             var scoresResponse =
                 await LeaderboardsService.Instance.GetScoresAsync(_leaderboardId);
-            Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+            // Debug.Log(JsonConvert.SerializeObject(scoresResponse));
         }
 
         public async void GetPlayerScore()
         {
             var scoreResponse =
                 await LeaderboardsService.Instance.GetPlayerScoreAsync(_leaderboardId);
-            Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+            // Debug.Log(JsonConvert.SerializeObject(scoreResponse));
         }
         
         public async Task<List<LeaderboardEntry>> GetPlayerRange()
