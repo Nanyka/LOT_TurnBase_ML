@@ -263,6 +263,11 @@ namespace JumpeeIsland
             return await _cloudCodeManager.CallGetEnemyEnvironment(getPlayerRange[Random.Range(0,getPlayerRange.Count)].PlayerId);
         }
 
+        public void PlayerRecordScore(int playerScore)
+        {
+            _leaderboardManager.AddScore(playerScore);
+        }
+
         #endregion
     }
 }
