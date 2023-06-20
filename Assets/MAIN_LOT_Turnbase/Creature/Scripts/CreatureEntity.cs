@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     public class CreatureEntity : Entity
     {
-        [SerializeField] private UnitStats m_UnitStats;
+        [SerializeField] private UnitStats[] m_UnitStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
@@ -18,6 +18,7 @@ namespace JumpeeIsland
         [SerializeField] private AnimateComp m_AnimateComp;
 
         [SerializeField] private CreatureData m_CreatureData;
+        private UnitStats m_CurrentStats;
         private IGetCreatureInfo m_Info;
 
         public void Init(CreatureData creatureData)
@@ -42,7 +43,7 @@ namespace JumpeeIsland
 
         public override CommandName GetCommand()
         {
-            return m_UnitStats.Command;
+            return m_CurrentStats.Command;
         }
 
         public override FactionType GetFaction()
@@ -57,13 +58,13 @@ namespace JumpeeIsland
                 
             }
             
-            return m_UnitStats.ExpReward;
+            return m_CurrentStats.ExpReward;
         }
 
         public override void CollectExp(int expAmount)
         {
             m_CreatureData.CurrentExp += expAmount;
-            if (m_CreatureData.CurrentExp >= m_UnitStats.ExpToLevelUp)
+            if (m_CreatureData.CurrentExp >= m_CurrentStats.ExpToLevelUp)
             {
                 // Level up
             }
@@ -158,18 +159,23 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
+            // Set stats based on currentLevel
+            m_CurrentStats = m_UnitStats[m_CreatureData.CurrentLevel];
+            
             // Initiate entity data if it's new
+            var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
+            m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
             if (m_CreatureData.CurrentHp <= 0)
             {
-                m_CreatureData.CurrentHp = m_UnitStats.HealthPoint;
-                m_CreatureData.CurrentDamage = m_UnitStats.Strengh;
+                m_CreatureData.CurrentHp = m_CurrentStats.HealthPoint;
+                m_CreatureData.CurrentDamage = m_CurrentStats.Strengh;
             }
             
             // Retrieve entity data
             m_Transform.position = m_CreatureData.Position;
             m_Transform.eulerAngles = m_CreatureData.Rotation;
             m_SkinComp.Initiate(m_CreatureData.SkinAddress, m_AnimateComp);
-            m_HealthComp.Init(m_UnitStats.HealthPoint, OnUnitDie, m_CreatureData);
+            m_HealthComp.Init(m_CurrentStats.HealthPoint, OnUnitDie, m_CreatureData);
             OnUnitDie.AddListener(DieCollect);
         }
 

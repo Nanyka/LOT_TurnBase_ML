@@ -26,7 +26,6 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new(); 
         // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); 
-        // [NonSerialized] public UnityEvent OnUpdateLocalMove = new(); // send to EnvironmentManager, invoke at CommandCache
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
@@ -225,7 +224,9 @@ namespace JumpeeIsland
 
             var newResource = new ResourceData()
             {
-                EntityName = inventoryItem.inventoryName, SkinAddress = inventoryItem.skinAddress, Position = position
+                EntityName = inventoryItem.inventoryName,
+                Position = position,
+                CurrentLevel = 0
             };
             m_EnvLoader.SpawnResource(newResource);
         }
@@ -237,7 +238,9 @@ namespace JumpeeIsland
             // ...and get the building in place
             var newBuilding = new BuildingData
             {
-                EntityName = inventoryItem.inventoryName, SkinAddress = inventoryItem.skinAddress, Position = position
+                EntityName = inventoryItem.inventoryName,
+                Position = position,
+                CurrentLevel = 0
             };
             m_EnvLoader.PlaceABuilding(newBuilding);
         }
@@ -251,7 +254,9 @@ namespace JumpeeIsland
 
             var newCreature = new CreatureData()
             {
-                EntityName = inventoryItem.inventoryName, SkinAddress = inventoryItem.skinAddress, Position = position
+                EntityName = inventoryItem.inventoryName, 
+                Position = position,
+                CurrentLevel = 0
             };
             m_EnvLoader.TrainACreature(newCreature);
         }
@@ -330,9 +335,9 @@ namespace JumpeeIsland
             m_InventoryLoader.SendInventoriesToCreatureMenu();
         }
 
-        public JIInventoryItem ConvertToInventoryItem(EntityData data)
+        public JIInventoryItem GetInventoryItemByName(string entityName)
         {
-            return m_CloudConnector.ConvertToInventoryItem(data);
+            return m_CloudConnector.GetInventoryItemByName(entityName);
         }
 
         #endregion

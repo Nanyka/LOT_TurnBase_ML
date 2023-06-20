@@ -42,7 +42,7 @@ namespace JumpeeIsland
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            m_CreatureMenu.StartADeal(m_CreatureItem.skinAddress);
+            m_CreatureMenu.StartADeal(m_CreatureItem.skinAddress[0]);
         }
 
         public void OnDrag(PointerEventData eventData)

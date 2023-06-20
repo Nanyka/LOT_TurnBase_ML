@@ -38,7 +38,7 @@ namespace JumpeeIsland
         public InventoryType inventoryType; // To decide which category this inventory item is
         public string spriteAddress;
         public string virtualPurchaseId; // How much does it cost to place this item in game
-        public string skinAddress;
+        public List<string> skinAddress;
     }
 
     public enum InventoryType

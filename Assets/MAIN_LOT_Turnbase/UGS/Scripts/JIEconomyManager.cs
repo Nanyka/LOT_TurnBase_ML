@@ -136,10 +136,11 @@ namespace JumpeeIsland
 
         public async Task ResetInventory()
         {
+            if (_playersInventory == null)
+                return;
+            
             foreach (var inventory in _playersInventory)
-            {
                 await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory.PlayersInventoryItemId);
-            }
         }
 
         // This method is used to help test this Use Case sample by giving some currency to permit

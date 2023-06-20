@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 7595726648900030678}
   - component: {fileID: 9073458702405345249}
   m_Layer: 0
-  m_Name: PalmTree
+  m_Name: Tree1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +320,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 6023227407967425356}
-  m_ResourceStats: {fileID: 11400000, guid: 51639055f032f48718b6a9c7b1668eba, type: 2}
+  m_ResourceStats:
+  - {fileID: 11400000, guid: 51639055f032f48718b6a9c7b1668eba, type: 2}
   m_SkinComp: {fileID: 164956887055833475}
   m_HealthComp: {fileID: 1217118086783071183}
   m_EffectComp: {fileID: 7595726648900030678}
@@ -338,6 +339,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 6898364717217961116}
+  m_BodyMesh: {fileID: 0}
+  _factionRenderer: {fileID: 0}
 --- !u!114 &1217118086783071183
 MonoBehaviour:
   m_ObjectHideFlags: 0

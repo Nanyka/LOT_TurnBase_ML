@@ -46,9 +46,7 @@ namespace JumpeeIsland
 
                 await FetchUpdatedServicesData();
                 if (this == null) return;
-
-                Debug.Log("Set UI interactable");
-
+                
                 Debug.Log("Initialization and signin complete.");
             }
             catch (Exception e)
@@ -81,11 +79,10 @@ namespace JumpeeIsland
         
         async Task FetchUpdatedServicesData()
         {
-            await _remoteConfigManager.FetchConfigs();
-            // await Task.WhenAll(
-            //     _economyManager.RefreshCurrencyBalances(),
-            //     _remoteConfigManager.FetchConfigs()
-            // );
+            await Task.WhenAll(
+                OnLoadInventory(),
+                _remoteConfigManager.FetchConfigs()
+            );
         }
 
         #region ENVIRONMENT DATA
@@ -213,14 +210,12 @@ namespace JumpeeIsland
             }
         }
         
-        public JIInventoryItem ConvertToInventoryItem(EntityData entityData)
+        public JIInventoryItem GetInventoryItemByName(string entityName)
         {
             var inventoryDefinitions = _economyManager.GetInventoryDefinitions();
             foreach (var itemDefinition in inventoryDefinitions)
-            {
-                if (itemDefinition.Name.Equals(entityData.EntityName))
+                if (itemDefinition.Name.Equals(entityName))
                     return itemDefinition.CustomDataDeserializable.GetAs<JIInventoryItem>();
-            }
 
             return null;
         }

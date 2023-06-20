@@ -5,13 +5,14 @@ namespace JumpeeIsland
 {
     public class ResourceEntity : Entity
     {
-        [SerializeField] private ResourceStats m_ResourceStats;
+        [SerializeField] private ResourceStats[] m_ResourceStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
 
         private ResourceData m_ResourceData;
+        private ResourceStats m_CurrentStats;
 
         public void Init(ResourceData resourceData)
         {
@@ -33,11 +34,11 @@ namespace JumpeeIsland
 
         public void DurationDeduct()
         {
-            if (m_ResourceStats.IsLongLasting)
+            if (m_CurrentStats.IsLongLasting)
                 return;
 
             m_ResourceData.AccumulatedStep++;
-            if (m_ResourceData.AccumulatedStep >= m_ResourceStats.MaxTurnToDestroy)
+            if (m_ResourceData.AccumulatedStep >= m_CurrentStats.MaxTurnToDestroy)
                 OnUnitDie.Invoke(this);
         }
 
@@ -48,7 +49,7 @@ namespace JumpeeIsland
 
         public override CommandName GetCommand()
         {
-            return m_ResourceStats.Command;
+            return m_CurrentStats.Command;
         }
 
         public override FactionType GetFaction()
@@ -58,7 +59,7 @@ namespace JumpeeIsland
 
         public override int GetExpReward()
         {
-            return m_ResourceStats.ExpReward;
+            return m_CurrentStats.ExpReward;
         }
 
         public override void CollectExp(int expAmount)
@@ -122,18 +123,23 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
+            // Set entity stats
+            m_CurrentStats = m_ResourceStats[m_ResourceData.CurrentLevel];
+
             // Initiate entity data if it's new
+            var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_ResourceData.EntityName);
+            m_ResourceData.SkinAddress = inventoryItem.skinAddress[m_ResourceData.CurrentLevel];
             if (m_ResourceData.CurrentHp <= 0)
             {
-                m_ResourceData.CurrentHp = m_ResourceStats.MaxHp;
-                m_ResourceData.CollectedCurrency = m_ResourceStats.CollectedCurrency;
+                m_ResourceData.CurrentHp = m_CurrentStats.MaxHp;
+                m_ResourceData.CollectedCurrency = m_CurrentStats.CollectedCurrency;
             }
             
             // Retrieve entity data
             m_Transform.position = m_ResourceData.Position;
             m_Transform.eulerAngles = m_ResourceData.Rotation;
             m_SkinComp.Initiate(m_ResourceData.SkinAddress);
-            m_HealthComp.Init(m_ResourceStats.MaxHp, OnUnitDie, m_ResourceData);
+            m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);
             OnUnitDie.AddListener(DieCollect);
         }
     }
