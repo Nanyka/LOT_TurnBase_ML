@@ -43,8 +43,6 @@ namespace JumpeeIsland
 
         private IEnumerator DestroyVisual()
         {
-            // Collect currencies
-            // VFX
             yield return new WaitForSeconds(1f);
             _resourceController.RemoveResource(this);
             gameObject.SetActive(false);

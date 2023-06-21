@@ -24,9 +24,14 @@ namespace JumpeeIsland
             PlayerData.Add(data);
         }
 
-        public void AddResourceData(ResourceData resourceData)
+        public void AddResourceData(ResourceData data)
         {
-            ResourceData.Add(resourceData);
+            ResourceData.Add(data);
+        }
+
+        public void AddEnemyData(CreatureData data)
+        {
+            EnemyData.Add(data);
         }
 
         public void PrepareForBattleMode(List<CreatureData> playerData)

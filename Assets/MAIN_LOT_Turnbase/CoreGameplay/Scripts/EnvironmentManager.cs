@@ -40,24 +40,17 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
-            // SavingSystemManager.Instance.OnUpdateLocalMove.AddListener(CacheLastSessionSteps);
         }
-
-        // private void CacheLastSessionSteps()
-        // {
-        //     Debug.Log("Load command after a disconnected session");
-        //     _lastSessionSteps++;
-        // }
 
         private void Init(long moveAmount)
         {
-            // Debug.Log($"Load step from cloud with lasSessionStep: {_lastSessionSteps}");
             _step = (int) moveAmount;
-            // _step -= _lastSessionSteps;
-            // MainUI.Instance.OnRemainStep.Invoke(_step);
-
+            
             // Start refurbish loop
             InvokeRepeating(nameof(WaitToAddMove), refurbishPeriod, refurbishPeriod);
+            
+            // Start game
+            KickOffEnvironment();
         }
 
         #region ENVIRONMENT IN GAME

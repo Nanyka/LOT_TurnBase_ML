@@ -42,7 +42,6 @@ namespace JumpeeIsland
         {
             try
             {
-                Debug.Log("Send cloud code request");
                 await CloudCodeService.Instance.CallEndpointAsync(
                     "JumpeeIsland_SaveEnvData",
                     new Dictionary<string, object> { { "EnvData", environmentData } });

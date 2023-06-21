@@ -37,15 +37,24 @@ namespace JumpeeIsland
 
         private void InitiateNpcList()
         {
-            SetTempIndex();
+            // SetTempIndex();
             m_NpcActionInferer.Init();
         }
 
+        // private void SetTempIndex()
+        // {
+        //     for (int i = 0; i < m_Enemies.Count; i++)
+        //     {
+        //         var enemy = m_Enemies[i];
+        //         enemy.InferMoving.AgentIndex = i;
+        //     }
+        // }
+        
         private void SetTempIndex()
         {
-            for (int i = 0; i < m_Enemies.Count; i++)
+            for (int i = 0; i < _dummyNPCs.Count; i++)
             {
-                var enemy = m_Enemies[i];
+                var enemy = _dummyNPCs[i];
                 enemy.InferMoving.AgentIndex = i;
             }
         }
@@ -74,11 +83,13 @@ namespace JumpeeIsland
             foreach (var enemy in m_Enemies)
                 if (enemy.CheckUsedThisTurn() == false)
                     _dummyNPCs.Add(enemy);
-
+            
             if (_dummyNPCs.Count > 0)
             {
                 _skillCount = 0;
+                SetTempIndex();
                 m_NpcActionInferer.ResetSkillCache();
+                m_NpcActionInferer.GatherSkillFromJumpers();
                 SelfInferenceBrainStorming(_dummyNPCs);
                 StartInferAgentsAction(_dummyNPCs);
             }
@@ -187,7 +198,7 @@ namespace JumpeeIsland
 
         public List<NPCInGame> GetEnemies()
         {
-            return m_Enemies;
+            return _dummyNPCs;
         }
 
         public FactionType GetFaction()

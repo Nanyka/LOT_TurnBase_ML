@@ -34,7 +34,7 @@ namespace JumpeeIsland
 
         public abstract int GetCurrentHealth();
 
-        public abstract void DieCollect(Entity killedByEntity);
+        public abstract void DieIndividualProcess(Entity killedByEntity);
 
         #endregion
         

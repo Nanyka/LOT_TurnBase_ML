@@ -246,9 +246,9 @@ namespace JumpeeIsland
             m_EnvLoader.PlaceABuilding(newBuilding);
         }
 
-        public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isEcoMode)
+        public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isWaitForPurchase)
         {
-            if (isEcoMode)
+            if (isWaitForPurchase)
             {
                 if (await ConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
             }
@@ -260,6 +260,22 @@ namespace JumpeeIsland
                 CurrentLevel = 0
             };
             m_EnvLoader.TrainACreature(newCreature);
+        }
+
+        public void SpawnConsumableEntity(string itemId, Vector3 position, FactionType factionType)
+        {
+            var item = GetInventoryItemByName(itemId);
+            
+            if (factionType == FactionType.Neutral)
+            {
+                var newEntity = new CreatureData()
+                {
+                    EntityName = item.inventoryName,
+                    Position = position,
+                    CurrentLevel = 0
+                };
+                m_EnvLoader.SpawnAnEnemy(newEntity);
+            }
         }
 
         private async Task<bool> ConductVirtualPurchase(string virtualPurchaseId)
@@ -338,7 +354,16 @@ namespace JumpeeIsland
 
         public JIInventoryItem GetInventoryItemByName(string entityName)
         {
-            return m_CloudConnector.GetInventoryItemByName(entityName);
+            return m_CloudConnector.GetInventoryByNameOrId(entityName);
+        }
+
+        #endregion
+
+        #region VIRTUAL PURCHASE
+
+        public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
+        {
+            return m_CloudConnector.GetPurchaseDefinition(id);
         }
 
         #endregion

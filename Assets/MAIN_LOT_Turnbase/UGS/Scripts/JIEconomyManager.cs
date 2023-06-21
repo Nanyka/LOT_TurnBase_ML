@@ -17,9 +17,6 @@ namespace JumpeeIsland
         private List<CurrencyDefinition> currencyDefinitions { get; set; }
         private List<InventoryItemDefinition> inventoryItemDefinitions { get; set; }
         private List<PlayersInventoryItem> _playersInventory;
-        
-        [SerializeField] private int _debugCurrencyAmount = 10;
-        [SerializeField] private int _debugInventoryAmount = 1;
 
         private int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
         private List<VirtualPurchaseDefinition> m_VirtualPurchaseDefinitions;
@@ -90,6 +87,11 @@ namespace JumpeeIsland
             await GrantCurrency(currencyId, amount);
         }
 
+        public async void OnGrantCurrencyForTest(string currencyId)
+        {
+            await GrantCurrency(currencyId, 5);
+        }
+
         #endregion
 
         #region INVENTORY
@@ -103,11 +105,11 @@ namespace JumpeeIsland
 
             try
             {
-                inventoryResult = await GetPlayerInventory();
+                inventoryResult = await LoadPlayerInventory();
             }
             catch (EconomyRateLimitedException e)
             {
-                inventoryResult = await JIUtils.RetryEconomyFunction(GetPlayerInventory, e.RetryAfter);
+                inventoryResult = await JIUtils.RetryEconomyFunction(LoadPlayerInventory, e.RetryAfter);
             }
             catch (Exception e)
             {
@@ -123,7 +125,7 @@ namespace JumpeeIsland
             return _playersInventory;
         }
 
-        private Task<GetInventoryResult> GetPlayerInventory()
+        private Task<GetInventoryResult> LoadPlayerInventory()
         {
             var options = new GetInventoryOptions {ItemsPerFetch = 100};
             return EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
@@ -145,11 +147,11 @@ namespace JumpeeIsland
 
         // This method is used to help test this Use Case sample by giving some currency to permit
         // transactions to be completed.
-        private async Task GrantDebugInventory(string currencyId)
+        private async Task GrantDebugInventory(string inventoryId)
         {
             try
             {
-                await EconomyService.Instance.PlayerInventory.AddInventoryItemAsync(currencyId);
+                await EconomyService.Instance.PlayerInventory.AddInventoryItemAsync(inventoryId);
             }
             catch (Exception e)
             {
@@ -225,6 +227,11 @@ namespace JumpeeIsland
         public List<JIItemAndAmountSpec> GetVirtualPurchaseCost(string virtualPurchaseId)
         {
             return virtualPurchaseTransactions[virtualPurchaseId].costs;
+        }
+
+        public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
+        {
+            return m_VirtualPurchaseDefinitions.Find(t => t.Id == id);
         }
 
         #endregion

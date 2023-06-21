@@ -54,7 +54,7 @@ namespace JumpeeIsland
 
         public override FactionType GetFaction()
         {
-            throw new System.NotImplementedException();
+            return m_ResourceData.CreatureType;
         }
 
         public override int GetExpReward()
@@ -82,7 +82,7 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override void DieCollect(Entity killedByEntity)
+        public override void DieIndividualProcess(Entity killedByEntity)
         {
             // TODO add animation or effect here
         }
@@ -140,7 +140,7 @@ namespace JumpeeIsland
             m_Transform.eulerAngles = m_ResourceData.Rotation;
             m_SkinComp.Init(m_ResourceData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);
-            OnUnitDie.AddListener(DieCollect);
+            OnUnitDie.AddListener(DieIndividualProcess);
         }
     }
 }

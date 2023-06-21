@@ -103,6 +103,16 @@ namespace JumpeeIsland
             playerLoader.PlaceNewObject(creatureData);
         }
 
+        #region ENEMY
+
+        public void SpawnAnEnemy(CreatureData creatureData)
+        {
+            _environmentData.AddEnemyData(creatureData);
+            enemyLoader.PlaceNewObject(creatureData);
+        }
+
+        #endregion
+
         #endregion
     }
 }

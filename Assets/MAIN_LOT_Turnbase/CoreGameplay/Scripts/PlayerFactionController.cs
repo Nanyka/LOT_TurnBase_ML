@@ -61,8 +61,8 @@ namespace JumpeeIsland
             if (m_Environment.GetCurrFaction() != m_Faction)
                 return;
 
-            foreach (var unitMovement in _creatures)
-                unitMovement.NewTurnReset(_factionMaterial);
+            foreach (var creature in _creatures)
+                creature.NewTurnReset(_factionMaterial);
 
             KickOffNewTurn();
         }

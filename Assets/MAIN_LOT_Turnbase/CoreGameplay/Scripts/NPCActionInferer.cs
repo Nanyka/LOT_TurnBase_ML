@@ -15,10 +15,10 @@ namespace JumpeeIsland
         public void Init()
         {
             _enemiesController = GetComponent<EnemyFactionController>();
-            GatherSkillFromJumpers();
+            // GatherSkillFromJumpers();
         }
 
-        private void GatherSkillFromJumpers()
+        public void GatherSkillFromJumpers()
         {
             foreach (var enemy in _enemiesController.GetEnemies())
             {
@@ -71,6 +71,10 @@ namespace JumpeeIsland
                     var attackPoints = AttackPoints(action.TargetPos, action.Direction, action.JumpCount);
                     // var attackRange = attackPoints as Vector3[] ?? attackPoints.ToArray();
                     // _agentManager.GetJumpers()[action.AgentIndex].ShowAttackRange(attackRange); // --> TESTING
+
+                    if (attackPoints == null)
+                        continue;
+                    
                     foreach (var attackPoint in attackPoints)
                         if (_enemiesController.GetEnvironment().CheckEnemy(attackPoint, _enemiesController.GetFaction()))
                             action.Reward++;
@@ -84,6 +88,7 @@ namespace JumpeeIsland
         
             // Get top tuple
             _enemiesController.GetEnemies()[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
+            
             // StartCoroutine(WaitBeforeAction(orderedAction)); // --TESTING--
         }
 
@@ -91,6 +96,7 @@ namespace JumpeeIsland
         private IEnumerator WaitBeforeAction(DummyAction action)
         {
             yield return new WaitUntil(() => Input.anyKey);
+            Debug.Log("Wait for testing");
             _enemiesController.GetEnemies()[action.AgentIndex].ConductSelectedAction(action);
         }
 

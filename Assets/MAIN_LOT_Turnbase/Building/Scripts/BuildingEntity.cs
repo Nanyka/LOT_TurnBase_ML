@@ -118,9 +118,14 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public override void DieCollect(Entity killedByEntity)
+        public override void DieIndividualProcess(Entity killedByEntity)
         {
-            throw new NotImplementedException();
+            // TODO die visualization
+            // Check to remove consumable inventory item
+            if (m_BuildingData.CreatureType == FactionType.Player)
+            {
+                
+            }
         }
 
         #endregion
@@ -182,7 +187,7 @@ namespace JumpeeIsland
             m_Transform.eulerAngles = m_BuildingData.Rotation;
             m_SkinComp.Init(m_BuildingData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp,OnUnitDie,m_BuildingData);
-            OnUnitDie.AddListener(DieCollect);
+            OnUnitDie.AddListener(DieIndividualProcess);
         }
     }
 }

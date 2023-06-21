@@ -210,11 +210,11 @@ namespace JumpeeIsland
             }
         }
         
-        public JIInventoryItem GetInventoryItemByName(string entityName)
+        public JIInventoryItem GetInventoryByNameOrId(string inventoryInfo)
         {
             var inventoryDefinitions = _economyManager.GetInventoryDefinitions();
             foreach (var itemDefinition in inventoryDefinitions)
-                if (itemDefinition.Name.Equals(entityName))
+                if (itemDefinition.Name.Equals(inventoryInfo) || itemDefinition.Id.Equals(inventoryInfo))
                     return itemDefinition.CustomDataDeserializable.GetAs<JIInventoryItem>();
 
             return null;
@@ -242,6 +242,11 @@ namespace JumpeeIsland
         public List<JIItemAndAmountSpec> GetVirtualPurchaseCost(string virtualPurchaseId)
         {
             return _economyManager.GetVirtualPurchaseCost(virtualPurchaseId);
+        }
+        
+        public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
+        {
+            return _economyManager.GetPurchaseDefinition(id);
         }
 
         #endregion

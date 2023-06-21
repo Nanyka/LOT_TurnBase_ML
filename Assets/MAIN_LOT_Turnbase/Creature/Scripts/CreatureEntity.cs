@@ -97,7 +97,7 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentHp;
         }
 
-        public override void DieCollect(Entity killedByEntity)
+        public override void DieIndividualProcess(Entity killedByEntity)
         {
             // Set animation and effect when entity die here
             m_AnimateComp.SetAnimation(AnimateType.Die, true);
@@ -109,7 +109,6 @@ namespace JumpeeIsland
 
         public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
-            Debug.Log($"{gameObject} attack");
             m_Info = unitInfo;
             m_AnimateComp.SetAnimation(AnimateType.Attack,true);
             Attack(); // TESTING
@@ -179,7 +178,7 @@ namespace JumpeeIsland
             m_Transform.eulerAngles = m_CreatureData.Rotation;
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStats.HealthPoint, OnUnitDie, m_CreatureData);
-            OnUnitDie.AddListener(DieCollect);
+            OnUnitDie.AddListener(DieIndividualProcess);
         }
 
         #endregion

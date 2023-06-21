@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    // TODO replicate UnitMovement
-
     public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity
     {
         [Header("Creature Components")] [SerializeField]
@@ -19,13 +17,14 @@ namespace JumpeeIsland
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
-        private bool _isUsed;
+        [SerializeField] private bool _isUsed;
 
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
+            MarkAsUsedThisTurn();
         }
 
         public void OnEnable()
@@ -131,15 +130,13 @@ namespace JumpeeIsland
             if (killedByEntity.GetFaction() == FactionType.Player)
                 SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
 
-            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
+            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this); // remove its domain
             m_FactionController.RemoveAgent(this);
             StartCoroutine(DieVisual());
         }
 
         private IEnumerator DieVisual()
         {
-            // Collect currencies
-            // VFX
             yield return new WaitForSeconds(1f);
             gameObject.SetActive(false);
         }
