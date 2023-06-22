@@ -100,9 +100,6 @@ namespace JumpeeIsland
         {
             GetInventoryResult inventoryResult = null;
 
-            // empty the inventory view first
-            Debug.Log("Empty the inventory view first");
-
             try
             {
                 inventoryResult = await LoadPlayerInventory();

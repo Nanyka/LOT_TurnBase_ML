@@ -88,8 +88,9 @@ namespace JumpeeIsland
             if (_currentUnit.IsAvailable())
                 m_Environment.OnShowMovingPath.Invoke(_currentUnit.GetCurrentPosition());
             else
-                m_Environment.OnHighlightUnit.Invoke(_currentUnit.GetCurrentPosition());
+                m_Environment.OnHighlightUnit.Invoke(_currentUnit.GetCurrentPosition()); // TODO highlight unavailable creature
 
+            GameFlowManager.Instance.OnSelectEntity.Invoke(_currentUnit.GetEntityData());
             MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
         }
 

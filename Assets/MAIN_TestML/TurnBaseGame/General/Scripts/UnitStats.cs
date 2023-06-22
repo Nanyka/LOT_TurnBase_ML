@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using JumpeeIsland;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "UnitStats", menuName = "TurnBase/UnitStats", order = 2)]
+[CreateAssetMenu(fileName = "UnitStats", menuName = "JumpeeIsland/UnitStats", order = 2)]
 public class UnitStats : ScriptableObject
 {
     public int HealthPoint;

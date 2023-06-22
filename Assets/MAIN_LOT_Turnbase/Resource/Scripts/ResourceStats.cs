@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    [CreateAssetMenu(fileName = "ResourceStats", menuName = "TurnBase/ResourceStats", order = 3)]
+    [CreateAssetMenu(fileName = "ResourceStats", menuName = "JumpeeIsland/ResourceStats", order = 3)]
     public class ResourceStats : ScriptableObject
     {
         public int MaxHp;

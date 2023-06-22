@@ -99,6 +99,11 @@ namespace JumpeeIsland
             return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
         }
 
+        public EntityData GetEntityData()
+        {
+            return m_Entity.GetData();
+        }
+        
         public EnvironmentManager GetEnvironment()
         {
             return m_FactionController.GetEnvironment();

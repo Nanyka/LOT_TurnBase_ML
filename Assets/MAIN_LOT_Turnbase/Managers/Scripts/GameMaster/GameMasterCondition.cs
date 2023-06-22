@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -5,21 +6,29 @@ namespace JumpeeIsland
     [System.Serializable]
     public class GameMasterCondition
     {
+        [Tooltip("True if map size equal or larger than this amount")]
+        public int MapSize;
+        
         public CurrencyType Currency;
         [Tooltip("True if current balance lower than this amount")]
-        public int CurrencyAmount;
+        [HideIf("Currency", CurrencyType.NONE)] public int CurrencyAmount;
         
         public CurrencyType Storage;
         [Tooltip("True if current storage larger than this amount")]
-        public int StorageAmount;
+        [HideIf("Storage", CurrencyType.NONE)] public int StorageAmount;
         
         public CurrencyType Resource;
         [Tooltip("True if current resource lower than this amount")]
-        public int ResourceAmount;
+        [HideIf("Resource", CurrencyType.NONE)] public int ResourceAmount;
 
         public bool PassCondition()
         {
             return CheckCurrency() && CheckBuilding() && CheckResource();
+        }
+
+        private bool CheckMapSize()
+        {
+            return SavingSystemManager.Instance.GetEnvironmentData().mapSize >= MapSize;
         }
 
         private bool CheckCurrency()

@@ -156,12 +156,6 @@ namespace JumpeeIsland
             return m_Entity;
         }
 
-        protected override void UnitDie(Entity killedByEntity)
-        {
-            base.UnitDie(killedByEntity);
-            Debug.Log("Do something when NPC die if needed");
-        }
-
         #endregion
     }
 }

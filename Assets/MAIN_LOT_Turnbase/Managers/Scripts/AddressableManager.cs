@@ -23,6 +23,19 @@ namespace JumpeeIsland
             var handle = Addressables.LoadAssetAsync<Sprite>(m_LogPrefab);
             return handle.WaitForCompletion();
         }
+        
+        public ScriptableObject GetAddressableSO(string objectKey)
+        {
+            m_LogPrefab = objectKey;
+
+#if UNITY_STANDALONE_OSX
+            //Add private token to addressable web request header
+            Addressables.WebRequestOverride = AddPrivateToken;
+#endif
+
+            var handle = Addressables.LoadAssetAsync<ScriptableObject>(m_LogPrefab);
+            return handle.WaitForCompletion();
+        }
 
         public void GetAddressableGameObject(string objectKey, Transform spawnTransform)
         {
