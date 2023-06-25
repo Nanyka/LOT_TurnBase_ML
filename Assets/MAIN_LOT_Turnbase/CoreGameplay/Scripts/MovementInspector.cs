@@ -9,15 +9,6 @@ namespace JumpeeIsland
     {
         private EnvironmentManager _environment;
 
-        // private float maxRow;
-        // private float maxCol;
-        // private Vector3 _platformPos;
-
-        // private void Start()
-        // {
-        //     InputPlatformSize();
-        // }
-
         private void Awake()
         {
             _environment = GetComponent<EnvironmentManager>();
@@ -26,7 +17,6 @@ namespace JumpeeIsland
         public (Vector3 returnPos, int jumpCount, int overEnemy) MovingPath(Vector3 curPos, int direction, int jumpCount, int overEnemy)
         {
             var newPos = curPos + DirectionToVector(direction);
-            // if (!CheckInBoundary(newPos)) return (curPos, jumpCount, overEnemy);
 
             if (CheckAvailableMove(newPos))
             {

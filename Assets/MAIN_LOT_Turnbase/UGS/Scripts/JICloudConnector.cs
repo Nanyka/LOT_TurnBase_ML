@@ -59,7 +59,7 @@ namespace JumpeeIsland
         {
             try
             {
-                var updatedState = await _cloudCodeManager.CallGetUpdatedStateEndpoint();
+                var updatedState = await _cloudCodeManager.CallLoadUpdatedStateEndpoint();
                 if (this == null)
                     return null;
 
@@ -213,6 +213,7 @@ namespace JumpeeIsland
         public JIInventoryItem GetInventoryByNameOrId(string inventoryInfo)
         {
             var inventoryDefinitions = _economyManager.GetInventoryDefinitions();
+            
             foreach (var itemDefinition in inventoryDefinitions)
                 if (itemDefinition.Name.Equals(inventoryInfo) || itemDefinition.Id.Equals(inventoryInfo))
                     return itemDefinition.CustomDataDeserializable.GetAs<JIInventoryItem>();
@@ -265,12 +266,39 @@ namespace JumpeeIsland
         public async Task<EnvironmentData> GetEnemyEnvironment()
         {
             var getPlayerRange = await _leaderboardManager.GetPlayerRange();
-            return await _cloudCodeManager.CallGetEnemyEnvironment(getPlayerRange[Random.Range(0,getPlayerRange.Count)].PlayerId);
+            return await _cloudCodeManager.CallLoadEnemyEnvironment(getPlayerRange[Random.Range(0,getPlayerRange.Count)].PlayerId);
         }
 
         public void PlayerRecordScore(int playerScore)
         {
             _leaderboardManager.AddScore(playerScore);
+        }
+
+        #endregion
+
+        #region GAME PROCESS
+
+        public async Task<GameProcessData> OnLoadGameProcess()
+        {
+            try
+            {
+                var gameProcess = await _cloudCodeManager.CallLoadGameProcess();
+                if (this == null)
+                    return null;
+
+                return gameProcess;
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            
+            return null;
+        }
+        
+        public async Task OnSaveGameProcess(GameProcessData currentProcess)
+        {
+            await _cloudCodeManager.CallSaveGameProcess(currentProcess);
         }
 
         #endregion

@@ -13,6 +13,7 @@ namespace JumpeeIsland
         public void Init(BuildingData buildingData, BuildingController buildingController)
         {
             m_Entity.Init(buildingData);
+            transform.position = buildingData.Position;
             
             _buildingController = buildingController;
             _buildingController.AddBuildingToList(this);

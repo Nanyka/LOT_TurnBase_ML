@@ -18,6 +18,6 @@ public class TestLoadSO : MonoBehaviour
         yield return new WaitUntil(() => Input.anyKey);
         
         var getSO = AddressableManager.Instance.GetAddressableSO(SOAddress) as ResourceStats;
-        Debug.Log($"Get Scriptable object: {getSO.Command.ToString()}");
+        Debug.Log($"Get Scriptable object: {getSO.Commands.ToString()}");
     }
 }

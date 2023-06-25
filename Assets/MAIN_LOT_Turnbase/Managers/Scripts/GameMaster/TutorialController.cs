@@ -1,120 +1,1 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace JumpeeIsland
-{
-    public class TutorialController : MonoBehaviour
-    {
-        [SerializeField] private string m_TestFirstTutorial;
-
-        [SerializeField] private Tutorial _currentTutorial;
-        private EnvironmentManager _environmentManager;
-        private int _currentStepIndex;
-        [SerializeField] private EntityData _waitingFor;
-        private bool _isLockAction;
-        private bool _isTutorialCompleted;
-
-        private void Start()
-        {
-            _environmentManager = FindObjectOfType<EnvironmentManager>();
-            _environmentManager.OnChangeFaction.AddListener(StartTutorial);
-            GameFlowManager.Instance.OnSelectEntity.AddListener(DetectEntity);
-            
-            LoadStartupTutorial();
-        }
-
-        private void Update()
-        {
-            if (Input.anyKeyDown)
-            {
-                StepCompletedDecide();
-            }
-        }
-
-        private void LoadStartupTutorial()
-        {
-            _currentTutorial = AddressableManager.Instance.GetAddressableSO(m_TestFirstTutorial) as Tutorial;
-        }
-
-        #region TUTORIAL PROCESS
-        
-        private void StartTutorial()
-        {
-            if (_environmentManager.GetCurrFaction() == FactionType.Enemy)
-                return;
-            
-            // Check condition and execute tutorial
-            if (_currentTutorial.CheckExecute() == false)
-                return;
-
-            _currentStepIndex = 0;
-            _isTutorialCompleted = false;
-
-            ExecuteStep();
-        }
-
-        private void ExecuteStep()
-        {
-            HideAllTool();
-            _waitingFor = null;
-            
-            var currentStep = _currentTutorial.GetStep(_currentStepIndex);
-            if (currentStep.Pointer)
-            {
-                switch (currentStep.EntityType)
-                {
-                    case EntityType.PLAYER:
-                        SelectPlayer();
-                        break;
-                }
-            }
-        }
-
-        private void SelectPlayer()
-        {
-            _waitingFor = SavingSystemManager.Instance.GetEnvironmentData().PlayerData[0];
-            ShowPointerAt(_waitingFor.Position);
-        }
-
-        private void DetectEntity(EntityData entityData)
-        {
-            if (_waitingFor == null)
-            {
-                HideAllTool();
-                return;
-            }
-
-            if (_waitingFor == entityData)
-                StepCompletedDecide();
-        }
-
-        private void StepCompletedDecide()
-        {
-            // Move to the next step if current step completed
-            _currentStepIndex++;
-            if (_currentTutorial.CheckRunOutOfStep(_currentStepIndex))
-                Debug.Log($"Load next tutorial: {_currentTutorial.GetNextTutorial()}");
-            else
-                ExecuteStep();
-            // If running out of step, load next tutorial
-        }
-
-        #endregion
-
-        #region TUTORIAL TOOLS
-
-        private void ShowPointerAt(Vector3 position)
-        {
-            Debug.Log($"Show pointer at {position}");
-        }
-
-        private void HideAllTool()
-        {
-            Debug.Log("Hide all tutorial tools");
-        }
-
-        #endregion
-    }
-}
+using System;using System.Collections;using System.Collections.Generic;using System.Linq;using UnityEngine;using WebSocketSharp;namespace JumpeeIsland{    public class TutorialController : MonoBehaviour    {        [SerializeField] private Tutorial m_TestFirstTutorial;        [Header("Tutorial tools")] [SerializeField]        private GameObject m_Pointer;        [SerializeField] private Tutorial _currentTutorial;        private EnvironmentManager _environmentManager;        private IFactionController _playerController;        [SerializeField] private int _currentStepIndex;        private TutorialStep _currentStep;        private EntityData _waitingForEntity;        private Vector3 _waitingForPosition;        private Camera _camera;        [SerializeField] private bool _isTutorialCompleted;        public void Init(string currentTutorial)        {            _environmentManager = FindObjectOfType<EnvironmentManager>();            _playerController = FindObjectOfType<PlayerFactionController>();            _environmentManager.OnChangeFaction.AddListener(StartTutorial);            GameFlowManager.Instance.OnSelectEntity.AddListener(DetectEntity);            _camera = Camera.main;            if (m_TestFirstTutorial != null)                LoadTutorial(m_TestFirstTutorial);        }        private void Update()        {            if (Input.anyKeyDown)                MarkStepCompleted();        }        private void MarkStepCompleted()        {            if (_currentTutorial == null || _currentStep == null)                return;            if (_currentStep.CheckPosition && _currentTutorial.GetNextTutorial().IsNullOrEmpty() == false)            {                var moveRay = _camera.ScreenPointToRay(Input.mousePosition);                if (!Physics.Raycast(moveRay, out var moveHit, 100f))                    return;                var pos = moveHit.transform.position;                if (Vector3.Distance(_waitingForPosition, pos) < 0.1f)                    StepCompletedDecide();            }        }        private void LoadTutorial(string tutorialAddress)        {            Debug.Log("Load new tutorial and update JI_GAME_PROCESS on cloud");            SavingSystemManager.Instance.SaveCurrentTutorial(tutorialAddress);            _currentTutorial = AddressableManager.Instance.GetAddressableSO(tutorialAddress) as Tutorial;        }        // Just for TESTING        private void LoadTutorial(Tutorial tutorial)        {            _currentTutorial = tutorial;        }        #region TUTORIAL PROCESS        private void StartTutorial()        {            if (_environmentManager.GetCurrFaction() == FactionType.Enemy)                return;            if (_currentTutorial == null)                return;            // Check condition and execute tutorial            if (_currentTutorial.CheckExecute() == false)                return;            if (_isTutorialCompleted)                LoadTutorial(_currentTutorial.GetNextTutorial());            _currentStepIndex = 0;            _isTutorialCompleted = false;            ExecuteStep();        }        private void ExecuteStep()        {            HideAllTool();            _waitingForEntity = null;            _currentStep = _currentTutorial.GetStep(_currentStepIndex);            if (_currentStep.Pointer)            {                switch (_currentStep.EntityType)                {                    case EntityType.PLAYER:                        SelectPlayer();                        break;                }            }            if (_currentStep.Spawner)                SpawnHintObject();        }        private void SelectPlayer()        {            var playerCreature = SavingSystemManager.Instance.GetEnvironmentData().PlayerData[0];            if (_currentStep.CheckEntity)                _waitingForEntity = playerCreature;            ShowPointerAt(playerCreature);        }        private void DetectEntity(EntityData entityData)        {            if (_currentStep == null)                return;            if (_currentStep.CheckPosition || _currentStep.CheckEntity == false)                return;            if (_waitingForEntity == entityData)                StepCompletedDecide();        }        private void StepCompletedDecide()        {            // Move to the next step if current step completed            _currentStepIndex++;            if (_currentTutorial.CheckRunOutOfStep(_currentStepIndex))            {                _isTutorialCompleted = true;            }            else                ExecuteStep();        }        #endregion        #region TUTORIAL TOOLS        private void ShowPointerAt(CreatureData creatureData)        {            var position = creatureData.Position;            if (_currentStep.ArrowSign)            {                foreach (var direction in Enumerable.Range(1, 4))                {                    var movement = GameFlowManager.Instance.GetEnvManager().GetMovementInspector()                        .MovingPath(creatureData.Position, direction, 0, 0);                    if (movement.jumpCount >= _currentStep.MinJump)                    {                        position = movement.returnPos;                        break;                    }                }            }            if (_currentStep.CheckPosition)            {                if (Vector3.Distance(position, creatureData.Position) < 0.1f)                {                    HideAllTool();                    return;                }                _waitingForPosition = position;            }            if (Physics.Raycast(position + Vector3.up * 2f, Vector3.down, out var pointHit, 100f))                position = pointHit.point;            m_Pointer.transform.position = position;            m_Pointer.SetActive(true);        }        private void SpawnHintObject()        {            var availableTile = GameFlowManager.Instance.GetEnvManager().GetAvailableTile();            if (_currentStep.IsDesignatedPos)                availableTile = _currentStep.DesignatedPos;            if (availableTile != Vector3.negativeInfinity)            {                switch (_currentStep.SpawnType)                {                    case EntityType.RESOURCE:                        SavingSystemManager.Instance.OnSpawnResource(_currentStep.SpawnResource, availableTile);                        break;                    case EntityType.COLLECTABLE:                        SavingSystemManager.Instance.OnSpawnCollectable(_currentStep.SpawnCollectable, availableTile,                            _currentStep.SpawnCollectableLevel);                        break;                }            }        }        private void HideAllTool()        {            m_Pointer.SetActive(false);        }        #endregion    }}

@@ -7,6 +7,7 @@ namespace JumpeeIsland
         WOOD,
         GOLD,
         DIAMOND,
-        STEP
+        STEP,
+        MULTI
     }
 }

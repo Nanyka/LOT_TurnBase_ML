@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -8,22 +9,26 @@ namespace JumpeeIsland
     {
         [Tooltip("True if map size equal or larger than this amount")]
         public int MapSize;
-        
-        public CurrencyType Currency;
+
         [Tooltip("True if current balance lower than this amount")]
+        public CurrencyType Currency;
         [HideIf("Currency", CurrencyType.NONE)] public int CurrencyAmount;
-        
-        public CurrencyType Storage;
+
         [Tooltip("True if current storage larger than this amount")]
+        public CurrencyType Storage;
         [HideIf("Storage", CurrencyType.NONE)] public int StorageAmount;
         
-        public CurrencyType Resource;
         [Tooltip("True if current resource lower than this amount")]
+        public CurrencyType Resource;
         [HideIf("Resource", CurrencyType.NONE)] public int ResourceAmount;
+        
+        [FormerlySerializedAs("Collectable")] [Tooltip("True if current collectable lower than this amount")]
+        public CollectableType CollectableType;
+        [HideIf("CollectableType", CollectableType.NONE)] public int CollectableAmount;
 
         public bool PassCondition()
         {
-            return CheckCurrency() && CheckBuilding() && CheckResource();
+            return CheckCurrency() && CheckBuilding() && CheckResource() && CheckCollectable();
         }
 
         private bool CheckMapSize()
@@ -63,6 +68,20 @@ namespace JumpeeIsland
                 if (resource.CollectedCurrency == Resource)
                     totalAmount++;
             return totalAmount < ResourceAmount;
+        }
+
+        private bool CheckCollectable()
+        {
+            if (CollectableType == CollectableType.NONE)
+                return true;
+
+            var collectables = SavingSystemManager.Instance.GetEnvironmentData().CollectableData;
+            int totalAmount = 0;
+            foreach (var collectable in collectables)
+                if (collectable.CollectableType == CollectableType)
+                    totalAmount++;
+            
+            return totalAmount < CollectableAmount;
         }
     }
 }

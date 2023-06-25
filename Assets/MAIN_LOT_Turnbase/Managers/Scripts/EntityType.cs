@@ -6,6 +6,7 @@ namespace JumpeeIsland
         RESOURCE,
         BUILDING,
         PLAYER,
-        ENEMY
+        ENEMY,
+        COLLECTABLE
     }
 }

@@ -5,7 +5,6 @@ namespace JumpeeIsland
 {
     public class ResourceInGame : MonoBehaviour, IRemoveEntity
     {
-        [SerializeField] private ResourceType m_ResourceType; // define how resource interact with game
         [SerializeField] private ResourceEntity m_Entity;
 
         private ResourceController _resourceController;
@@ -14,6 +13,7 @@ namespace JumpeeIsland
         {
             m_Entity.Init(resourceData);
             m_Entity.OnUnitDie.AddListener(DestroyResource);
+            transform.position = resourceData.Position;
 
             _resourceController = resourceController;
             _resourceController.AddResourceToList(this);
@@ -28,10 +28,7 @@ namespace JumpeeIsland
         {
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
-            {
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(m_Entity.GetCommand().ToString(),m_Entity.GetData().Position);
-            }
+                m_Entity.ContributeCommands();
             
             // Add exp for entity who killed this resource
             if (killedByEntity != m_Entity)

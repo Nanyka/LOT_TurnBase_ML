@@ -13,6 +13,7 @@ namespace JumpeeIsland
         public List<BuildingData> BuildingData;
         public List<CreatureData> PlayerData;
         public List<CreatureData> EnemyData;
+        public List<CollectableData> CollectableData;
 
         public void AddBuildingData(BuildingData data)
         {
@@ -27,6 +28,11 @@ namespace JumpeeIsland
         public void AddResourceData(ResourceData data)
         {
             ResourceData.Add(data);
+        }
+
+        public void AddCollectableData(CollectableData data)
+        {
+            CollectableData.Add(data);
         }
 
         public void AddEnemyData(CreatureData data)

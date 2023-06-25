@@ -17,10 +17,12 @@ namespace JumpeeIsland
         
         public bool IsEcoMode = true;
         private EnvironmentManager _environmentManager;
+        private TutorialController _tutorialController;
         
         private void Start()
         {
             _environmentManager = FindObjectOfType<EnvironmentManager>();
+            _tutorialController = FindObjectOfType<TutorialController>();
             
             OnLoadData.Invoke();
         }
@@ -28,6 +30,11 @@ namespace JumpeeIsland
         public EnvironmentManager GetEnvManager()
         {
             return _environmentManager;
+        }
+
+        public void LoadCurrentTutorial(string currentTutorial)
+        {
+            _tutorialController.Init(currentTutorial);
         }
     }
 }

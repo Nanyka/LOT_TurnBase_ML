@@ -22,17 +22,31 @@ MonoBehaviour:
     ResourceAmount: 0
   steps:
   - Pointer: 1
-    ArrowSign: 0
-    Direction: 0
     EntitySelection: 1
     EntityType: 3
     ResourceType: 0
     BuildingType: 0
-    PlayerType: 0
     EnemyType: 0
+    ArrowSign: 0
+    MinJump: 0
     UISelection: 0
     UIName: 
-    LockAction: 0
+    CheckPosition: 0
+    CheckEntity: 1
+    Conversation: 0
+    Message: 
+  - Pointer: 1
+    EntitySelection: 1
+    EntityType: 3
+    ResourceType: 0
+    BuildingType: 0
+    EnemyType: 0
+    ArrowSign: 1
+    MinJump: 1
+    UISelection: 0
+    UIName: 
+    CheckPosition: 1
+    CheckEntity: 0
     Conversation: 0
     Message: 
   nextTutorial: /Tutorials/Tutorial1

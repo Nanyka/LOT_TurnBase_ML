@@ -54,7 +54,7 @@ namespace JumpeeIsland
             }
         }
         
-        public async Task<EnvironmentData> CallGetUpdatedStateEndpoint()
+        public async Task<EnvironmentData> CallLoadUpdatedStateEndpoint()
         {
             try
             {
@@ -125,7 +125,7 @@ namespace JumpeeIsland
 
         #region LEADERBOARD
 
-        public async Task<EnvironmentData> CallGetEnemyEnvironment(string enemyId)
+        public async Task<EnvironmentData> CallLoadEnemyEnvironment(string enemyId)
         {
             try
             {
@@ -140,6 +140,44 @@ namespace JumpeeIsland
                 HandleCloudCodeException(e);
                 throw new CloudCodeResultUnavailableException(e,
                     "Handled exception in CallGetEnemyEnvironment.");
+            }
+        }
+
+        #endregion
+
+        #region GAME PROCESS
+
+        public async Task CallSaveGameProcess(GameProcessData gameProcess)
+        {
+            try
+            {
+                await CloudCodeService.Instance.CallEndpointAsync(
+                    "JumpeeIsland_SaveGameProcess",
+                    new Dictionary<string, object> { { "CurrentProcess", gameProcess } });
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e,
+                    "Handled exception in CallSaveGameProcess.");
+            }
+        }
+        
+        public async Task<GameProcessData> CallLoadGameProcess()
+        {
+            try
+            {
+                var gameProcess = await CloudCodeService.Instance.CallEndpointAsync<GameProcessData>(
+                    "JumpeeIsland_GetGameProcess",
+                    new Dictionary<string, object>());
+
+                return gameProcess;
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e,
+                    "Handled exception in CallGetGameProcess.");
             }
         }
 

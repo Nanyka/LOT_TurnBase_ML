@@ -183,8 +183,6 @@ namespace JumpeeIsland
             }
             
             // Load data to entity
-            m_Transform.position = m_BuildingData.Position;
-            m_Transform.eulerAngles = m_BuildingData.Rotation;
             m_SkinComp.Init(m_BuildingData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp,OnUnitDie,m_BuildingData);
             OnUnitDie.AddListener(DieIndividualProcess);

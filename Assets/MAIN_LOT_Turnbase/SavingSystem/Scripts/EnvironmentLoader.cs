@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -13,6 +14,7 @@ namespace JumpeeIsland
         [SerializeField] private BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
         [SerializeField] private CreatureLoader enemyLoader;
+        [FormerlySerializedAs("_collectableLoader")] [SerializeField] private CollectableObjectLoader collectableLoader;
         [SerializeField] protected EnvironmentData _environmentData;
 
         public virtual void Init()
@@ -29,6 +31,7 @@ namespace JumpeeIsland
             resourceLoader.Reset();
             playerLoader.Reset();
             enemyLoader.Reset();
+            collectableLoader.Reset();
             buildingLoader.Reset();
         }
 
@@ -38,6 +41,7 @@ namespace JumpeeIsland
             buildingLoader.StartUpLoadData(_environmentData.BuildingData);
             playerLoader.StartUpLoadData(_environmentData.PlayerData);
             enemyLoader.StartUpLoadData(_environmentData.EnemyData);
+            collectableLoader.StartUpLoadData(_environmentData.CollectableData);
 
             tileManager.Init(_environmentData.mapSize);
         }
@@ -71,6 +75,16 @@ namespace JumpeeIsland
         {
             _environmentData.AddResourceData(resourceData);
             resourceLoader.PlaceNewObject(resourceData);
+        }
+
+        #endregion
+
+        #region COLLECTABLE
+
+        public void SpawnCollectable(CollectableData collectableData)
+        {
+            _environmentData.AddCollectableData(collectableData);
+            collectableLoader.PlaceNewObject(collectableData);
         }
 
         #endregion

@@ -21,11 +21,13 @@ namespace JumpeeIsland
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
         // invoke at CreatureEntity
-        [NonSerialized] public UnityEvent OnSavePlayerEnvData = new(); 
+        [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
+
         // invoke at EnvironmentManager
-        [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new(); 
+        [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new();
+
         // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
-        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new(); 
+        [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new();
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
@@ -76,7 +78,7 @@ namespace JumpeeIsland
 
             // Load gameState from local to check if the previous session is disconnected
             await LoadGameState();
-            
+
             // mark as starting point of loading phase.
             // If this process is not complete, the environment will not be save at OnDisable()
             SetInLoadingState(true);
@@ -90,6 +92,9 @@ namespace JumpeeIsland
             m_CurrencyLoader.Init();
 
             await LoadCommands();
+
+            // Load game process to refresh current tutorial
+            await LoadGameProcess();
 
             SaveDisconnectedState(false); // set it as connected state when loaded all disconnected session's data
             SetInLoadingState(false); // Finish loading phase
@@ -231,6 +236,28 @@ namespace JumpeeIsland
             };
             m_EnvLoader.SpawnResource(newResource);
         }
+        
+        public void OnSpawnResource(string resourceName, Vector3 position)
+        {
+            var newResource = new ResourceData()
+            {
+                EntityName = resourceName,
+                Position = position,
+                CurrentLevel = 0
+            };
+            m_EnvLoader.SpawnResource(newResource);
+        }
+        
+        public void OnSpawnCollectable(string collectableName, Vector3 position, int level)
+        {
+            var collectableData = new CollectableData()
+            {
+                EntityName = collectableName,
+                Position = position,
+                CurrentLevel = level
+            };
+            m_EnvLoader.SpawnCollectable(collectableData);
+        }
 
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)
         {
@@ -255,7 +282,7 @@ namespace JumpeeIsland
 
             var newCreature = new CreatureData()
             {
-                EntityName = inventoryItem.inventoryName, 
+                EntityName = inventoryItem.inventoryName,
                 Position = position,
                 CurrentLevel = 0
             };
@@ -265,7 +292,7 @@ namespace JumpeeIsland
         public void SpawnConsumableEntity(string itemId, Vector3 position, FactionType factionType)
         {
             var item = GetInventoryItemByName(itemId);
-            
+
             if (factionType == FactionType.Neutral)
             {
                 var newEntity = new CreatureData()
@@ -425,6 +452,24 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region GAME PROCESS
+
+        private async Task LoadGameProcess()
+        {
+            var currentGameProcess = await m_CloudConnector.OnLoadGameProcess();
+            GameFlowManager.Instance.LoadCurrentTutorial(currentGameProcess == null
+                ? "TUTORIAL0"
+                : currentGameProcess.currentTutorial);
+        }
+
+        public async void SaveCurrentTutorial(string tutorial)
+        {
+            var currentProcess = new GameProcessData(){currentTutorial = tutorial};
+            await m_CloudConnector.OnSaveGameProcess(currentProcess);
+        }
+
+        #endregion
+
         #region GET & SET
 
         private string GetSavingPath(SavingPath tailPath)
@@ -445,6 +490,9 @@ namespace JumpeeIsland
 
         public void StoreCurrencyAtBuildings(string commandId, Vector3 fromPos)
         {
+            if (commandId.Equals("NONE"))
+                return;
+            
             var rewards = m_CloudConnector.GetRewardByCommandId(commandId);
             foreach (var reward in rewards)
             {

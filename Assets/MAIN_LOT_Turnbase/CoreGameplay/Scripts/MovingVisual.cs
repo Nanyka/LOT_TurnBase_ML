@@ -8,7 +8,6 @@ namespace JumpeeIsland
     public class MovingVisual : MonoBehaviour
     {
         [SerializeField] protected SelectionCircle[] _movingPoints;
-        [SerializeField] private Material[] _attackingColors;
 
         private EnvironmentManager m_Environment;
         private Camera _camera;

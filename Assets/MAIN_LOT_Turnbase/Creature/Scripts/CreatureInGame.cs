@@ -22,6 +22,9 @@ namespace JumpeeIsland
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
+            m_Transform.position = creatureData.Position;
+            _rotatePart.eulerAngles = creatureData.Rotation;
+            
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
             MarkAsUsedThisTurn();

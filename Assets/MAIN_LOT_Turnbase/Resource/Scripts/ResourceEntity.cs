@@ -42,14 +42,18 @@ namespace JumpeeIsland
                 OnUnitDie.Invoke(this);
         }
 
-        // public ResourceData GetResourceData()
-        // {
-        //     return m_ResourceData;
-        // }
-
         public override CommandName GetCommand()
         {
-            return m_CurrentStats.Command;
+            return m_CurrentStats.Commands[0];
+        }
+
+        public void ContributeCommands()
+        {
+            foreach (var command in m_CurrentStats.Commands)
+            {
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_ResourceData.Position);
+            }
         }
 
         public override FactionType GetFaction()
@@ -136,8 +140,6 @@ namespace JumpeeIsland
             }
             
             // Retrieve entity data
-            m_Transform.position = m_ResourceData.Position;
-            m_Transform.eulerAngles = m_ResourceData.Rotation;
             m_SkinComp.Init(m_ResourceData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);
             OnUnitDie.AddListener(DieIndividualProcess);
