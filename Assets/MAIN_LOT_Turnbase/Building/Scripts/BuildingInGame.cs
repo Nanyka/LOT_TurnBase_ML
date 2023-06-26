@@ -31,6 +31,11 @@ namespace JumpeeIsland
         {
             return m_Entity.GetStorageSpace(currency, ref selectedBuildings);
         }
+        
+        public int GetStoreSpace(CurrencyType currency)
+        {
+            return m_Entity.GetStorageSpace(currency);
+        }
 
         public string ShowInfo()
         {

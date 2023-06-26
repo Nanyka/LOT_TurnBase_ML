@@ -16,6 +16,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<EntityData> OnSelectEntity = new(); // send to TutorialController; invoke at PlayerFactionController
         
         public bool IsEcoMode = true;
+        public bool _isGameStarted { get; private set; }
+        
         private EnvironmentManager _environmentManager;
         private TutorialController _tutorialController;
         
@@ -24,7 +26,14 @@ namespace JumpeeIsland
             _environmentManager = FindObjectOfType<EnvironmentManager>();
             _tutorialController = FindObjectOfType<TutorialController>();
             
+            OnStartGame.AddListener(RecordStartedState);
+            
             OnLoadData.Invoke();
+        }
+
+        private void RecordStartedState(long arg0)
+        {
+            _isGameStarted = true;
         }
 
         public EnvironmentManager GetEnvManager()

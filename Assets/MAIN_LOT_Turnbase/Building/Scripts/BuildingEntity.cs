@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    public class BuildingEntity: Entity
+    public class BuildingEntity : Entity
     {
         [SerializeField] private BuildingStats[] m_BuildingStats;
         [SerializeField] private SkinComp m_SkinComp;
@@ -16,10 +16,10 @@ namespace JumpeeIsland
         [SerializeField] private LevelComp m_LevelComp;
         [SerializeField] private AttackPath m_AttackPath;
         [SerializeField] private AnimateComp m_AnimateComp;
-        
+
         private BuildingData m_BuildingData { get; set; }
         private BuildingStats m_CurrentStats;
-        
+
         public void Init(BuildingData buildingData)
         {
             m_BuildingData = buildingData;
@@ -27,7 +27,7 @@ namespace JumpeeIsland
         }
 
         #region BUILDING DATA
-        
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             throw new NotImplementedException();
@@ -37,7 +37,7 @@ namespace JumpeeIsland
         {
             return m_BuildingData;
         }
-        
+
         public override CommandName GetCommand()
         {
             throw new NotImplementedException();
@@ -56,11 +56,12 @@ namespace JumpeeIsland
         public override void CollectExp(int expAmount)
         {
             m_BuildingData.CurrentExp += expAmount;
-            if (m_BuildingData.CurrentExp >= m_CurrentStats.ExpToUpdate && m_BuildingData.CurrentLevel + 1 < m_BuildingStats.Length)
+            if (m_BuildingData.CurrentExp >= m_CurrentStats.ExpToUpdate &&
+                m_BuildingData.CurrentLevel + 1 < m_BuildingStats.Length)
             {
                 // Level up
                 m_BuildingData.CurrentLevel++;
-                
+
                 // Reset stats and appearance
                 m_CurrentStats = m_BuildingStats[m_BuildingData.CurrentLevel];
                 var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
@@ -71,19 +72,21 @@ namespace JumpeeIsland
 
         public int GetStorageSpace(CurrencyType currencyType, ref Queue<BuildingEntity> selectedBuildings)
         {
-            if (currencyType != m_CurrentStats.StoreCurrency)
-                return 0;
+            if (currencyType == m_CurrentStats.StoreCurrency || currencyType == CurrencyType.MULTI)
+            {
+                selectedBuildings.Enqueue(this);
+                return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
+            }
 
-            selectedBuildings.Enqueue(this);
-            return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
+            return 0;
         }
-        
+
         public int GetStorageSpace(CurrencyType currencyType)
         {
-            if (currencyType != m_CurrentStats.StoreCurrency)
-                return 0;
-
-            return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
+            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
+                return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
+            
+            return 0;
         }
 
         public void StoreCurrency(int amount)
@@ -97,12 +100,12 @@ namespace JumpeeIsland
         {
             return m_CurrentStats.Level * m_BuildingData.TurnCount;
         }
-        
+
         public void DurationDeduct()
         {
             m_BuildingData.TurnCount++;
         }
-        
+
         #endregion
 
         #region HEALTH
@@ -124,32 +127,31 @@ namespace JumpeeIsland
             // Check to remove consumable inventory item
             if (m_BuildingData.CreatureType == FactionType.Player)
             {
-                
             }
         }
 
         #endregion
 
         #region ATTACK
-        
+
         public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
             throw new NotImplementedException();
         }
 
         #endregion
-        
+
         #region SKILL
-        
+
         public override IEnumerable<Skill_SO> GetSkills()
         {
             throw new System.NotImplementedException();
         }
-        
+
         #endregion
 
         #region ANIMATION
-        
+
         public override int GetAttackDamage()
         {
             throw new NotImplementedException();
@@ -166,13 +168,15 @@ namespace JumpeeIsland
         {
             // Set entity stats
             m_CurrentStats = m_BuildingStats[m_BuildingData.CurrentLevel];
-            
+
             // Set default information to buildingData
+            m_BuildingData.BuildingType = m_CurrentStats.BuildingType;
+            m_BuildingData.StorageCurrency = m_CurrentStats.StoreCurrency;
             m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
             m_BuildingData.StorageCurrency = m_BuildingData.StorageCurrency;
-            
+
             // Set initiate data if it's new
-            
+
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
             m_BuildingData.SkinAddress = inventoryItem.skinAddress[m_BuildingData.CurrentLevel];
             if (m_BuildingData.CurrentHp == 0)
@@ -181,10 +185,10 @@ namespace JumpeeIsland
                 m_BuildingData.StorageCurrency = m_CurrentStats.StoreCurrency;
                 m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
             }
-            
+
             // Load data to entity
             m_SkinComp.Init(m_BuildingData.SkinAddress);
-            m_HealthComp.Init(m_CurrentStats.MaxHp,OnUnitDie,m_BuildingData);
+            m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
             OnUnitDie.AddListener(DieIndividualProcess);
         }
     }

@@ -7,16 +7,16 @@ namespace JumpeeIsland
     {
         [SerializeField] private CollectableStats[] m_CollectableStats;
         [SerializeField] private CollectComp m_CollectComp;
-        
+
         private CollectableData m_CollectableData;
         private CollectableStats m_CurrentStat;
-        
+
         public void Init(CollectableData collectableData)
         {
             m_CollectableData = collectableData;
             RefreshEntity();
         }
-        
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             throw new System.NotImplementedException();
@@ -26,7 +26,7 @@ namespace JumpeeIsland
         {
             return m_CollectableData;
         }
-        
+
         public void DurationDeduct()
         {
             if (m_CurrentStat.IsLongLasting)
@@ -41,16 +41,25 @@ namespace JumpeeIsland
         {
             throw new System.NotImplementedException();
         }
-        
+
         public void Collect()
         {
             foreach (var command in m_CurrentStat.Commands)
             {
                 SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_CollectableData.Position);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
             }
-            
-            Debug.Log("Collect this entity");
+
+            if (m_CurrentStat.SpawnedEntityType == EntityType.NONE)
+                return;
+
+            switch (m_CurrentStat.SpawnedEntityType)
+            {
+                case EntityType.BUILDING:
+                    SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position,
+                        true);
+                    break;
+            }
         }
 
         public override FactionType GetFaction()
@@ -112,7 +121,7 @@ namespace JumpeeIsland
             m_CollectableData.CollectableType = m_CurrentStat.CollectableType;
             // var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_ResourceData.EntityName);
             // m_ResourceData.SkinAddress = inventoryItem.skinAddress[m_ResourceData.CurrentLevel];
-            
+
             // Retrieve entity data
             // m_SkinComp.Init(m_ResourceData.SkinAddress);
             m_CollectComp.Init(OnUnitDie);

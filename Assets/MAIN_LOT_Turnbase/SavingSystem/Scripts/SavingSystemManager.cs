@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 using UnityEngine.Events;
+using WebSocketSharp;
 
 namespace JumpeeIsland
 {
@@ -236,7 +237,7 @@ namespace JumpeeIsland
             };
             m_EnvLoader.SpawnResource(newResource);
         }
-        
+
         public void OnSpawnResource(string resourceName, Vector3 position)
         {
             var newResource = new ResourceData()
@@ -247,7 +248,7 @@ namespace JumpeeIsland
             };
             m_EnvLoader.SpawnResource(newResource);
         }
-        
+
         public void OnSpawnCollectable(string collectableName, Vector3 position, int level)
         {
             var collectableData = new CollectableData()
@@ -262,6 +263,26 @@ namespace JumpeeIsland
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)
         {
             if (await ConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
+
+            // ...and get the building in place
+            var newBuilding = new BuildingData
+            {
+                EntityName = inventoryItem.inventoryName,
+                Position = position,
+                CurrentLevel = 0
+            };
+            m_EnvLoader.PlaceABuilding(newBuilding);
+        }
+
+        public async void OnPlaceABuilding(string buildingName, Vector3 position, bool isFromCollectable)
+        {
+            var inventoryItem = GetInventoryItemByName(buildingName);
+            if (inventoryItem == null)
+                return;
+
+            if (isFromCollectable == false)
+                if (await ConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false)
+                    return;
 
             // ...and get the building in place
             var newBuilding = new BuildingData
@@ -342,7 +363,7 @@ namespace JumpeeIsland
             int storageSpace = m_EnvLoader.GetStorageSpace(rewardID);
             if (storageSpace < rewardAmount)
             {
-                Debug.Log("[TODO] Show something to announce \"Lack of storage\"");
+                Debug.Log($"[TODO] Show something to announce \"Lack of storage\", storageSpace of {rewardID} is {storageSpace}");
                 m_CurrencyLoader.IncrementCurrency(rewardID, storageSpace);
             }
             else
@@ -379,6 +400,7 @@ namespace JumpeeIsland
             m_InventoryLoader.SendInventoriesToCreatureMenu();
         }
 
+        // REFACTOR: Move any function related to this function to this script
         public JIInventoryItem GetInventoryItemByName(string entityName)
         {
             return m_CloudConnector.GetInventoryByNameOrId(entityName);
@@ -464,7 +486,7 @@ namespace JumpeeIsland
 
         public async void SaveCurrentTutorial(string tutorial)
         {
-            var currentProcess = new GameProcessData(){currentTutorial = tutorial};
+            var currentProcess = new GameProcessData() { currentTutorial = tutorial };
             await m_CloudConnector.OnSaveGameProcess(currentProcess);
         }
 
@@ -492,7 +514,7 @@ namespace JumpeeIsland
         {
             if (commandId.Equals("NONE"))
                 return;
-            
+
             var rewards = m_CloudConnector.GetRewardByCommandId(commandId);
             foreach (var reward in rewards)
             {

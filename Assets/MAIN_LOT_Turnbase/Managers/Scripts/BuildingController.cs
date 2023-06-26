@@ -93,10 +93,9 @@ namespace JumpeeIsland
         public int GetStorageSpace(string currencyId)
         {
             int storageSpace = 0;
-            Queue<BuildingEntity> selectedBuildings = new Queue<BuildingEntity>();
             if (Enum.TryParse(currencyId, out CurrencyType currency))
                 foreach (var t in m_buildings)
-                    storageSpace += t.GetStoreSpace(currency, ref selectedBuildings);
+                    storageSpace += t.GetStoreSpace(currency);
             return storageSpace;
         }
 

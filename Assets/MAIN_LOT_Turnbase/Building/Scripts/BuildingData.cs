@@ -5,6 +5,7 @@ namespace JumpeeIsland
     [System.Serializable]
     public class BuildingData: EntityData
     {
+        public BuildingType BuildingType;
         public int CurrentShield;
         public int CurrentExp;
         public int CurrentStorage;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
-  m_Name: Tutorial1
+  m_Name: Tutorial2
   m_EditorClassIdentifier: 
   conditions:
   - MapSize: 0
@@ -21,13 +21,13 @@ MonoBehaviour:
     Resource: 0
     ResourceAmount: 1
     CollectableType: 1
-    CollectableAmount: 1
+    CollectableAmount: 2
     BuildingType: 1
     BuildingAmount: 1
   steps:
-  - Pointer: 0
-    EntitySelection: 0
-    EntityType: 0
+  - Pointer: 1
+    EntitySelection: 1
+    EntityType: 5
     ResourceType: 0
     BuildingType: 0
     EnemyType: 0
@@ -37,12 +37,12 @@ MonoBehaviour:
     UIName: 
     CheckPosition: 0
     CheckEntity: 0
-    Spawner: 1
-    SpawnType: 5
+    Spawner: 0
+    SpawnType: 0
     IsDesignatedPos: 0
     DesignatedPos: {x: 0, y: 0, z: 0}
     SpawnResource: 
-    SpawnCollectable: Chest
+    SpawnCollectable: 
     SpawnCollectableLevel: 0
     CheckEndCondition: 1
     EndCondition:
@@ -53,10 +53,10 @@ MonoBehaviour:
       StorageAmount: 0
       Resource: 0
       ResourceAmount: 0
-      CollectableType: 0
-      CollectableAmount: 0
+      CollectableType: 1
+      CollectableAmount: 1
       BuildingType: 0
-      BuildingAmount: 0
+      BuildingAmount: 1
     Conversation: 0
     Message: 
-  nextTutorial: /Tutorials/Tutorial2
+  nextTutorial: 

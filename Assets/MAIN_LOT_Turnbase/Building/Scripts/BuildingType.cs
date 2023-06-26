@@ -2,8 +2,12 @@ namespace JumpeeIsland
 {
     public enum BuildingType
     {
-        None,
-        Factory,
-        Tower
+        NONE,
+        MAINHALL,
+        FOODSTORAGE,
+        WOODSTORAGE,
+        TOWNHOUSE,
+        TOWER,
+        TRAP
     }
 }

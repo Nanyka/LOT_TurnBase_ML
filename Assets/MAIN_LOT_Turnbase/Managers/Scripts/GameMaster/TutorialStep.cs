@@ -22,14 +22,16 @@ namespace JumpeeIsland
         [ShowIf("@Spawner == true")] public EntityType SpawnType;
         [ShowIf("@Spawner == true")] public bool IsDesignatedPos;
         [ShowIf("@Spawner == true && IsDesignatedPos == true")] public Vector3 DesignatedPos;
-        [HorizontalGroup("ResourceSpawn",VisibleIf = "@SpawnType == JumpeeIsland.EntityType.RESOURCE")]
-        [HorizontalGroup("ResourceSpawn/Col1")]
+        [VerticalGroup("ResourceSpawn",VisibleIf = "@SpawnType == JumpeeIsland.EntityType.RESOURCE")]
+        [VerticalGroup("ResourceSpawn/Row1")]
         public string SpawnResource;
-        [HorizontalGroup("CollectableSpawn",VisibleIf = "@SpawnType == JumpeeIsland.EntityType.COLLECTABLE")]
-        [HorizontalGroup("CollectableSpawn/Col1")]
+        [VerticalGroup("CollectableSpawn",VisibleIf = "@SpawnType == JumpeeIsland.EntityType.COLLECTABLE")]
+        [VerticalGroup("CollectableSpawn/Row1")]
         public string SpawnCollectable;
-        [HorizontalGroup("CollectableSpawn/Col2")]
+        [VerticalGroup("CollectableSpawn/Row2")]
         public int SpawnCollectableLevel;
+        public bool CheckEndCondition;
+        [ShowIf("@CheckEndCondition == true")] public GameMasterCondition EndCondition;
         public bool Conversation;
         [ShowIf("@Conversation == true")] public string Message;
     }
