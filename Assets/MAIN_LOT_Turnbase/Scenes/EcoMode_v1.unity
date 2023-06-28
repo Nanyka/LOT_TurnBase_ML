@@ -2424,7 +2424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1f87fec5463454b89dcf79f01108c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TestFirstTutorial: {fileID: 11400000, guid: 9757a9c8b00404242ad5ebd638ef0330, type: 2}
+  m_TestFirstTutorial: {fileID: 11400000, guid: 357429fb96a2845ad9ba5e0843d8c67a, type: 2}
   m_Pointer: {fileID: 958491002}
   _currentTutorial: {fileID: 0}
   _currentStepIndex: 0
@@ -3595,7 +3595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 721311393}
   m_Layer: 5
-  m_Name: InteractBuilding
+  m_Name: InteractBuildingMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5572,7 +5572,7 @@ GameObject:
   - component: {fileID: 1212381993}
   - component: {fileID: 1212381992}
   m_Layer: 5
-  m_Name: TrainCreature
+  m_Name: TrainCreatureMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5904,6 +5904,7 @@ MonoBehaviour:
   - tileAmount: 22
     score: 20
   _tilePool: {fileID: 1300729469}
+  _totalTile: 0
 --- !u!114 &1300729469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9999,7 +10000,7 @@ GameObject:
   - component: {fileID: 8513022912728840994}
   - component: {fileID: 8513022912728840997}
   m_Layer: 5
-  m_Name: BuyBuilding
+  m_Name: BuyBuildingMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10070,6 +10071,9 @@ MonoBehaviour:
   - {fileID: 582495416}
   - {fileID: 2072815050}
   - {fileID: 529751364}
+  - {fileID: 96144765}
+  - {fileID: 1769598560}
+  - {fileID: 87753702}
 --- !u!114 &8560029064445878723
 MonoBehaviour:
   m_ObjectHideFlags: 0

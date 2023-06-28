@@ -67,6 +67,9 @@ namespace JumpeeIsland
 
         public void StoreRewardToBuildings(string currencyId, int amount)
         {
+            if (currencyId.Equals("COIN") || currencyId.Equals("GOLD") || currencyId.Equals("GEM"))
+                return;
+            
             // Check if enough storage space
             int currentStorage = 0;
             Queue<BuildingEntity> selectedBuildings = new Queue<BuildingEntity>();

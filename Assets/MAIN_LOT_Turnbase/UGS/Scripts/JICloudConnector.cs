@@ -279,7 +279,7 @@ namespace JumpeeIsland
             return _commandBatchManager.GetCommandsForSaving();
         }
 
-        public async void SubmitCommands(CommandsCache commandCache)
+        public async Task SubmitCommands(CommandsCache commandCache)
         {
             await _commandBatchManager.SubmitListCommands(commandCache, _cloudCodeManager, _remoteConfigManager);
         }

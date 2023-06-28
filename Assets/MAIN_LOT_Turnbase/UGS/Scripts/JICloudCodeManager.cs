@@ -96,7 +96,6 @@ namespace JumpeeIsland
 
         public async Task CallProcessBatchEndpoint(string[] commands)
         {
-            // Debug.Log($"Number of commands at cloudCodeManager: {commands.Length}");
             if (commands is null || commands.Length <= 0)
                 return;
 
@@ -109,6 +108,7 @@ namespace JumpeeIsland
                     new Dictionary<string, object> { { "commands", commands } });
 
                 Debug.Log("Cloud Code successfully processed batch.");
+                SavingSystemManager.Instance.OnRefreshBalances.Invoke();
             }
             catch (CloudCodeException e)
             {

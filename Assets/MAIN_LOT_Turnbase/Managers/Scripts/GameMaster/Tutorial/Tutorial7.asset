@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
-  m_Name: Tutorial6
+  m_Name: Tutorial7
   m_EditorClassIdentifier: 
   conditions:
   - MapSize: 0
-    Currency: 0
+    Currency: 2
     CurrencyCompare: 0
-    CurrencyAmount: 1
+    CurrencyAmount: 4
     Storage: 0
     StorageCompare: 0
     StorageAmount: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
     Collectable: 0
     CollectableCompare: 2
     CollectableAmount: 1
-    Building: 1
+    Building: 0
     BuildingCompare: 2
     BuildingAmount: 1
     IsUICondition: 0
@@ -36,15 +36,15 @@ MonoBehaviour:
     ScoreAmount: 0
   steps:
   - Pointer: 1
-    EntitySelection: 1
-    EntityType: 2
+    EntitySelection: 0
+    EntityType: 0
     CurrencyFromResource: 0
-    BuildingType: 1
+    BuildingType: 0
     EnemyType: 0
     ArrowSign: 0
     MinJump: 0
-    ButtonSelection: 0
-    ButtonName: 
+    ButtonSelection: 1
+    ButtonName: BuyBuilding
     CheckPosition: 0
     CheckEntity: 0
     Spawner: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
       BuildingCompare: 2
       BuildingAmount: 1
       IsUICondition: 1
-      UIElement: InteractBuildingMenu
+      UIElement: BuyBuildingMenu
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 0
@@ -88,7 +88,7 @@ MonoBehaviour:
     ArrowSign: 0
     MinJump: 0
     ButtonSelection: 1
-    ButtonName: FastUpgrade
+    ButtonName: BuildingBuyButton
     CheckPosition: 0
     CheckEntity: 0
     Spawner: 0
@@ -113,58 +113,14 @@ MonoBehaviour:
       Collectable: 0
       CollectableCompare: 0
       CollectableAmount: 0
-      Building: 0
-      BuildingCompare: 0
-      BuildingAmount: 0
-      IsUICondition: 1
-      UIElement: InteractBuildingConfirm
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 10
-    Conversation: 0
-    Message: 
-  - Pointer: 1
-    EntitySelection: 0
-    EntityType: 0
-    CurrencyFromResource: 0
-    BuildingType: 0
-    EnemyType: 0
-    ArrowSign: 0
-    MinJump: 0
-    ButtonSelection: 1
-    ButtonName: InteractBuildingYes
-    CheckPosition: 0
-    CheckEntity: 0
-    Spawner: 0
-    SpawnType: 0
-    IsDesignatedPos: 0
-    DesignatedPos: {x: 0, y: 0, z: 0}
-    SpawnResource: 
-    SpawnCollectable: 
-    SpawnCollectableLevel: 0
-    CheckEndCondition: 1
-    EndCondition:
-      MapSize: 0
-      Currency: 0
-      CurrencyCompare: 0
-      CurrencyAmount: 0
-      Storage: 0
-      StorageCompare: 0
-      StorageAmount: 0
-      Resource: 0
-      ResourceCompare: 0
-      ResourceAmount: 0
-      Collectable: 0
-      CollectableCompare: 0
-      CollectableAmount: 0
-      Building: 0
+      Building: 3
       BuildingCompare: 0
       BuildingAmount: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 1
+      IsScoreCondition: 0
       ScoreCompare: 0
-      ScoreAmount: 9
+      ScoreAmount: 0
     Conversation: 0
     Message: 
   nextTutorial: 

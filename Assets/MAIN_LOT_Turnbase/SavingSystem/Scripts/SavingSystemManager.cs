@@ -32,6 +32,9 @@ namespace JumpeeIsland
 
         // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new();
+        
+        // invoke at JICloudCodeManager
+        [NonSerialized] public UnityEvent OnRefreshBalances = new();
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
@@ -55,6 +58,7 @@ namespace JumpeeIsland
 
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
+            OnRefreshBalances.AddListener(RefreshBalances);
             GameFlowManager.Instance.OnLoadData.AddListener(StartUpLoadData);
         }
 
@@ -86,6 +90,9 @@ namespace JumpeeIsland
             // mark as starting point of loading phase.
             // If this process is not complete, the environment will not be save at OnDisable()
             SetInLoadingState(true);
+            
+            // Load command must be placed before LoadEnvironment to ensure storages are in proper states
+            LoadCommands();
 
             // Load environment and calculate any time-based resource increment
             await LoadEnvironment();
@@ -94,8 +101,6 @@ namespace JumpeeIsland
             // Load currency after commit MOVE created during skip period
             await LoadCurrencies();
             m_CurrencyLoader.Init();
-
-            await LoadCommands();
 
             // Load game process to refresh current tutorial
             await LoadGameProcess();
@@ -356,6 +361,11 @@ namespace JumpeeIsland
             m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
             m_CloudConnector.OnLoadVirtualPurchase();
         }
+        
+        private async void RefreshBalances()
+        {
+            m_CurrencyLoader.SetData(await m_CloudConnector.OnLoadCurrency());
+        }
 
         public void IncrementLocalCurrency(string rewardID, int rewardAmount)
         {
@@ -437,7 +447,7 @@ namespace JumpeeIsland
 
         #region COMMAND
 
-        private async void StackUpCommand(CommandName commandName)
+        private void StackUpCommand(CommandName commandName)
         {
             m_CloudConnector.OnCommandStackUp(commandName);
             // await m_CloudConnector.OnSaveEnvData(); // TODO change logic of env saving
@@ -457,13 +467,13 @@ namespace JumpeeIsland
             }
         }
 
-        private async Task LoadCommands()
+        private void LoadCommands()
         {
             var commandPath = GetSavingPath(SavingPath.Commands);
             SaveManager.Instance.Load<CommandsCache>(commandPath, CommandWasLoaded, encrypt);
         }
 
-        private void CommandWasLoaded(CommandsCache commands, SaveResult result, string message)
+        private async void CommandWasLoaded(CommandsCache commands, SaveResult result, string message)
         {
             if (result == SaveResult.EmptyData || result == SaveResult.Error)
                 Debug.LogError("No Command data File Found -> Creating new data...");
@@ -476,7 +486,7 @@ namespace JumpeeIsland
                 // Just load command when the game disconnect in the latest session
                 if (commands.commandList.Count > 0)
                 {
-                    m_CloudConnector.SubmitCommands(commands);
+                    await m_CloudConnector.SubmitCommands(commands);
                 }
             }
         }

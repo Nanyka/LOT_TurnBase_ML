@@ -31,20 +31,20 @@ namespace JumpeeIsland
             {
                 var commandKeys = ConvertCommandNameToCommandKeys(commandCache.commandList);
                 
-                // Update local UI
-                foreach (var command in commandKeys)
-                {
-                    var rewards = remoteConfigManager.commandRewards[command];
-                    foreach (var reward in rewards)
-                    {
-                        switch (reward.service)
-                        {
-                            case "currency":
-                                SavingSystemManager.Instance.IncrementLocalCurrency(reward.id, reward.amount);
-                                break;
-                        }
-                    }
-                }
+                // Update local UI. After change to submit at the beginning of the game, we must not double update UI
+                // foreach (var command in commandKeys)
+                // {
+                //     var rewards = remoteConfigManager.commandRewards[command];
+                //     foreach (var reward in rewards)
+                //     {
+                //         switch (reward.service)
+                //         {
+                //             case "currency":
+                //                 SavingSystemManager.Instance.IncrementLocalCurrency(reward.id, reward.amount);
+                //                 break;
+                //         }
+                //     }
+                // }
                 
                 // Contribute the previous session changes to cloud
                 await CallCloudCodeEndpoint(commandKeys, cloudCodeManager);
