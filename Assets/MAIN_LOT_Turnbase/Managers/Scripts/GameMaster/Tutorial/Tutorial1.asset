@@ -15,20 +15,25 @@ MonoBehaviour:
   conditions:
   - MapSize: 0
     Currency: 0
+    CurrencyCompare: 0
     CurrencyAmount: 1
     Storage: 0
+    StorageCompare: 0
     StorageAmount: 0
     Resource: 0
+    ResourceCompare: 0
     ResourceAmount: 1
-    CollectableType: 1
+    Collectable: 0
+    CollectableCompare: 0
     CollectableAmount: 1
-    BuildingType: 1
+    Building: 0
+    BuildingCompare: 0
     BuildingAmount: 1
   steps:
   - Pointer: 0
     EntitySelection: 0
     EntityType: 0
-    ResourceType: 0
+    CurrencyFromResource: 0
     BuildingType: 0
     EnemyType: 0
     ArrowSign: 0
@@ -42,20 +47,25 @@ MonoBehaviour:
     IsDesignatedPos: 0
     DesignatedPos: {x: 0, y: 0, z: 0}
     SpawnResource: 
-    SpawnCollectable: Chest
+    SpawnCollectable: Startup1_Chest
     SpawnCollectableLevel: 0
     CheckEndCondition: 1
     EndCondition:
       MapSize: 0
       Currency: 0
+      CurrencyCompare: 0
       CurrencyAmount: 0
       Storage: 0
+      StorageCompare: 0
       StorageAmount: 0
       Resource: 0
+      ResourceCompare: 0
       ResourceAmount: 0
-      CollectableType: 0
+      Collectable: 0
+      CollectableCompare: 0
       CollectableAmount: 0
-      BuildingType: 0
+      Building: 0
+      BuildingCompare: 0
       BuildingAmount: 0
     Conversation: 0
     Message: 

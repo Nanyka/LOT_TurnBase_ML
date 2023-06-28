@@ -70,6 +70,8 @@ namespace JumpeeIsland
                 m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
                 m_CreatureData.CurrentDamage = m_CurrentStats.Strengh;
                 m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
+                
+                SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
             }
         }
 

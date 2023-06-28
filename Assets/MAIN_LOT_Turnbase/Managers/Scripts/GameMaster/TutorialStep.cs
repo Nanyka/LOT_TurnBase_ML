@@ -9,13 +9,13 @@ namespace JumpeeIsland
         public bool Pointer;
         [ShowIf("@Pointer == true")] public bool EntitySelection;
         [ShowIf("@EntitySelection == true")] public EntityType EntityType;
-        [ShowIf("EntityType", EntityType.RESOURCE)] public ResourceType ResourceType;
+        [ShowIf("EntityType", EntityType.RESOURCE)] public CurrencyType CurrencyFromResource;
         [ShowIf("EntityType", EntityType.BUILDING)] public BuildingType BuildingType;
         [ShowIf("EntityType", EntityType.ENEMY)] public CreatureType EnemyType;
         [ShowIf("EntityType", EntityType.PLAYER)] public bool ArrowSign;
         [ShowIf("@EntitySelection == true && ArrowSign == true")] public int MinJump;
-        [ShowIf("@EntitySelection == false && Pointer == true")] public bool UISelection;
-        [ShowIf("@UISelection == true")] public string UIName;
+        [ShowIf("@EntitySelection == false && Pointer == true")] public bool ButtonSelection;
+        [ShowIf("@ButtonSelection == true")] public string ButtonName;
         [ShowIf("@EntitySelection == true")] public bool CheckPosition;
         [ShowIf("@EntitySelection == true && ArrowSign == false && CheckPosition == false")] public bool CheckEntity;
         public bool Spawner;

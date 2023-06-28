@@ -6,6 +6,7 @@ namespace JumpeeIsland
     public class CollectableEntity : Entity
     {
         [SerializeField] private CollectableStats[] m_CollectableStats;
+        [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private CollectComp m_CollectComp;
 
         private CollectableData m_CollectableData;
@@ -119,11 +120,10 @@ namespace JumpeeIsland
 
             // Initiate entity data if it's new
             m_CollectableData.CollectableType = m_CurrentStat.CollectableType;
-            // var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_ResourceData.EntityName);
-            // m_ResourceData.SkinAddress = inventoryItem.skinAddress[m_ResourceData.CurrentLevel];
+            m_CollectableData.SkinAddress = m_CurrentStat.SkinAddress;
 
             // Retrieve entity data
-            // m_SkinComp.Init(m_ResourceData.SkinAddress);
+            m_SkinComp.Init(m_CollectableData.SkinAddress);
             m_CollectComp.Init(OnUnitDie);
             OnUnitDie.AddListener(DieIndividualProcess);
         }

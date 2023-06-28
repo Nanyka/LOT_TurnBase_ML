@@ -71,5 +71,10 @@ namespace JumpeeIsland
         {
             SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition);
         }
+
+        public Entity GetEntity()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace JumpeeIsland
         public bool IsLongLasting;
         [ShowIf("@IsLongLasting == false")] public int MaxTurnToDestroy;
         public CollectableType CollectableType;
+        public string SkinAddress;
         
         [Header("Currency rewards")]
         public List<CommandName> Commands;

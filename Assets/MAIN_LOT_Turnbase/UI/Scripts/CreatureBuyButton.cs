@@ -68,5 +68,10 @@ namespace JumpeeIsland
         {
             SavingSystemManager.Instance.OnTrainACreature(m_CreatureItem,_spawnPosition, true);
         }
+
+        public Entity GetEntity()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

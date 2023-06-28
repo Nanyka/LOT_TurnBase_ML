@@ -46,7 +46,12 @@ namespace JumpeeIsland
 
         public void ClickYes()
         {
-            DestroyBuilding(this.m_Entity);
+            DestroyBuilding(m_Entity);
+        }
+
+        public Entity GetEntity()
+        {
+            return m_Entity;
         }
 
         private void DestroyBuilding(Entity killedByEntity)

@@ -34,7 +34,7 @@ namespace JumpeeIsland
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (MainUI.Instance.IsInteractable == false)
+                if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
                     return;
                 
                 var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
@@ -62,7 +62,7 @@ namespace JumpeeIsland
         private void HighlightSelectedUnit(BuildingInGame getUnitAtPos)
         {
             MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
-            MainUI.Instance.OnSellBuildingMenu.Invoke(getUnitAtPos);
+            MainUI.Instance.OnInteractBuildingMenu.Invoke(getUnitAtPos);
         }
 
         public void StoreRewardToBuildings(string currencyId, int amount)

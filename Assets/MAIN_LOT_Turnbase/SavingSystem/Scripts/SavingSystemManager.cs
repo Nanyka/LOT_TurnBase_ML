@@ -21,7 +21,10 @@ namespace JumpeeIsland
     [RequireComponent(typeof(CurrencyLoader))]
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
-        // invoke at CreatureEntity
+        // invoke at CreatureEntity, BuildingEntity, Creature
+        [NonSerialized] public UnityEvent OnCheckExpandMap = new();
+        
+        // invoke at TileManager
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
 
         // invoke at EnvironmentManager
@@ -178,14 +181,14 @@ namespace JumpeeIsland
 
         private async Task LoadEnvironment()
         {
-            var cloudEnvData = await m_CloudConnector.OnLoadEnvData();
-            if (cloudEnvData == null || cloudEnvData.mapSize == 0)
-            {
-                Debug.Log("No cloudEnvDat was found.");
-                _gameStateData.IsDisconnectedLastSession = true;
-            }
-            else
-                m_EnvLoader.SetData(cloudEnvData);
+            // var cloudEnvData = await m_CloudConnector.OnLoadEnvData();
+            // if (cloudEnvData == null || cloudEnvData.mapSize == 0)
+            // {
+            //     Debug.Log("No cloudEnvDat was found.");
+            //     _gameStateData.IsDisconnectedLastSession = true;
+            // }
+            // else
+            //     m_EnvLoader.SetData(cloudEnvData);
 
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
             SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
@@ -203,10 +206,11 @@ namespace JumpeeIsland
 
             if (result == SaveResult.Success)
             {
-                if (!_gameStateData.IsDisconnectedLastSession) return;
-                Debug.Log("Restore command after a disconnected session");
+                // if (!_gameStateData.IsDisconnectedLastSession) return;
+                // Debug.Log("Restore command after a disconnected session");
                 data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
                 m_EnvLoader.SetData(data);
+                await m_CloudConnector.OnSaveEnvData(); // Update cloud data
             }
         }
 
@@ -223,30 +227,25 @@ namespace JumpeeIsland
             }
         }
 
-        public void OnSpawnResource(InventoryType inventoryType, Vector3 position)
+        public void OnSpawnResource(string resourceId, Vector3 position)
         {
-            var inventoryItem = m_InventoryLoader.GetInventoriesByType(inventoryType);
-            if (inventoryItem == null)
+            var inventoryItems = m_InventoryLoader.GetInventoriesByType(InventoryType.Resource);
+            if (inventoryItems == null)
                 return;
 
-            var newResource = new ResourceData()
+            foreach (var item in inventoryItems)
             {
-                EntityName = inventoryItem.inventoryName,
-                Position = position,
-                CurrentLevel = 0
-            };
-            m_EnvLoader.SpawnResource(newResource);
-        }
-
-        public void OnSpawnResource(string resourceName, Vector3 position)
-        {
-            var newResource = new ResourceData()
-            {
-                EntityName = resourceName,
-                Position = position,
-                CurrentLevel = 0
-            };
-            m_EnvLoader.SpawnResource(newResource);
+                if (item.inventoryName.Equals(resourceId))
+                {
+                    var newResource = new ResourceData()
+                    {
+                        EntityName = item.inventoryName,
+                        Position = position,
+                        CurrentLevel = 0
+                    };
+                    m_EnvLoader.SpawnResource(newResource);
+                }
+            }
         }
 
         public void OnSpawnCollectable(string collectableName, Vector3 position, int level)
@@ -360,10 +359,18 @@ namespace JumpeeIsland
 
         public void IncrementLocalCurrency(string rewardID, int rewardAmount)
         {
+            if (rewardID.Equals(CurrencyType.GEM.ToString()) || rewardID.Equals(CurrencyType.COIN.ToString()) ||
+                rewardID.Equals(CurrencyType.GOLD.ToString()))
+            {
+                m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
+                return;
+            }
+
             int storageSpace = m_EnvLoader.GetStorageSpace(rewardID);
             if (storageSpace < rewardAmount)
             {
-                Debug.Log($"[TODO] Show something to announce \"Lack of storage\", storageSpace of {rewardID} is {storageSpace}");
+                Debug.Log(
+                    $"[TODO] Show something to announce \"Lack of storage\", storageSpace of {rewardID} is {storageSpace}");
                 m_CurrencyLoader.IncrementCurrency(rewardID, storageSpace);
             }
             else
@@ -375,6 +382,11 @@ namespace JumpeeIsland
             return m_CurrencyLoader.GetCurrencies();
         }
 
+        public int GetCurrencyById(string currencyId)
+        {
+            return (int)m_CurrencyLoader.GetCurrency(currencyId);
+        }
+
         public bool CheckEnoughCurrency(string currencyId, int currencyAmount)
         {
             return m_CurrencyLoader.CheckEnoughCurrency(currencyId, currencyAmount);
@@ -384,6 +396,12 @@ namespace JumpeeIsland
         {
             m_CloudConnector.OnGrantCurrency(currencyId, amount);
             m_CurrencyLoader.IncrementCurrency(currencyId, amount);
+        }
+
+        public void DeductCurrency(string currencyId, int amount)
+        {
+            m_CloudConnector.DeductCurrency(currencyId, amount);
+            m_CurrencyLoader.DeductCurrency(currencyId, amount);
         }
 
         #endregion
@@ -422,7 +440,7 @@ namespace JumpeeIsland
         private async void StackUpCommand(CommandName commandName)
         {
             m_CloudConnector.OnCommandStackUp(commandName);
-            await m_CloudConnector.OnSaveEnvData();
+            // await m_CloudConnector.OnSaveEnvData(); // TODO change logic of env saving
         }
 
         private void SaveCommandBatch(CommandsCache commandsCache)
@@ -470,6 +488,11 @@ namespace JumpeeIsland
         public async Task<EnvironmentData> GetEnemyEnv()
         {
             return await m_CloudConnector.GetEnemyEnvironment();
+        }
+
+        public int CalculateEnvScore()
+        {
+            return m_EnvLoader.GetData().CalculateScore();
         }
 
         #endregion

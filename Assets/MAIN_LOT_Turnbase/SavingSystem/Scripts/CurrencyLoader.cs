@@ -17,7 +17,7 @@ namespace JumpeeIsland
             Debug.Log("Load currencies...");
         }
 
-        private long GetCurrency(string currencyId)
+        public long GetCurrency(string currencyId)
         {
             return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance;
         }
@@ -42,6 +42,12 @@ namespace JumpeeIsland
         public void IncrementCurrency(string currencyId, int currencyAmount)
         {
             m_Currencies.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
+        }
+        
+        public void DeductCurrency(string currencyId, int currencyAmount)
+        {
+            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance -= currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
         

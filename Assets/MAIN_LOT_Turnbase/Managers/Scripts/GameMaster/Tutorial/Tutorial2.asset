@@ -15,20 +15,25 @@ MonoBehaviour:
   conditions:
   - MapSize: 0
     Currency: 0
+    CurrencyCompare: 0
     CurrencyAmount: 1
     Storage: 0
+    StorageCompare: 0
     StorageAmount: 0
     Resource: 0
+    ResourceCompare: 0
     ResourceAmount: 1
-    CollectableType: 1
+    Collectable: 0
+    CollectableCompare: 0
     CollectableAmount: 2
-    BuildingType: 1
+    Building: 0
+    BuildingCompare: 0
     BuildingAmount: 1
   steps:
   - Pointer: 1
     EntitySelection: 1
     EntityType: 5
-    ResourceType: 0
+    CurrencyFromResource: 0
     BuildingType: 0
     EnemyType: 0
     ArrowSign: 0
@@ -48,15 +53,20 @@ MonoBehaviour:
     EndCondition:
       MapSize: 0
       Currency: 0
+      CurrencyCompare: 0
       CurrencyAmount: 0
       Storage: 0
+      StorageCompare: 0
       StorageAmount: 0
       Resource: 0
+      ResourceCompare: 0
       ResourceAmount: 0
-      CollectableType: 1
+      Collectable: 0
+      CollectableCompare: 0
       CollectableAmount: 1
-      BuildingType: 0
+      Building: 1
+      BuildingCompare: 2
       BuildingAmount: 1
     Conversation: 0
     Message: 
-  nextTutorial: 
+  nextTutorial: /Tutorials/Tutorial3

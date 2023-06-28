@@ -4,45 +4,60 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
+    public enum CompareType
+    {
+        Higher,
+        Lower,
+        Equal
+    }
+    
     [System.Serializable]
     public class GameMasterCondition
     {
         [Tooltip("True if map size equal or larger than this amount")]
         public int MapSize;
 
-        [Tooltip("True if current balance lower than this amount")]
         public CurrencyType Currency;
 
-        [HideIf("Currency", CurrencyType.NONE)]
-        public int CurrencyAmount;
+        [VerticalGroup("Currency",VisibleIf = "@Currency != JumpeeIsland.CurrencyType.NONE")]
+        [VerticalGroup("Currency/Row2")] public CompareType CurrencyCompare;
+        [VerticalGroup("Currency/Row1")] public int CurrencyAmount;
 
-        [Tooltip("True if current storage larger than this amount")]
         public CurrencyType Storage;
 
-        [HideIf("Storage", CurrencyType.NONE)] public int StorageAmount;
+        [VerticalGroup("Storage",VisibleIf = "@Storage != JumpeeIsland.CurrencyType.NONE")]
+        [VerticalGroup("Storage/Row2")] public CompareType StorageCompare;
+        [VerticalGroup("Storage/Row1")] public int StorageAmount;
 
-        [Tooltip("True if current resource lower than this amount")]
         public CurrencyType Resource;
 
-        [HideIf("Resource", CurrencyType.NONE)]
-        public int ResourceAmount;
+        [VerticalGroup("Resource",VisibleIf = "@Resource != JumpeeIsland.CurrencyType.NONE")]
+        [VerticalGroup("Resource/Row2")] public CompareType ResourceCompare;
+        [VerticalGroup("Resource/Row1")] public int ResourceAmount;
 
-        [FormerlySerializedAs("Collectable")] [Tooltip("True if current collectable lower than this amount")]
-        public CollectableType CollectableType;
+        public CollectableType Collectable;
 
-        [HideIf("CollectableType", CollectableType.NONE)]
-        public int CollectableAmount;
+        [VerticalGroup("CollectableType",VisibleIf = "@Collectable != JumpeeIsland.CollectableType.NONE")]
+        [VerticalGroup("CollectableType/Row2")] public CompareType CollectableCompare;
+        [VerticalGroup("CollectableType/Row1")] public int CollectableAmount;
 
-        [Tooltip("True if a specific building is lower than this amount")]
-        public BuildingType BuildingType;
+        public BuildingType Building;
 
-        [HideIf("BuildingType", BuildingType.NONE)]
-        public int BuildingAmount;
+        [VerticalGroup("Building",VisibleIf = "@Building != JumpeeIsland.BuildingType.NONE")]
+        [VerticalGroup("Building/Row2")] public CompareType BuildingCompare;
+        [VerticalGroup("Building/Row1")] public int BuildingAmount;
+
+        public bool IsUICondition;
+        [ShowIf("@IsUICondition == true")] public string UIElement;
+        
+        public bool IsScoreCondition;
+        [VerticalGroup("Score",VisibleIf = "@IsScoreCondition == true")]
+        [VerticalGroup("Score/Row2")] public CompareType ScoreCompare;
+        [VerticalGroup("Score/Row1")] public int ScoreAmount;
 
         public bool PassCondition()
         {
-            return CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
-                   CheckBuildingType();
+            return CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() && CheckBuildingType() && CheckUICondition() && CheckScore();
         }
 
         private bool CheckMapSize()
@@ -55,7 +70,19 @@ namespace JumpeeIsland
             if (Currency == CurrencyType.NONE)
                 return true;
 
-            return !SavingSystemManager.Instance.CheckEnoughCurrency(Currency.ToString(), CurrencyAmount);
+            var checkAmount = SavingSystemManager.Instance.GetCurrencyById(Currency.ToString());
+
+            switch (CurrencyCompare)
+            {
+                case CompareType.Higher:
+                    return checkAmount > CurrencyAmount;
+                case CompareType.Lower:
+                    return checkAmount < CurrencyAmount;
+                case CompareType.Equal:
+                    return checkAmount == CurrencyAmount;
+            }
+
+            return true;
         }
 
         private bool CheckStorageSpace()
@@ -68,7 +95,18 @@ namespace JumpeeIsland
             foreach (var building in buildings)
                 if (building.StorageCurrency == Storage || building.StorageCurrency == CurrencyType.MULTI)
                     totalStorage += building.StorageCapacity - building.CurrentStorage;
-            return totalStorage >= StorageAmount;
+            
+            switch (StorageCompare)
+            {
+                case CompareType.Higher:
+                    return totalStorage > StorageAmount;
+                case CompareType.Lower:
+                    return totalStorage < StorageAmount;
+                case CompareType.Equal:
+                    return totalStorage == StorageAmount;
+            }
+
+            return true;
         }
 
         private bool CheckResource()
@@ -81,12 +119,23 @@ namespace JumpeeIsland
             foreach (var resource in resources)
                 if (resource.CollectedCurrency == Resource)
                     totalAmount++;
-            return totalAmount < ResourceAmount;
+            
+            switch (ResourceCompare)
+            {
+                case CompareType.Higher:
+                    return totalAmount > ResourceAmount;
+                case CompareType.Lower:
+                    return totalAmount < ResourceAmount;
+                case CompareType.Equal:
+                    return totalAmount == ResourceAmount;
+            }
+
+            return true;
         }
 
         private bool CheckCollectable()
         {
-            if (CollectableType == CollectableType.NONE)
+            if (Collectable == CollectableType.NONE)
                 return true;
 
             var collectables = SavingSystemManager.Instance.GetEnvironmentData().CollectableData;
@@ -95,24 +144,72 @@ namespace JumpeeIsland
             
             int totalAmount = 0;
             foreach (var collectable in collectables)
-                if (collectable.CollectableType == CollectableType)
+                if (collectable.CollectableType == Collectable)
                     totalAmount++;
 
-            return totalAmount < CollectableAmount;
+            switch (CollectableCompare)
+            {
+                case CompareType.Higher:
+                    return totalAmount > CollectableAmount;
+                case CompareType.Lower:
+                    return totalAmount < CollectableAmount;
+                case CompareType.Equal:
+                    return totalAmount == CollectableAmount;
+            }
+
+            return true;
         }
 
         private bool CheckBuildingType()
         {
-            if (BuildingType == BuildingType.NONE)
+            if (Building == BuildingType.NONE)
                 return true;
 
             var buildings = SavingSystemManager.Instance.GetEnvironmentData().BuildingData;
             int totalAmount = 0;
             foreach (var building in buildings)
-                if (building.BuildingType == BuildingType)
+                if (building.BuildingType == Building)
                     totalAmount++;
 
-            return totalAmount < BuildingAmount;
+            switch (BuildingCompare)
+            {
+                case CompareType.Higher:
+                    return totalAmount > BuildingAmount;
+                case CompareType.Lower:
+                    return totalAmount < BuildingAmount;
+                case CompareType.Equal:
+                    return totalAmount == BuildingAmount;
+            }
+
+            return true;
+        }
+
+        private bool CheckUICondition()
+        {
+            if (IsUICondition == false)
+                return true;
+
+            return MainUI.Instance.CheckUIActive(UIElement);
+        }
+
+        private bool CheckScore()
+        {
+            if (IsScoreCondition == false)
+                return true;
+
+            var totalScore = SavingSystemManager.Instance.CalculateEnvScore();
+            Debug.Log($"Check current score: {totalScore}");
+            switch (BuildingCompare)
+            {
+                case CompareType.Higher:
+                    return totalScore > ScoreAmount;
+                case CompareType.Lower:
+                    return totalScore < ScoreAmount;
+                case CompareType.Equal:
+                    return totalScore == ScoreAmount;
+            }
+
+            return true;
         }
     }
 }

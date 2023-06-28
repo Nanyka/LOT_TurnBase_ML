@@ -92,6 +92,18 @@ namespace JumpeeIsland
             await GrantCurrency(currencyId, 5);
         }
 
+        public async Task DeductCurrency(string currencyId, int amount)
+        {
+            try
+            {
+                await EconomyService.Instance.PlayerBalances.DecrementBalanceAsync(currencyId, amount);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
         #endregion
 
         #region INVENTORY

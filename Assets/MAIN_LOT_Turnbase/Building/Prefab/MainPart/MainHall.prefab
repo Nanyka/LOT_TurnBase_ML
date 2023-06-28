@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Transform: {fileID: 7765034802513230632}
   m_BuildingStats:
   - {fileID: 11400000, guid: 49144cb29101c4cb1ba8e940d1c289aa, type: 2}
+  - {fileID: 11400000, guid: 5da5145d4542c43ebb429303e19b6609, type: 2}
+  - {fileID: 11400000, guid: ad9ee6f4c55f848f4a5abb92d634f7c4, type: 2}
   m_SkinComp: {fileID: 3013237499186709174}
   m_HealthComp: {fileID: 6329133142135403996}
   m_AttackComp: {fileID: 4171252776145318713}
@@ -275,7 +277,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5957344659563022638}
-  m_Layer: 0
+  - component: {fileID: 5004432621405076669}
+  m_Layer: 3
   m_Name: RotatePart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,6 +302,27 @@ Transform:
   m_Father: {fileID: 7765034802513230632}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5004432621405076669
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018597092821664203}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8, y: 0.8, z: 0.8}
+  m_Center: {x: 0, y: 0.4, z: 0}
 --- !u!1001 &1283627800578090436
 PrefabInstance:
   m_ObjectHideFlags: 0

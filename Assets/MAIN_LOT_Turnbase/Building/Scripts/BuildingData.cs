@@ -6,6 +6,7 @@ namespace JumpeeIsland
     public class BuildingData: EntityData
     {
         public BuildingType BuildingType;
+        public int CurrentDamage;
         public int CurrentShield;
         public int CurrentExp;
         public int CurrentStorage;

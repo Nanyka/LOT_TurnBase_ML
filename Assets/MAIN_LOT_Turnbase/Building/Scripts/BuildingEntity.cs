@@ -61,18 +61,19 @@ namespace JumpeeIsland
             {
                 // Level up
                 m_BuildingData.CurrentLevel++;
+                m_BuildingData.CurrentStorage = 0;
+                m_BuildingData.CurrentExp = 0;
+                m_BuildingData.TurnCount = 0;
 
                 // Reset stats and appearance
-                m_CurrentStats = m_BuildingStats[m_BuildingData.CurrentLevel];
-                var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
-                m_BuildingData.SkinAddress = inventoryItem.skinAddress[m_BuildingData.CurrentLevel];
-                m_SkinComp.Init(m_BuildingData.SkinAddress);
+                ResetEntity();
+                SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
             }
         }
 
         public int GetStorageSpace(CurrencyType currencyType, ref Queue<BuildingEntity> selectedBuildings)
         {
-            if (currencyType == m_CurrentStats.StoreCurrency || currencyType == CurrencyType.MULTI)
+            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
             {
                 selectedBuildings.Enqueue(this);
                 return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
@@ -85,7 +86,7 @@ namespace JumpeeIsland
         {
             if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
                 return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
-            
+
             return 0;
         }
 
@@ -99,6 +100,11 @@ namespace JumpeeIsland
         public int CalculateSellingPrice()
         {
             return m_CurrentStats.Level * m_BuildingData.TurnCount;
+        }
+
+        public int CalculateUpgradePrice()
+        {
+            return m_CurrentStats.ExpToUpdate - m_BuildingData.CurrentExp;
         }
 
         public void DurationDeduct()
@@ -166,6 +172,16 @@ namespace JumpeeIsland
 
         public override void RefreshEntity()
         {
+            ResetEntity();
+
+            // Load data to entity
+            m_SkinComp.Init(m_BuildingData.SkinAddress);
+            m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
+            OnUnitDie.AddListener(DieIndividualProcess);
+        }
+
+        private void ResetEntity()
+        {
             // Set entity stats
             m_CurrentStats = m_BuildingStats[m_BuildingData.CurrentLevel];
 
@@ -173,23 +189,18 @@ namespace JumpeeIsland
             m_BuildingData.BuildingType = m_CurrentStats.BuildingType;
             m_BuildingData.StorageCurrency = m_CurrentStats.StoreCurrency;
             m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
-            m_BuildingData.StorageCurrency = m_BuildingData.StorageCurrency;
+            m_BuildingData.CurrentDamage = m_CurrentStats.AttackDamage;
+            m_BuildingData.CurrentShield = m_CurrentStats.Shield;
 
             // Set initiate data if it's new
-
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
-            m_BuildingData.SkinAddress = inventoryItem.skinAddress[m_BuildingData.CurrentLevel];
+            m_BuildingData.SkinAddress = inventoryItem.skinAddress.Count > m_BuildingData.CurrentLevel
+                ? inventoryItem.skinAddress[m_BuildingData.CurrentLevel]
+                : inventoryItem.skinAddress[0];
             if (m_BuildingData.CurrentHp == 0)
             {
                 m_BuildingData.CurrentHp = m_CurrentStats.MaxHp;
-                m_BuildingData.StorageCurrency = m_CurrentStats.StoreCurrency;
-                m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
             }
-
-            // Load data to entity
-            m_SkinComp.Init(m_BuildingData.SkinAddress);
-            m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
-            OnUnitDie.AddListener(DieIndividualProcess);
         }
     }
 }

@@ -40,6 +40,8 @@ namespace JumpeeIsland
             EnemyData.Add(data);
         }
 
+        #region BATTLE MODE
+
         public void PrepareForBattleMode(List<CreatureData> playerData)
         {
             foreach (var building in BuildingData)
@@ -77,7 +79,7 @@ namespace JumpeeIsland
                     data.CurrentHp = 0;
                     continue;
                 }
-                
+
                 if (data.EntityName.Equals(playerData[checkingIndex].EntityName))
                 {
                     data.CurrentHp = playerData[checkingIndex].CurrentHp;
@@ -90,5 +92,25 @@ namespace JumpeeIsland
 
             PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
         }
+
+        #endregion
+
+        #region SCORE
+
+        public int CalculateScore()
+        {
+            int totalScore = 0;
+            foreach (var building in BuildingData)
+                totalScore += (building.CurrentHp + building.CurrentDamage + building.CurrentShield) *
+                              (1 + building.CurrentLevel);
+
+            foreach (var creature in PlayerData)
+                totalScore += (creature.CurrentHp + creature.CurrentDamage + creature.CurrentShield) *
+                              (1 + creature.CurrentLevel);
+
+            return totalScore;
+        }
+
+        #endregion
     }
 }

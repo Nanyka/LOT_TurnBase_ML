@@ -26,9 +26,9 @@ namespace JumpeeIsland
             MainUI.Instance.OnShowCreatureMenu.Invoke(m_Inventories);
         }
         
-        public JIInventoryItem GetInventoriesByType(InventoryType inventoryType)
+        public IEnumerable<JIInventoryItem> GetInventoriesByType(InventoryType inventoryType)
         {
-            return m_Inventories.Find(t => t.inventoryType == inventoryType);
+            return m_Inventories.FindAll(t => t.inventoryType == inventoryType);
         }
     }
 
@@ -37,7 +37,7 @@ namespace JumpeeIsland
         public string inventoryName;
         public InventoryType inventoryType; // To decide which category this inventory item is
         public string spriteAddress;
-        public string virtualPurchaseId; // How much does it cost to place this item in game
+        public string virtualPurchaseId; // How much does it cost to place this item in the game
         public List<string> skinAddress;
     }
 
@@ -46,6 +46,7 @@ namespace JumpeeIsland
         None,
         Building,
         Creature,
-        Resource
+        Resource,
+        Drug
     }
 }

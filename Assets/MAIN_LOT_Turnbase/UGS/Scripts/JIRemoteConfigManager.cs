@@ -35,6 +35,41 @@ namespace JumpeeIsland
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_SPEND_MOVE.ToString());
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_WOOD_1_0.ToString());
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_FOOD_1_0.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_FOOD_1.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_FOOD_5.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_FOOD_20.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_FOOD_50.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_FOOD_100.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_FOOD_200.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_FOOD_500.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_WOOD_1.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_WOOD_5.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_WOOD_20.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_WOOD_50.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_WOOD_100.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_WOOD_200.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_WOOD_500.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_COIN_1.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_COIN_5.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_COIN_20.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_COIN_50.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_COIN_100.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_COIN_200.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_COIN_500.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GOLD_1.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GOLD_5.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GOLD_20.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GOLD_50.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GOLD_100.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GOLD_200.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GOLD_500.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GEM_1.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GEM_5.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GEM_20.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GEM_50.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GEM_100.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GEM_200.ToString());
+            GetAppConfigCommandRewardsAndProcess(CommandName.JI_GEM_500.ToString());
         }
 
         void GetAppConfigCommandRewardsAndProcess(string commandKey)
