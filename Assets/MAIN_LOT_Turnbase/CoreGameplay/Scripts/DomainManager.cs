@@ -9,8 +9,8 @@ namespace JumpeeIsland
     public class DomainManager : MonoBehaviour
     {
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
-
         private List<Vector3> _tileAreas = new();
+        private List<Vector3> _potentialPos = new List<Vector3>(4);
 
         #region INIT SET UP
 
@@ -19,29 +19,46 @@ namespace JumpeeIsland
             _tileAreas.Add(tilePos);
         }
 
-        public Vector3 GetAvailableTile()
+        // Get tile that allow player take jump
+        public Vector3 GetPotentialTile()
         {
             Shuffle(_tileAreas);
 
             foreach (var tile in _tileAreas)
+            {
                 if (CheckFreeToMove(tile))
-                    return tile;
-            
+                    continue;
+
+                if ((CheckFreeToMove(tile + Vector3.right) && CheckFreeToMove(tile + Vector3.left))
+                    || (CheckFreeToMove(tile + Vector3.forward) && CheckFreeToMove(tile + Vector3.back)))
+                {
+                    _potentialPos.Clear();
+                    if (CheckFreeToMove(tile + Vector3.left + Vector3.forward))
+                        _potentialPos.Add(tile + Vector3.left + Vector3.forward);
+                    if (CheckFreeToMove(tile + Vector3.left + Vector3.back))
+                        _potentialPos.Add(tile + Vector3.left + Vector3.back);
+                    if (CheckFreeToMove(tile + Vector3.right + Vector3.forward))
+                        _potentialPos.Add(tile + Vector3.right + Vector3.forward);
+                    if (CheckFreeToMove(tile + Vector3.right + Vector3.back))
+                        _potentialPos.Add(tile + Vector3.right + Vector3.back);
+
+                    return _potentialPos[UnityEngine.Random.Range(0, _potentialPos.Count)];
+                }
+            }
+
             return Vector3.negativeInfinity;
         }
-        
+
         // Using the Fisher-Yates shuffle algorithm
-        public static void Shuffle<T>(List<T> list)
+        private void Shuffle<T>(List<T> list)
         {
-            Random random = new Random();
-            int n = list.Count;
+            var random = new Random();
+            var n = list.Count;
             while (n > 1)
             {
                 n--;
-                int k = random.Next(n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
+                var k = random.Next(n + 1);
+                (list[k], list[n]) = (list[n], list[k]);
             }
         }
 

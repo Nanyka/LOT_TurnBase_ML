@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Economy.Model;
+using Unity.Services.Leaderboards.Models;
 using Unity.Services.Samples.IdleClickerGame;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -39,14 +41,14 @@ namespace JumpeeIsland
                 }
 
                 Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
-                
+
                 await _economyManager.RefreshEconomyConfiguration();
                 if (this == null)
                     return;
 
                 await FetchUpdatedServicesData();
                 if (this == null) return;
-                
+
                 Debug.Log("Initialization and signin complete.");
             }
             catch (Exception e)
@@ -54,7 +56,7 @@ namespace JumpeeIsland
                 Debug.LogException(e);
             }
         }
-        
+
         async Task<EnvironmentData> GetUpdatedState()
         {
             try
@@ -73,10 +75,10 @@ namespace JumpeeIsland
             {
                 Debug.LogException(e);
             }
-            
+
             return null;
         }
-        
+
         async Task FetchUpdatedServicesData()
         {
             await Task.WhenAll(
@@ -106,7 +108,7 @@ namespace JumpeeIsland
 
             return null;
         }
-        
+
         public async Task<EnvironmentData> OnResetEnvData()
         {
             try
@@ -122,7 +124,7 @@ namespace JumpeeIsland
         }
 
         #endregion
-        
+
         #region CURRENCY DATA
 
         public async Task<List<PlayerBalance>> OnLoadCurrency()
@@ -149,7 +151,7 @@ namespace JumpeeIsland
                 command.Execute(_commandBatchManager, _remoteConfigManager);
             }
         }
-        
+
         private JICommand GetCommandByName(CommandName commandName)
         {
             JICommand command = null;
@@ -301,11 +303,11 @@ namespace JumpeeIsland
         public async Task OnResetBasicInventory(List<string> basicInventory)
         {
             await _economyManager.ResetInventory();
-            
+
             foreach (var inventoryId in basicInventory)
                 OnGrantInventory(inventoryId);
         }
-        
+
         public async Task<List<PlayersInventoryItem>> OnLoadInventory()
         {
             try
@@ -319,11 +321,11 @@ namespace JumpeeIsland
                 return null;
             }
         }
-        
+
         public JIInventoryItem GetInventoryByNameOrId(string inventoryInfo)
         {
             var inventoryDefinitions = _economyManager.GetInventoryDefinitions();
-            
+
             foreach (var itemDefinition in inventoryDefinitions)
                 if (itemDefinition.Name.Equals(inventoryInfo) || itemDefinition.Id.Equals(inventoryInfo))
                     return itemDefinition.CustomDataDeserializable.GetAs<JIInventoryItem>();
@@ -349,12 +351,12 @@ namespace JumpeeIsland
         {
             return await _economyManager.MakeVirtualPurchaseAsync(virtualPurchaseId);
         }
-        
+
         public List<JIItemAndAmountSpec> GetVirtualPurchaseCost(string virtualPurchaseId)
         {
             return _economyManager.GetVirtualPurchaseCost(virtualPurchaseId);
         }
-        
+
         public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
         {
             return _economyManager.GetPurchaseDefinition(id);
@@ -376,7 +378,12 @@ namespace JumpeeIsland
         public async Task<EnvironmentData> GetEnemyEnvironment()
         {
             var getPlayerRange = await _leaderboardManager.GetPlayerRange();
-            return await _cloudCodeManager.CallLoadEnemyEnvironment(getPlayerRange[Random.Range(0,getPlayerRange.Count)].PlayerId);
+
+            getPlayerRange = getPlayerRange.FindAll(t =>
+                    t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
+
+            return await _cloudCodeManager.CallLoadEnemyEnvironment(
+                getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId);
         }
 
         public void PlayerRecordScore(int playerScore)
@@ -402,10 +409,10 @@ namespace JumpeeIsland
             {
                 Debug.LogException(e);
             }
-            
+
             return null;
         }
-        
+
         public async Task OnSaveGameProcess(GameProcessData currentProcess)
         {
             await _cloudCodeManager.CallSaveGameProcess(currentProcess);

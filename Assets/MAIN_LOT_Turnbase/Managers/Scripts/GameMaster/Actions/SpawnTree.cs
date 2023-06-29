@@ -12,7 +12,7 @@ namespace JumpeeIsland
         
         public override bool PrePerform()
         {
-            var availableTile = GameFlowManager.Instance.GetEnvManager().GetAvailableTile();
+            var availableTile = GameFlowManager.Instance.GetEnvManager().GetPotentialTile();
             if (availableTile != Vector3.negativeInfinity)
                 SavingSystemManager.Instance.OnSpawnResource(_resourceId,availableTile);
         

@@ -23,23 +23,31 @@ MonoBehaviour:
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 1
-    Collectable: 0
-    CollectableCompare: 0
-    CollectableAmount: 1
-    Building: 0
-    BuildingCompare: 0
-    BuildingAmount: 1
+    Collectable: 1
+    CollectableCompare: 2
+    CollectableAmount: 0
+    Building: 1
+    BuildingCompare: 2
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsUICondition: 0
+    UIElement: 
+    IsScoreCondition: 0
+    ScoreCompare: 0
+    ScoreAmount: 0
   steps:
   - Pointer: 0
     EntitySelection: 0
     EntityType: 0
     CurrencyFromResource: 0
     BuildingType: 0
-    EnemyType: 0
+    CreatureType: 0
     ArrowSign: 0
     MinJump: 0
-    UISelection: 0
-    UIName: 
+    ButtonSelection: 0
+    ButtonName: 
     CheckPosition: 0
     CheckEntity: 0
     Spawner: 1
@@ -49,6 +57,8 @@ MonoBehaviour:
     SpawnResource: 
     SpawnCollectable: Startup1_Chest
     SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
     CheckEndCondition: 1
     EndCondition:
       MapSize: 0
@@ -67,6 +77,14 @@ MonoBehaviour:
       Building: 0
       BuildingCompare: 0
       BuildingAmount: 0
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
+      IsUICondition: 0
+      UIElement: 
+      IsScoreCondition: 0
+      ScoreCompare: 0
+      ScoreAmount: 0
     Conversation: 0
     Message: 
   nextTutorial: /Tutorials/Tutorial2

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JumpeeIsland
 {
@@ -38,6 +39,11 @@ namespace JumpeeIsland
         public void AddEnemyData(CreatureData data)
         {
             EnemyData.Add(data);
+        }
+
+        public bool CheckStorable()
+        {
+            return PlayerData.Any() || BuildingData.Any();
         }
 
         #region BATTLE MODE

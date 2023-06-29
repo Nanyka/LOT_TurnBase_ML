@@ -65,6 +65,8 @@ namespace JumpeeIsland
         private async void OnDisable()
         {
             if (!CheckLoadingPhaseFinished()) return;
+            if (m_EnvLoader.GetDataForSave().CheckStorable() == false)
+                return;
             SavePlayerEnvAtEndGame();
             SaveCommandBatch(m_CloudConnector.GetCommands());
             await CheckInternetConnection();
@@ -105,6 +107,7 @@ namespace JumpeeIsland
             // Load game process to refresh current tutorial
             await LoadGameProcess();
 
+            Debug.Log("Completed loading process");
             SaveDisconnectedState(false); // set it as connected state when loaded all disconnected session's data
             SetInLoadingState(false); // Finish loading phase
 
@@ -186,15 +189,6 @@ namespace JumpeeIsland
 
         private async Task LoadEnvironment()
         {
-            // var cloudEnvData = await m_CloudConnector.OnLoadEnvData();
-            // if (cloudEnvData == null || cloudEnvData.mapSize == 0)
-            // {
-            //     Debug.Log("No cloudEnvDat was found.");
-            //     _gameStateData.IsDisconnectedLastSession = true;
-            // }
-            // else
-            //     m_EnvLoader.SetData(cloudEnvData);
-
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
             SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
         }
@@ -211,11 +205,10 @@ namespace JumpeeIsland
 
             if (result == SaveResult.Success)
             {
-                // if (!_gameStateData.IsDisconnectedLastSession) return;
-                // Debug.Log("Restore command after a disconnected session");
                 data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
                 m_EnvLoader.SetData(data);
                 await m_CloudConnector.OnSaveEnvData(); // Update cloud data
+                m_CloudConnector.PlayerRecordScore(data.CalculateScore());
             }
         }
 

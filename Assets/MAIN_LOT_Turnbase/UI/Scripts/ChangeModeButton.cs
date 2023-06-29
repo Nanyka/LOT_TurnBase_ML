@@ -11,7 +11,7 @@ namespace JumpeeIsland
         private AsyncOperationHandle m_SceneHandle;
         private bool _isClicked;
 
-        public void OnClickBattleButton()
+        public void OnClickChangeMode()
         {
             if (_isClicked) return;
 

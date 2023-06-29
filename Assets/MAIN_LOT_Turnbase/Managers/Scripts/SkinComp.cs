@@ -11,7 +11,7 @@ namespace JumpeeIsland
     public class SkinComp : MonoBehaviour
     {
         [SerializeField] private Transform m_SkinAnchor;
-        [SerializeField] private List<Renderer> _factionRenderers;
+        [SerializeField] private List<Renderer> _factionRenderers = new();
         [SerializeField] private Material _activeMaterial;
         [SerializeField] private Material _disableMaterial;
 
@@ -20,6 +20,7 @@ namespace JumpeeIsland
             if (skinAddress.IsNullOrEmpty())
                 return;
 
+            _factionRenderers.Clear();
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor);
         }
 
@@ -28,6 +29,7 @@ namespace JumpeeIsland
             if (skinAddress.IsNullOrEmpty())
                 return;
 
+            _factionRenderers.Clear();
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this, animateComp);
         }
 

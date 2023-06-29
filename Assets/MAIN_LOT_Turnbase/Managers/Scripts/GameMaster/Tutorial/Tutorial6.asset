@@ -29,6 +29,9 @@ MonoBehaviour:
     Building: 1
     BuildingCompare: 2
     BuildingAmount: 1
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
     IsUICondition: 0
     UIElement: 
     IsScoreCondition: 0
@@ -40,7 +43,7 @@ MonoBehaviour:
     EntityType: 2
     CurrencyFromResource: 0
     BuildingType: 1
-    EnemyType: 0
+    CreatureType: 0
     ArrowSign: 0
     MinJump: 0
     ButtonSelection: 0
@@ -54,6 +57,8 @@ MonoBehaviour:
     SpawnResource: 
     SpawnCollectable: 
     SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
     CheckEndCondition: 1
     EndCondition:
       MapSize: 0
@@ -72,6 +77,9 @@ MonoBehaviour:
       Building: 0
       BuildingCompare: 2
       BuildingAmount: 1
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
       IsUICondition: 1
       UIElement: InteractBuildingMenu
       IsScoreCondition: 0
@@ -84,7 +92,7 @@ MonoBehaviour:
     EntityType: 0
     CurrencyFromResource: 0
     BuildingType: 0
-    EnemyType: 0
+    CreatureType: 0
     ArrowSign: 0
     MinJump: 0
     ButtonSelection: 1
@@ -98,6 +106,8 @@ MonoBehaviour:
     SpawnResource: 
     SpawnCollectable: 
     SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
     CheckEndCondition: 1
     EndCondition:
       MapSize: 0
@@ -116,6 +126,9 @@ MonoBehaviour:
       Building: 0
       BuildingCompare: 0
       BuildingAmount: 0
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
       IsUICondition: 1
       UIElement: InteractBuildingConfirm
       IsScoreCondition: 0
@@ -128,7 +141,7 @@ MonoBehaviour:
     EntityType: 0
     CurrencyFromResource: 0
     BuildingType: 0
-    EnemyType: 0
+    CreatureType: 0
     ArrowSign: 0
     MinJump: 0
     ButtonSelection: 1
@@ -142,6 +155,8 @@ MonoBehaviour:
     SpawnResource: 
     SpawnCollectable: 
     SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
     CheckEndCondition: 1
     EndCondition:
       MapSize: 0
@@ -160,6 +175,9 @@ MonoBehaviour:
       Building: 0
       BuildingCompare: 0
       BuildingAmount: 0
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
       IsUICondition: 0
       UIElement: 
       IsScoreCondition: 1
@@ -167,4 +185,4 @@ MonoBehaviour:
       ScoreAmount: 9
     Conversation: 0
     Message: 
-  nextTutorial: 
+  nextTutorial: /Tutorials/Tutorial7

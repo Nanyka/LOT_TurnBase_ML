@@ -43,6 +43,9 @@ namespace JumpeeIsland
 
         public void LoadCurrentTutorial(string currentTutorial)
         {
+            if (IsEcoMode == false)
+                return;
+            
             _tutorialController.Init(currentTutorial);
         }
     }

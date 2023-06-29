@@ -16,7 +16,6 @@ namespace JumpeeIsland
         public async void AddScore(int playerScore)
         {
             var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, playerScore);
-            // Debug.Log(JsonConvert.SerializeObject(scoreResponse));
         }
 
         public async void GetScores()

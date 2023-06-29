@@ -124,9 +124,9 @@ namespace JumpeeIsland
             _domainManager.UpdateDomainOwner(domainOwner, factionType);
         }
 
-        public Vector3 GetAvailableTile()
+        public Vector3 GetPotentialTile()
         {
-            return _domainManager.GetAvailableTile();
+            return _domainManager.GetPotentialTile();
         }
 
         public bool FreeToMove(Vector3 checkPos)
