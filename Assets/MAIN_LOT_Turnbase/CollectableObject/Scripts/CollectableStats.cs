@@ -10,6 +10,7 @@ namespace JumpeeIsland
     {
         public bool IsLongLasting;
         [ShowIf("@IsLongLasting == false")] public int MaxTurnToDestroy;
+        public bool IsSelfCollect;
         public CollectableType CollectableType;
         public string SkinAddress;
         
@@ -18,6 +19,6 @@ namespace JumpeeIsland
 
         [FormerlySerializedAs("EntityType")] [Header("Entity rewards")] 
         public EntityType SpawnedEntityType;
-        public string EntityName;
+        [ShowIf("@SpawnedEntityType != EntityType.NONE")] public string EntityName;
     }
 }

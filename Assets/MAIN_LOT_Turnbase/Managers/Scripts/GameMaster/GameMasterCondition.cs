@@ -10,7 +10,7 @@ namespace JumpeeIsland
         Lower,
         Equal
     }
-    
+
     [System.Serializable]
     public class GameMasterCondition
     {
@@ -19,45 +19,67 @@ namespace JumpeeIsland
 
         public CurrencyType Currency;
 
-        [VerticalGroup("Currency",VisibleIf = "@Currency != JumpeeIsland.CurrencyType.NONE")]
-        [VerticalGroup("Currency/Row2")] public CompareType CurrencyCompare;
-        [VerticalGroup("Currency/Row1")] public int CurrencyAmount;
+        [VerticalGroup("Currency", VisibleIf = "@Currency != JumpeeIsland.CurrencyType.NONE")]
+        [VerticalGroup("Currency/Row1")]
+        public CompareType CurrencyCompare;
+
+        [VerticalGroup("Currency/Row2")] public int CurrencyAmount;
 
         public CurrencyType Storage;
 
-        [VerticalGroup("Storage",VisibleIf = "@Storage != JumpeeIsland.CurrencyType.NONE")]
-        [VerticalGroup("Storage/Row2")] public CompareType StorageCompare;
-        [VerticalGroup("Storage/Row1")] public int StorageAmount;
+        [VerticalGroup("Storage", VisibleIf = "@Storage != JumpeeIsland.CurrencyType.NONE")]
+        [VerticalGroup("Storage/Row1")]
+        public CompareType StorageCompare;
+
+        [VerticalGroup("Storage/Row2")] public int StorageAmount;
 
         public CurrencyType Resource;
 
-        [VerticalGroup("Resource",VisibleIf = "@Resource != JumpeeIsland.CurrencyType.NONE")]
-        [VerticalGroup("Resource/Row2")] public CompareType ResourceCompare;
-        [VerticalGroup("Resource/Row1")] public int ResourceAmount;
+        [VerticalGroup("Resource", VisibleIf = "@Resource != JumpeeIsland.CurrencyType.NONE")]
+        [VerticalGroup("Resource/Row1")]
+        public CompareType ResourceCompare;
+
+        [VerticalGroup("Resource/Row2")] public int ResourceAmount;
 
         public CollectableType Collectable;
 
-        [VerticalGroup("CollectableType",VisibleIf = "@Collectable != JumpeeIsland.CollectableType.NONE")]
-        [VerticalGroup("CollectableType/Row2")] public CompareType CollectableCompare;
-        [VerticalGroup("CollectableType/Row1")] public int CollectableAmount;
+        [VerticalGroup("CollectableType", VisibleIf = "@Collectable != JumpeeIsland.CollectableType.NONE")]
+        [VerticalGroup("CollectableType/Row1")]
+        public CompareType CollectableCompare;
+
+        [VerticalGroup("CollectableType/Row2")]
+        public int CollectableAmount;
 
         public BuildingType Building;
 
-        [VerticalGroup("Building",VisibleIf = "@Building != JumpeeIsland.BuildingType.NONE")]
-        [VerticalGroup("Building/Row2")] public CompareType BuildingCompare;
-        [VerticalGroup("Building/Row1")] public int BuildingAmount;
+        [VerticalGroup("Building", VisibleIf = "@Building != JumpeeIsland.BuildingType.NONE")]
+        [VerticalGroup("Building/Row1")]
+        public CompareType BuildingCompare;
+
+        [VerticalGroup("Building/Row2")] public int BuildingAmount;
+
+        public CreatureType Creature;
+
+        [VerticalGroup("Creature", VisibleIf = "@Creature != JumpeeIsland.CreatureType.NONE")]
+        [VerticalGroup("Creature/Row1")]
+        public CompareType CreatureCompare;
+
+        [VerticalGroup("Creature/Row2")] public int CreatureAmount;
 
         public bool IsUICondition;
         [ShowIf("@IsUICondition == true")] public string UIElement;
-        
+
         public bool IsScoreCondition;
-        [VerticalGroup("Score",VisibleIf = "@IsScoreCondition == true")]
-        [VerticalGroup("Score/Row2")] public CompareType ScoreCompare;
+
+        [VerticalGroup("Score", VisibleIf = "@IsScoreCondition == true")] [VerticalGroup("Score/Row2")]
+        public CompareType ScoreCompare;
+
         [VerticalGroup("Score/Row1")] public int ScoreAmount;
 
         public bool PassCondition()
         {
-            return CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() && CheckBuildingType() && CheckUICondition() && CheckScore();
+            return CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
+                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore();
         }
 
         private bool CheckMapSize()
@@ -95,7 +117,7 @@ namespace JumpeeIsland
             foreach (var building in buildings)
                 if (building.StorageCurrency == Storage || building.StorageCurrency == CurrencyType.MULTI)
                     totalStorage += building.StorageCapacity - building.CurrentStorage;
-            
+
             switch (StorageCompare)
             {
                 case CompareType.Higher:
@@ -119,7 +141,7 @@ namespace JumpeeIsland
             foreach (var resource in resources)
                 if (resource.CollectedCurrency == Resource)
                     totalAmount++;
-            
+
             switch (ResourceCompare)
             {
                 case CompareType.Higher:
@@ -141,7 +163,7 @@ namespace JumpeeIsland
             var collectables = SavingSystemManager.Instance.GetEnvironmentData().CollectableData;
             if (collectables == null)
                 return true;
-            
+
             int totalAmount = 0;
             foreach (var collectable in collectables)
                 if (collectable.CollectableType == Collectable)
@@ -179,6 +201,33 @@ namespace JumpeeIsland
                     return totalAmount < BuildingAmount;
                 case CompareType.Equal:
                     return totalAmount == BuildingAmount;
+            }
+
+            return true;
+        }
+
+        private bool CheckCreatureType()
+        {
+            if (Creature == CreatureType.NONE)
+                return true;
+
+            var creatures = SavingSystemManager.Instance.GetEnvironmentData().EnemyData;
+            if (Creature == CreatureType.PLAYER)
+                creatures = SavingSystemManager.Instance.GetEnvironmentData().PlayerData;
+
+            int totalAmount = 0;
+            foreach (var creature in creatures)
+                if (creature.CreatureType == Creature)
+                    totalAmount++;
+
+            switch (CreatureCompare)
+            {
+                case CompareType.Higher:
+                    return totalAmount > CreatureAmount;
+                case CompareType.Lower:
+                    return totalAmount < CreatureAmount;
+                case CompareType.Equal:
+                    return totalAmount == CreatureAmount;
             }
 
             return true;

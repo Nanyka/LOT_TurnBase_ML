@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Serialization;
 using WebSocketSharp;
 
 namespace JumpeeIsland
@@ -8,9 +11,9 @@ namespace JumpeeIsland
     public class SkinComp : MonoBehaviour
     {
         [SerializeField] private Transform m_SkinAnchor;
-        [SerializeField] private Mesh m_BodyMesh;
-
-        [SerializeField] private Renderer _factionRenderer;
+        [SerializeField] private List<Renderer> _factionRenderers;
+        [SerializeField] private Material _activeMaterial;
+        [SerializeField] private Material _disableMaterial;
 
         public void Init(string skinAddress)
         {
@@ -28,28 +31,27 @@ namespace JumpeeIsland
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this, animateComp);
         }
 
-        public void ModifyBodyMesh(SkinnedMeshRenderer renderer)
-        {
-            if (renderer == null)
-                return;
-            
-            renderer.sharedMesh = m_BodyMesh;
-        }
-
         public void SetFactionRenderer(Renderer renderer)
         {
-            if (renderer == null)
-                return;
-            
-            _factionRenderer = renderer;
+            _factionRenderers.Add(renderer);
         }
 
-        public void SetMaterial(Material material)
+        public void SetActiveMaterial()
         {
-            if (_factionRenderer == null)
+            if (_factionRenderers == null || _activeMaterial == null)
                 return;
 
-            _factionRenderer.material = material;
+            foreach (var item in _factionRenderers)
+                item.material = _activeMaterial;
+        }
+
+        public void SetDisableMaterial()
+        {
+            if (_factionRenderers == null || _disableMaterial == null)
+                return;
+
+            foreach (var item in _factionRenderers)
+                item.material = _disableMaterial;
         }
     }
 }

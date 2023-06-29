@@ -15080,9 +15080,10 @@ MonoBehaviour:
     SkinAddress: 
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
-    CreatureType: 0
+    FactionType: 0
     CurrentHp: 0
     CurrentLevel: 0
+    CreatureType: 0
     CurrentShield: 0
     CurrentExp: 0
     TurnCount: 0
@@ -15100,8 +15101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 8456949990682985166}
-  m_BodyMesh: {fileID: -9000052448125618310, guid: 503415fc3fea44f7bb0eebf41e58e8be, type: 3}
-  _factionRenderer: {fileID: 0}
+  _factionRenderers: []
+  _activeMaterial: {fileID: 2100000, guid: 34cd9a8b0dfd04661bba423b01c821ab, type: 2}
+  _disableMaterial: {fileID: 2100000, guid: fc6d057e3910b427d831a475d17790e2, type: 2}
 --- !u!114 &2461322209178629957
 MonoBehaviour:
   m_ObjectHideFlags: 0

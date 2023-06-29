@@ -45,12 +45,12 @@ namespace JumpeeIsland
         public void PrepareForBattleMode(List<CreatureData> playerData)
         {
             foreach (var building in BuildingData)
-                building.CreatureType = FactionType.Enemy;
+                building.FactionType = FactionType.Enemy;
 
             EnemyData.Clear();
             foreach (var creatureData in PlayerData)
             {
-                creatureData.CreatureType = FactionType.Enemy;
+                creatureData.FactionType = FactionType.Enemy;
                 EnemyData.Add(creatureData);
             }
 

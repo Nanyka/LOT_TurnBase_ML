@@ -71,15 +71,11 @@ namespace JumpeeIsland
             var skin = handle.WaitForCompletion();
             animateComp.SetAnimator(skin.GetComponent<Animator>());
 
-            var bodyRenderer = skin.transform.Find("Body");
-            if (bodyRenderer != null)
-                if (bodyRenderer.TryGetComponent(out SkinnedMeshRenderer body))
-                    skinComp.ModifyBodyMesh(body);
-
             var factionPart = skin.transform.Find("FactionPart");
             if (factionPart != null)
-                if (factionPart.TryGetComponent(out Renderer part))
-                    skinComp.SetFactionRenderer(part);
+                for (int i = 0; i < factionPart.childCount; i++)
+                    if (factionPart.GetChild(i).TryGetComponent(out Renderer part))
+                        skinComp.SetFactionRenderer(part);
         }
 
         private void AddPrivateToken(UnityWebRequest request)

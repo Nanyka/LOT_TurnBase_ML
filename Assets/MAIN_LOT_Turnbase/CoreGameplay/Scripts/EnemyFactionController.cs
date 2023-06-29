@@ -9,10 +9,8 @@ namespace JumpeeIsland
     public class EnemyFactionController : MonoBehaviour, IFactionController
     {
         [SerializeField] protected FactionType m_Faction = FactionType.Enemy;
-        [SerializeField] protected List<NPCInGame> m_Enemies;
-        [SerializeField] private Material _factionMaterial;
-        [SerializeField] private Material _defaultMaterial;
 
+        private List<NPCInGame> m_Enemies = new();
         private EnvironmentManager m_Environment;
         private NPCActionInferer m_NpcActionInferer;
         private List<NPCInGame> _dummyNPCs = new();
@@ -70,7 +68,7 @@ namespace JumpeeIsland
 
             // reset all agent's moving state
             foreach (var enemy in m_Enemies)
-                enemy.ResetMoveState(_factionMaterial);
+                enemy.ResetMoveState();
 
             KickOffNewTurn();
         }
@@ -168,7 +166,7 @@ namespace JumpeeIsland
 
             // Set all npc to default color to show it disable state
             foreach (var enemy in m_Enemies)
-                enemy.SetMaterial(_defaultMaterial);
+                enemy.SetDisableMaterial();
 
             m_Environment.ChangeFaction();
             // m_Environment.OnChangeFaction.Invoke();

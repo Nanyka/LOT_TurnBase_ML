@@ -21,7 +21,7 @@ namespace JumpeeIsland
 
         private void SpawnEntity(Entity killByEntity)
         {
-            SavingSystemManager.Instance.SpawnConsumableEntity(m_PurchaseId, m_Entity.GetData().Position, m_Entity.GetFaction());
+            SavingSystemManager.Instance.SpawnMovableEntity(m_PurchaseId, m_Entity.GetData().Position);
         }
     }
 }

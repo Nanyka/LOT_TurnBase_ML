@@ -119,7 +119,7 @@ namespace JumpeeIsland
             m_Entity.UpdateTransform(InferMoving.TargetPos, _rotatePart.eulerAngles);
             while (transform.position != InferMoving.TargetPos)
             {
-                m_Transform.position = Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 10f * Time.deltaTime);
+                m_Transform.position = Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 2f * Time.deltaTime);
                 yield return null;
             }
 

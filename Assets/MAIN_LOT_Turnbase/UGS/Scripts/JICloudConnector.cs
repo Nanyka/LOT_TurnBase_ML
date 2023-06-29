@@ -331,7 +331,7 @@ namespace JumpeeIsland
             return null;
         }
 
-        private async void OnGrantInventory(string inventoryId)
+        public async void OnGrantInventory(string inventoryId)
         {
             await _economyManager.OnGrantInventory(inventoryId);
         }

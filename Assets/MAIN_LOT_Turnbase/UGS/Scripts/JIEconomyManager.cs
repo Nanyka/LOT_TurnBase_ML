@@ -170,6 +170,11 @@ namespace JumpeeIsland
 
         public async Task OnGrantInventory(string inventoryId)
         {
+            foreach (var inventory in _playersInventory)
+                if (inventory.InventoryItemId.Equals(inventoryId))
+                    await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory
+                        .PlayersInventoryItemId);
+            
             await GrantDebugInventory(inventoryId);
         }
 

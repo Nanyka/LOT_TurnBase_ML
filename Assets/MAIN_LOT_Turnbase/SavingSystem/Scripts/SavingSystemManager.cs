@@ -23,7 +23,7 @@ namespace JumpeeIsland
     {
         // invoke at CreatureEntity, BuildingEntity, Creature
         [NonSerialized] public UnityEvent OnCheckExpandMap = new();
-        
+
         // invoke at TileManager
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
 
@@ -32,7 +32,7 @@ namespace JumpeeIsland
 
         // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new();
-        
+
         // invoke at JICloudCodeManager
         [NonSerialized] public UnityEvent OnRefreshBalances = new();
 
@@ -90,7 +90,7 @@ namespace JumpeeIsland
             // mark as starting point of loading phase.
             // If this process is not complete, the environment will not be save at OnDisable()
             SetInLoadingState(true);
-            
+
             // Load command must be placed before LoadEnvironment to ensure storages are in proper states
             LoadCommands();
 
@@ -314,20 +314,17 @@ namespace JumpeeIsland
             m_EnvLoader.TrainACreature(newCreature);
         }
 
-        public void SpawnConsumableEntity(string itemId, Vector3 position, FactionType factionType)
+        public void SpawnMovableEntity(string itemId, Vector3 position)
         {
             var item = GetInventoryItemByName(itemId);
 
-            if (factionType == FactionType.Neutral)
+            var newEntity = new CreatureData()
             {
-                var newEntity = new CreatureData()
-                {
-                    EntityName = item.inventoryName,
-                    Position = position,
-                    CurrentLevel = 0
-                };
-                m_EnvLoader.SpawnAnEnemy(newEntity);
-            }
+                EntityName = item.inventoryName,
+                Position = position,
+                CurrentLevel = 0
+            };
+            m_EnvLoader.SpawnAnEnemy(newEntity);
         }
 
         private async Task<bool> ConductVirtualPurchase(string virtualPurchaseId)
@@ -344,9 +341,7 @@ namespace JumpeeIsland
             Debug.Log(
                 $"Conduct virtualPurchase {virtualPurchaseId} that cost {constructingCost[0].id} an amount {constructingCost[0].amount}");
             foreach (var cost in constructingCost)
-            {
                 m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
-            }
 
             return true;
         }
@@ -361,7 +356,7 @@ namespace JumpeeIsland
             m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
             m_CloudConnector.OnLoadVirtualPurchase();
         }
-        
+
         private async void RefreshBalances()
         {
             m_CurrencyLoader.SetData(await m_CloudConnector.OnLoadCurrency());
@@ -434,6 +429,11 @@ namespace JumpeeIsland
             return m_CloudConnector.GetInventoryByNameOrId(entityName);
         }
 
+        public void GrantInventory(string inventoryId)
+        {
+            m_CloudConnector.OnGrantInventory(inventoryId);
+        }
+
         #endregion
 
         #region VIRTUAL PURCHASE
@@ -450,7 +450,6 @@ namespace JumpeeIsland
         private void StackUpCommand(CommandName commandName)
         {
             m_CloudConnector.OnCommandStackUp(commandName);
-            // await m_CloudConnector.OnSaveEnvData(); // TODO change logic of env saving
         }
 
         private void SaveCommandBatch(CommandsCache commandsCache)

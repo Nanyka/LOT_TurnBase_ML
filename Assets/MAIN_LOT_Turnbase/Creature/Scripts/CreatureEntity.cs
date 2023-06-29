@@ -48,7 +48,7 @@ namespace JumpeeIsland
 
         public override FactionType GetFaction()
         {
-            return m_CreatureData.CreatureType;
+            return m_CreatureData.FactionType;
         }
 
         public override int GetExpReward()
@@ -79,9 +79,14 @@ namespace JumpeeIsland
 
         #region SKIN
 
-        public void SetSkinMaterial(Material material)
+        public void SetActiveMaterial()
         {
-            m_SkinComp.SetMaterial(material);
+            m_SkinComp.SetActiveMaterial();
+        }
+        
+        public void SetDisableMaterial()
+        {
+            m_SkinComp.SetDisableMaterial();
         }
 
         #endregion
@@ -169,6 +174,7 @@ namespace JumpeeIsland
             // Initiate entity data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
             m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
+            m_CreatureData.CreatureType = m_CurrentStats.CreatureType;
             if (m_CreatureData.CurrentHp <= 0)
             {
                 m_CreatureData.CurrentHp = m_CurrentStats.HealthPoint;

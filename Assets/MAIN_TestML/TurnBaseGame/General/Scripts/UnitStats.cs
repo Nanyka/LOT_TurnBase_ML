@@ -14,4 +14,5 @@ public class UnitStats : ScriptableObject
     [Tooltip("Amount of exp that entity destroying this resource can collect")]
     public int ExpReward;
     public CommandName Command;
+    public CreatureType CreatureType;
 }

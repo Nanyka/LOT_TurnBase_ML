@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -11,7 +12,7 @@ namespace JumpeeIsland
         [ShowIf("@EntitySelection == true")] public EntityType EntityType;
         [ShowIf("EntityType", EntityType.RESOURCE)] public CurrencyType CurrencyFromResource;
         [ShowIf("EntityType", EntityType.BUILDING)] public BuildingType BuildingType;
-        [ShowIf("EntityType", EntityType.ENEMY)] public CreatureType EnemyType;
+        [FormerlySerializedAs("EnemyType")] [ShowIf("EntityType", EntityType.ENEMY)] public CreatureType CreatureType;
         [ShowIf("EntityType", EntityType.PLAYER)] public bool ArrowSign;
         [ShowIf("@EntitySelection == true && ArrowSign == true")] public int MinJump;
         [ShowIf("@EntitySelection == false && Pointer == true")] public bool ButtonSelection;
@@ -30,6 +31,11 @@ namespace JumpeeIsland
         public string SpawnCollectable;
         [VerticalGroup("CollectableSpawn/Row2")]
         public int SpawnCollectableLevel;
+        [VerticalGroup("Enemy",VisibleIf = "@SpawnType == JumpeeIsland.EntityType.ENEMY")]
+        [VerticalGroup("Enemy/Row1")]
+        public string SpawnEnemy;
+        [VerticalGroup("Enemy/Row2")]
+        public int SpawnEnemyLevel;
         public bool CheckEndCondition;
         [ShowIf("@CheckEndCondition == true")] public GameMasterCondition EndCondition;
         public bool Conversation;

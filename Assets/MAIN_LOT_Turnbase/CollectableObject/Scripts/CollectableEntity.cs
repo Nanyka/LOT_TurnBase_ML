@@ -60,12 +60,20 @@ namespace JumpeeIsland
                     SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position,
                         true);
                     break;
+                case EntityType.ENEMY:
+                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,m_CollectableData.Position);
+                    break;
             }
         }
 
         public override FactionType GetFaction()
         {
-            return m_CollectableData.CreatureType;
+            return m_CollectableData.FactionType;
+        }
+        
+        public bool CheckSelfCollect()
+        {
+            return m_CurrentStat.IsSelfCollect;
         }
 
         public override int GetExpReward()

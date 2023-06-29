@@ -24,7 +24,7 @@ namespace JumpeeIsland
         public bool IsInteractable;
 
         [SerializeField] private GameObject[] _panels;
-        [SerializeField] private Transform[] _buttons;
+        [SerializeField] private GameObject[] _buttons;
         
         private BuyBuildingMenu _buyBuildingMenu;
         protected CreatureMenu _creatureMenu;
@@ -63,14 +63,14 @@ namespace JumpeeIsland
             return false;
         }
 
-        public Vector3 GetButtonPosition(string buttonName)
+        public GameObject GetButtonPosition(string buttonName)
         {
             foreach (var button in _buttons)
             {
                 if (button.name.Equals(buttonName))
-                    return button.position;
+                    return button;
             }
-            return Vector3.negativeInfinity;
+            return null;
         }
     }
 }

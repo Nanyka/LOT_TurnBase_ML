@@ -57,7 +57,7 @@ namespace JumpeeIsland
         {
             while (m_Transform.position != targetPos)
             {
-                m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 5f * Time.deltaTime);
+                m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 2f * Time.deltaTime);
                 yield return null;
             }
 
@@ -65,12 +65,12 @@ namespace JumpeeIsland
             m_FactionController.WaitForCreature();
         }
 
-        public void NewTurnReset(Material factionMaterial)
+        public void NewTurnReset()
         {
             _isUsed = false;
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
-            SetMaterial(factionMaterial);
+            m_Entity.SetActiveMaterial();
         }
 
         public void Attack()
@@ -122,9 +122,9 @@ namespace JumpeeIsland
             return _isUsed;
         }
 
-        public void SetMaterial(Material setMaterial)
+        public void SetDisableMaterial()
         {
-            m_Entity.SetSkinMaterial(setMaterial);
+            m_Entity.SetDisableMaterial();
         }
 
         public void MarkAsUsedThisTurn()
@@ -157,10 +157,10 @@ namespace JumpeeIsland
                 environmentData.EnemyData.Remove((CreatureData) m_Entity.GetData());
         }
 
-        public void ResetMoveState(Material factionMaterial)
+        public void ResetMoveState()
         {
             _isUsed = false;
-            m_Entity.SetSkinMaterial(factionMaterial);
+            m_Entity.SetActiveMaterial();
         }
 
         #endregion

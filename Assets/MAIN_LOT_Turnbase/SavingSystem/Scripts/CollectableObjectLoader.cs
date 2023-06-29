@@ -47,7 +47,7 @@ namespace JumpeeIsland
             if (collectableObj == null)
                 return;
 
-            collectableData.CreatureType = FactionType.Neutral; // assign Faction
+            collectableData.FactionType = FactionType.Neutral; // assign Faction
             // GameFlowManager.Instance.OnDomainRegister.Invoke(resourceObj, resourceData.CreatureType);
 
             if (!collectableObj.TryGetComponent(out CollectableInGame collectableInGame)) return;

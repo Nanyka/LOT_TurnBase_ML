@@ -58,7 +58,7 @@ namespace JumpeeIsland
 
         public override FactionType GetFaction()
         {
-            return m_ResourceData.CreatureType;
+            return m_ResourceData.FactionType;
         }
 
         public override int GetExpReward()

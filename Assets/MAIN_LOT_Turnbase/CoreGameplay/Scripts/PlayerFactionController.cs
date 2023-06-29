@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +10,6 @@ namespace JumpeeIsland
     public class PlayerFactionController : MonoBehaviour, IFactionController
     {
         [SerializeField] private FactionType m_Faction = FactionType.Player;
-        [SerializeField] private Material _factionMaterial;
-        [SerializeField] private Material _defaultMaterial;
 
         private List<CreatureInGame> _creatures = new();
         private EnvironmentManager m_Environment;
@@ -62,7 +61,7 @@ namespace JumpeeIsland
                 return;
 
             foreach (var creature in _creatures)
-                creature.NewTurnReset(_factionMaterial);
+                creature.NewTurnReset();
 
             KickOffNewTurn();
         }
@@ -105,7 +104,7 @@ namespace JumpeeIsland
 
         public void WaitForCreature()
         {
-            _countMovedUnit++;
+            _countMovedUnit = _creatures.Count(t => t.CheckUsedThisTurn());
 
             if (_countMovedUnit == _creatures.Count)
                 EndTurn();
@@ -142,7 +141,7 @@ namespace JumpeeIsland
             }
 
             foreach (var unitMovement in _creatures)
-                unitMovement.SetMaterial(_defaultMaterial);
+                unitMovement.SetDisableMaterial();
 
             StartCoroutine(WaitForChangeFaction());
         }

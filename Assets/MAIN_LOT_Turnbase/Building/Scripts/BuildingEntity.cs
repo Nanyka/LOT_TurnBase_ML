@@ -45,7 +45,7 @@ namespace JumpeeIsland
 
         public override FactionType GetFaction()
         {
-            return m_BuildingData.CreatureType;
+            return m_BuildingData.FactionType;
         }
 
         public override int GetExpReward()
@@ -131,7 +131,7 @@ namespace JumpeeIsland
         {
             // TODO die visualization
             // Check to remove consumable inventory item
-            if (m_BuildingData.CreatureType == FactionType.Player)
+            if (m_BuildingData.FactionType == FactionType.Player)
             {
             }
         }
