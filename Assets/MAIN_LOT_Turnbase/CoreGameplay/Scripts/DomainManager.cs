@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = System.Random;
+using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
@@ -22,7 +22,7 @@ namespace JumpeeIsland
         // Get tile that allow player take jump
         public Vector3 GetPotentialTile()
         {
-            Shuffle(_tileAreas);
+            GeneralAlgorithm.Shuffle(_tileAreas);
 
             foreach (var tile in _tileAreas)
             {
@@ -42,24 +42,13 @@ namespace JumpeeIsland
                     if (CheckFreeToMove(tile + Vector3.right + Vector3.back))
                         _potentialPos.Add(tile + Vector3.right + Vector3.back);
 
-                    return _potentialPos[UnityEngine.Random.Range(0, _potentialPos.Count)];
+                    if (_potentialPos.Count == 0)
+                        continue;
+                    return _potentialPos[Random.Range(0, _potentialPos.Count)];
                 }
             }
 
             return Vector3.negativeInfinity;
-        }
-
-        // Using the Fisher-Yates shuffle algorithm
-        private void Shuffle<T>(List<T> list)
-        {
-            var random = new Random();
-            var n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                var k = random.Next(n + 1);
-                (list[k], list[n]) = (list[n], list[k]);
-            }
         }
 
         #endregion

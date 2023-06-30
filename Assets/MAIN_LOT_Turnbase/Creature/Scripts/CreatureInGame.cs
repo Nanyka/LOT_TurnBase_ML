@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JumpeeIsland;
@@ -30,10 +31,15 @@ namespace JumpeeIsland
             MarkAsUsedThisTurn();
         }
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             m_Entity.OnUnitDie.AddListener(UnitDie);
             m_Transform = transform;
+        }
+
+        private void OnDisable()
+        {
+            m_Entity.OnUnitDie.RemoveListener(UnitDie);
         }
 
         public void MoveDirection(int moveDirection)
@@ -132,11 +138,11 @@ namespace JumpeeIsland
             _isUsed = true;
         }
 
-        protected virtual void UnitDie(Entity killedByEntity)
+        protected void UnitDie(Entity killedByEntity)
         {
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
+                m_Entity.ContributeCommands();
 
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this); // remove its domain
             m_FactionController.RemoveAgent(this);

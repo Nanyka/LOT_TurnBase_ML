@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace JumpeeIsland
 {
     public class Food5 : JICommand

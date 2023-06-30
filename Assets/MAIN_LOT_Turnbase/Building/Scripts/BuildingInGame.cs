@@ -27,7 +27,7 @@ namespace JumpeeIsland
             m_Entity.DurationDeduct();
         }
 
-        public int GetStoreSpace(CurrencyType currency, ref Queue<BuildingEntity> selectedBuildings)
+        public int GetStoreSpace(CurrencyType currency, ref List<BuildingEntity> selectedBuildings)
         {
             return m_Entity.GetStorageSpace(currency, ref selectedBuildings);
         }
@@ -56,9 +56,13 @@ namespace JumpeeIsland
 
         private void DestroyBuilding(Entity killedByEntity)
         {
-            // just contribute resource when it is killed by player faction as sell out this building
+            // just contribute resource when it is killed by player faction as selling out this building
             if (killedByEntity.GetFaction() == FactionType.Player)
                 SavingSystemManager.Instance.GrantCurrency(CurrencyType.GOLD.ToString(), m_Entity.CalculateSellingPrice());
+
+            // when it is battle mode, player collect resources when destroying the enemy building
+            if (m_Entity.GetFaction() == FactionType.Enemy && killedByEntity.GetFaction() == FactionType.Player)
+                m_Entity.ContributeCommands();
             
             // Add exp for entity who killed this resource
             if (killedByEntity != m_Entity)

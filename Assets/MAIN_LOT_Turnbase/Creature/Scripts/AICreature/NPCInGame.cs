@@ -29,7 +29,7 @@ namespace JumpeeIsland
 #endif
         }
 
-        public new virtual void OnEnable()
+        public override void OnEnable()
         {
             base.OnEnable();
 

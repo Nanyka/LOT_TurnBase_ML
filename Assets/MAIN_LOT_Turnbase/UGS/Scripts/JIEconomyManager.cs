@@ -82,7 +82,7 @@ namespace JumpeeIsland
             }
         }
         
-        public async void OnGrantCurrency(string currencyId, int amount)
+        public async Task OnGrantCurrency(string currencyId, int amount)
         {
             await GrantCurrency(currencyId, amount);
         }
@@ -97,6 +97,18 @@ namespace JumpeeIsland
             try
             {
                 await EconomyService.Instance.PlayerBalances.DecrementBalanceAsync(currencyId, amount);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        public async Task OnSetCurrency(string currencyId, int amount)
+        {
+            try
+            {
+                await EconomyService.Instance.PlayerBalances.SetBalanceAsync(currencyId, amount);
             }
             catch (Exception e)
             {

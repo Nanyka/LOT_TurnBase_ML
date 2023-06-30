@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,10 +10,19 @@ namespace JumpeeIsland
 
         private CollectableController _collectableController;
 
+        private void OnEnable()
+        {
+            m_Entity.OnUnitDie.AddListener(DestroyEntity);
+        }
+
+        private void OnDisable()
+        {
+            m_Entity.OnUnitDie.RemoveListener(DestroyEntity);
+        }
+
         public void Init(CollectableData collectableData, CollectableController collectableController)
         {
             m_Entity.Init(collectableData);
-            m_Entity.OnUnitDie.AddListener(DestroyEntity);
             transform.position = collectableData.Position;
 
             _collectableController = collectableController;
@@ -28,7 +38,7 @@ namespace JumpeeIsland
         {
             // just contribute commands when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player || m_Entity.CheckSelfCollect())
-                m_Entity.Collect();
+                m_Entity.ContributeCommands();
             
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             StartCoroutine(DestroyVisual());

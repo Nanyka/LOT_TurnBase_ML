@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,10 +10,19 @@ namespace JumpeeIsland
 
         private ResourceController _resourceController;
 
+        private void OnEnable()
+        {
+            m_Entity.OnUnitDie.AddListener(DestroyResource);
+        }
+
+        private void OnDisable()
+        {
+            m_Entity.OnUnitDie.RemoveListener(DestroyResource);
+        }
+
         public void Init(ResourceData resourceData, ResourceController resourceController)
         {
             m_Entity.Init(resourceData);
-            m_Entity.OnUnitDie.AddListener(DestroyResource);
             transform.position = resourceData.Position;
 
             _resourceController = resourceController;

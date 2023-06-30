@@ -94,15 +94,18 @@ namespace JumpeeIsland
             SetInLoadingState(true);
 
             // Load command must be placed before LoadEnvironment to ensure storages are in proper states
-            LoadCommands();
+            // LoadCommands();
 
             // Load environment and calculate any time-based resource increment
             await LoadEnvironment();
             m_EnvLoader.Init();
-
+            
+            // for Testing: Do not LoadCommands(), just use remoteConfig as currency JSON
+            LoadLocalCurrencies();
+            
             // Load currency after commit MOVE created during skip period
             await LoadCurrencies();
-            m_CurrencyLoader.Init();
+            // m_CurrencyLoader.Init();
 
             // Load game process to refresh current tutorial
             await LoadGameProcess();
@@ -342,10 +345,37 @@ namespace JumpeeIsland
         #endregion
 
         #region ECONOMY
+        
+        public void SaveLocalBalances(LocalBalancesData balances)
+        {
+            var currenciesPath = GetSavingPath(SavingPath.Currencies);
+            SaveManager.Instance.Save(balances, currenciesPath, LocalBalancesWasSaved, encrypt);
+        }
+
+        private void LocalBalancesWasSaved(SaveResult result, string message)
+        {
+            if (result == SaveResult.Error)
+                Debug.LogError($"Error saving currencies:\n{result}\n{message}");
+        }
+
+        private void LoadLocalCurrencies()
+        {
+            var currenciesPath = GetSavingPath(SavingPath.Currencies);
+            SaveManager.Instance.Load<LocalBalancesData>(currenciesPath, LocalCurrenciesLoaded, encrypt);
+        }
+
+        private void LocalCurrenciesLoaded(LocalBalancesData currencies, SaveResult result, string message)
+        {
+            if (result == SaveResult.EmptyData || result == SaveResult.Error)
+                Debug.LogError("No currencies data File Found -> Creating new data...");
+
+            if (result == SaveResult.Success)
+                m_CurrencyLoader.SetLocalBalances(currencies);
+        }
 
         private async Task LoadCurrencies()
         {
-            m_CurrencyLoader.SetData(await m_CloudConnector.OnLoadCurrency());
+            m_CurrencyLoader.Init(await m_CloudConnector.OnLoadCurrency());
             m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
             m_CloudConnector.OnLoadVirtualPurchase();
         }
@@ -400,6 +430,11 @@ namespace JumpeeIsland
         {
             m_CloudConnector.DeductCurrency(currencyId, amount);
             m_CurrencyLoader.DeductCurrency(currencyId, amount);
+        }
+
+        public void OnSetCurrency(string currencyId, int amount)
+        {
+            m_CloudConnector.OnSetCurrency(currencyId,amount);
         }
 
         #endregion
@@ -477,9 +512,7 @@ namespace JumpeeIsland
 
                 // Just load command when the game disconnect in the latest session
                 if (commands.commandList.Count > 0)
-                {
                     await m_CloudConnector.SubmitCommands(commands);
-                }
             }
         }
 
@@ -505,7 +538,7 @@ namespace JumpeeIsland
         {
             var currentGameProcess = await m_CloudConnector.OnLoadGameProcess();
             GameFlowManager.Instance.LoadCurrentTutorial(currentGameProcess == null
-                ? "TUTORIAL0"
+                ? "/Tutorials/Tutorial0"
                 : currentGameProcess.currentTutorial);
         }
 
@@ -539,7 +572,7 @@ namespace JumpeeIsland
         {
             if (commandId.Equals("NONE"))
                 return;
-
+            
             var rewards = m_CloudConnector.GetRewardByCommandId(commandId);
             foreach (var reward in rewards)
             {

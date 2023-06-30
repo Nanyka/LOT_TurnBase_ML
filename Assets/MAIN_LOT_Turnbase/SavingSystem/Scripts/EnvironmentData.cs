@@ -43,7 +43,7 @@ namespace JumpeeIsland
 
         public bool CheckStorable()
         {
-            return PlayerData.Any() || BuildingData.Any();
+            return ResourceData.Any() || BuildingData.Any();
         }
 
         #region BATTLE MODE

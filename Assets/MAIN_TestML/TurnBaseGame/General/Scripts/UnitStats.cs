@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using JumpeeIsland;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "UnitStats", menuName = "JumpeeIsland/UnitStats", order = 2)]
 public class UnitStats : ScriptableObject
@@ -13,6 +14,6 @@ public class UnitStats : ScriptableObject
     public int ExpToLevelUp;
     [Tooltip("Amount of exp that entity destroying this resource can collect")]
     public int ExpReward;
-    public CommandName Command;
+    [FormerlySerializedAs("Command")] public CommandName[] Commands;
     public CreatureType CreatureType;
 }

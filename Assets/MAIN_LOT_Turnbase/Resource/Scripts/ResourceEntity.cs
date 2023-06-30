@@ -42,20 +42,6 @@ namespace JumpeeIsland
                 OnUnitDie.Invoke(this);
         }
 
-        public override CommandName GetCommand()
-        {
-            return m_CurrentStats.Commands[0];
-        }
-
-        public void ContributeCommands()
-        {
-            foreach (var command in m_CurrentStats.Commands)
-            {
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_ResourceData.Position);
-            }
-        }
-
         public override FactionType GetFaction()
         {
             return m_ResourceData.FactionType;
@@ -89,6 +75,7 @@ namespace JumpeeIsland
         public override void DieIndividualProcess(Entity killedByEntity)
         {
             // TODO add animation or effect here
+            OnUnitDie.RemoveAllListeners();
         }
 
         #endregion
@@ -125,6 +112,17 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region GENERAL
+
+        public override void ContributeCommands()
+        {
+            foreach (var command in m_CurrentStats.Commands)
+            {
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_ResourceData.Position);
+            }
+        }
+
         public override void RefreshEntity()
         {
             // Set entity stats
@@ -144,5 +142,7 @@ namespace JumpeeIsland
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);
             OnUnitDie.AddListener(DieIndividualProcess);
         }
+
+        #endregion
     }
 }

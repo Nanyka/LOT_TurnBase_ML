@@ -38,15 +38,6 @@ namespace JumpeeIsland
             // SetTempIndex();
             m_NpcActionInferer.Init();
         }
-
-        // private void SetTempIndex()
-        // {
-        //     for (int i = 0; i < m_Enemies.Count; i++)
-        //     {
-        //         var enemy = m_Enemies[i];
-        //         enemy.InferMoving.AgentIndex = i;
-        //     }
-        // }
         
         private void SetTempIndex()
         {

@@ -38,11 +38,6 @@ namespace JumpeeIsland
             return m_BuildingData;
         }
 
-        public override CommandName GetCommand()
-        {
-            throw new NotImplementedException();
-        }
-
         public override FactionType GetFaction()
         {
             return m_BuildingData.FactionType;
@@ -71,11 +66,11 @@ namespace JumpeeIsland
             }
         }
 
-        public int GetStorageSpace(CurrencyType currencyType, ref Queue<BuildingEntity> selectedBuildings)
+        public int GetStorageSpace(CurrencyType currencyType, ref List<BuildingEntity> selectedBuildings)
         {
             if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
             {
-                selectedBuildings.Enqueue(this);
+                selectedBuildings.Add(this);
                 return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
             }
 
@@ -129,11 +124,8 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
+            OnUnitDie.RemoveAllListeners();
             // TODO die visualization
-            // Check to remove consumable inventory item
-            if (m_BuildingData.FactionType == FactionType.Player)
-            {
-            }
         }
 
         #endregion
@@ -170,6 +162,14 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region GENERAL
+
+        public override void ContributeCommands()
+        {
+            // TODO contribute its resource based on storage amount
+            throw new NotImplementedException();
+        }
+
         public override void RefreshEntity()
         {
             ResetEntity();
@@ -202,5 +202,7 @@ namespace JumpeeIsland
                 m_BuildingData.CurrentHp = m_CurrentStats.MaxHp;
             }
         }
+
+        #endregion
     }
 }

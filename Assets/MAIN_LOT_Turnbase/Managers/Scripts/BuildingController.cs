@@ -72,7 +72,7 @@ namespace JumpeeIsland
             
             // Check if enough storage space
             int currentStorage = 0;
-            Queue<BuildingEntity> selectedBuildings = new Queue<BuildingEntity>();
+            List<BuildingEntity> selectedBuildings = new List<BuildingEntity>();
             if (Enum.TryParse(currencyId, out CurrencyType currency))
                 foreach (var t in m_buildings)
                     currentStorage += t.GetStoreSpace(currency, ref selectedBuildings);
@@ -81,11 +81,14 @@ namespace JumpeeIsland
 
             if (amount == 0 || selectedBuildings.Count == 0)
                 return;
+            
+            GeneralAlgorithm.Shuffle(selectedBuildings); // Shuffle buildings to ensure random selection
 
             // Stock currency to building and grain exp
-            while (amount > 0)
+            foreach (var building in selectedBuildings)
             {
-                var building = selectedBuildings.Dequeue();
+                if (amount <= 0)
+                    break;
                 var storeAmount = building.GetStorageSpace(currency);
                 storeAmount = storeAmount > amount ? amount : storeAmount;
                 building.StoreCurrency(storeAmount);

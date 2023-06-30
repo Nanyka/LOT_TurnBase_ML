@@ -286,14 +286,19 @@ namespace JumpeeIsland
             await _commandBatchManager.SubmitListCommands(commandCache, _cloudCodeManager, _remoteConfigManager);
         }
 
-        public void OnGrantCurrency(string currencyId, int amount)
+        public async void OnGrantCurrency(string currencyId, int amount)
         {
-            _economyManager.OnGrantCurrency(currencyId, amount);
+            await _economyManager.OnGrantCurrency(currencyId, amount);
         }
 
         public async void DeductCurrency(string currencyId, int amount)
         {
             await _economyManager.DeductCurrency(currencyId, amount);
+        }
+
+        public async void OnSetCurrency(string currencyId, int amount)
+        {
+            await _economyManager.OnSetCurrency(currencyId, amount);
         }
 
         #endregion

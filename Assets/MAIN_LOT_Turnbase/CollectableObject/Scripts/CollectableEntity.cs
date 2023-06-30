@@ -38,34 +38,6 @@ namespace JumpeeIsland
                 OnUnitDie.Invoke(this);
         }
 
-        public override CommandName GetCommand()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Collect()
-        {
-            foreach (var command in m_CurrentStat.Commands)
-            {
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
-            }
-
-            if (m_CurrentStat.SpawnedEntityType == EntityType.NONE)
-                return;
-
-            switch (m_CurrentStat.SpawnedEntityType)
-            {
-                case EntityType.BUILDING:
-                    SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position,
-                        true);
-                    break;
-                case EntityType.ENEMY:
-                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,m_CollectableData.Position);
-                    break;
-            }
-        }
-
         public override FactionType GetFaction()
         {
             return m_CollectableData.FactionType;
@@ -98,6 +70,7 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
+            OnUnitDie.RemoveAllListeners();
             // TODO add animation or effect here
         }
 
@@ -121,6 +94,31 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
+        #region GENERAL
+        
+        public override void ContributeCommands()
+        {
+            foreach (var command in m_CurrentStat.Commands)
+            {
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
+            }
+
+            if (m_CurrentStat.SpawnedEntityType == EntityType.NONE)
+                return;
+
+            switch (m_CurrentStat.SpawnedEntityType)
+            {
+                case EntityType.BUILDING:
+                    SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position,
+                        true);
+                    break;
+                case EntityType.ENEMY:
+                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,m_CollectableData.Position);
+                    break;
+            }
+        }
+
         public override void RefreshEntity()
         {
             // Set entity stats
@@ -135,5 +133,7 @@ namespace JumpeeIsland
             m_CollectComp.Init(OnUnitDie);
             OnUnitDie.AddListener(DieIndividualProcess);
         }
+
+        #endregion
     }
 }
