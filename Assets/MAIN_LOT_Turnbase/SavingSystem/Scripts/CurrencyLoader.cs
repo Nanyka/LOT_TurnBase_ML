@@ -50,7 +50,6 @@ namespace JumpeeIsland
                 var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
                 if (localBalance.Balance != currency.Balance)
                 {
-                    Debug.Log($"{localBalance.CurrencyId} change {localBalance.Balance - currency.Balance}");
                     currency.Balance = localBalance.Balance;
                     SavingSystemManager.Instance.OnSetCurrency(localBalance.CurrencyId,localBalance.Balance);
                 }
@@ -74,9 +73,10 @@ namespace JumpeeIsland
             return GetCurrency(m_MoveId);
         }
 
-        public void SetData(List<PlayerBalance> currencies)
+        public void ResetCurrencies(List<PlayerBalance> currencies)
         {
             m_Currencies = currencies;
+            SavingSystemManager.Instance.SaveLocalBalances(BalanceForSaving());
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 

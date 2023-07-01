@@ -8,7 +8,7 @@ namespace JumpeeIsland
     public class CollectableObjectLoader : MonoBehaviour, ILoadData
     {
         [SerializeField] private ObjectPool _collectablePool;
-        private List<CollectableData> _collectableDatas;
+        private List<CollectableData> _collectableData;
         private CollectableController _collectableController;
 
         private void Start()
@@ -19,15 +19,15 @@ namespace JumpeeIsland
 
         public void StartUpLoadData<T>(T data)
         {
-            _collectableDatas = (List<CollectableData>)Convert.ChangeType(data, typeof(List<CollectableData>));
+            _collectableData = (List<CollectableData>)Convert.ChangeType(data, typeof(List<CollectableData>));
         }
 
         private void Init()
         {
-            if (_collectableDatas == null)
+            if (_collectableData == null)
                 return;
 
-            foreach (var collectable in _collectableDatas)
+            foreach (var collectable in _collectableData)
             {
                 SpawnCollectableObject(collectable);
             }
@@ -57,7 +57,8 @@ namespace JumpeeIsland
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            _collectablePool.ResetPool();
+            _collectableData = new List<CollectableData>();
         }
     }
 }

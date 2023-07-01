@@ -224,7 +224,8 @@ namespace JumpeeIsland
                 m_EnvLoader.SetData(cloudEnvData);
                 SavePlayerEnv();
                 await m_CloudConnector.OnResetBasicInventory(m_BasicInventory.ToList());
-                m_CloudConnector.PlayerRecordScore(0);
+                m_CloudConnector.PlayerRecordScore(cloudEnvData.CalculateScore());
+                m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
             }
         }
 
@@ -382,7 +383,7 @@ namespace JumpeeIsland
 
         private async void RefreshBalances()
         {
-            m_CurrencyLoader.SetData(await m_CloudConnector.OnLoadCurrency());
+            m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
         }
 
         public void IncrementLocalCurrency(string rewardID, int rewardAmount)
@@ -440,6 +441,11 @@ namespace JumpeeIsland
         #endregion
 
         #region INVENTORY
+
+        public async void ResetBasicInventory()
+        {
+            await m_CloudConnector.OnResetBasicInventory(m_BasicInventory.ToList());
+        }
 
         public void OnAskForShowingBuildingMenu()
         {

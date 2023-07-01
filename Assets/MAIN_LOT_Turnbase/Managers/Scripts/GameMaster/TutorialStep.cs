@@ -37,7 +37,9 @@ namespace JumpeeIsland
         [VerticalGroup("Enemy/Row2")]
         public int SpawnEnemyLevel;
         public bool CheckEndCondition;
-        [ShowIf("@CheckEndCondition == true")] public GameMasterCondition EndCondition;
+        [VerticalGroup("CheckEndCondition",VisibleIf = "@CheckEndCondition == true")]
+        [VerticalGroup("CheckEndCondition/Row1")] public GameMasterCondition EndCondition;
+        [VerticalGroup("CheckEndCondition/Row2")] public bool IsEndTutorial;
         public bool Conversation;
         [ShowIf("@Conversation == true")] public string Message;
     }

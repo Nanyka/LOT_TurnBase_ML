@@ -7,10 +7,13 @@ namespace JumpeeIsland
     public class InventoryLoader : MonoBehaviour
     {
         private List<JIInventoryItem> m_Inventories;
-        
+
         public void SetData(List<PlayersInventoryItem> inventories)
         {
             m_Inventories = new();
+            
+            if (inventories.Count == 0)
+                SavingSystemManager.Instance.ResetBasicInventory();
 
             foreach (var item in inventories)
                 m_Inventories.Add(item.GetItemDefinition().CustomDataDeserializable.GetAs<JIInventoryItem>());
@@ -20,12 +23,12 @@ namespace JumpeeIsland
         {
             MainUI.Instance.OnBuyBuildingMenu.Invoke(m_Inventories);
         }
-        
+
         public void SendInventoriesToCreatureMenu()
         {
             MainUI.Instance.OnShowCreatureMenu.Invoke(m_Inventories);
         }
-        
+
         public IEnumerable<JIInventoryItem> GetInventoriesByType(InventoryType inventoryType)
         {
             return m_Inventories.FindAll(t => t.inventoryType == inventoryType);

@@ -76,9 +76,9 @@ namespace JumpeeIsland
 
         [VerticalGroup("Score/Row1")] public int ScoreAmount;
 
-        public bool PassCondition()
+        public bool CheckPass()
         {
-            return CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
+            return CheckMapSize() && CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
                    CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore();
         }
 
@@ -247,7 +247,6 @@ namespace JumpeeIsland
                 return true;
 
             var totalScore = SavingSystemManager.Instance.CalculateEnvScore();
-            Debug.Log($"Check current score: {totalScore}");
             switch (BuildingCompare)
             {
                 case CompareType.Higher:

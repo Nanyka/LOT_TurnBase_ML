@@ -14,7 +14,7 @@ namespace JumpeeIsland
         {
             foreach (var condition in Conditions)
             {
-                if (condition.PassCondition() == false)
+                if (condition.CheckPass() == false)
                     return String.Empty;
             }
 
