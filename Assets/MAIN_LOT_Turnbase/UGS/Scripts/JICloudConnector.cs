@@ -307,7 +307,7 @@ namespace JumpeeIsland
 
         public async Task OnResetBasicInventory(List<string> basicInventory)
         {
-            await _economyManager.ResetInventory();
+            await _economyManager.ClearInventory();
 
             foreach (var inventoryId in basicInventory)
                 OnGrantInventory(inventoryId);

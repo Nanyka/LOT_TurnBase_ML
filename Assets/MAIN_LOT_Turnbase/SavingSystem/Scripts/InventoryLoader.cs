@@ -11,9 +11,6 @@ namespace JumpeeIsland
         public void SetData(List<PlayersInventoryItem> inventories)
         {
             m_Inventories = new();
-            
-            if (inventories.Count == 0)
-                SavingSystemManager.Instance.ResetBasicInventory();
 
             foreach (var item in inventories)
                 m_Inventories.Add(item.GetItemDefinition().CustomDataDeserializable.GetAs<JIInventoryItem>());

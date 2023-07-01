@@ -157,13 +157,20 @@ namespace JumpeeIsland
             return inventoryItemDefinitions;
         }
 
-        public async Task ResetInventory()
+        public async Task ClearInventory()
         {
-            if (_playersInventory == null)
+            if (_playersInventory == null || _playersInventory.Count == 0)
                 return;
             
+            Debug.Log($"Total player inventory: {_playersInventory.Count}");
+            
             foreach (var inventory in _playersInventory)
-                await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory.PlayersInventoryItemId);
+            {
+                Debug.Log($"Try to remove {inventory.InventoryItemId}");
+                
+                await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory
+                    .PlayersInventoryItemId);
+            }        
         }
 
         // This method is used to help test this Use Case sample by giving some currency to permit

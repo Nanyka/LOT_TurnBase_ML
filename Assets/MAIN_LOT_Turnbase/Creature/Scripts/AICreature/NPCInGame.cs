@@ -116,6 +116,7 @@ namespace JumpeeIsland
 
         private IEnumerator MoveOverTime()
         {
+            m_Entity.SetAnimation(AnimateType.Walk, true);
             m_Entity.UpdateTransform(InferMoving.TargetPos, _rotatePart.eulerAngles);
             while (transform.position != InferMoving.TargetPos)
             {
@@ -123,6 +124,7 @@ namespace JumpeeIsland
                 yield return null;
             }
 
+            m_Entity.SetAnimation(AnimateType.Walk, false);
             // Ask for the next inference
             m_FactionController.KickOffNewTurn();
         }

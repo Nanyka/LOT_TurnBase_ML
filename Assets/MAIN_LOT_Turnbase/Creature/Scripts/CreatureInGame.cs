@@ -53,14 +53,14 @@ namespace JumpeeIsland
             if (_movement.targetPos != m_Transform.position)
                 _rotatePart.forward = _movement.targetPos - m_Transform.position;
 
-            _isUsed = true;
-            m_Entity.SetAnimation(AnimateType.Walk, true);
-            m_Entity.UpdateTransform(_movement.targetPos, _rotatePart.eulerAngles);
+            MarkAsUsedThisTurn();
             StartCoroutine(MoveOverTime(_movement.targetPos));
         }
 
         private IEnumerator MoveOverTime(Vector3 targetPos)
         {
+            m_Entity.SetAnimation(AnimateType.Walk, true);
+            m_Entity.UpdateTransform(_movement.targetPos, _rotatePart.eulerAngles);
             while (m_Transform.position != targetPos)
             {
                 m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 2f * Time.deltaTime);
