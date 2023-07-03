@@ -162,15 +162,15 @@ namespace JumpeeIsland
             if (_playersInventory == null || _playersInventory.Count == 0)
                 return;
             
-            Debug.Log($"Total player inventory: {_playersInventory.Count}");
-            
             foreach (var inventory in _playersInventory)
             {
                 Debug.Log($"Try to remove {inventory.InventoryItemId}");
                 
                 await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory
                     .PlayersInventoryItemId);
-            }        
+            }
+
+            await RefreshInventory();
         }
 
         // This method is used to help test this Use Case sample by giving some currency to permit
@@ -191,8 +191,7 @@ namespace JumpeeIsland
         {
             foreach (var inventory in _playersInventory)
                 if (inventory.InventoryItemId.Equals(inventoryId))
-                    await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory
-                        .PlayersInventoryItemId);
+                    return;
             
             await GrantDebugInventory(inventoryId);
         }
