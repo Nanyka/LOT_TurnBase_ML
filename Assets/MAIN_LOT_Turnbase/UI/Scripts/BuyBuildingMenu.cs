@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Sirenix.Utilities;
 using UnityEngine;
 
@@ -66,8 +67,9 @@ namespace JumpeeIsland
             _confirmPanel.SetActive(true);
         }
 
-        public void OnMakeTheDeal()
+        public async void OnMakeTheDeal()
         {
+            await SavingSystemManager.Instance.RefreshEconomy();
             _currentConfirm.ClickYes();
             CleanGhostBuilding();
         }

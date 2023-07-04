@@ -40,9 +40,9 @@ namespace JumpeeIsland
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (MainUI.Instance.IsInteractable == false  || PointingChecker.IsPointerOverUIObject())
+                if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
                     return;
-                
+
                 if (m_Environment.GetCurrFaction() != m_Faction)
                     return;
 
@@ -60,6 +60,9 @@ namespace JumpeeIsland
             if (m_Environment.GetCurrFaction() != m_Faction)
                 return;
 
+            if (_creatures.Count == 0)
+                EndTurn();
+
             foreach (var creature in _creatures)
                 creature.NewTurnReset();
 
@@ -69,6 +72,7 @@ namespace JumpeeIsland
         public void KickOffNewTurn()
         {
             _countMovedUnit = 0;
+            SelectUnit(_creatures[0].GetCurrentPosition());
         }
 
         // Show unit selection && Show moving path when unit is still available
@@ -87,7 +91,8 @@ namespace JumpeeIsland
             if (_currentUnit.IsAvailable())
                 m_Environment.OnShowMovingPath.Invoke(_currentUnit.GetCurrentPosition());
             else
-                m_Environment.OnHighlightUnit.Invoke(_currentUnit.GetCurrentPosition()); // TODO highlight unavailable creature
+                m_Environment.OnHighlightUnit.Invoke(_currentUnit
+                    .GetCurrentPosition()); // TODO highlight unavailable creature
 
             GameFlowManager.Instance.OnSelectEntity.Invoke(_currentUnit.GetEntityData());
             MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);

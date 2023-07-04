@@ -58,6 +58,12 @@ namespace JumpeeIsland
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
+        public void RefreshCurrencies(List<PlayerBalance> currencies)
+        {
+            RefreshLocalBalances();
+            Init(currencies);
+        }
+
         public long GetCurrency(string currencyId)
         {
             return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance;
@@ -107,11 +113,19 @@ namespace JumpeeIsland
 
         private LocalBalancesData BalanceForSaving()
         {
-            var localBalances = new LocalBalancesData();
+            RefreshLocalBalances();
+            return m_LocalBalances;
+        }
+
+        private void RefreshLocalBalances()
+        {
+            if (m_LocalBalances == null)
+                m_LocalBalances = new LocalBalancesData();
+
+            m_LocalBalances.LocalBalances.Clear();
 
             foreach (var currency in m_Currencies)
-                localBalances.LocalBalances.Add(new LocalBalance(currency.CurrencyId, (int)currency.Balance));
-            return localBalances;
+                m_LocalBalances.LocalBalances.Add(new LocalBalance(currency.CurrencyId, (int)currency.Balance));
         }
     }
 }

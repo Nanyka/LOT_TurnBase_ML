@@ -29,6 +29,7 @@ namespace JumpeeIsland
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
             MarkAsUsedThisTurn();
+            m_FactionController.WaitForCreature();
         }
 
         public virtual void OnEnable()

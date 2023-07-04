@@ -104,7 +104,7 @@ namespace JumpeeIsland
             LoadLocalCurrencies();
             
             // Load currency after commit MOVE created during skip period
-            await LoadCurrencies();
+            await LoadEconomy();
             // m_CurrencyLoader.Init();
 
             // Load game process to refresh current tutorial
@@ -225,6 +225,7 @@ namespace JumpeeIsland
                 SavePlayerEnv();
                 m_CloudConnector.PlayerRecordScore(cloudEnvData.CalculateScore());
                 m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
+                ResetBasicInventory();
             }
         }
 
@@ -373,11 +374,17 @@ namespace JumpeeIsland
                 m_CurrencyLoader.SetLocalBalances(currencies);
         }
 
-        private async Task LoadCurrencies()
+        private async Task LoadEconomy()
         {
             m_CurrencyLoader.Init(await m_CloudConnector.OnLoadCurrency());
             m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
             m_CloudConnector.OnLoadVirtualPurchase();
+        }
+
+        public async Task RefreshEconomy()
+        {
+            m_CurrencyLoader.RefreshCurrencies(await m_CloudConnector.OnLoadCurrency());
+            m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
         }
 
         private async void RefreshBalances()

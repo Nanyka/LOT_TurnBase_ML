@@ -164,8 +164,6 @@ namespace JumpeeIsland
             
             foreach (var inventory in _playersInventory)
             {
-                Debug.Log($"Try to remove {inventory.InventoryItemId}");
-                
                 await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory
                     .PlayersInventoryItemId);
             }
