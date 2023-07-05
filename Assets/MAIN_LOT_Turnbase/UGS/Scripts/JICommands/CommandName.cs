@@ -1,0 +1,46 @@
+namespace JumpeeIsland
+{
+    // Must also create new JICommand and update at JIRemoteConfigManager, JICloudConnector, CloudCode.JumpeeIsland_ProcessBatch()
+    public enum CommandName
+    {
+        NONE,
+        JI_SPEND_MOVE,
+        JI_NEUTRAL_WOOD_1_0,
+        JI_NEUTRAL_FOOD_1_0,
+        JI_FOOD_1,
+        JI_FOOD_5,
+        JI_FOOD_20,
+        JI_FOOD_50,
+        JI_FOOD_100,
+        JI_FOOD_200,
+        JI_FOOD_500,
+        JI_WOOD_1,
+        JI_WOOD_5,
+        JI_WOOD_20,
+        JI_WOOD_50,
+        JI_WOOD_100,
+        JI_WOOD_200,
+        JI_WOOD_500,
+        JI_COIN_1,
+        JI_COIN_5,
+        JI_COIN_20,
+        JI_COIN_50,
+        JI_COIN_100,
+        JI_COIN_200,
+        JI_COIN_500,
+        JI_GOLD_1,
+        JI_GOLD_5,
+        JI_GOLD_20,
+        JI_GOLD_50,
+        JI_GOLD_100,
+        JI_GOLD_200,
+        JI_GOLD_500,
+        JI_GEM_1,
+        JI_GEM_5,
+        JI_GEM_20,
+        JI_GEM_50,
+        JI_GEM_100,
+        JI_GEM_200,
+        JI_GEM_500
+    }
+}
