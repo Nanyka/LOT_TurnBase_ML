@@ -272,6 +272,10 @@ namespace Unity.Services.Samples.BattlePass
             public ResultReward[] battlePassRewardsFree;
             public ResultReward[] battlePassRewardsPremium;
             public int battlePassSeasonXpPerTier;
+            public int battlePassTierCount;
+            public int eventEndTime;
+            public string eventKey;
+            public int eventTotalDurationMinutes;
             public string eventName;
         }
 
