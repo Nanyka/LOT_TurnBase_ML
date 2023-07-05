@@ -43,7 +43,8 @@ namespace JumpeeIsland
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
-        private GameStateData _gameStateData = new();
+        private GameStateData m_GameStateData = new();
+        private GameProcessData m_GameProcess = new();
         private string _gamePath;
         private bool encrypt = true;
         private bool _isLastSessionDisconnect;
@@ -93,19 +94,16 @@ namespace JumpeeIsland
             // If this process is not complete, the environment will not be save at OnDisable()
             SetInLoadingState(true);
 
-            // Load command must be placed before LoadEnvironment to ensure storages are in proper states
-            // LoadCommands();
-
-            // Load environment and calculate any time-based resource increment
-            await LoadEnvironment();
-            m_EnvLoader.Init();
-            
             // for Testing: Do not LoadCommands(), just use remoteConfig as currency JSON
             LoadLocalCurrencies();
             
             // Load currency after commit MOVE created during skip period
             await LoadEconomy();
             // m_CurrencyLoader.Init();
+
+            // Load environment and calculate any time-based resource increment
+            await LoadEnvironment();
+            m_EnvLoader.Init();
 
             // Load game process to refresh current tutorial
             await LoadGameProcess();
@@ -128,9 +126,9 @@ namespace JumpeeIsland
 
         private void SetInLoadingState(bool isLoading)
         {
-            _gameStateData.IsInLoadingPhase = isLoading;
+            m_GameStateData.IsInLoadingPhase = isLoading;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(_gameStateData, gameStatePath, GameStateWasSaved, encrypt);
+            SaveManager.Instance.Save(m_GameStateData, gameStatePath, GameStateWasSaved, encrypt);
         }
 
         private async Task LoadGameState()
@@ -145,14 +143,13 @@ namespace JumpeeIsland
                 Debug.LogError("No State data File Found -> Creating new data...");
 
             if (result == SaveResult.Success)
-                _gameStateData = gameState;
+                m_GameStateData = gameState;
         }
 
         private void SaveDisconnectedState(bool isDisconnected)
         {
-            _gameStateData.IsDisconnectedLastSession = isDisconnected;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(_gameStateData, gameStatePath, GameStateWasSaved, encrypt);
+            SaveManager.Instance.Save(m_GameStateData, gameStatePath, GameStateWasSaved, encrypt);
         }
 
         private void GameStateWasSaved(SaveResult result, string message)
@@ -163,7 +160,7 @@ namespace JumpeeIsland
 
         public bool CheckLoadingPhaseFinished()
         {
-            return !_gameStateData.IsInLoadingPhase;
+            return !m_GameStateData.IsInLoadingPhase;
         }
 
         #endregion
@@ -376,9 +373,10 @@ namespace JumpeeIsland
 
         private async Task LoadEconomy()
         {
-            m_CurrencyLoader.Init(await m_CloudConnector.OnLoadCurrency());
             m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
             m_CloudConnector.OnLoadVirtualPurchase();
+            m_CurrencyLoader.Init(await m_CloudConnector.OnLoadCurrency());
+            m_CurrencyLoader.GrantMove(await m_CloudConnector.OnGrantMove());
         }
 
         public async Task RefreshEconomy()
@@ -439,7 +437,7 @@ namespace JumpeeIsland
             m_CurrencyLoader.DeductCurrency(currencyId, amount);
         }
 
-        public void OnSetCurrency(string currencyId, int amount)
+        public void OnSetCloudCurrency(string currencyId, int amount)
         {
             m_CloudConnector.OnSetCurrency(currencyId,amount);
         }
@@ -548,16 +546,16 @@ namespace JumpeeIsland
 
         private async Task LoadGameProcess()
         {
-            var currentGameProcess = await m_CloudConnector.OnLoadGameProcess();
-            GameFlowManager.Instance.LoadCurrentTutorial(currentGameProcess == null
+            m_GameProcess = await m_CloudConnector.OnLoadGameProcess();
+            GameFlowManager.Instance.LoadCurrentTutorial(m_GameProcess == null
                 ? "/Tutorials/Tutorial0"
-                : currentGameProcess.currentTutorial);
+                : m_GameProcess.currentTutorial);
         }
 
         public async void SaveCurrentTutorial(string tutorial)
         {
-            var currentProcess = new GameProcessData() { currentTutorial = tutorial };
-            await m_CloudConnector.OnSaveGameProcess(currentProcess);
+            m_GameProcess.currentTutorial = tutorial;
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
         #endregion

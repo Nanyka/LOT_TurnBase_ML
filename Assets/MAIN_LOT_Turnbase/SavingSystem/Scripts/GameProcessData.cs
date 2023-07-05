@@ -4,5 +4,8 @@ namespace JumpeeIsland
     public class GameProcessData
     {
         public string currentTutorial;
+        public long timestamp;
+        public long lastTimestamp;
+        public long moveTimestamp;
     }
 }

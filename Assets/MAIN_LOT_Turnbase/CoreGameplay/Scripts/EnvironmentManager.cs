@@ -16,7 +16,7 @@ namespace JumpeeIsland
 
         [Header("Game Configurations")] 
         [SerializeField] protected bool _isObstacleAsTeam1;
-        [SerializeField] protected FactionType _currFaction;
+        [SerializeField] protected FactionType _currFaction = FactionType.Player;
         [SerializeField] protected int _minStep;
         [SerializeField] protected int _step;
         [SerializeField] protected float refurbishPeriod;
@@ -55,8 +55,13 @@ namespace JumpeeIsland
 
         #region ENVIRONMENT IN GAME
 
-        public void KickOffEnvironment()
+        private void KickOffEnvironment()
         {
+            // At the starting point, every player's creatures is set as disable and loss 1 MOVE as default.
+            // Grant 1 MOVE when kicking of the environment to solve this problem
+            if (GameFlowManager.Instance.IsEcoMode)
+                SavingSystemManager.Instance.GrantCurrency("MOVE",1);
+            
             OnChangeFaction.Invoke();
         }
 
@@ -106,6 +111,7 @@ namespace JumpeeIsland
 
         private void SpendOneMove()
         {
+            Debug.Log("Spend one MOVE");
             _step--;
             SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE);
         }
