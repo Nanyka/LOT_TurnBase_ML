@@ -14,32 +14,6 @@ namespace JumpeeIsland
             _commands.commandBatch.Add(command);
         }
 
-        // public async Task FlushBatch(JICloudCodeManager cloudCodeManager)
-        // {
-        //     try
-        //     {
-        //         var commandKeys = ConvertCommandBatchToCommandKeys();
-        //         await CallCloudCodeEndpoint(commandKeys, cloudCodeManager);
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Debug.LogException(e);
-        //     }
-        // }
-
-        // string[] ConvertCommandBatchToCommandKeys()
-        // {
-        //     var batchSize = _commands.commandBatch.Count;
-        //     var commandKeys = new string[batchSize];
-        //
-        //     for (var i = 0; i < batchSize; i++)
-        //     {
-        //         commandKeys[i] = _commands.commandBatch[i].GetKey().ToString();
-        //     }
-        //
-        //     return commandKeys;
-        // }
-
         async Task CallCloudCodeEndpoint(string[] commandKeys, JICloudCodeManager cloudCodeManager)
         {
             await cloudCodeManager.CallProcessBatchEndpoint(commandKeys);
@@ -57,20 +31,20 @@ namespace JumpeeIsland
             {
                 var commandKeys = ConvertCommandNameToCommandKeys(commandCache.commandList);
                 
-                // Update local UI
-                foreach (var command in commandKeys)
-                {
-                    var rewards = remoteConfigManager.commandRewards[command];
-                    foreach (var reward in rewards)
-                    {
-                        switch (reward.service)
-                        {
-                            case "currency":
-                                SavingSystemManager.Instance.IncrementLocalCurrency(reward.id, reward.amount);
-                                break;
-                        }
-                    }
-                }
+                // Update local UI. After change to submit at the beginning of the game, we must not double update UI
+                // foreach (var command in commandKeys)
+                // {
+                //     var rewards = remoteConfigManager.commandRewards[command];
+                //     foreach (var reward in rewards)
+                //     {
+                //         switch (reward.service)
+                //         {
+                //             case "currency":
+                //                 SavingSystemManager.Instance.IncrementLocalCurrency(reward.id, reward.amount);
+                //                 break;
+                //         }
+                //     }
+                // }
                 
                 // Contribute the previous session changes to cloud
                 await CallCloudCodeEndpoint(commandKeys, cloudCodeManager);

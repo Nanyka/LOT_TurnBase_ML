@@ -111,9 +111,7 @@ namespace JumpeeIsland
         {
             var subGoals = m_GoalManager.GetCurrentGoal();
             foreach (var goal in subGoals)
-            {
                 Goals.Add(goal, goal.Weight);
-            }
         }
 
         #endregion

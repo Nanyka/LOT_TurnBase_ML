@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CreateAssetMenu(fileName = "Skill", menuName = "TurnBase/Skill", order = 1)]
+[CreateAssetMenu(fileName = "Skill", menuName = "JumpeeIsland/Skill", order = 1)]
 public class Skill_SO : ScriptableObject
 {
     //Manage attribute of unit's skills

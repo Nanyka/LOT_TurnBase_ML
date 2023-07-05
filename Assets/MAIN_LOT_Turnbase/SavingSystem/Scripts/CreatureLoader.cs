@@ -12,7 +12,7 @@ namespace JumpeeIsland
         private IFactionController _factionController;
         private ObjectPool _creaturePool;
         private List<CreatureData> _creatureDatas;
-        
+
         public void StartUpLoadData<T>(T data)
         {
             _creatureDatas = (List<CreatureData>)Convert.ChangeType(data, typeof(List<CreatureData>));
@@ -29,7 +29,7 @@ namespace JumpeeIsland
         {
             foreach (var creatureData in _creatureDatas)
                 TrainANewCreature(creatureData);
-            
+
             _factionController.Init();
         }
 
@@ -42,7 +42,10 @@ namespace JumpeeIsland
         private void TrainANewCreature(CreatureData creatureData)
         {
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
-            creatureData.CreatureType = _factionController.GetFaction(); // assign Faction
+            if (creatureObj == null)
+                return;
+
+            creatureData.FactionType = _factionController.GetFaction(); // assign Faction
             GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
 
             if (creatureObj.TryGetComponent(out CreatureInGame creatureInGame))
@@ -51,7 +54,7 @@ namespace JumpeeIsland
                 creatureInGame.Init(creatureData, _factionController);
             }
         }
-        
+
         public void Reset()
         {
             _creaturePool.ResetPool();

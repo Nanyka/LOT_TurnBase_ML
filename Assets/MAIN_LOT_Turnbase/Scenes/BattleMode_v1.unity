@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571337, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029517, g: 0.22573823, b: 0.30694664, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -246,9 +246,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: JumpeeIsland.ShowBattleCreatureMenu, Assembly-CSharp
-        m_MethodName: OnOpenCreatureMenu
+      - m_Target: {fileID: 975180754}
+        m_TargetAssemblyTypeName: JumpeeIsland.ChangeModeButton, Assembly-CSharp
+        m_MethodName: OnClickChangeMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -390,11 +390,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - prefab: {fileID: 526198340007786470, guid: 0dbe373d93af744f7acb7a36034469d2, type: 3}
+  - prefab: {fileID: 2469918306906997232, guid: 0dbe373d93af744f7acb7a36034469d2, type: 3}
     prefCollector: {fileID: 162778264}
     amount: 0
     expandable: 1
-  - prefab: {fileID: 8029324093239343947, guid: 3df451448cf1c478299ff2a2e9cbf5b6, type: 3}
+  - prefab: {fileID: 8272011093721785372, guid: 3df451448cf1c478299ff2a2e9cbf5b6, type: 3}
+    prefCollector: {fileID: 162778264}
+    amount: 0
+    expandable: 1
+  - prefab: {fileID: 3426229457550688422, guid: 0acafaeff5033446ba0b7bedd469e422, type: 3}
     prefCollector: {fileID: 162778264}
     amount: 0
     expandable: 1
@@ -424,9 +428,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Faction: 1
-  m_Enemies: []
-  _factionMaterial: {fileID: 2100000, guid: f13ff9c5acc1c47ee887b8c9d30eea9f, type: 2}
-  _defaultMaterial: {fileID: 2100000, guid: bbb71e91b4d8a44999b1f690a488dc5a, type: 2}
 --- !u!114 &162778269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,15 +502,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - prefab: {fileID: 3955766802612495538, guid: 576057d3f6e184a86aab51f639b55e0e, type: 3}
+  - prefab: {fileID: 3136725998028430087, guid: 576057d3f6e184a86aab51f639b55e0e, type: 3}
     prefCollector: {fileID: 218828472}
     amount: 0
     expandable: 1
-  - prefab: {fileID: 3955766802612495538, guid: 7812be7518498475b82a4dd1de204055, type: 3}
+  - prefab: {fileID: 1936349694109300059, guid: 7812be7518498475b82a4dd1de204055, type: 3}
     prefCollector: {fileID: 218828472}
     amount: 0
     expandable: 1
-  - prefab: {fileID: 3059673418706724716, guid: c9e8d5f181a114ed18b649fd4c96215a, type: 3}
+  - prefab: {fileID: 2577027123489191492, guid: c9e8d5f181a114ed18b649fd4c96215a, type: 3}
     prefCollector: {fileID: 218828472}
     amount: 0
     expandable: 1
@@ -631,6 +632,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1300729467}
+  - {fileID: 644342298}
   - {fileID: 384461262}
   - {fileID: 218828472}
   - {fileID: 1029899311}
@@ -1077,9 +1079,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - prefab: {fileID: 7219380861596647775, guid: 0f6fa4d3ff80b47db95d294c581e5ac8, type: 3}
+  - prefab: {fileID: 7958129648120321236, guid: 0f6fa4d3ff80b47db95d294c581e5ac8, type: 3}
     prefCollector: {fileID: 384461262}
-    amount: 1
+    amount: 0
+    expandable: 1
+  - prefab: {fileID: 1297715290777600837, guid: 17f65e2da866d4d18878cfd7d48008e5, type: 3}
+    prefCollector: {fileID: 384461262}
+    amount: 0
     expandable: 1
   pooledItems: []
 --- !u!114 &384461265
@@ -1321,6 +1327,83 @@ RectTransform:
   m_AnchoredPosition: {x: 30, y: 0}
   m_SizeDelta: {x: 60, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &644342297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 644342298}
+  - component: {fileID: 644342301}
+  - component: {fileID: 644342300}
+  - component: {fileID: 644342299}
+  m_Layer: 0
+  m_Name: CollectableManager<3>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &644342298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644342297}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 231263777}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &644342299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644342297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0383fd8a2bc4402bb7445c9ad38b66d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &644342300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644342297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d602a92ccdc744c9b1fc61148ff77fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - prefab: {fileID: 5629658942280852504, guid: e3d8a19e2ba7a4750b56cc28daf98176, type: 3}
+    prefCollector: {fileID: 644342298}
+    amount: 0
+    expandable: 1
+  pooledItems: []
+--- !u!114 &644342301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644342297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111c2fa840a9e4efc91f213390176a19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collectablePool: {fileID: 644342300}
 --- !u!1 &666026840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,8 +1473,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 584c1d20e0f414adaa5759c96e60425c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _decisions:
-  - {fileID: 11400000, guid: ad91f494d16d3427ba7e4f2bb5c3c66d, type: 2}
+  _changeDesicion: []
+  _spawnTree: {fileID: 11400000, guid: ad91f494d16d3427ba7e4f2bb5c3c66d, type: 2}
+  _spawnGame: {fileID: 0}
+  _spawnObstacle: {fileID: 0}
+  _spawnChess: {fileID: 0}
+  _spawnBoss: {fileID: 0}
 --- !u!114 &666026845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,6 +1504,7 @@ MonoBehaviour:
     value: 0
   mNavMeshAgent: {fileID: 0}
   running: 0
+  _resourceId: 
 --- !u!114 &666026846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1998,8 +2086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e96acaa5ad74c7ca6195e8000309c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugCurrencyAmount: 10
-  _debugInventoryAmount: 1
 --- !u!114 &974339812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2378,9 +2464,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - prefab: {fileID: 6139275472149662902, guid: d5273634fcfe5431aa95e5f2431a8d7a, type: 3}
+  - prefab: {fileID: 549935610231604737, guid: d5273634fcfe5431aa95e5f2431a8d7a, type: 3}
     prefCollector: {fileID: 1029899311}
-    amount: 1
+    amount: 0
+    expandable: 1
+  - prefab: {fileID: 5362190032218629088, guid: d7d96aa77acbb4879aacfb68f0d2a19d, type: 3}
+    prefCollector: {fileID: 1029899311}
+    amount: 0
     expandable: 1
   pooledItems: []
 --- !u!114 &1029899314
@@ -2396,8 +2486,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Faction: 0
-  _factionMaterial: {fileID: 2100000, guid: c9fa44c2c3f8ce74ca39a3355ea42631, type: 2}
-  _defaultMaterial: {fileID: 2100000, guid: bbb71e91b4d8a44999b1f690a488dc5a, type: 2}
 --- !u!1 &1121141582
 GameObject:
   m_ObjectHideFlags: 0
@@ -3382,8 +3470,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc77170bad6744746aac64699ae733f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _freeSpaceMultiplier: 2
+  _expandPoints: []
   _tilePool: {fileID: 1300729469}
+  _totalTile: 0
 --- !u!114 &1300729469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3493,6 +3582,7 @@ MonoBehaviour:
   buildingLoader: {fileID: 218828473}
   playerLoader: {fileID: 1029899312}
   enemyLoader: {fileID: 162778267}
+  collectableLoader: {fileID: 644342301}
   _environmentData:
     timestamp: 0
     lastTimestamp: 0
@@ -3502,6 +3592,7 @@ MonoBehaviour:
     BuildingData: []
     PlayerData: []
     EnemyData: []
+    CollectableData: []
   _playerEnvCache:
     timestamp: 0
     lastTimestamp: 0
@@ -3511,6 +3602,7 @@ MonoBehaviour:
     BuildingData: []
     PlayerData: []
     EnemyData: []
+    CollectableData: []
 --- !u!1 &1562506621
 GameObject:
   m_ObjectHideFlags: 0
@@ -5466,6 +5558,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsInteractable: 0
+  _panels: []
+  _buttons: []
 --- !u!1 &8633663115166501067
 GameObject:
   m_ObjectHideFlags: 0

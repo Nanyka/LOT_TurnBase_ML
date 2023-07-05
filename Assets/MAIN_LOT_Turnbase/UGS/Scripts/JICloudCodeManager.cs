@@ -42,7 +42,6 @@ namespace JumpeeIsland
         {
             try
             {
-                Debug.Log("Send cloud code request");
                 await CloudCodeService.Instance.CallEndpointAsync(
                     "JumpeeIsland_SaveEnvData",
                     new Dictionary<string, object> { { "EnvData", environmentData } });
@@ -55,7 +54,7 @@ namespace JumpeeIsland
             }
         }
         
-        public async Task<EnvironmentData> CallGetUpdatedStateEndpoint()
+        public async Task<EnvironmentData> CallLoadUpdatedStateEndpoint()
         {
             try
             {
@@ -97,7 +96,6 @@ namespace JumpeeIsland
 
         public async Task CallProcessBatchEndpoint(string[] commands)
         {
-            Debug.Log($"Number of commands at cloudCodeManager: {commands.Length}");
             if (commands is null || commands.Length <= 0)
                 return;
 
@@ -110,6 +108,7 @@ namespace JumpeeIsland
                     new Dictionary<string, object> { { "commands", commands } });
 
                 Debug.Log("Cloud Code successfully processed batch.");
+                SavingSystemManager.Instance.OnRefreshBalances.Invoke();
             }
             catch (CloudCodeException e)
             {
@@ -126,7 +125,7 @@ namespace JumpeeIsland
 
         #region LEADERBOARD
 
-        public async Task<EnvironmentData> CallGetEnemyEnvironment(string enemyId)
+        public async Task<EnvironmentData> CallLoadEnemyEnvironment(string enemyId)
         {
             try
             {
@@ -141,6 +140,44 @@ namespace JumpeeIsland
                 HandleCloudCodeException(e);
                 throw new CloudCodeResultUnavailableException(e,
                     "Handled exception in CallGetEnemyEnvironment.");
+            }
+        }
+
+        #endregion
+
+        #region GAME PROCESS
+
+        public async Task CallSaveGameProcess(GameProcessData gameProcess)
+        {
+            try
+            {
+                await CloudCodeService.Instance.CallEndpointAsync(
+                    "JumpeeIsland_SaveGameProcess",
+                    new Dictionary<string, object> { { "CurrentProcess", gameProcess } });
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e,
+                    "Handled exception in CallSaveGameProcess.");
+            }
+        }
+        
+        public async Task<GameProcessData> CallLoadGameProcess()
+        {
+            try
+            {
+                var gameProcess = await CloudCodeService.Instance.CallEndpointAsync<GameProcessData>(
+                    "JumpeeIsland_GetGameProcess",
+                    new Dictionary<string, object>());
+
+                return gameProcess;
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e,
+                    "Handled exception in CallGetGameProcess.");
             }
         }
 

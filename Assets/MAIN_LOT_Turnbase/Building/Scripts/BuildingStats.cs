@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    [CreateAssetMenu(fileName = "BuildingStats", menuName = "TurnBase/BuildingStats", order = 4)]
+    [CreateAssetMenu(fileName = "BuildingStats", menuName = "JumpeeIsland/BuildingStats", order = 4)]
     public class BuildingStats : ScriptableObject
     {
         public BuildingType BuildingType;

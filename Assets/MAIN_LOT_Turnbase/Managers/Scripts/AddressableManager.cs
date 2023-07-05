@@ -23,6 +23,19 @@ namespace JumpeeIsland
             var handle = Addressables.LoadAssetAsync<Sprite>(m_LogPrefab);
             return handle.WaitForCompletion();
         }
+        
+        public ScriptableObject GetAddressableSO(string objectKey)
+        {
+            m_LogPrefab = objectKey;
+
+#if UNITY_STANDALONE_OSX
+            //Add private token to addressable web request header
+            Addressables.WebRequestOverride = AddPrivateToken;
+#endif
+
+            var handle = Addressables.LoadAssetAsync<ScriptableObject>(m_LogPrefab);
+            return handle.WaitForCompletion();
+        }
 
         public void GetAddressableGameObject(string objectKey, Transform spawnTransform)
         {
@@ -33,12 +46,15 @@ namespace JumpeeIsland
             Addressables.WebRequestOverride = AddPrivateToken;
 #endif
 
+            // Reset spawnTransform
+            foreach (Transform child in spawnTransform)
+                Destroy(child.gameObject);
+            
             Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
         }
 
         // Get skin for animated objects
-        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp,
-            AnimateComp animateComp)
+        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp, AnimateComp animateComp)
         {
             m_LogPrefab = objectKey;
 
@@ -47,19 +63,19 @@ namespace JumpeeIsland
             Addressables.WebRequestOverride = AddPrivateToken;
 #endif
 
+            // Reset spawnTransform
+            foreach (Transform child in spawnTransform)
+                Destroy(child.gameObject);
+
             var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
             var skin = handle.WaitForCompletion();
             animateComp.SetAnimator(skin.GetComponent<Animator>());
 
-            var bodyRenderer = skin.transform.Find("Body");
-            if (bodyRenderer != null)
-                if (bodyRenderer.TryGetComponent(out SkinnedMeshRenderer body))
-                    skinComp.ModifyBodyMesh(body);
-
             var factionPart = skin.transform.Find("FactionPart");
             if (factionPart != null)
-                if (factionPart.TryGetComponent(out Renderer part))
-                    skinComp.SetFactionRenderer(part);
+                for (int i = 0; i < factionPart.childCount; i++)
+                    if (factionPart.GetChild(i).TryGetComponent(out Renderer part))
+                        skinComp.SetFactionRenderer(part);
         }
 
         private void AddPrivateToken(UnityWebRequest request)

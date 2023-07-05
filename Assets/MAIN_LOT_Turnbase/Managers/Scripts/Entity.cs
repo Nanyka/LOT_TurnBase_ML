@@ -18,8 +18,6 @@ namespace JumpeeIsland
 
         public abstract EntityData GetData();
 
-        public abstract CommandName GetCommand();
-
         public abstract FactionType GetFaction();
 
         public abstract int GetExpReward();
@@ -34,7 +32,7 @@ namespace JumpeeIsland
 
         public abstract int GetCurrentHealth();
 
-        public abstract void DieCollect(Entity killedByEntity);
+        public abstract void DieIndividualProcess(Entity killedByEntity);
 
         #endregion
         
@@ -59,6 +57,8 @@ namespace JumpeeIsland
         #endregion
 
         #region GENERAL
+
+        public abstract void ContributeCommands();
 
         public abstract void RefreshEntity();
 

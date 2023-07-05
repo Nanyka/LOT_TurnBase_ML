@@ -42,19 +42,9 @@ namespace JumpeeIsland
                 OnUnitDie.Invoke(this);
         }
 
-        // public ResourceData GetResourceData()
-        // {
-        //     return m_ResourceData;
-        // }
-
-        public override CommandName GetCommand()
-        {
-            return m_CurrentStats.Command;
-        }
-
         public override FactionType GetFaction()
         {
-            throw new System.NotImplementedException();
+            return m_ResourceData.FactionType;
         }
 
         public override int GetExpReward()
@@ -82,9 +72,10 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override void DieCollect(Entity killedByEntity)
+        public override void DieIndividualProcess(Entity killedByEntity)
         {
             // TODO add animation or effect here
+            OnUnitDie.RemoveAllListeners();
         }
 
         #endregion
@@ -121,6 +112,17 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region GENERAL
+
+        public override void ContributeCommands()
+        {
+            foreach (var command in m_CurrentStats.Commands)
+            {
+                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_ResourceData.Position);
+            }
+        }
+
         public override void RefreshEntity()
         {
             // Set entity stats
@@ -136,11 +138,11 @@ namespace JumpeeIsland
             }
             
             // Retrieve entity data
-            m_Transform.position = m_ResourceData.Position;
-            m_Transform.eulerAngles = m_ResourceData.Rotation;
-            m_SkinComp.Initiate(m_ResourceData.SkinAddress);
+            m_SkinComp.Init(m_ResourceData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);
-            OnUnitDie.AddListener(DieCollect);
+            OnUnitDie.AddListener(DieIndividualProcess);
         }
+
+        #endregion
     }
 }

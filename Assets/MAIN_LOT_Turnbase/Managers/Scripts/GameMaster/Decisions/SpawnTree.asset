@@ -13,10 +13,20 @@ MonoBehaviour:
   m_Name: SpawnTree
   m_EditorClassIdentifier: 
   Conditions:
-  - Currency: 2
+  - MapSize: 0
+    Currency: 0
+    CurrencyCompare: 0
     CurrencyAmount: 25
     Storage: 0
+    StorageCompare: 0
     StorageAmount: 0
     Resource: 2
+    ResourceCompare: 1
     ResourceAmount: 2
+    Collectable: 0
+    CollectableCompare: 0
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
   State: NEEDTREE

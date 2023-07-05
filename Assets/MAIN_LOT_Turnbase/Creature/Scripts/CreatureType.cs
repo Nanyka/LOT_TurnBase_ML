@@ -2,7 +2,10 @@ namespace JumpeeIsland
 {
     public enum CreatureType
     {
-        Neutral,
-        Enemy
+        NONE,
+        MOVER,
+        PLAYER,
+        ENEMY,
+        BOSS
     }
 }

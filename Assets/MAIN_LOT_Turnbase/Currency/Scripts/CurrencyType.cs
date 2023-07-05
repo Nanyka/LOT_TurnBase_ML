@@ -5,8 +5,10 @@ namespace JumpeeIsland
         NONE,
         FOOD,
         WOOD,
+        COIN,
         GOLD,
-        DIAMOND,
-        STEP
+        GEM,
+        STEP,
+        MULTI
     }
 }

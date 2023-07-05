@@ -21,7 +21,9 @@ namespace JumpeeIsland
                         continue;
 
                     if (enemy.TryGetComponent(out Entity enemyEntity))
+                    {
                         enemyEntity.TakeDamage(damage, mEntity);
+                    }
                 }
             }
         }

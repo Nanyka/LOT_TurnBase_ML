@@ -14,7 +14,7 @@ namespace JumpeeIsland
         
         public override void Awake() { }
 
-        public new virtual void OnEnable()
+        public override void OnEnable()
         {
             m_Entity.OnUnitDie.AddListener(UnitDie);
             m_Transform = transform;

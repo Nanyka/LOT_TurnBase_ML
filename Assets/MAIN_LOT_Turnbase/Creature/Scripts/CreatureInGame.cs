@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JumpeeIsland;
@@ -5,8 +6,6 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    // TODO replicate UnitMovement
-
     public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity
     {
         [Header("Creature Components")] [SerializeField]
@@ -19,19 +18,29 @@ namespace JumpeeIsland
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
-        private bool _isUsed;
+        [SerializeField] private bool _isUsed;
 
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
+            m_Transform.position = creatureData.Position;
+            _rotatePart.eulerAngles = creatureData.Rotation;
+            
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
+            MarkAsUsedThisTurn();
+            m_FactionController.WaitForCreature();
         }
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             m_Entity.OnUnitDie.AddListener(UnitDie);
             m_Transform = transform;
+        }
+
+        private void OnDisable()
+        {
+            m_Entity.OnUnitDie.RemoveListener(UnitDie);
         }
 
         public void MoveDirection(int moveDirection)
@@ -45,17 +54,17 @@ namespace JumpeeIsland
             if (_movement.targetPos != m_Transform.position)
                 _rotatePart.forward = _movement.targetPos - m_Transform.position;
 
-            _isUsed = true;
-            m_Entity.SetAnimation(AnimateType.Walk, true);
-            m_Entity.UpdateTransform(_movement.targetPos, _rotatePart.eulerAngles);
+            MarkAsUsedThisTurn();
             StartCoroutine(MoveOverTime(_movement.targetPos));
         }
 
         private IEnumerator MoveOverTime(Vector3 targetPos)
         {
+            m_Entity.SetAnimation(AnimateType.Walk, true);
+            m_Entity.UpdateTransform(_movement.targetPos, _rotatePart.eulerAngles);
             while (m_Transform.position != targetPos)
             {
-                m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 5f * Time.deltaTime);
+                m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 2f * Time.deltaTime);
                 yield return null;
             }
 
@@ -63,12 +72,12 @@ namespace JumpeeIsland
             m_FactionController.WaitForCreature();
         }
 
-        public void NewTurnReset(Material factionMaterial)
+        public void NewTurnReset()
         {
             _isUsed = false;
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
-            SetMaterial(factionMaterial);
+            m_Entity.SetActiveMaterial();
         }
 
         public void Attack()
@@ -100,6 +109,11 @@ namespace JumpeeIsland
             return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
         }
 
+        public EntityData GetEntityData()
+        {
+            return m_Entity.GetData();
+        }
+        
         public EnvironmentManager GetEnvironment()
         {
             return m_FactionController.GetEnvironment();
@@ -115,9 +129,9 @@ namespace JumpeeIsland
             return _isUsed;
         }
 
-        public void SetMaterial(Material setMaterial)
+        public void SetDisableMaterial()
         {
-            m_Entity.SetSkinMaterial(setMaterial);
+            m_Entity.SetDisableMaterial();
         }
 
         public void MarkAsUsedThisTurn()
@@ -125,21 +139,19 @@ namespace JumpeeIsland
             _isUsed = true;
         }
 
-        protected virtual void UnitDie(Entity killedByEntity)
+        protected void UnitDie(Entity killedByEntity)
         {
             // just contribute resource when it is killed by player faction
             if (killedByEntity.GetFaction() == FactionType.Player)
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(m_Entity.GetCommand());
+                m_Entity.ContributeCommands();
 
-            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
+            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this); // remove its domain
             m_FactionController.RemoveAgent(this);
             StartCoroutine(DieVisual());
         }
 
         private IEnumerator DieVisual()
         {
-            // Collect currencies
-            // VFX
             yield return new WaitForSeconds(1f);
             gameObject.SetActive(false);
         }
@@ -152,10 +164,10 @@ namespace JumpeeIsland
                 environmentData.EnemyData.Remove((CreatureData) m_Entity.GetData());
         }
 
-        public void ResetMoveState(Material factionMaterial)
+        public void ResetMoveState()
         {
             _isUsed = false;
-            m_Entity.SetSkinMaterial(factionMaterial);
+            m_Entity.SetActiveMaterial();
         }
 
         #endregion

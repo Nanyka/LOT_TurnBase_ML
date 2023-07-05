@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JumpeeIsland
 {
@@ -13,6 +14,7 @@ namespace JumpeeIsland
         public List<BuildingData> BuildingData;
         public List<CreatureData> PlayerData;
         public List<CreatureData> EnemyData;
+        public List<CollectableData> CollectableData;
 
         public void AddBuildingData(BuildingData data)
         {
@@ -24,20 +26,37 @@ namespace JumpeeIsland
             PlayerData.Add(data);
         }
 
-        public void AddResourceData(ResourceData resourceData)
+        public void AddResourceData(ResourceData data)
         {
-            ResourceData.Add(resourceData);
+            ResourceData.Add(data);
         }
+
+        public void AddCollectableData(CollectableData data)
+        {
+            CollectableData.Add(data);
+        }
+
+        public void AddEnemyData(CreatureData data)
+        {
+            EnemyData.Add(data);
+        }
+
+        public bool CheckStorable()
+        {
+            return ResourceData.Any() || BuildingData.Any();
+        }
+
+        #region BATTLE MODE
 
         public void PrepareForBattleMode(List<CreatureData> playerData)
         {
             foreach (var building in BuildingData)
-                building.CreatureType = FactionType.Enemy;
+                building.FactionType = FactionType.Enemy;
 
             EnemyData.Clear();
             foreach (var creatureData in PlayerData)
             {
-                creatureData.CreatureType = FactionType.Enemy;
+                creatureData.FactionType = FactionType.Enemy;
                 EnemyData.Add(creatureData);
             }
 
@@ -66,7 +85,7 @@ namespace JumpeeIsland
                     data.CurrentHp = 0;
                     continue;
                 }
-                
+
                 if (data.EntityName.Equals(playerData[checkingIndex].EntityName))
                 {
                     data.CurrentHp = playerData[checkingIndex].CurrentHp;
@@ -79,5 +98,25 @@ namespace JumpeeIsland
 
             PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
         }
+
+        #endregion
+
+        #region SCORE
+
+        public int CalculateScore()
+        {
+            int totalScore = 0;
+            foreach (var building in BuildingData)
+                totalScore += (building.CurrentHp + building.CurrentDamage + building.CurrentShield) *
+                              (1 + building.CurrentLevel);
+
+            foreach (var creature in PlayerData)
+                totalScore += (creature.CurrentHp + creature.CurrentDamage + creature.CurrentShield) *
+                              (1 + creature.CurrentLevel);
+
+            return totalScore;
+        }
+
+        #endregion
     }
 }

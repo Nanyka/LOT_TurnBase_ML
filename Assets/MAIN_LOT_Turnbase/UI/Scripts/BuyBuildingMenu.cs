@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -28,7 +31,8 @@ namespace JumpeeIsland
                 buyButton.TurnOff();
 
             var index = 0;
-            foreach (var inventory in inventories)
+            var orderedInventories = inventories.OrderBy(t => t.inventoryName);
+            foreach (var inventory in orderedInventories)
             {
                 if (inventory.inventoryType != InventoryType.Building)
                     continue;
@@ -63,8 +67,9 @@ namespace JumpeeIsland
             _confirmPanel.SetActive(true);
         }
 
-        public void OnMakeTheDeal()
+        public async void OnMakeTheDeal()
         {
+            await SavingSystemManager.Instance.RefreshEconomy();
             _currentConfirm.ClickYes();
             CleanGhostBuilding();
         }

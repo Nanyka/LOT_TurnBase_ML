@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -10,7 +11,7 @@ namespace JumpeeIsland
         public string SkinAddress;
         public Vector3 Position;
         public Vector3 Rotation;
-        public FactionType CreatureType;
+        public FactionType FactionType;
         public int CurrentHp;
         public int CurrentLevel;
     }

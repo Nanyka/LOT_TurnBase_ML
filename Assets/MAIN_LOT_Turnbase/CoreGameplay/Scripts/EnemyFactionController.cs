@@ -9,10 +9,8 @@ namespace JumpeeIsland
     public class EnemyFactionController : MonoBehaviour, IFactionController
     {
         [SerializeField] protected FactionType m_Faction = FactionType.Enemy;
-        [SerializeField] protected List<NPCInGame> m_Enemies;
-        [SerializeField] private Material _factionMaterial;
-        [SerializeField] private Material _defaultMaterial;
 
+        private List<NPCInGame> m_Enemies = new();
         private EnvironmentManager m_Environment;
         private NPCActionInferer m_NpcActionInferer;
         private List<NPCInGame> _dummyNPCs = new();
@@ -37,15 +35,15 @@ namespace JumpeeIsland
 
         private void InitiateNpcList()
         {
-            SetTempIndex();
+            // SetTempIndex();
             m_NpcActionInferer.Init();
         }
-
+        
         private void SetTempIndex()
         {
-            for (int i = 0; i < m_Enemies.Count; i++)
+            for (int i = 0; i < _dummyNPCs.Count; i++)
             {
-                var enemy = m_Enemies[i];
+                var enemy = _dummyNPCs[i];
                 enemy.InferMoving.AgentIndex = i;
             }
         }
@@ -61,7 +59,7 @@ namespace JumpeeIsland
 
             // reset all agent's moving state
             foreach (var enemy in m_Enemies)
-                enemy.ResetMoveState(_factionMaterial);
+                enemy.ResetMoveState();
 
             KickOffNewTurn();
         }
@@ -74,11 +72,13 @@ namespace JumpeeIsland
             foreach (var enemy in m_Enemies)
                 if (enemy.CheckUsedThisTurn() == false)
                     _dummyNPCs.Add(enemy);
-
+            
             if (_dummyNPCs.Count > 0)
             {
                 _skillCount = 0;
+                SetTempIndex();
                 m_NpcActionInferer.ResetSkillCache();
+                m_NpcActionInferer.GatherSkillFromJumpers();
                 SelfInferenceBrainStorming(_dummyNPCs);
                 StartInferAgentsAction(_dummyNPCs);
             }
@@ -157,7 +157,7 @@ namespace JumpeeIsland
 
             // Set all npc to default color to show it disable state
             foreach (var enemy in m_Enemies)
-                enemy.SetMaterial(_defaultMaterial);
+                enemy.SetDisableMaterial();
 
             m_Environment.ChangeFaction();
             // m_Environment.OnChangeFaction.Invoke();
@@ -187,7 +187,7 @@ namespace JumpeeIsland
 
         public List<NPCInGame> GetEnemies()
         {
-            return m_Enemies;
+            return _dummyNPCs;
         }
 
         public FactionType GetFaction()

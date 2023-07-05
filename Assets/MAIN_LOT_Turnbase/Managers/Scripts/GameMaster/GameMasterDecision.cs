@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    [CreateAssetMenu(fileName = "GameMasterDecision", menuName = "TurnBase/GameMasterDecision", order = 5)]
+    [CreateAssetMenu(fileName = "GameMasterDecision", menuName = "JumpeeIsland/GameMasterDecision", order = 5)]
     public class GameMasterDecision : ScriptableObject
     {
         [SerializeField] private List<GameMasterCondition> Conditions;
@@ -14,7 +14,7 @@ namespace JumpeeIsland
         {
             foreach (var condition in Conditions)
             {
-                if (condition.PassCondition() == false)
+                if (condition.CheckPass() == false)
                     return String.Empty;
             }
 

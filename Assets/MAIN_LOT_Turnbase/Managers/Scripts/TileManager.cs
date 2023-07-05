@@ -7,14 +7,28 @@ namespace JumpeeIsland
 {
     public class TileManager : MonoBehaviour
     {
-        [SerializeField] private int _freeSpaceMultiplier = 1;
+        [Serializable]
+        public class ExpandPoint
+        {
+            public int tileAmount;
+            public int score;
+
+            public bool CheckToExpand(int currentTileAmount, int currentScore)
+            {
+                return currentTileAmount < tileAmount && currentScore >= score;
+            }
+        }
+
+        [SerializeField] private ExpandPoint[] _expandPoints;
         [SerializeField] private ObjectPool _tilePool;
 
-        private int _totalTile;
+        [SerializeField] private int _totalTile;
         private List<TilePosition> _listTilePos = new();
 
         public void Init(int tileAmount)
         {
+            SavingSystemManager.Instance.OnCheckExpandMap.AddListener(CheckExpand);
+
             SpawnTileMap(tileAmount);
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
@@ -35,7 +49,7 @@ namespace JumpeeIsland
 
         private void SpiralPatternConstructor(int tileAmount)
         {
-            _totalTile = tileAmount * _freeSpaceMultiplier;
+            _totalTile = tileAmount;
             var spiralSpace = Mathf.RoundToInt(Mathf.Sqrt(_totalTile)) + 1;
 
             int printValue = 0;
@@ -56,6 +70,28 @@ namespace JumpeeIsland
                     _listTilePos.Add(new TilePosition(j, c1, printValue++));
                 c1--;
                 c2++;
+            }
+        }
+
+        private void CheckExpand()
+        {
+            var currentScore = SavingSystemManager.Instance.CalculateEnvScore();
+
+            foreach (var point in _expandPoints)
+            {
+                if (point.CheckToExpand(_totalTile, currentScore))
+                {
+                    SpiralPatternConstructor(_totalTile + 1);
+                    var tile = _tilePool.GetObject();
+                    tile.transform.position = _listTilePos[_totalTile - 1].GetPosition(0f, 1f);
+                    GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile.transform.position);
+                    tile.SetActive(true);
+
+                    // Save environment data after expand
+                    SavingSystemManager.Instance.GetEnvironmentData().mapSize = _totalTile;
+                    SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
+                    break;
+                }
             }
         }
 

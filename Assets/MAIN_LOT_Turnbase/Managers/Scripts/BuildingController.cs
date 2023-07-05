@@ -34,7 +34,7 @@ namespace JumpeeIsland
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (MainUI.Instance.IsInteractable == false)
+                if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
                     return;
                 
                 var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
@@ -62,14 +62,17 @@ namespace JumpeeIsland
         private void HighlightSelectedUnit(BuildingInGame getUnitAtPos)
         {
             MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
-            MainUI.Instance.OnSellBuildingMenu.Invoke(getUnitAtPos);
+            MainUI.Instance.OnInteractBuildingMenu.Invoke(getUnitAtPos);
         }
 
         public void StoreRewardToBuildings(string currencyId, int amount)
         {
+            if (currencyId.Equals("COIN") || currencyId.Equals("GOLD") || currencyId.Equals("GEM"))
+                return;
+            
             // Check if enough storage space
             int currentStorage = 0;
-            Queue<BuildingEntity> selectedBuildings = new Queue<BuildingEntity>();
+            List<BuildingEntity> selectedBuildings = new List<BuildingEntity>();
             if (Enum.TryParse(currencyId, out CurrencyType currency))
                 foreach (var t in m_buildings)
                     currentStorage += t.GetStoreSpace(currency, ref selectedBuildings);
@@ -78,11 +81,14 @@ namespace JumpeeIsland
 
             if (amount == 0 || selectedBuildings.Count == 0)
                 return;
+            
+            GeneralAlgorithm.Shuffle(selectedBuildings); // Shuffle buildings to ensure random selection
 
             // Stock currency to building and grain exp
-            while (amount > 0)
+            foreach (var building in selectedBuildings)
             {
-                var building = selectedBuildings.Dequeue();
+                if (amount <= 0)
+                    break;
                 var storeAmount = building.GetStorageSpace(currency);
                 storeAmount = storeAmount > amount ? amount : storeAmount;
                 building.StoreCurrency(storeAmount);
@@ -93,10 +99,9 @@ namespace JumpeeIsland
         public int GetStorageSpace(string currencyId)
         {
             int storageSpace = 0;
-            Queue<BuildingEntity> selectedBuildings = new Queue<BuildingEntity>();
             if (Enum.TryParse(currencyId, out CurrencyType currency))
                 foreach (var t in m_buildings)
-                    storageSpace += t.GetStoreSpace(currency, ref selectedBuildings);
+                    storageSpace += t.GetStoreSpace(currency);
             return storageSpace;
         }
 

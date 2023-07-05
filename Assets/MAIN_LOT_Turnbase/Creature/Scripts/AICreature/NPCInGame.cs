@@ -29,7 +29,7 @@ namespace JumpeeIsland
 #endif
         }
 
-        public new virtual void OnEnable()
+        public override void OnEnable()
         {
             base.OnEnable();
 
@@ -116,14 +116,15 @@ namespace JumpeeIsland
 
         private IEnumerator MoveOverTime()
         {
+            m_Entity.SetAnimation(AnimateType.Walk, true);
             m_Entity.UpdateTransform(InferMoving.TargetPos, _rotatePart.eulerAngles);
             while (transform.position != InferMoving.TargetPos)
             {
-                m_Transform.position =
-                    Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 10f * Time.deltaTime);
+                m_Transform.position = Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 2f * Time.deltaTime);
                 yield return null;
             }
 
+            m_Entity.SetAnimation(AnimateType.Walk, false);
             // Ask for the next inference
             m_FactionController.KickOffNewTurn();
         }
@@ -155,12 +156,6 @@ namespace JumpeeIsland
         public Entity GetEntity()
         {
             return m_Entity;
-        }
-
-        protected override void UnitDie(Entity killedByEntity)
-        {
-            base.UnitDie(killedByEntity);
-            Debug.Log("Do something when NPC die if needed");
         }
 
         #endregion

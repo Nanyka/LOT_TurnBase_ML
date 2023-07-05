@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class MainUI : Singleton<MainUI>
     {
-
         [NonSerialized] public UnityEvent OnEnableInteract = new(); // send to DontMoveButton; invoke here in EcoMode and at CreatureMenu in BattleMode
         [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
@@ -16,11 +16,15 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent OnClickIdleButton = new(); // send to PlayerFactionManager; invoke at DontMoveButton & MovingPath
         [NonSerialized] public UnityEvent<FactionType> OnGameOver = new(); // send to GameOverAnnouncer; invoke at PlayerFactionManager
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnBuyBuildingMenu = new(); // send to BuyBuildingMenu, invoke at InventoryLoader
-        [NonSerialized] public UnityEvent<IConfirmFunction> OnSellBuildingMenu = new(); // send to SellBuildingMenu, invoke at BuildingController
+        [NonSerialized] public UnityEvent<IConfirmFunction> OnInteractBuildingMenu = new(); // send to SellBuildingMenu, invoke at BuildingController
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnShowCreatureMenu = new(); // send to CreatureMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
+        [NonSerialized] public UnityEvent<Vector3,bool> OnSwitchButtonPointer = new(); // send to ButtonPointer, invoke at TutorialController
 
         public bool IsInteractable;
+
+        [SerializeField] private GameObject[] _panels;
+        [SerializeField] private GameObject[] _buttons;
         
         private BuyBuildingMenu _buyBuildingMenu;
         protected CreatureMenu _creatureMenu;
@@ -48,6 +52,25 @@ namespace JumpeeIsland
                 
                 OnHideAllMenu.Invoke();
             }
+        }
+
+        public bool CheckUIActive(string UIName)
+        {
+            foreach (var uiElement in _panels)
+                if (uiElement.name.Equals(UIName))
+                    return uiElement.activeInHierarchy;
+
+            return false;
+        }
+
+        public GameObject GetButtonPosition(string buttonName)
+        {
+            foreach (var button in _buttons)
+            {
+                if (button.name.Equals(buttonName))
+                    return button;
+            }
+            return null;
         }
     }
 }

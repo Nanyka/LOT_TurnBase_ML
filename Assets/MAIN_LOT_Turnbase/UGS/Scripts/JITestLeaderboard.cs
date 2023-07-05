@@ -88,7 +88,7 @@ namespace JumpeeIsland
                 Debug.Log(entry.PlayerId);
             }
             
-            var enemyEnv = await m_CloudCode.CallGetEnemyEnvironment(getPlayerRange[5].PlayerId);
+            var enemyEnv = await m_CloudCode.CallLoadEnemyEnvironment(getPlayerRange[5].PlayerId);
             Debug.Log($"Enemy environment:\n{enemyEnv.BuildingData[0].EntityName}");
         }
     }

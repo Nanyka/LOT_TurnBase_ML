@@ -8,11 +8,13 @@ namespace JumpeeIsland
 {
     public class SpawnTree : GAction
     {
+        [SerializeField] private string _resourceId;
+        
         public override bool PrePerform()
         {
-            var availableTile = GameFlowManager.Instance.GetEnvManager().GetAvailableTile();
+            var availableTile = GameFlowManager.Instance.GetEnvManager().GetPotentialTile();
             if (availableTile != Vector3.negativeInfinity)
-                SavingSystemManager.Instance.OnSpawnResource(InventoryType.Resource,availableTile);
+                SavingSystemManager.Instance.OnSpawnResource(_resourceId,availableTile);
         
             return true;
         }
