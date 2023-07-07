@@ -119,5 +119,14 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        #region WIN MECHANIC
+
+        public bool IsDemolishMainHall()
+        {
+            return BuildingData.Count(t => t.EntityName == "MainHall") == 0;
+        }
+
+        #endregion
     }
 }

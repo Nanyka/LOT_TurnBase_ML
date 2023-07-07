@@ -96,6 +96,11 @@ namespace JumpeeIsland
                 return CheckTeam(targetPos, FactionType.Enemy);
             return CheckTeam(targetPos, FactionType.Player);
         }
+        
+        public bool CheckOneFactionZeroTroop()
+        {
+            return _domainOwners[FactionType.Enemy].Count == 0 || _domainOwners[FactionType.Player].Count == 0;
+        }
 
         #endregion
 
@@ -134,13 +139,13 @@ namespace JumpeeIsland
 
         #endregion
 
-        public FactionType CheckWinCondition()
+        #region GET
+
+        public int CountFaction(FactionType factionType)
         {
-            if (_domainOwners[FactionType.Enemy].Count == 0)
-                return FactionType.Player;
-            if (_domainOwners[FactionType.Player].Count == 0)
-                return FactionType.Enemy;
-            return FactionType.Neutral;
+            return _domainOwners.TryGetValue(factionType, out var owner)?owner.Count:0;
         }
+
+        #endregion
     }
 }

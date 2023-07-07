@@ -111,7 +111,7 @@ namespace JumpeeIsland
 
         public void RemoveBuilding(BuildingInGame building)
         {
-            m_Environment.RemoveObject(building.gameObject, FactionType.Neutral);
+            m_Environment.RemoveObject(building.gameObject, building.GetEntity().GetFaction());
             m_buildings.Remove(building);
         }
     }

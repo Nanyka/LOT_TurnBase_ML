@@ -64,14 +64,16 @@ namespace JumpeeIsland
         public void GrantMove(long moveAmount)
         {
             Debug.Log($"Grant {moveAmount} MOVE");
-
+            
             if (moveAmount <= 0)
                 return;
-            
-            var moveCurrency = m_Currencies.Find(t => t.CurrencyId == m_MoveId);
-            moveCurrency.Balance += moveAmount;
-            SavingSystemManager.Instance.OnSetCloudCurrency(m_MoveId, (int)moveCurrency.Balance);
 
+            var moveCurrency = m_Currencies.Find(t => t.CurrencyId == m_MoveId);
+            moveAmount = Mathf.Clamp((int)(moveCurrency.Balance + moveAmount), 0,
+                SavingSystemManager.Instance.GetMaxMove());
+
+            moveCurrency.Balance = moveAmount;
+            SavingSystemManager.Instance.OnSetCloudCurrency(m_MoveId, (int)moveCurrency.Balance);
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 

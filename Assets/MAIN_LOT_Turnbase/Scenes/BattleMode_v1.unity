@@ -4373,7 +4373,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 959735593199267580}
-  - component: {fileID: 995874410933400280}
   m_Layer: 5
   m_Name: GameResultPanel
   m_TagString: Untagged
@@ -4381,20 +4380,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &995874410933400280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 995874410933400279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43b77870d9c4846a588e0c6c82017640, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameoverPanel: {fileID: 1326147784405950366}
-  _gameoverText: {fileID: 6989265018267591686}
 --- !u!222 &1067292564605439662
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4863,6 +4848,8 @@ GameObject:
   - component: {fileID: 2900844292661738603}
   - component: {fileID: 8560029064445878725}
   - component: {fileID: 8560029064445878724}
+  - component: {fileID: 8560029064445878726}
+  - component: {fileID: 8560029064445878727}
   m_Layer: 5
   m_Name: BattleMainUI
   m_TagString: Untagged
@@ -5562,6 +5549,34 @@ MonoBehaviour:
   IsInteractable: 0
   _panels: []
   _buttons: []
+--- !u!114 &8560029064445878726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451611204401440442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b77870d9c4846a588e0c6c82017640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameoverPanel: {fileID: 1326147784405950366}
+  _gameoverText: {fileID: 6989265018267591686}
+--- !u!114 &8560029064445878727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451611204401440442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c6d0864f16477b9fb9f32300770300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameDuration: 10
+  _clockText: {fileID: 7691369682272037041}
 --- !u!1 &8633663115166501067
 GameObject:
   m_ObjectHideFlags: 0

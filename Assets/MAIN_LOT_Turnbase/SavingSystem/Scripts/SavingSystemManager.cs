@@ -40,7 +40,7 @@ namespace JumpeeIsland
         [SerializeField] private string[] m_BasicInventory;
 
         private EnvironmentLoader m_EnvLoader;
-        protected CurrencyLoader m_CurrencyLoader;
+        private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
         private GameStateData m_GameStateData = new();
@@ -342,6 +342,15 @@ namespace JumpeeIsland
                 m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
 
             return true;
+        }
+
+        #endregion
+
+        #region REMOTE CONFIG
+
+        public int GetMaxMove()
+        {
+            return m_CloudConnector.GetNumericByConfig(CommandName.JI_MAX_MOVE.ToString());
         }
 
         #endregion
