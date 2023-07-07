@@ -45,7 +45,7 @@ namespace JumpeeIsland
 
         public override int GetExpReward()
         {
-            throw new NotImplementedException();
+            return m_CurrentStats.ExpReward;
         }
 
         public override void CollectExp(int expAmount)
@@ -111,7 +111,17 @@ namespace JumpeeIsland
 
         public override void TakeDamage(int damage, Entity fromEntity)
         {
+            // If player's creatures attack enemy building, they also seize loot from this storage
+            if (fromEntity.GetFaction() == FactionType.Player && m_BuildingData.FactionType == FactionType.Enemy)
+            {
+                var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp*1f,0f,1f);
+                var seizedAmount = Mathf.RoundToInt(damageUpperHealth * m_BuildingData.CurrentStorage);
+                SavingSystemManager.Instance.IncrementLocalCurrency(m_BuildingData.StorageCurrency.ToString(), seizedAmount);
+                m_BuildingData.CurrentStorage -= seizedAmount;
+            }
+            
             m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+            
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 

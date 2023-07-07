@@ -354,8 +354,9 @@ namespace JumpeeIsland
             getPlayerRange = getPlayerRange.FindAll(t =>
                     t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
 
-            return await _cloudCodeManager.CallLoadEnemyEnvironment(
-                getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId);
+            var selectRandomPlayer = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
+            Debug.Log($"Get environment from player: {selectRandomPlayer}");
+            return await _cloudCodeManager.CallLoadEnemyEnvironment(selectRandomPlayer);
         }
 
         public void PlayerRecordScore(int playerScore)

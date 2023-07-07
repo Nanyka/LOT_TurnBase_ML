@@ -20,7 +20,6 @@ namespace JumpeeIsland
         [SerializeField] protected int _minStep;
         [SerializeField] protected int _step;
         [SerializeField] protected float refurbishPeriod;
-        [SerializeField] protected bool _isBattleMode;
 
         private DomainManager _domainManager;
         private MovementInspector _movementInspector;
@@ -40,6 +39,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
+            GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment); // Just for BATTLE MODE
         }
 
         private void Init(long moveAmount)
@@ -160,7 +160,7 @@ namespace JumpeeIsland
         public void RemoveObject(GameObject targetObject, FactionType faction)
         {
             _domainManager.RemoveObject(targetObject, faction);
-            if (_isBattleMode)
+            if (GameFlowManager.Instance.IsEcoMode == false)
             {
                 var checkWin = _domainManager.CheckWinCondition();
                 if (checkWin != FactionType.Neutral)

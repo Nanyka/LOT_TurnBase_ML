@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 4243608749788866740}
   - component: {fileID: 3596317270971595029}
   - component: {fileID: 1545360773148862233}
+  - component: {fileID: -7341668719023081718}
   - component: {fileID: 8151008500701451154}
   - component: {fileID: 1043202319893037283}
   - component: {fileID: 8882077241110163003}
@@ -152,6 +153,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5af55d3ac725446dcb02b316eba63f83, type: 2}
   m_SkinComp: {fileID: 3596317270971595029}
   m_HealthComp: {fileID: 1545360773148862233}
+  m_SeizedComp: {fileID: 0}
   m_AttackComp: {fileID: 8151008500701451154}
   m_EffectComp: {fileID: 1043202319893037283}
   m_StorageComp: {fileID: 8882077241110163003}
@@ -171,8 +173,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 9122016343458744205}
-  m_BodyMesh: {fileID: 0}
-  _factionRenderer: {fileID: 0}
+  _factionRenderers: []
+  _activeMaterial: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &1545360773148862233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +189,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpSlider: {fileID: 5694106178134226200}
+--- !u!114 &-7341668719023081718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2577027123489191492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab8439c187247d4a5be16e178ac4fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8151008500701451154
 MonoBehaviour:
   m_ObjectHideFlags: 0

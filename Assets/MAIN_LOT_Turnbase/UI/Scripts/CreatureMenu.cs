@@ -73,6 +73,7 @@ namespace JumpeeIsland
             
             HideCreatureMenu();
             MainUI.Instance.OnEnableInteract.Invoke();
+            GameFlowManager.Instance.OnKickOffEnv.Invoke();
         }
 
         #endregion

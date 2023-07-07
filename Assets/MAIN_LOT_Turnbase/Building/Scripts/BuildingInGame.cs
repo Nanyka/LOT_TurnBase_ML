@@ -18,6 +18,16 @@ namespace JumpeeIsland
             _buildingController = buildingController;
             _buildingController.AddBuildingToList(this);
         }
+        
+        public virtual void OnEnable()
+        {
+            m_Entity.OnUnitDie.AddListener(DestroyBuilding);
+        }
+
+        private void OnDisable()
+        {
+            m_Entity.OnUnitDie.RemoveListener(DestroyBuilding);
+        }
 
         public void DurationDeduct(FactionType currentFaction)
         {
@@ -61,8 +71,8 @@ namespace JumpeeIsland
                 SavingSystemManager.Instance.GrantCurrency(CurrencyType.GOLD.ToString(), m_Entity.CalculateSellingPrice());
 
             // when it is battle mode, player collect resources when destroying the enemy building
-            if (m_Entity.GetFaction() == FactionType.Enemy && killedByEntity.GetFaction() == FactionType.Player)
-                m_Entity.ContributeCommands();
+            // if (m_Entity.GetFaction() == FactionType.Enemy && killedByEntity.GetFaction() == FactionType.Player)
+            //     m_Entity.ContributeCommands();
             
             // Add exp for entity who killed this resource
             if (killedByEntity != m_Entity)
@@ -76,6 +86,7 @@ namespace JumpeeIsland
         {
             // VFX
             yield return new WaitForSeconds(1f);
+            Debug.Log("Remove building");
             _buildingController.RemoveBuilding(this);
             gameObject.SetActive(false);
         }
