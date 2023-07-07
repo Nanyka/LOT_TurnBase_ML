@@ -61,7 +61,10 @@ namespace JumpeeIsland
                 return;
 
             if (_creatures.Count == 0)
+            {
                 EndTurn();
+                return;
+            }
 
             foreach (var creature in _creatures)
                 creature.NewTurnReset();
@@ -72,6 +75,9 @@ namespace JumpeeIsland
         public void KickOffNewTurn()
         {
             _countMovedUnit = 0;
+            // if (_creatures.Count == 0)
+            //     EndTurn();
+                
             SelectUnit(_creatures[0].GetCurrentPosition());
         }
 

@@ -8,7 +8,7 @@ namespace JumpeeIsland
 {
     public class GameFlowManager : Singleton<GameFlowManager>
     {
-        [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
+        // [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
         [NonSerialized] public UnityEvent<long> OnStartGame = new(); // send to EnvironmentManager, invoke at SavingSystemManager
         [NonSerialized] public UnityEvent OnInitiateObjects = new(); // send to Managers; invoke from TileManager
         [NonSerialized] public UnityEvent<Vector3> OnUpdateTilePos = new(); // send to EnvironmentManager; invoke at TileManager
@@ -28,7 +28,7 @@ namespace JumpeeIsland
             
             OnStartGame.AddListener(RecordStartedState);
             
-            OnLoadData.Invoke();
+            SavingSystemManager.Instance.StartUpLoadData();
         }
 
         private void RecordStartedState(long arg0)

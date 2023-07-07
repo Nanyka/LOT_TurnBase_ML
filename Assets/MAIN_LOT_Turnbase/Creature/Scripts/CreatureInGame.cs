@@ -29,7 +29,8 @@ namespace JumpeeIsland
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
             MarkAsUsedThisTurn();
-            m_FactionController.WaitForCreature();
+            // TODO: Check the game work or not if the new creature do not mark as used
+            // m_FactionController.WaitForCreature();
         }
 
         public virtual void OnEnable()
@@ -141,9 +142,12 @@ namespace JumpeeIsland
 
         protected void UnitDie(Entity killedByEntity)
         {
-            // just contribute resource when it is killed by player faction
-            if (killedByEntity.GetFaction() == FactionType.Player)
-                m_Entity.ContributeCommands();
+            if (GameFlowManager.Instance.IsEcoMode)
+            {
+                // just contribute resource when it is killed by player faction
+                if (killedByEntity.GetFaction() == FactionType.Player)
+                    m_Entity.ContributeCommands();
+            }
 
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this); // remove its domain
             m_FactionController.RemoveAgent(this);

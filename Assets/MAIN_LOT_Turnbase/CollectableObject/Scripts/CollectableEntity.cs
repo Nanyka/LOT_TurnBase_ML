@@ -99,10 +99,7 @@ namespace JumpeeIsland
         public override void ContributeCommands()
         {
             foreach (var command in m_CurrentStat.Commands)
-            {
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
                 SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
-            }
 
             if (m_CurrentStat.SpawnedEntityType == EntityType.NONE)
                 return;

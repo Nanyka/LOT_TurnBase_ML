@@ -338,6 +338,11 @@ namespace JumpeeIsland
             return _remoteConfigManager.commandRewards[commandId];
         }
 
+        public int GetNumericByConfig(string configName)
+        {
+            return _remoteConfigManager.numericConfig[configName];
+        }
+
         #endregion
 
         #region LEADERBOARD

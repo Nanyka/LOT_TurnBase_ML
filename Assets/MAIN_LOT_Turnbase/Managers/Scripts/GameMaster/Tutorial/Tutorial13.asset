@@ -12,6 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial13
   m_EditorClassIdentifier: 
+  UsePassCondition: 0
+  PassCondition:
+    MapSize: 0
+    Currency: 0
+    CurrencyCompare: 0
+    CurrencyAmount: 0
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
+    Resource: 0
+    ResourceCompare: 0
+    ResourceAmount: 0
+    Collectable: 0
+    CollectableCompare: 0
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsUICondition: 0
+    UIElement: 
+    IsScoreCondition: 0
+    ScoreCompare: 0
+    ScoreAmount: 0
   conditions:
   - MapSize: 0
     Currency: 0
@@ -23,22 +49,22 @@ MonoBehaviour:
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 1
-    Collectable: 0
+    Collectable: 1
     CollectableCompare: 2
     CollectableAmount: 0
     Building: 0
     BuildingCompare: 2
     BuildingAmount: 1
-    Creature: 2
+    Creature: 0
     CreatureCompare: 0
-    CreatureAmount: 1
+    CreatureAmount: 0
     IsUICondition: 0
     UIElement: 
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
   steps:
-  - Pointer: 1
+  - Pointer: 0
     EntitySelection: 0
     EntityType: 0
     CurrencyFromResource: 0
@@ -46,16 +72,16 @@ MonoBehaviour:
     CreatureType: 0
     ArrowSign: 0
     MinJump: 0
-    ButtonSelection: 1
-    ButtonName: GoToBattleButton
+    ButtonSelection: 0
+    ButtonName: 
     CheckPosition: 0
     CheckEntity: 0
-    Spawner: 0
-    SpawnType: 0
+    Spawner: 1
+    SpawnType: 5
     IsDesignatedPos: 0
     DesignatedPos: {x: 0, y: 0, z: 0}
     SpawnResource: 
-    SpawnCollectable: 
+    SpawnCollectable: PigEgg
     SpawnCollectableLevel: 0
     SpawnEnemy: 
     SpawnEnemyLevel: 0
@@ -71,7 +97,7 @@ MonoBehaviour:
       Resource: 0
       ResourceCompare: 0
       ResourceAmount: 0
-      Collectable: 0
+      Collectable: 1
       CollectableCompare: 2
       CollectableAmount: 1
       Building: 0
@@ -85,6 +111,7 @@ MonoBehaviour:
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 0
+    IsEndTutorial: 0
     Conversation: 0
     Message: 
-  nextTutorial: 
+  nextTutorial: /Tutorials/Tutorial14

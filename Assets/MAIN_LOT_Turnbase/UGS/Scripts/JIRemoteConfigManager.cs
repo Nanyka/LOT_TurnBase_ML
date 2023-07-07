@@ -11,6 +11,7 @@ namespace JumpeeIsland
     {
 
         public Dictionary<string, List<Reward>> commandRewards = new(5);
+        public Dictionary<string, int> numericConfig = new();
 
         public async Task FetchConfigs()
         {
@@ -21,7 +22,8 @@ namespace JumpeeIsland
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
 
-                GetConfigValues();
+                GetEconomyConfigValues();
+                GetNumericConfigValues();
             }
             catch (Exception e)
             {
@@ -29,9 +31,9 @@ namespace JumpeeIsland
             }
         }
 
-        void GetConfigValues()
+        void GetEconomyConfigValues()
         {
-            Debug.Log("Got config value");
+            Debug.Log("Got economic config value");
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_SPEND_MOVE.ToString());
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_WOOD_1_0.ToString());
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_FOOD_1_0.ToString());
@@ -77,6 +79,18 @@ namespace JumpeeIsland
             var json = RemoteConfigService.Instance.appConfig.GetJson(commandKey);
             var commandReward = JsonUtility.FromJson<CommandReward>(json);
             commandRewards[commandKey] = commandReward.rewards;
+        }
+
+        private void GetNumericConfigValues()
+        {
+            Debug.Log("Got numeric config value");
+            GetNumericConfig(CommandName.JI_MAX_MOVE.ToString());
+        }
+
+        private void GetNumericConfig(string configKey)
+        {
+            var numericValue = RemoteConfigService.Instance.appConfig.GetInt(configKey);
+            numericConfig[configKey] = numericValue;
         }
 
         // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of

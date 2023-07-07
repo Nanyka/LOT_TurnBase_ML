@@ -154,7 +154,7 @@ namespace JumpeeIsland
         private IEnumerator WaitForChangeFaction(float seconds)
         {
             yield return new WaitForSeconds(seconds);
-
+            
             // Set all npc to default color to show it disable state
             foreach (var enemy in m_Enemies)
                 enemy.SetDisableMaterial();

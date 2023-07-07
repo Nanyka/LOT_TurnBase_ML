@@ -56,7 +56,6 @@ namespace JumpeeIsland
             {
                 // Level up
                 m_BuildingData.CurrentLevel++;
-                m_BuildingData.CurrentStorage = 0;
                 m_BuildingData.CurrentExp = 0;
                 m_BuildingData.TurnCount = 0;
 
@@ -88,7 +87,6 @@ namespace JumpeeIsland
         public void StoreCurrency(int amount)
         {
             m_BuildingData.CurrentStorage += amount;
-            m_BuildingData.CurrentExp += amount;
             CollectExp(amount);
         }
 
@@ -178,6 +176,9 @@ namespace JumpeeIsland
             m_SkinComp.Init(m_BuildingData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
             OnUnitDie.AddListener(DieIndividualProcess);
+
+            // Check expand map
+            SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         private void ResetEntity()

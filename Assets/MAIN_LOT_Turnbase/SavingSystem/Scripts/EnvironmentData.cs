@@ -77,8 +77,9 @@ namespace JumpeeIsland
             if (playerData.Count == 0)
                 return;
 
+            var playerWithoutKing = PlayerData.FindAll(t => t.EntityName.Equals("King") == false);
             int checkingIndex = 0;
-            foreach (var data in PlayerData)
+            foreach (var data in playerWithoutKing)
             {
                 if (checkingIndex >= playerData.Count)
                 {
