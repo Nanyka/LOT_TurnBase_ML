@@ -343,6 +343,31 @@ namespace JumpeeIsland
             return _remoteConfigManager.numericConfig[configName];
         }
 
+        public async Task<JIRemoteConfigManager.BattleLoot> GetBattleWinLoot(int star)
+        {
+            var battleConfig = "";
+            switch (star)
+            {
+                case 1:
+                {
+                    battleConfig = JIRemoteConfigManager.BattleWinConfigName.JI_BATTLEWIN_1STAR.ToString();
+                    break;
+                }
+                case 2:
+                {
+                    battleConfig = JIRemoteConfigManager.BattleWinConfigName.JI_BATTLEWIN_2STAR.ToString();
+                    break;
+                }
+                case 3:
+                {
+                    battleConfig = JIRemoteConfigManager.BattleWinConfigName.JI_BATTLEWIN_3STAR.ToString();
+                    break;
+                }
+            }
+
+            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.GetPlayerScore(),battleConfig);
+        }
+
         #endregion
 
         #region LEADERBOARD

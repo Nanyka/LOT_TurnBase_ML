@@ -72,8 +72,10 @@ namespace JumpeeIsland
             moveAmount = Mathf.Clamp((int)(moveCurrency.Balance + moveAmount), 0,
                 SavingSystemManager.Instance.GetMaxMove());
 
+            Debug.Log($"Current total move: {moveAmount}");
             moveCurrency.Balance = moveAmount;
             SavingSystemManager.Instance.OnSetCloudCurrency(m_MoveId, (int)moveCurrency.Balance);
+            SavingSystemManager.Instance.SaveLocalBalances(BalanceForSaving());
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 

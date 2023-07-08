@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 using UnityEngine.Events;
-using WebSocketSharp;
 
 namespace JumpeeIsland
 {
@@ -353,6 +352,11 @@ namespace JumpeeIsland
             return m_CloudConnector.GetNumericByConfig(CommandName.JI_MAX_MOVE.ToString());
         }
 
+        public async Task<JIRemoteConfigManager.BattleLoot> GetBattleLootByStar(int stars)
+        {
+            return await m_CloudConnector.GetBattleWinLoot(stars);
+        }
+
         #endregion
 
         #region ECONOMY
@@ -447,7 +451,7 @@ namespace JumpeeIsland
 
         public void GrantMoveForTest()
         {
-            m_CurrencyLoader.IncrementCurrency("MOVE",5);
+            m_CurrencyLoader.GrantMove(50);
         }
 
         public async void DeductCurrency(string currencyId, int amount)
@@ -625,6 +629,11 @@ namespace JumpeeIsland
                     }
                 }
             }
+        }
+
+        public void StoreCurrencyByEnvData(string currencyId, int amount, EnvironmentData envData)
+        {
+            envData.StoreRewardToBuildings(currencyId,amount);
         }
 
         #endregion

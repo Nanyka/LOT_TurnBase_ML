@@ -24,13 +24,12 @@ namespace JumpeeIsland
             Debug.Log($"Start amount of {FactionType.Enemy}: {_startGameEnemyCount}");
         }
 
-        private void ShowGameOverPanel()
+        private async void ShowGameOverPanel()
         {
             var playerCount = GameFlowManager.Instance.GetEnvManager().CountFaction(FactionType.Player);
             var enemyCount = GameFlowManager.Instance.GetEnvManager().CountFaction(FactionType.Enemy);
             var winFaction = playerCount > enemyCount ? FactionType.Player : FactionType.Enemy;
             
-            //TODO: Calculate WIN stars and reward for winner
             int winStar = 0;
 
             // +1star for demolishing enemy's mainHall
@@ -46,6 +45,16 @@ namespace JumpeeIsland
             // +1star for devastating 100% enemy's tribe
             if (winRate == 0f)
                 winStar++;
+            
+            // Record battle loot right after get amount of stars
+            
+            var battleLoot = await SavingSystemManager.Instance.GetBattleLootByStar(winStar);
+            
+            //TODO: Claim battleLoot to data
+            if (battleLoot.CurrencyLoots.Count > 0)
+            {
+                
+            }
 
             _gameoverText.text = $"Faction {winFaction} WIN {winStar} STARs.\n Win rate {winRate*100}%";
             _gameoverPanel.SetActive(true);

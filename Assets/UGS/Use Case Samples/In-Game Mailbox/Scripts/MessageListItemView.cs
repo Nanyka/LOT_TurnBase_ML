@@ -146,6 +146,7 @@ namespace Unity.Services.Samples.InGameMailbox
                     // attachment is not unclaimed.
                     if (m_HasAttachment && !m_Message.metadata.hasUnclaimedAttachment)
                     {
+                        Debug.Log($"Current attachment: {m_Message.messageInfo.attachment}");
                         rewardDisplayView.PopulateView(m_RewardDetails, rewardItemViewClaimedColor);
                     }
                     else

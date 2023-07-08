@@ -43,6 +43,9 @@ namespace Unity.Services.Samples.InGameMailbox
                 {
                     var inbox = JsonUtility.FromJson<InboxState>(cloudSaveData[k_InboxStateKey]);
                     inboxMessages = inbox.messages;
+                    
+                    // Test add a new message
+                    AddInboxMessage(new InboxMessage());
                 }
 
                 m_LastMessageDownloadedId = cloudSaveData.ContainsKey(k_LastMessageDownloadedKey)
@@ -53,6 +56,22 @@ namespace Unity.Services.Samples.InGameMailbox
             {
                 Debug.LogException(e);
             }
+        }
+
+        private void AddInboxMessage(InboxMessage testInboxMessage)
+        {
+            testInboxMessage.messageId = "TEST_MESSAGE";
+            testInboxMessage.messageInfo = new MessageInfo();
+            testInboxMessage.messageInfo.title = "TestMessage";
+            testInboxMessage.messageInfo.content = "I create this message to test adding a new message";
+            testInboxMessage.messageInfo.attachment = "cache playerId here";
+            testInboxMessage.messageInfo.expiration = "0.00:03:00.00";
+
+            var expirationPeriod = TimeSpan.Parse(testInboxMessage.messageInfo.expiration);
+            var hasUnclaimedAttachment = !string.IsNullOrEmpty(testInboxMessage.messageInfo.attachment);
+
+            testInboxMessage.metadata = new MessageMetadata(expirationPeriod, hasUnclaimedAttachment);
+            inboxMessages.Add(testInboxMessage);
         }
 
         public int DeleteExpiredMessages()

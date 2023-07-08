@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace JumpeeIsland
 {
@@ -98,6 +100,41 @@ namespace JumpeeIsland
             }
 
             PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
+        }
+        
+        public void StoreRewardToBuildings(string currencyId, int amount)
+        {
+            if (currencyId.Equals("GOLD") || currencyId.Equals("GEM"))
+                return;
+            
+            // Check if enough storage space
+            int currentStorage = 0;
+            List<BuildingData> selectedBuildings = new List<BuildingData>();
+            if (Enum.TryParse(currencyId, out CurrencyType currencyType))
+                foreach (var t in BuildingData)
+                    currentStorage += t.GetStoreSpace(currencyType, ref selectedBuildings);
+
+            if (amount > currentStorage)
+                Debug.Log($"Lack of {currencyId} STORAGE. Current storage is {currentStorage} and need for {amount}");    
+            
+            amount = amount > currentStorage ? currentStorage : amount;
+
+            if (amount == 0 || selectedBuildings.Count == 0)
+                return;
+            
+            GeneralAlgorithm.Shuffle(selectedBuildings); // Shuffle buildings to ensure random selection
+
+            // Stock currency to building and gain exp
+            foreach (var building in selectedBuildings)
+            {
+                if (amount <= 0)
+                    break;
+                var storeAmount = building.GetStoreSpace(currencyType);
+                storeAmount = storeAmount > amount ? amount : storeAmount;
+                building.StoreCurrency(storeAmount);
+                SavingSystemManager.Instance.IncrementLocalCurrency(currencyId, storeAmount);
+                amount -= storeAmount;
+            }
         }
 
         #endregion
