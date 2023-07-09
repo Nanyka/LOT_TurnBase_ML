@@ -14,7 +14,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
         [NonSerialized] public UnityEvent OnUpdateCurrencies = new(); // send to CurrenciesInfo; invoke at SavingSystemManager
         [NonSerialized] public UnityEvent OnClickIdleButton = new(); // send to PlayerFactionManager; invoke at DontMoveButton & MovingPath
-        [NonSerialized] public UnityEvent OnGameOver = new(); // send to GameResultPanel; invoke at PlayerFactionManager
+        [NonSerialized] public UnityEvent OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at PlayerFactionManager
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnBuyBuildingMenu = new(); // send to BuyBuildingMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent<IConfirmFunction> OnInteractBuildingMenu = new(); // send to SellBuildingMenu, invoke at BuildingController
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnShowCreatureMenu = new(); // send to CreatureMenu, invoke at InventoryLoader

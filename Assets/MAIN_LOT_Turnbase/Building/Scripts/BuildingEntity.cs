@@ -84,10 +84,34 @@ namespace JumpeeIsland
             return 0;
         }
 
+        public int GetCurrentStorage(CurrencyType currencyType, ref List<BuildingEntity> selectedBuildings)
+        {
+            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
+            {
+                selectedBuildings.Add(this);
+                return m_BuildingData.CurrentStorage;
+            }
+
+            return 0;
+        }
+
+        public int GetCurrentStorage(CurrencyType currencyType)
+        {
+            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
+                return m_BuildingData.CurrentStorage;
+
+            return 0;
+        }
+
         public void StoreCurrency(int amount)
         {
             m_BuildingData.CurrentStorage += amount;
             CollectExp(amount);
+        }
+
+        public void DeductCurrency(int amount)
+        {
+            m_BuildingData.CurrentStorage -= amount;
         }
 
         public int CalculateSellingPrice()

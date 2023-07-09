@@ -87,31 +87,10 @@ namespace JumpeeIsland
             }
 
             // TODO: Reset creature position
-
-            // var playerWithoutKing = PlayerData.FindAll(t => t.EntityName.Equals("King") == false);
-            // int checkingIndex = 0;
-            // foreach (var data in playerWithoutKing)
-            // {
-            //     if (checkingIndex >= playerData.Count)
-            //     {
-            //         data.CurrentHp = 0;
-            //         continue;
-            //     }
-            //
-            //     if (data.EntityName.Equals(playerData[checkingIndex].EntityName))
-            //     {
-            //         data.CurrentHp = playerData[checkingIndex].CurrentHp;
-            //         data.CurrentExp = playerData[checkingIndex].CurrentExp;
-            //         checkingIndex++;
-            //     }
-            //     else
-            //         data.CurrentHp = 0;
-            // }
-            //
-            // PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
+            
         }
 
-        public void StoreRewardToBuildings(string currencyId, int amount)
+        public void StoreRewardAtBuildings(string currencyId, int amount)
         {
             if (currencyId.Equals("GOLD") || currencyId.Equals("GEM"))
                 return;

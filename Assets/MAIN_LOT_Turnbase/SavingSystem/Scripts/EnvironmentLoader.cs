@@ -97,14 +97,14 @@ namespace JumpeeIsland
             buildingLoader.PlaceNewObject(buildingData);
         }
 
-        public void StoreRewardToBuildings(string currencyId, int amount)
+        public void StoreRewardAtBuildings(string currencyId, int amount)
         {
-            buildingLoader.GetController().StoreRewardToBuildings(currencyId, amount);
+            buildingLoader.GetController().StoreRewardAtBuildings(currencyId, amount);
         }
 
-        public int GetStorageSpace(string currencyId)
+        public void DeductCurrencyFromBuildings(string currencyId, int amount)
         {
-            return buildingLoader.GetController().GetStorageSpace(currencyId);
+            buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId,amount);
         }
 
         #endregion

@@ -341,7 +341,8 @@ namespace JumpeeIsland
             // Pay for constructing the building...
             var constructingCost = m_CloudConnector.GetVirtualPurchaseCost(virtualPurchaseId);
             foreach (var cost in constructingCost)
-                m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
+                DeductCurrencyFromBuildings(cost.id, cost.amount);
+            // m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
 
             return true;
         }
@@ -420,6 +421,14 @@ namespace JumpeeIsland
             m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
         }
 
+        // TODO reduce currency storage when deduct an amount of the following currency
+        public async void DeductCurrency(string currencyId, int amount)
+        {
+            await RefreshEconomy();
+            m_CloudConnector.DeductCurrency(currencyId, amount);
+            m_CurrencyLoader.DeductCurrency(currencyId, amount);
+        }
+
         public IEnumerable<PlayerBalance> GetCurrencies()
         {
             return m_CurrencyLoader.GetCurrencies();
@@ -444,14 +453,6 @@ namespace JumpeeIsland
         public void GrantMoveForTest()
         {
             m_CurrencyLoader.GrantMove(50);
-        }
-
-        // TODO reduce currency storage when deduct an amount of the following currency
-        public async void DeductCurrency(string currencyId, int amount)
-        {
-            await RefreshEconomy();
-            m_CloudConnector.DeductCurrency(currencyId, amount);
-            m_CurrencyLoader.DeductCurrency(currencyId, amount);
         }
 
         public void OnSetCloudCurrency(string currencyId, int amount)
@@ -609,6 +610,9 @@ namespace JumpeeIsland
             return m_EnvLoader.GetDataForSave();
         }
 
+        /// <summary>
+        /// All currency increment must go through this function
+        /// </summary>
         public void StoreCurrencyAtBuildings(string commandId, Vector3 fromPos)
         {
             if (commandId.Equals("NONE"))
@@ -622,10 +626,11 @@ namespace JumpeeIsland
                     case "currency":
                     {
                         if (reward.id.Equals(CurrencyType.GOLD.ToString()) ||
-                            reward.id.Equals(CurrencyType.GEM.ToString()))
+                            reward.id.Equals(CurrencyType.GEM.ToString()) ||
+                            reward.id.Equals(CurrencyType.MOVE.ToString()))
                             IncrementLocalCurrency(reward.id, reward.amount);
                         else
-                            m_EnvLoader.StoreRewardToBuildings(reward.id, reward.amount);
+                            m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
                         break;
                     }
                 }
@@ -637,7 +642,20 @@ namespace JumpeeIsland
         ///</summary>
         public void StoreCurrencyByEnvData(string currencyId, int amount, EnvironmentData envData)
         {
-            envData.StoreRewardToBuildings(currencyId,amount);
+            envData.StoreRewardAtBuildings(currencyId, amount);
+        }
+
+        /// <summary>
+        /// All currency deduction must go through this function
+        /// </summary>
+        public void DeductCurrencyFromBuildings(string currencyId, int amount)
+        {
+            if (currencyId.Equals(CurrencyType.GOLD.ToString()) ||
+                currencyId.Equals(CurrencyType.GEM.ToString()) ||
+                currencyId.Equals(CurrencyType.MOVE.ToString()))
+                DeductCurrency(currencyId, amount);
+            else
+                m_EnvLoader.DeductCurrencyFromBuildings(currencyId, amount);
         }
 
         #endregion
