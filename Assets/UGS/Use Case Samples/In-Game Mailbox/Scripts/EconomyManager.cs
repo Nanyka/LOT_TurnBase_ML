@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JumpeeIsland;
 using Unity.Services.Economy;
 using Unity.Services.Economy.Model;
 using UnityEngine;
+using WebSocketSharp;
 
 namespace Unity.Services.Samples.InGameMailbox
 {
@@ -62,7 +64,7 @@ namespace Unity.Services.Samples.InGameMailbox
                     if (currencyDefinition.CustomDataDeserializable.GetAs<Dictionary<string, string>>() is { } customData
                         && customData.TryGetValue("spriteAddress", out var spriteAddress))
                     {
-                        economySpriteAddresses.Add(currencyDefinition.Id, spriteAddress);
+                            economySpriteAddresses.Add(currencyDefinition.Id, spriteAddress);
                     }
                 }
             }
@@ -71,11 +73,10 @@ namespace Unity.Services.Samples.InGameMailbox
             {
                 foreach (var inventoryItemDefinition in inventoryItemDefinitions)
                 {
-                    if (inventoryItemDefinition.CustomDataDeserializable.GetAs<Dictionary<string, string>>() is { } customData
-                        && customData.TryGetValue("spriteAddress", out var spriteAddress))
-                    {
-                        economySpriteAddresses.Add(inventoryItemDefinition.Id, spriteAddress);
-                    }
+                    var inventory = inventoryItemDefinition.CustomDataDeserializable.GetAs<JIInventoryItem>();
+                    if (inventory.spriteAddress.IsNullOrEmpty())
+                        continue;
+                    economySpriteAddresses.Add(inventoryItemDefinition.Id, inventory.spriteAddress);
                 }
             }
         }

@@ -17,7 +17,7 @@ namespace JumpeeIsland
             MainUI.Instance.OnEnableInteract.AddListener(AnnounceFinishPlaceCreature);
             Debug.Log("Load data into managers...");
             
-            // Save playerEnv in cache used for saving at the end of battle
+            // Save playerEnv into the cache that will be used for saving at the end of battle
             _playerEnvCache = _environmentData;
             
             // Load EnemyEnv
@@ -28,7 +28,11 @@ namespace JumpeeIsland
             
             // Send creature data to Creature menu as JIInventoryItem
             foreach (var creatureData in _playerEnvCache.PlayerData)
-                _spawnList.Add(creatureData.GetInventoryItem());
+            {
+                var inventoryItem = creatureData.GetInventoryItem();
+                inventoryItem.EntityData = creatureData;
+                _spawnList.Add(inventoryItem);
+            }
             
             ExecuteEnvData();
         }

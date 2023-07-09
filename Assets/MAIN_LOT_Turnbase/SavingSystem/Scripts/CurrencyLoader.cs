@@ -44,14 +44,11 @@ namespace JumpeeIsland
 
             foreach (var localBalance in m_LocalBalances.LocalBalances)
             {
-                if (localBalance.CurrencyId == "MOVE") // MOVE is a special currency that is controlled by cloudCode only
-                    continue;
-
                 var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
                 if (localBalance.Balance != currency.Balance)
                 {
                     currency.Balance = localBalance.Balance;
-                    SavingSystemManager.Instance.OnSetCurrency(localBalance.CurrencyId,localBalance.Balance);
+                    SavingSystemManager.Instance.OnSetCloudCurrency(localBalance.CurrencyId, localBalance.Balance);
                 }
             }
 
@@ -62,6 +59,23 @@ namespace JumpeeIsland
         {
             RefreshLocalBalances();
             Init(currencies);
+        }
+
+        public void GrantMove(long moveAmount)
+        {
+            Debug.Log($"Grant {moveAmount} MOVE");
+            
+            if (moveAmount <= 0)
+                return;
+
+            var moveCurrency = m_Currencies.Find(t => t.CurrencyId == m_MoveId);
+            moveAmount = Mathf.Clamp((int)(moveCurrency.Balance + moveAmount), 0,
+                SavingSystemManager.Instance.GetMaxMove());
+
+            moveCurrency.Balance = moveAmount;
+            SavingSystemManager.Instance.OnSetCloudCurrency(m_MoveId, (int)moveCurrency.Balance);
+            SavingSystemManager.Instance.SaveLocalBalances(BalanceForSaving());
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
         public long GetCurrency(string currencyId)

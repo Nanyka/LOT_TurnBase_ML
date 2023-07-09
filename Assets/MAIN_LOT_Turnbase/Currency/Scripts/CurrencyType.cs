@@ -8,7 +8,7 @@ namespace JumpeeIsland
         COIN,
         GOLD,
         GEM,
-        STEP,
+        MOVE,
         MULTI
     }
 }

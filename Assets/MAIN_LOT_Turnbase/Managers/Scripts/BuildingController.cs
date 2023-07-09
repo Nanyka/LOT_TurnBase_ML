@@ -65,26 +65,29 @@ namespace JumpeeIsland
             MainUI.Instance.OnInteractBuildingMenu.Invoke(getUnitAtPos);
         }
 
-        public void StoreRewardToBuildings(string currencyId, int amount)
+        public void StoreRewardAtBuildings(string currencyId, int amount)
         {
-            if (currencyId.Equals("COIN") || currencyId.Equals("GOLD") || currencyId.Equals("GEM"))
+            if (currencyId.Equals("GOLD") || currencyId.Equals("GEM") ||  currencyId.Equals("MOVE"))
                 return;
             
             // Check if enough storage space
-            int currentStorage = 0;
+            int availableSpace = 0;
             List<BuildingEntity> selectedBuildings = new List<BuildingEntity>();
             if (Enum.TryParse(currencyId, out CurrencyType currency))
                 foreach (var t in m_buildings)
-                    currentStorage += t.GetStoreSpace(currency, ref selectedBuildings);
+                    availableSpace += t.GetStoreSpace(currency, ref selectedBuildings);
 
-            amount = amount > currentStorage ? currentStorage : amount;
+            if (amount > availableSpace)
+                Debug.Log($"Lack of {currencyId} STORAGE. Current storage is {availableSpace} and need for {amount}");    
+            
+            amount = amount > availableSpace ? availableSpace : amount;
 
             if (amount == 0 || selectedBuildings.Count == 0)
                 return;
             
             GeneralAlgorithm.Shuffle(selectedBuildings); // Shuffle buildings to ensure random selection
 
-            // Stock currency to building and grain exp
+            // Stock currency to building and gain exp
             foreach (var building in selectedBuildings)
             {
                 if (amount <= 0)
@@ -92,22 +95,48 @@ namespace JumpeeIsland
                 var storeAmount = building.GetStorageSpace(currency);
                 storeAmount = storeAmount > amount ? amount : storeAmount;
                 building.StoreCurrency(storeAmount);
+                SavingSystemManager.Instance.IncrementLocalCurrency(currencyId, storeAmount);
                 amount -= storeAmount;
             }
         }
 
-        public int GetStorageSpace(string currencyId)
+        public void DeductCurrencyFromBuildings(string currencyId, int amount)
         {
-            int storageSpace = 0;
+            Debug.Log($"Deduct {currencyId} from buildings");
+            if (currencyId.Equals("GOLD") || currencyId.Equals("GEM") ||  currencyId.Equals("MOVE"))
+                return;
+            
+            // Check if enough storage space
+            int currentStorage = 0;
+            List<BuildingEntity> selectedBuildings = new List<BuildingEntity>();
             if (Enum.TryParse(currencyId, out CurrencyType currency))
                 foreach (var t in m_buildings)
-                    storageSpace += t.GetStoreSpace(currency);
-            return storageSpace;
+                    currentStorage += t.GetCurrenStorage(currency, ref selectedBuildings);
+            
+            if (amount > currentStorage)
+            {
+                Debug.Log($"Lack of {currencyId}");
+                return;
+            } 
+            
+            GeneralAlgorithm.Shuffle(selectedBuildings); // Shuffle buildings to ensure random selection
+
+            // Stock currency to building and gain exp
+            foreach (var building in selectedBuildings)
+            {
+                if (amount <= 0)
+                    break;
+                var deductedAmount = building.GetCurrentStorage(currency);
+                deductedAmount = deductedAmount > amount ? amount : deductedAmount;
+                building.DeductCurrency(deductedAmount);
+                SavingSystemManager.Instance.DeductCurrency(currencyId, deductedAmount);
+                amount -= deductedAmount;
+            }
         }
 
         public void RemoveBuilding(BuildingInGame building)
         {
-            m_Environment.RemoveObject(building.gameObject, FactionType.Neutral);
+            m_Environment.RemoveObject(building.gameObject, building.GetEntity().GetFaction());
             m_buildings.Remove(building);
         }
     }

@@ -19,7 +19,7 @@ namespace JumpeeIsland
             var upgradeExp = _buildingEntity.CalculateUpgradePrice();
             if (SavingSystemManager.Instance.CheckEnoughCurrency("GEM", upgradeExp))
             {
-                SavingSystemManager.Instance.DeductCurrency("GEM",upgradeExp);
+                SavingSystemManager.Instance.DeductCurrencyFromBuildings("GEM",upgradeExp);
                 _buildingEntity.CollectExp(upgradeExp);
             }
             else

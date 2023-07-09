@@ -26,7 +26,6 @@ namespace JumpeeIsland
         {
             m_Environment = GameFlowManager.Instance.GetEnvManager();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
-            m_Environment.OnOneTeamWin.AddListener(FinishRound);
 
             m_NpcActionInferer = GetComponent<NPCActionInferer>();
 
@@ -154,18 +153,13 @@ namespace JumpeeIsland
         private IEnumerator WaitForChangeFaction(float seconds)
         {
             yield return new WaitForSeconds(seconds);
-
+            
             // Set all npc to default color to show it disable state
             foreach (var enemy in m_Enemies)
                 enemy.SetDisableMaterial();
 
             m_Environment.ChangeFaction();
             // m_Environment.OnChangeFaction.Invoke();
-        }
-
-        protected void FinishRound(FactionType faction)
-        {
-            Debug.Log("NPC end game");
         }
 
         #endregion
@@ -175,14 +169,6 @@ namespace JumpeeIsland
         public MovementInspector GetMovementInspector()
         {
             return m_Environment.GetMovementInspector();
-        }
-
-        // Remove dieJumper from environment
-        public void RemoveAgent(NPCInGame jumper)
-        {
-            m_Environment.RemoveObject(jumper.gameObject, m_Faction);
-            m_Enemies.Remove(jumper);
-            SetTempIndex();
         }
 
         public List<NPCInGame> GetEnemies()

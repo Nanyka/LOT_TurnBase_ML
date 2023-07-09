@@ -12,6 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial11
   m_EditorClassIdentifier: 
+  UsePassCondition: 0
+  PassCondition:
+    MapSize: 0
+    Currency: 0
+    CurrencyCompare: 0
+    CurrencyAmount: 0
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
+    Resource: 0
+    ResourceCompare: 0
+    ResourceAmount: 0
+    Collectable: 1
+    CollectableCompare: 2
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsUICondition: 0
+    UIElement: 
+    IsScoreCondition: 0
+    ScoreCompare: 0
+    ScoreAmount: 0
   conditions:
   - MapSize: 0
     Currency: 0
@@ -27,7 +53,7 @@ MonoBehaviour:
     CollectableCompare: 2
     CollectableAmount: 0
     Building: 0
-    BuildingCompare: 2
+    BuildingCompare: 0
     BuildingAmount: 1
     Creature: 0
     CreatureCompare: 0
@@ -38,9 +64,9 @@ MonoBehaviour:
     ScoreCompare: 0
     ScoreAmount: 0
   steps:
-  - Pointer: 0
-    EntitySelection: 0
-    EntityType: 0
+  - Pointer: 1
+    EntitySelection: 1
+    EntityType: 5
     CurrencyFromResource: 0
     BuildingType: 0
     CreatureType: 0
@@ -50,12 +76,12 @@ MonoBehaviour:
     ButtonName: 
     CheckPosition: 0
     CheckEntity: 0
-    Spawner: 1
-    SpawnType: 5
+    Spawner: 0
+    SpawnType: 0
     IsDesignatedPos: 0
     DesignatedPos: {x: 0, y: 0, z: 0}
     SpawnResource: 
-    SpawnCollectable: PigEgg
+    SpawnCollectable: 
     SpawnCollectableLevel: 0
     SpawnEnemy: 
     SpawnEnemyLevel: 0
@@ -73,10 +99,10 @@ MonoBehaviour:
       ResourceAmount: 0
       Collectable: 1
       CollectableCompare: 2
-      CollectableAmount: 1
+      CollectableAmount: 0
       Building: 0
-      BuildingCompare: 0
-      BuildingAmount: 0
+      BuildingCompare: 2
+      BuildingAmount: 1
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
@@ -85,6 +111,7 @@ MonoBehaviour:
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 0
+    IsEndTutorial: 0
     Conversation: 0
     Message: 
   nextTutorial: /Tutorials/Tutorial12

@@ -7,7 +7,6 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Economy.Model;
 using Unity.Services.Leaderboards.Models;
-using Unity.Services.Samples.IdleClickerGame;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -57,28 +56,6 @@ namespace JumpeeIsland
             }
         }
 
-        async Task<EnvironmentData> GetUpdatedState()
-        {
-            try
-            {
-                var updatedState = await _cloudCodeManager.CallLoadUpdatedStateEndpoint();
-                if (this == null)
-                    return null;
-
-                return updatedState;
-            }
-            catch (CloudCodeResultUnavailableException)
-            {
-                // Exception already handled by CloudCodeManager
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-
-            return null;
-        }
-
         async Task FetchUpdatedServicesData()
         {
             await Task.WhenAll(
@@ -92,21 +69,6 @@ namespace JumpeeIsland
         public async Task OnSaveEnvData()
         {
             await _cloudCodeManager.CallSaveEnvData(SavingSystemManager.Instance.GetEnvDataForSave());
-        }
-
-        public async Task<EnvironmentData> OnLoadEnvData()
-        {
-            try
-            {
-                var returnEnvData = await GetUpdatedState();
-                return returnEnvData;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-
-            return null;
         }
 
         public async Task<EnvironmentData> OnResetEnvData()
@@ -301,6 +263,11 @@ namespace JumpeeIsland
             await _economyManager.OnSetCurrency(currencyId, amount);
         }
 
+        public string GetCurrencySprite(string currencyId)
+        {
+            return _economyManager.GetSpriteAddress(currencyId);
+        }
+
         #endregion
 
         #region INVENTORY DATA
@@ -376,6 +343,36 @@ namespace JumpeeIsland
             return _remoteConfigManager.commandRewards[commandId];
         }
 
+        public int GetNumericByConfig(string configName)
+        {
+            return _remoteConfigManager.numericConfig[configName];
+        }
+
+        public async Task<JIRemoteConfigManager.BattleLoot> GetBattleWinLoot(int star)
+        {
+            var battleConfig = "";
+            switch (star)
+            {
+                case 1:
+                {
+                    battleConfig = JIRemoteConfigManager.BattleWinConfigName.JI_BATTLEWIN_1STAR.ToString();
+                    break;
+                }
+                case 2:
+                {
+                    battleConfig = JIRemoteConfigManager.BattleWinConfigName.JI_BATTLEWIN_2STAR.ToString();
+                    break;
+                }
+                case 3:
+                {
+                    battleConfig = JIRemoteConfigManager.BattleWinConfigName.JI_BATTLEWIN_3STAR.ToString();
+                    break;
+                }
+            }
+
+            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.GetPlayerScore(),battleConfig);
+        }
+
         #endregion
 
         #region LEADERBOARD
@@ -387,8 +384,9 @@ namespace JumpeeIsland
             getPlayerRange = getPlayerRange.FindAll(t =>
                     t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
 
-            return await _cloudCodeManager.CallLoadEnemyEnvironment(
-                getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId);
+            var selectRandomPlayer = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
+            Debug.Log($"Get environment from player: {selectRandomPlayer}");
+            return await _cloudCodeManager.CallLoadEnemyEnvironment(selectRandomPlayer);
         }
 
         public void PlayerRecordScore(int playerScore)
@@ -421,6 +419,11 @@ namespace JumpeeIsland
         public async Task OnSaveGameProcess(GameProcessData currentProcess)
         {
             await _cloudCodeManager.CallSaveGameProcess(currentProcess);
+        }
+
+        public async Task<long> OnGrantMove()
+        {
+            return await _cloudCodeManager.CallGrantMove();
         }
 
         #endregion

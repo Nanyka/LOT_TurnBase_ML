@@ -36,13 +36,16 @@ namespace JumpeeIsland
 
         private void DestroyResource(Entity killedByEntity)
         {
-            // just contribute resource when it is killed by player faction
-            if (killedByEntity.GetFaction() == FactionType.Player)
-                m_Entity.ContributeCommands();
+            if (GameFlowManager.Instance.IsEcoMode)
+            {
+                // just contribute resource when it is killed by player faction
+                if (killedByEntity.GetFaction() == FactionType.Player)
+                    m_Entity.ContributeCommands();
             
-            // Add exp for entity who killed this resource
-            if (killedByEntity != m_Entity)
-                killedByEntity.CollectExp(m_Entity.GetExpReward());
+                // Add exp for entity who killed this resource
+                if (killedByEntity != m_Entity)
+                    killedByEntity.CollectExp(m_Entity.GetExpReward());
+            }
             
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             StartCoroutine(DestroyVisual());

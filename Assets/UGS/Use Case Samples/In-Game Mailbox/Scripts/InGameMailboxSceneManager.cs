@@ -58,7 +58,7 @@ namespace Unity.Services.Samples.InGameMailbox
 
         async Task FetchUpdatedServicesData()
         {
-            // This method must execute before AddressablesManager.instance.PreloadAllEconomySprites()
+            // This method must execute before AddressableManager.instance.PreloadAllEconomySprites()
             EconomyManager.instance.InitializeEconomyLookups();
 
             await Task.WhenAll(

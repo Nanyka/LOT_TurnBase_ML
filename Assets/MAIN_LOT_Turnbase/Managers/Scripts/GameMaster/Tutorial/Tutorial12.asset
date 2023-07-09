@@ -30,19 +30,19 @@ MonoBehaviour:
     Building: 0
     BuildingCompare: 0
     BuildingAmount: 0
-    Creature: 1
-    CreatureCompare: 2
-    CreatureAmount: 0
+    Creature: 2
+    CreatureCompare: 0
+    CreatureAmount: 1
     IsUICondition: 0
     UIElement: 
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
   conditions:
-  - MapSize: 22
+  - MapSize: 0
     Currency: 0
     CurrencyCompare: 0
-    CurrencyAmount: 1
+    CurrencyAmount: 4
     Storage: 0
     StorageCompare: 0
     StorageAmount: 0
@@ -51,13 +51,13 @@ MonoBehaviour:
     ResourceAmount: 1
     Collectable: 0
     CollectableCompare: 2
-    CollectableAmount: 0
+    CollectableAmount: 1
     Building: 0
     BuildingCompare: 2
     BuildingAmount: 1
-    Creature: 1
-    CreatureCompare: 0
-    CreatureAmount: 0
+    Creature: 2
+    CreatureCompare: 2
+    CreatureAmount: 1
     IsUICondition: 0
     UIElement: 
     IsScoreCondition: 0
@@ -65,15 +65,15 @@ MonoBehaviour:
     ScoreAmount: 0
   steps:
   - Pointer: 1
-    EntitySelection: 1
-    EntityType: 4
+    EntitySelection: 0
+    EntityType: 0
     CurrencyFromResource: 0
     BuildingType: 0
-    CreatureType: 1
+    CreatureType: 0
     ArrowSign: 0
     MinJump: 0
-    ButtonSelection: 0
-    ButtonName: 
+    ButtonSelection: 1
+    ButtonName: BuyCreature
     CheckPosition: 0
     CheckEntity: 0
     Spawner: 0
@@ -101,11 +101,61 @@ MonoBehaviour:
       CollectableCompare: 2
       CollectableAmount: 1
       Building: 0
+      BuildingCompare: 2
+      BuildingAmount: 1
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
+      IsUICondition: 1
+      UIElement: TrainCreatureMenu
+      IsScoreCondition: 0
+      ScoreCompare: 0
+      ScoreAmount: 0
+    IsEndTutorial: 0
+    Conversation: 0
+    Message: 
+  - Pointer: 1
+    EntitySelection: 0
+    EntityType: 0
+    CurrencyFromResource: 0
+    BuildingType: 0
+    CreatureType: 0
+    ArrowSign: 0
+    MinJump: 0
+    ButtonSelection: 1
+    ButtonName: CreatureBuyButton
+    CheckPosition: 0
+    CheckEntity: 0
+    Spawner: 0
+    SpawnType: 0
+    IsDesignatedPos: 0
+    DesignatedPos: {x: 0, y: 0, z: 0}
+    SpawnResource: 
+    SpawnCollectable: 
+    SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
+    CheckEndCondition: 1
+    EndCondition:
+      MapSize: 0
+      Currency: 0
+      CurrencyCompare: 0
+      CurrencyAmount: 0
+      Storage: 0
+      StorageCompare: 0
+      StorageAmount: 0
+      Resource: 0
+      ResourceCompare: 0
+      ResourceAmount: 0
+      Collectable: 0
+      CollectableCompare: 0
+      CollectableAmount: 0
+      Building: 0
       BuildingCompare: 0
       BuildingAmount: 0
-      Creature: 1
-      CreatureCompare: 2
-      CreatureAmount: 0
+      Creature: 2
+      CreatureCompare: 0
+      CreatureAmount: 1
       IsUICondition: 0
       UIElement: 
       IsScoreCondition: 0

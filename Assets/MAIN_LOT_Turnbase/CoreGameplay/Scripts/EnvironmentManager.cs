@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -9,18 +10,17 @@ namespace JumpeeIsland
     public class EnvironmentManager : MonoBehaviour
     {
         [HideInInspector] public UnityEvent OnChangeFaction; // invoke at EnemyFactionController, PlayerFactionController;
-        [HideInInspector] public UnityEvent<FactionType> OnOneTeamWin; // sent to all FactionManagers 
+        // [HideInInspector] public UnityEvent OnOneTeamZeroTroop; // sent to FactionManagers, MainUI 
         [HideInInspector] public UnityEvent<Vector3> OnShowMovingPath; // send to MovingVisual; invoke at FactionController
         [HideInInspector] public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingVisual
         [HideInInspector] public UnityEvent<Vector3> OnHighlightUnit; // send to MovingVisual; invoke at FactionController
 
-        [Header("Game Configurations")] 
+        [Header("Game Configurations")]
         [SerializeField] protected bool _isObstacleAsTeam1;
-        [SerializeField] protected FactionType _currFaction;
+        [SerializeField] protected FactionType _currFaction = FactionType.Player;
         [SerializeField] protected int _minStep;
         [SerializeField] protected int _step;
-        [SerializeField] protected float refurbishPeriod;
-        [SerializeField] protected bool _isBattleMode;
+        [SerializeField] protected float _refurbishPeriod;
 
         private DomainManager _domainManager;
         private MovementInspector _movementInspector;
@@ -32,7 +32,7 @@ namespace JumpeeIsland
             _movementInspector = GetComponent<MovementInspector>();
             _domainManager = GetComponent<DomainManager>();
 
-            OnOneTeamWin.AddListener(OneTeamWin);
+            // OnOneTeamZeroTroop.AddListener(OneTeamWin);
         }
 
         private void Start()
@@ -40,6 +40,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
+            GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment); // Just for BATTLE MODE
         }
 
         private void Init(long moveAmount)
@@ -47,7 +48,7 @@ namespace JumpeeIsland
             _step = (int) moveAmount;
             
             // Start refurbish loop
-            InvokeRepeating(nameof(WaitToAddMove), refurbishPeriod, refurbishPeriod);
+            InvokeRepeating(nameof(WaitToAddMove), _refurbishPeriod, _refurbishPeriod);
             
             // Start game
             KickOffEnvironment();
@@ -55,16 +56,16 @@ namespace JumpeeIsland
 
         #region ENVIRONMENT IN GAME
 
-        public void KickOffEnvironment()
+        private void KickOffEnvironment()
         {
             OnChangeFaction.Invoke();
         }
 
-        private void OneTeamWin(FactionType winFaction)
-        {
-            MainUI.Instance.OnGameOver.Invoke(winFaction);
-            Debug.Log("Wait for player claim loot");
-        }
+        // private void OneTeamWin()
+        // {
+        //     MainUI.Instance.OnGameOver.Invoke(winFaction);
+        //     Debug.Log("Wait for player claim loot");
+        // }
 
         public void ChangeFaction()
         {
@@ -160,11 +161,10 @@ namespace JumpeeIsland
         public void RemoveObject(GameObject targetObject, FactionType faction)
         {
             _domainManager.RemoveObject(targetObject, faction);
-            if (_isBattleMode)
+            if (GameFlowManager.Instance.IsEcoMode == false)
             {
-                var checkWin = _domainManager.CheckWinCondition();
-                if (checkWin != FactionType.Neutral)
-                    OnOneTeamWin.Invoke(checkWin);
+                if (_domainManager.CheckOneFactionZeroTroop())
+                    MainUI.Instance.OnGameOver.Invoke();
             }
         }
 
@@ -175,6 +175,11 @@ namespace JumpeeIsland
         public FactionType GetCurrFaction()
         {
             return _currFaction;
+        }
+
+        public int CountFaction(FactionType factionType)
+        {
+            return _domainManager.CountFaction(factionType);
         }
 
         #endregion

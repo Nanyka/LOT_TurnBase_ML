@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
@@ -8,12 +10,18 @@ namespace JumpeeIsland
         {
             _creatureMenu = GetComponent<CreatureMenu>();
             
-            OnEnableInteract.AddListener(SetInteractable);
+            OnEnableInteract.AddListener(EnableInteractable);
+            OnGameOver.AddListener(DisableInteractable);
         }
 
-        private void SetInteractable()
+        private void EnableInteractable()
         {
             IsInteractable = true;
+        }
+
+        private void DisableInteractable()
+        {
+            IsInteractable = false;
         }
 
         protected override void Update() { }

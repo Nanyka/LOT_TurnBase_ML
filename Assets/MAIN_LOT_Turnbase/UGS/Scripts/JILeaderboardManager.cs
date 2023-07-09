@@ -25,11 +25,11 @@ namespace JumpeeIsland
             // Debug.Log(JsonConvert.SerializeObject(scoresResponse));
         }
 
-        public async void GetPlayerScore()
+        public async Task<int> GetPlayerScore()
         {
             var scoreResponse =
                 await LeaderboardsService.Instance.GetPlayerScoreAsync(_leaderboardId);
-            // Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+            return (int)scoreResponse.Score;
         }
         
         public async Task<List<LeaderboardEntry>> GetPlayerRange()

@@ -54,23 +54,23 @@ namespace JumpeeIsland
             }
         }
         
-        public async Task<EnvironmentData> CallLoadUpdatedStateEndpoint()
-        {
-            try
-            {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<EnvironmentData>(
-                    "JumpeeIsland_GetUpdatedState",
-                    new Dictionary<string, object>());
-
-                return updatedState;
-            }
-            catch (CloudCodeException e)
-            {
-                HandleCloudCodeException(e);
-                throw new CloudCodeResultUnavailableException(e,
-                    "Handled exception in CallGetUpdatedStateEndpoint.");
-            }
-        }
+        // public async Task<EnvironmentData> CallLoadUpdatedStateEndpoint()
+        // {
+        //     try
+        //     {
+        //         var updatedState = await CloudCodeService.Instance.CallEndpointAsync<EnvironmentData>(
+        //             "JumpeeIsland_GetUpdatedState",
+        //             new Dictionary<string, object>());
+        //
+        //         return updatedState;
+        //     }
+        //     catch (CloudCodeException e)
+        //     {
+        //         HandleCloudCodeException(e);
+        //         throw new CloudCodeResultUnavailableException(e,
+        //             "Handled exception in CallGetUpdatedStateEndpoint.");
+        //     }
+        // }
         
         public async Task<EnvironmentData> CallResetStateEndpoint()
         {
@@ -178,6 +178,24 @@ namespace JumpeeIsland
                 HandleCloudCodeException(e);
                 throw new CloudCodeResultUnavailableException(e,
                     "Handled exception in CallGetGameProcess.");
+            }
+        }
+
+        public async Task<long> CallGrantMove()
+        {
+            try
+            {
+                var grantAmount = await CloudCodeService.Instance.CallEndpointAsync<long>(
+                    "JumpeeIsland_GrantMove",
+                    new Dictionary<string, object> { { "CurrencyId", "MOVE" } });
+                
+                return grantAmount;
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e,
+                    "Handled exception in CallGrantMove.");
             }
         }
 

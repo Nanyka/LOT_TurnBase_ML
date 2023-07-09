@@ -40,6 +40,13 @@ namespace JumpeeIsland
 
         #region CURRENCY
 
+        public string GetSpriteAddress(string currencyId)
+        {
+            Debug.Log($"Get sprite of {currencyId}");
+            return currencyDefinitions.Find(t => t.Id.Equals(currencyId)).
+                CustomDataDeserializable.GetAs<CurrencyCustomData>().spriteAddress;
+        }
+
         public async Task<List<PlayerBalance>> RefreshCurrencyBalances()
         {
             GetBalancesResult balanceResult = null;
@@ -114,6 +121,11 @@ namespace JumpeeIsland
             {
                 Debug.LogException(e);
             }
+        }
+
+        private class CurrencyCustomData
+        {
+            public string spriteAddress;
         }
 
         #endregion

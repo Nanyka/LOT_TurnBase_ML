@@ -16,5 +16,6 @@ namespace JumpeeIsland
         public int AttackDamage;
         public float AttackRange;
         public int Shield;
+        public int ExpReward;
     }
 }

@@ -165,10 +165,7 @@ namespace JumpeeIsland
         public override void ContributeCommands()
         {
             foreach (var command in m_CurrentStat.Commands)
-            {
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
                 SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_CreatureData.Position);
-            }
         }
         
         public override void RefreshEntity()
@@ -191,6 +188,9 @@ namespace JumpeeIsland
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
+            
+            // Check expand map
+            SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         #endregion

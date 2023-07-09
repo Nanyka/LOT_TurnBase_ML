@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 using UnityEngine.Events;
-using WebSocketSharp;
 
 namespace JumpeeIsland
 {
@@ -22,7 +21,7 @@ namespace JumpeeIsland
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
         // invoke at CreatureEntity, BuildingEntity, Creature
-        [NonSerialized] public UnityEvent OnCheckExpandMap = new();
+        [NonSerialized] public UnityEvent OnCheckExpandMap = new(); //TODO check expand map just invoke 1 time???
 
         // invoke at TileManager
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
@@ -43,7 +42,8 @@ namespace JumpeeIsland
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
-        private GameStateData _gameStateData = new();
+        private GameStateData m_GameStateData = new();
+        private GameProcessData m_GameProcess = new();
         private string _gamePath;
         private bool encrypt = true;
         private bool _isLastSessionDisconnect;
@@ -59,7 +59,7 @@ namespace JumpeeIsland
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
             OnRefreshBalances.AddListener(RefreshBalances);
-            GameFlowManager.Instance.OnLoadData.AddListener(StartUpLoadData);
+            // GameFlowManager.Instance.OnLoadData.AddListener(StartUpLoadData);
         }
 
         private async void OnDisable()
@@ -81,7 +81,7 @@ namespace JumpeeIsland
             }
         }
 
-        private async void StartUpLoadData()
+        public async void StartUpLoadData()
         {
             // Authenticate on UGS and get envData
             await m_CloudConnector.Init();
@@ -93,19 +93,16 @@ namespace JumpeeIsland
             // If this process is not complete, the environment will not be save at OnDisable()
             SetInLoadingState(true);
 
-            // Load command must be placed before LoadEnvironment to ensure storages are in proper states
-            // LoadCommands();
+            // for Testing: Do not LoadCommands(), just use remoteConfig as currency JSON
+            LoadLocalCurrencies();
+
+            // Load currency after commit MOVE created during skip period
+            await LoadEconomy();
+            // m_CurrencyLoader.Init();
 
             // Load environment and calculate any time-based resource increment
             await LoadEnvironment();
             m_EnvLoader.Init();
-            
-            // for Testing: Do not LoadCommands(), just use remoteConfig as currency JSON
-            LoadLocalCurrencies();
-            
-            // Load currency after commit MOVE created during skip period
-            await LoadEconomy();
-            // m_CurrencyLoader.Init();
 
             // Load game process to refresh current tutorial
             await LoadGameProcess();
@@ -128,9 +125,9 @@ namespace JumpeeIsland
 
         private void SetInLoadingState(bool isLoading)
         {
-            _gameStateData.IsInLoadingPhase = isLoading;
+            m_GameStateData.IsInLoadingPhase = isLoading;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(_gameStateData, gameStatePath, GameStateWasSaved, encrypt);
+            SaveManager.Instance.Save(m_GameStateData, gameStatePath, GameStateWasSaved, encrypt);
         }
 
         private async Task LoadGameState()
@@ -145,14 +142,13 @@ namespace JumpeeIsland
                 Debug.LogError("No State data File Found -> Creating new data...");
 
             if (result == SaveResult.Success)
-                _gameStateData = gameState;
+                m_GameStateData = gameState;
         }
 
         private void SaveDisconnectedState(bool isDisconnected)
         {
-            _gameStateData.IsDisconnectedLastSession = isDisconnected;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(_gameStateData, gameStatePath, GameStateWasSaved, encrypt);
+            SaveManager.Instance.Save(m_GameStateData, gameStatePath, GameStateWasSaved, encrypt);
         }
 
         private void GameStateWasSaved(SaveResult result, string message)
@@ -161,9 +157,9 @@ namespace JumpeeIsland
                 Debug.LogError($"Error saving data:\n{result}\n{message}");
         }
 
-        public bool CheckLoadingPhaseFinished()
+        private bool CheckLoadingPhaseFinished()
         {
-            return !_gameStateData.IsInLoadingPhase;
+            return !m_GameStateData.IsInLoadingPhase;
         }
 
         #endregion
@@ -308,6 +304,13 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
+
+            if (inventoryItem.EntityData != null)
+            {
+                newCreature = (CreatureData)inventoryItem.EntityData;
+                newCreature.Position = position;
+            }
+
             m_EnvLoader.TrainACreature(newCreature);
         }
 
@@ -326,6 +329,8 @@ namespace JumpeeIsland
 
         private async Task<bool> ConductVirtualPurchase(string virtualPurchaseId)
         {
+            await RefreshEconomy();
+
             var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(virtualPurchaseId);
             if (purchaseHandler == null)
             {
@@ -335,18 +340,36 @@ namespace JumpeeIsland
 
             // Pay for constructing the building...
             var constructingCost = m_CloudConnector.GetVirtualPurchaseCost(virtualPurchaseId);
-            Debug.Log(
-                $"Conduct virtualPurchase {virtualPurchaseId} that cost {constructingCost[0].id} an amount {constructingCost[0].amount}");
             foreach (var cost in constructingCost)
-                m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
+                DeductCurrencyFromBuildings(cost.id, cost.amount);
+            // m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
 
             return true;
         }
 
         #endregion
 
+        #region REMOTE CONFIG
+
+        public int GetMaxMove()
+        {
+            return m_CloudConnector.GetNumericByConfig(CommandName.JI_MAX_MOVE.ToString());
+        }
+
+        public async Task<JIRemoteConfigManager.BattleLoot> GetBattleLootByStar(int stars)
+        {
+            return await m_CloudConnector.GetBattleWinLoot(stars);
+        }
+
+        public List<JIRemoteConfigManager.Reward> GetRewardByCommand(string commandId)
+        {
+            return m_CloudConnector.GetRewardByCommandId(commandId);
+        }
+
+        #endregion
+
         #region ECONOMY
-        
+
         public void SaveLocalBalances(LocalBalancesData balances)
         {
             var currenciesPath = GetSavingPath(SavingPath.Currencies);
@@ -376,9 +399,10 @@ namespace JumpeeIsland
 
         private async Task LoadEconomy()
         {
-            m_CurrencyLoader.Init(await m_CloudConnector.OnLoadCurrency());
             m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
             m_CloudConnector.OnLoadVirtualPurchase();
+            m_CurrencyLoader.Init(await m_CloudConnector.OnLoadCurrency());
+            m_CurrencyLoader.GrantMove(await m_CloudConnector.OnGrantMove());
         }
 
         public async Task RefreshEconomy()
@@ -394,22 +418,15 @@ namespace JumpeeIsland
 
         public void IncrementLocalCurrency(string rewardID, int rewardAmount)
         {
-            if (rewardID.Equals(CurrencyType.GEM.ToString()) || rewardID.Equals(CurrencyType.COIN.ToString()) ||
-                rewardID.Equals(CurrencyType.GOLD.ToString()))
-            {
-                m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
-                return;
-            }
+            m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
+        }
 
-            int storageSpace = m_EnvLoader.GetStorageSpace(rewardID);
-            if (storageSpace < rewardAmount)
-            {
-                Debug.Log(
-                    $"[TODO] Show something to announce \"Lack of storage\", storageSpace of {rewardID} is {storageSpace}");
-                m_CurrencyLoader.IncrementCurrency(rewardID, storageSpace);
-            }
-            else
-                m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
+        // TODO reduce currency storage when deduct an amount of the following currency
+        public async void DeductCurrency(string currencyId, int amount)
+        {
+            await RefreshEconomy();
+            m_CloudConnector.DeductCurrency(currencyId, amount);
+            m_CurrencyLoader.DeductCurrency(currencyId, amount);
         }
 
         public IEnumerable<PlayerBalance> GetCurrencies()
@@ -433,15 +450,25 @@ namespace JumpeeIsland
             m_CurrencyLoader.IncrementCurrency(currencyId, amount);
         }
 
-        public void DeductCurrency(string currencyId, int amount)
+        public void GrantMoveForTest()
         {
-            m_CloudConnector.DeductCurrency(currencyId, amount);
-            m_CurrencyLoader.DeductCurrency(currencyId, amount);
+            m_CurrencyLoader.GrantMove(50);
         }
 
-        public void OnSetCurrency(string currencyId, int amount)
+        public void OnSetCloudCurrency(string currencyId, int amount)
         {
-            m_CloudConnector.OnSetCurrency(currencyId,amount);
+            if (currencyId == CurrencyType.MOVE.ToString())
+            {
+                var maxMove = m_CloudConnector.GetNumericByConfig(CommandName.JI_MAX_MOVE.ToString());
+                amount = amount < maxMove ? amount : maxMove;
+            }
+
+            m_CloudConnector.OnSetCurrency(currencyId, amount);
+        }
+
+        public string GetCurrencySprite(string currencyId)
+        {
+            return m_CloudConnector.GetCurrencySprite(currencyId);
         }
 
         #endregion
@@ -469,9 +496,9 @@ namespace JumpeeIsland
             return m_CloudConnector.GetInventoryByNameOrId(entityName);
         }
 
-        public void GrantInventory(string inventoryId)
+        public async void GrantInventory(string inventoryId)
         {
-            m_CloudConnector.OnGrantInventory(inventoryId);
+            await m_CloudConnector.OnGrantInventory(inventoryId);
         }
 
         #endregion
@@ -548,16 +575,16 @@ namespace JumpeeIsland
 
         private async Task LoadGameProcess()
         {
-            var currentGameProcess = await m_CloudConnector.OnLoadGameProcess();
-            GameFlowManager.Instance.LoadCurrentTutorial(currentGameProcess == null
+            m_GameProcess = await m_CloudConnector.OnLoadGameProcess();
+            GameFlowManager.Instance.LoadCurrentTutorial(m_GameProcess == null
                 ? "/Tutorials/Tutorial0"
-                : currentGameProcess.currentTutorial);
+                : m_GameProcess.currentTutorial);
         }
 
         public async void SaveCurrentTutorial(string tutorial)
         {
-            var currentProcess = new GameProcessData() { currentTutorial = tutorial };
-            await m_CloudConnector.OnSaveGameProcess(currentProcess);
+            m_GameProcess.currentTutorial = tutorial;
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
         #endregion
@@ -575,26 +602,60 @@ namespace JumpeeIsland
             return m_EnvLoader.GetData();
         }
 
+        /// <summary>
+        /// In battleMode, EnvData for saving is player's envData, and EnvData from GetEnvData is enemy's envData
+        /// </summary>
         public EnvironmentData GetEnvDataForSave()
         {
             return m_EnvLoader.GetDataForSave();
         }
 
+        /// <summary>
+        /// All currency increment must go through this function
+        /// </summary>
         public void StoreCurrencyAtBuildings(string commandId, Vector3 fromPos)
         {
             if (commandId.Equals("NONE"))
                 return;
-            
+
             var rewards = m_CloudConnector.GetRewardByCommandId(commandId);
             foreach (var reward in rewards)
             {
                 switch (reward.service)
                 {
                     case "currency":
-                        m_EnvLoader.StoreRewardToBuildings(reward.id, reward.amount);
+                    {
+                        if (reward.id.Equals(CurrencyType.GOLD.ToString()) ||
+                            reward.id.Equals(CurrencyType.GEM.ToString()) ||
+                            reward.id.Equals(CurrencyType.MOVE.ToString()))
+                            IncrementLocalCurrency(reward.id, reward.amount);
+                        else
+                            m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
                         break;
+                    }
                 }
             }
+        }
+
+        ///<summary>
+        ///Store currency into buildings of a given EnvData
+        ///</summary>
+        public void StoreCurrencyByEnvData(string currencyId, int amount, EnvironmentData envData)
+        {
+            envData.StoreRewardAtBuildings(currencyId, amount);
+        }
+
+        /// <summary>
+        /// All currency deduction must go through this function
+        /// </summary>
+        public void DeductCurrencyFromBuildings(string currencyId, int amount)
+        {
+            if (currencyId.Equals(CurrencyType.GOLD.ToString()) ||
+                currencyId.Equals(CurrencyType.GEM.ToString()) ||
+                currencyId.Equals(CurrencyType.MOVE.ToString()))
+                DeductCurrency(currencyId, amount);
+            else
+                m_EnvLoader.DeductCurrencyFromBuildings(currencyId, amount);
         }
 
         #endregion

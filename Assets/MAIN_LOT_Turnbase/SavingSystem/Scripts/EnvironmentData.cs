@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace JumpeeIsland
 {
@@ -69,7 +71,7 @@ namespace JumpeeIsland
             if (isFinishPlacing)
                 if (playerData.Count == 0)
                 {
-                    PlayerData = new List<CreatureData>();
+                    PlayerData = PlayerData.FindAll(t => t.EntityName.Equals("King"));
                     return;
                 }
 
@@ -77,26 +79,50 @@ namespace JumpeeIsland
             if (playerData.Count == 0)
                 return;
 
-            int checkingIndex = 0;
-            foreach (var data in PlayerData)
+            var kingData = PlayerData.Find(t => t.EntityName.Equals("King"));
+            PlayerData = new List<CreatureData>(playerData);
+            if (kingData != null)
             {
-                if (checkingIndex >= playerData.Count)
-                {
-                    data.CurrentHp = 0;
-                    continue;
-                }
-
-                if (data.EntityName.Equals(playerData[checkingIndex].EntityName))
-                {
-                    data.CurrentHp = playerData[checkingIndex].CurrentHp;
-                    data.CurrentExp = playerData[checkingIndex].CurrentExp;
-                    checkingIndex++;
-                }
-                else
-                    data.CurrentHp = 0;
+                PlayerData.Add(kingData);
             }
 
-            PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
+            // TODO: Reset creature position
+            
+        }
+
+        public void StoreRewardAtBuildings(string currencyId, int amount)
+        {
+            if (currencyId.Equals("GOLD") || currencyId.Equals("GEM"))
+                return;
+
+            // Check if enough storage space
+            int currentStorage = 0;
+            List<BuildingData> selectedBuildings = new List<BuildingData>();
+            if (Enum.TryParse(currencyId, out CurrencyType currencyType))
+                foreach (var t in BuildingData)
+                    currentStorage += t.GetStoreSpace(currencyType, ref selectedBuildings);
+
+            if (amount > currentStorage)
+                Debug.Log($"Lack of {currencyId} STORAGE. Current storage is {currentStorage} and need for {amount}");
+
+            amount = amount > currentStorage ? currentStorage : amount;
+
+            if (amount == 0 || selectedBuildings.Count == 0)
+                return;
+
+            GeneralAlgorithm.Shuffle(selectedBuildings); // Shuffle buildings to ensure random selection
+
+            // Stock currency to building and gain exp
+            foreach (var building in selectedBuildings)
+            {
+                if (amount <= 0)
+                    break;
+                var storeAmount = building.GetStoreSpace(currencyType);
+                storeAmount = storeAmount > amount ? amount : storeAmount;
+                building.StoreCurrency(storeAmount);
+                SavingSystemManager.Instance.IncrementLocalCurrency(currencyId, storeAmount);
+                amount -= storeAmount;
+            }
         }
 
         #endregion
@@ -115,6 +141,51 @@ namespace JumpeeIsland
                               (1 + creature.CurrentLevel);
 
             return totalScore;
+        }
+
+        #endregion
+
+        #region WIN MECHANIC
+
+        public bool IsDemolishMainHall()
+        {
+            return BuildingData.Count(t => t.EntityName == "MainHall") == 0;
+        }
+
+        public void GatherCreature(string creatureName)
+        {
+            var creatureStats =
+                (UnitStats)AddressableManager.Instance.GetAddressableSO($"/Stats/Creature/{creatureName}_lv0");
+
+            var newCreature = new CreatureData()
+            {
+                EntityName = creatureName,
+                Position = GetFreeLocation(),
+                CurrentLevel = 0,
+                FactionType = FactionType.Player,
+                CreatureType = CreatureType.PLAYER,
+                CurrentHp = creatureStats.HealthPoint,
+                CurrentDamage = creatureStats.Strengh
+            };
+
+            PlayerData.Add(newCreature);
+        }
+
+        public Vector3 GetFreeLocation()
+        {
+            var returnPos = Vector3.negativeInfinity;
+            var listTile = GeneralAlgorithm.SpiralPatternConstructor(mapSize);
+            foreach (var tile in listTile)
+            {
+                if (BuildingData.Count(t => Vector3.Distance(t.Position, tile.GetPosition(0f, 1f)) < 0.1f) > 0)
+                    continue;
+                if (PlayerData.Count(t => Vector3.Distance(t.Position, tile.GetPosition(0f, 1f)) < 0.1f) > 0)
+                    continue;
+                returnPos = tile.GetPosition(0f, 1f);
+                break;
+            }
+
+            return returnPos;
         }
 
         #endregion

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class JITestLeaderboard : MonoBehaviour
+    public class JILeaderboard : MonoBehaviour
     {
         [SerializeField] private JICloudCodeManager m_CloudCode;
         

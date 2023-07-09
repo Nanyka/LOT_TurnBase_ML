@@ -9,8 +9,11 @@ namespace JumpeeIsland
 {
     public class JIRemoteConfigManager : MonoBehaviour
     {
-
         public Dictionary<string, List<Reward>> commandRewards = new(5);
+        public Dictionary<string, int> numericConfig = new();
+        public Dictionary<string, BattleLoot> BattleLoots = new();
+
+        #region STATIC CONFIG
 
         public async Task FetchConfigs()
         {
@@ -21,7 +24,8 @@ namespace JumpeeIsland
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
 
-                GetConfigValues();
+                GetEconomyConfigValues();
+                GetNumericConfigValues();
             }
             catch (Exception e)
             {
@@ -29,9 +33,9 @@ namespace JumpeeIsland
             }
         }
 
-        void GetConfigValues()
+        void GetEconomyConfigValues()
         {
-            Debug.Log("Got config value");
+            Debug.Log("Got economic config value");
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_SPEND_MOVE.ToString());
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_WOOD_1_0.ToString());
             GetAppConfigCommandRewardsAndProcess(CommandName.JI_NEUTRAL_FOOD_1_0.ToString());
@@ -79,14 +83,31 @@ namespace JumpeeIsland
             commandRewards[commandKey] = commandReward.rewards;
         }
 
+        private void GetNumericConfigValues()
+        {
+            Debug.Log("Got numeric config value");
+            GetNumericConfig(CommandName.JI_MAX_MOVE.ToString());
+            GetNumericConfig(NumericConfigName.JI_COLLECT_CREATURE_RATE.ToString());
+        }
+
+        private void GetNumericConfig(string configKey)
+        {
+            var numericValue = RemoteConfigService.Instance.appConfig.GetInt(configKey);
+            numericConfig[configKey] = numericValue;
+        }
+        
         // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of
         // whether any data needs to be passed in them. Candidates for what you may want to pass in the UserAttributes
         // struct could be things like device type, however it is completely customizable.
-        public struct UserAttributes { }
+        public struct UserAttributes
+        {
+        }
 
         // Candidates for what you can pass in the AppAttributes struct could be things like what level the player
         // is on, or what version of the app is installed. The candidates are completely customizable.
-        public struct AppAttributes { }
+        public struct AppAttributes
+        {
+        }
 
         [Serializable]
         public struct CommandReward
@@ -101,5 +122,81 @@ namespace JumpeeIsland
             public string id;
             public int amount;
         }
+        
+        public enum NumericConfigName
+        {
+            JI_COLLECT_CREATURE_RATE
+        }
+
+        #endregion
+
+        #region LEVEL-BASED CONFIG
+
+        public async Task<BattleLoot> GetBattleWinConfigs(int playerRange ,string battleWinConfig)
+        {
+            try
+            {
+                var userAttribute = new BattleWinUserAttributes { playerScore = playerRange };
+
+                await RemoteConfigService.Instance.FetchConfigsAsync(userAttribute, new BattleWinAppAttributes());
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return null;
+
+                CacheBattleWinConfigs();
+                return BattleLoots[battleWinConfig];
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                return null;
+            }
+        }
+
+        private void CacheBattleWinConfigs()
+        {
+            GetBattleWinConfig(BattleWinConfigName.JI_BATTLEWIN_1STAR.ToString());
+            GetBattleWinConfig(BattleWinConfigName.JI_BATTLEWIN_2STAR.ToString());
+            GetBattleWinConfig(BattleWinConfigName.JI_BATTLEWIN_3STAR.ToString());
+        }
+
+        private void GetBattleWinConfig(string configKey)
+        {
+            var json = RemoteConfigService.Instance.appConfig.GetJson(configKey);
+            var battleLoot = JsonUtility.FromJson<BattleLoot>(json);
+            BattleLoots[configKey] = battleLoot;
+        }
+
+        // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of
+        // whether any data needs to be passed in them. Candidates for what you may want to pass in the UserAttributes
+        // struct could be things like device type, however it is completely customizable.
+        private struct BattleWinUserAttributes
+        {
+            public int playerScore;
+        }
+
+        // Candidates for what you can pass in the AppAttributes struct could be things like what level the player
+        // is on, or what version of the app is installed. The candidates are completely customizable.
+        private struct BattleWinAppAttributes
+        {
+        }
+        
+        public class BattleLoot
+        {
+            public List<string> CurrencyLoots;
+            public int AmountOfWithdraw; // The reward is a bundle of AmountOfWithdraw commands from CurrencyLoots
+            public List<string> CreatureLoot; // Select one of this creature
+        }
+        
+        public enum BattleWinConfigName
+        {
+            JI_BATTLEWIN_1STAR,
+            JI_BATTLEWIN_2STAR,
+            JI_BATTLEWIN_3STAR
+        }
+
+        #endregion
+
+        
     }
 }
