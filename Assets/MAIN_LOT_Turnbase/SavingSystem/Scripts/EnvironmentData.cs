@@ -83,7 +83,6 @@ namespace JumpeeIsland
             PlayerData = new List<CreatureData>(playerData);
             if (kingData != null)
             {
-                Debug.Log("Add king data");
                 PlayerData.Add(kingData);
             }
 

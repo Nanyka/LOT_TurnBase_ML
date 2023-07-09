@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -8,7 +7,7 @@ namespace JumpeeIsland
     public class GameResultPanel : MonoBehaviour
     {
         [SerializeField] private GameObject _gameoverPanel;
-        [SerializeField] private TextMeshProUGUI _gameoverText;
+        [SerializeField] private List<StarHolder> _starHolders;
         [SerializeField] private List<BattleRewardItem> _rewardItemUI;
 
         private int _startGameEnemyCount;
@@ -97,12 +96,12 @@ namespace JumpeeIsland
                     SavingSystemManager.Instance.GetEnvironmentData().GatherCreature(creatureLoot);
                 }
 
-                _gameoverText.text = $"Player WIN {winStar} STARs.\n Win rate {winRate * 100}%";
+                for (int i = 0; i < winStar; i++)
+                    _starHolders[i].EnableStar();
                 _gameoverPanel.SetActive(true);
             }
             else
             {
-                _gameoverText.text = $"Player LOSS!!!";
                 _gameoverPanel.SetActive(true);
             }
         }
