@@ -70,10 +70,6 @@ namespace JumpeeIsland
             if (killedByEntity.GetFaction() == FactionType.Player)
                 SavingSystemManager.Instance.GrantCurrency(CurrencyType.GOLD.ToString(), m_Entity.CalculateSellingPrice());
 
-            // when it is battle mode, player collect resources when destroying the enemy building
-            // if (m_Entity.GetFaction() == FactionType.Enemy && killedByEntity.GetFaction() == FactionType.Player)
-            //     m_Entity.ContributeCommands();
-            
             // Add exp for entity who killed this resource
             if (killedByEntity != m_Entity)
                 killedByEntity.CollectExp(m_Entity.GetExpReward());

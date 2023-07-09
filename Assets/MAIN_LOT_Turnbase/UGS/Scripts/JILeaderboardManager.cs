@@ -39,7 +39,6 @@ namespace JumpeeIsland
                 new GetPlayerRangeOptions{ RangeLimit = _rangeLimit }
             );
             
-            Debug.Log($"Response enemy: {scoresResponse.Results.Count}");
             return scoresResponse.Results;
         }
     }

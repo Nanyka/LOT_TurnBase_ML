@@ -87,6 +87,7 @@ namespace JumpeeIsland
         {
             Debug.Log("Got numeric config value");
             GetNumericConfig(CommandName.JI_MAX_MOVE.ToString());
+            GetNumericConfig(NumericConfigName.JI_COLLECT_CREATURE_RATE.ToString());
         }
 
         private void GetNumericConfig(string configKey)
@@ -120,6 +121,11 @@ namespace JumpeeIsland
             public string service;
             public string id;
             public int amount;
+        }
+        
+        public enum NumericConfigName
+        {
+            JI_COLLECT_CREATURE_RATE
         }
 
         #endregion

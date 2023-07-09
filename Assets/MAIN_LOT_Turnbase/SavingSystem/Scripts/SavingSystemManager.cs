@@ -306,7 +306,10 @@ namespace JumpeeIsland
             };
 
             if (inventoryItem.EntityData != null)
+            {
                 newCreature = (CreatureData)inventoryItem.EntityData;
+                newCreature.Position = position;
+            }
 
             m_EnvLoader.TrainACreature(newCreature);
         }
@@ -355,6 +358,11 @@ namespace JumpeeIsland
         public async Task<JIRemoteConfigManager.BattleLoot> GetBattleLootByStar(int stars)
         {
             return await m_CloudConnector.GetBattleWinLoot(stars);
+        }
+
+        public List<JIRemoteConfigManager.Reward> GetRewardByCommand(string commandId)
+        {
+            return m_CloudConnector.GetRewardByCommandId(commandId);
         }
 
         #endregion
@@ -410,22 +418,6 @@ namespace JumpeeIsland
         public void IncrementLocalCurrency(string rewardID, int rewardAmount)
         {
             m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
-
-            // if (rewardID.Equals(CurrencyType.GEM.ToString()) || rewardID.Equals(CurrencyType.GOLD.ToString()))
-            // {
-            //     m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
-            //     return;
-            // }
-            //
-            // int storageSpace = m_EnvLoader.GetStorageSpace(rewardID);
-            // if (storageSpace < rewardAmount)
-            // {
-            //     Debug.Log(
-            //         $"[TODO] Show something to announce \"Lack of storage\", storageSpace of {rewardID} is {storageSpace}");
-            //     m_CurrencyLoader.IncrementCurrency(rewardID, storageSpace);
-            // }
-            // else
-            //     m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
         }
 
         public IEnumerable<PlayerBalance> GetCurrencies()
@@ -454,6 +446,7 @@ namespace JumpeeIsland
             m_CurrencyLoader.GrantMove(50);
         }
 
+        // TODO reduce currency storage when deduct an amount of the following currency
         public async void DeductCurrency(string currencyId, int amount)
         {
             await RefreshEconomy();
@@ -470,6 +463,11 @@ namespace JumpeeIsland
             }
 
             m_CloudConnector.OnSetCurrency(currencyId, amount);
+        }
+
+        public string GetCurrencySprite(string currencyId)
+        {
+            return m_CloudConnector.GetCurrencySprite(currencyId);
         }
 
         #endregion
@@ -603,6 +601,9 @@ namespace JumpeeIsland
             return m_EnvLoader.GetData();
         }
 
+        /// <summary>
+        /// In battleMode, EnvData for saving is player's envData, and EnvData from GetEnvData is enemy's envData
+        /// </summary>
         public EnvironmentData GetEnvDataForSave()
         {
             return m_EnvLoader.GetDataForSave();
@@ -631,6 +632,9 @@ namespace JumpeeIsland
             }
         }
 
+        ///<summary>
+        ///Store currency into buildings of a given EnvData
+        ///</summary>
         public void StoreCurrencyByEnvData(string currencyId, int amount, EnvironmentData envData)
         {
             envData.StoreRewardToBuildings(currencyId,amount);

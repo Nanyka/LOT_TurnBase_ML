@@ -263,6 +263,11 @@ namespace JumpeeIsland
             await _economyManager.OnSetCurrency(currencyId, amount);
         }
 
+        public string GetCurrencySprite(string currencyId)
+        {
+            return _economyManager.GetSpriteAddress(currencyId);
+        }
+
         #endregion
 
         #region INVENTORY DATA
