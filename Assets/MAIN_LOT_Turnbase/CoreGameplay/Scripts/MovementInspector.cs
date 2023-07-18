@@ -63,32 +63,7 @@ namespace JumpeeIsland
 
         private bool CheckAvailableMove(Vector3 newPos)
         {
-            // if (maxRow == 0f || maxCol == 0f)
-            //     InputPlatformSize();
-
             return _environment.FreeToMove(newPos);
         }
-
-        // private bool CheckInBoundary(Vector3 checkPos)
-        // {
-        //     if (maxRow == 0f || maxCol == 0f)
-        //         InputPlatformSize();
-        //
-        //     return Mathf.Abs(checkPos.x - _platformPos.x) <= maxCol &&
-        //            Mathf.Abs(checkPos.z - _platformPos.z) <= maxRow;
-        // }
-
-        // private void InputPlatformSize()
-        // {
-        //     _platformPos = _environment.GetPlatformCollider().transform.position;
-        //     var platformSize = _environment.GetPlatformCollider().bounds.size;
-        //     maxCol = Mathf.RoundToInt((platformSize.x - 1) / 2);
-        //     maxRow = Mathf.RoundToInt((platformSize.z - 1) / 2);
-        // }
-
-        // public Vector3 GetPlatformPosition()
-        // {
-        //     return _platformPos;
-        // }
     }
 }
