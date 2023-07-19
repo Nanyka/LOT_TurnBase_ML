@@ -14,9 +14,10 @@ namespace JumpeeIsland
             _environment = GetComponent<EnvironmentManager>();
         }
 
-        public (Vector3 returnPos, int jumpCount, int overEnemy) MovingPath(Vector3 curPos, int direction, int jumpCount, int overEnemy)
+        public (Vector3 returnPos, int jumpCount, int overEnemy) MovingPath(Vector3 curPos, int direction,
+            int jumpCount, int overEnemy)
         {
-            var newPos = curPos + DirectionToVector(direction);
+            var newPos = curPos + DirectionTo(direction);
 
             if (CheckAvailableMove(newPos))
             {
@@ -26,17 +27,39 @@ namespace JumpeeIsland
                 return (curPos, jumpCount, overEnemy);
             }
 
-            if (CheckAvailableMove(newPos + DirectionToVector(direction)))
+            if (CheckAvailableMove(newPos + DirectionTo(direction)))
             {
                 jumpCount++;
-                curPos = newPos + DirectionToVector(direction);
+                curPos = newPos + DirectionTo(direction);
                 return MovingPath(curPos, direction, jumpCount, overEnemy);
             }
 
             return (curPos, jumpCount, overEnemy);
         }
 
-        private Vector3 DirectionToVector(int direction)
+        // Get list of jumping positions
+        public List<Vector3> MovingPath(Vector3 curPos, int direction, List<Vector3> jumpingPoints)
+        {
+            var newPos = curPos + DirectionTo(direction);
+
+            if (CheckAvailableMove(newPos))
+            {
+                if (jumpingPoints.Count == 0)
+                    jumpingPoints.Add(newPos);
+                return jumpingPoints;
+            }
+
+            if (CheckAvailableMove(newPos + DirectionTo(direction)))
+            {
+                curPos = newPos + DirectionTo(direction);
+                jumpingPoints.Add(curPos);
+                return MovingPath(curPos, direction, jumpingPoints);
+            }
+
+            return jumpingPoints;
+        }
+
+        private Vector3 DirectionTo(int direction)
         {
             var checkVector = Vector3.zero;
 

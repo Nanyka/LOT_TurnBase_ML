@@ -29,6 +29,9 @@ namespace JumpeeIsland
 
         private void MovingRange(Vector3 middlePos)
         {
+            middlePos = new Vector3(Mathf.RoundToInt(middlePos.x),
+                Mathf.RoundToInt(middlePos.y), Mathf.RoundToInt(middlePos.z));
+            
             for (int index = 0; index <= 3; index++)
             {
                 _movingPoints[index].SwitchProjector(false);

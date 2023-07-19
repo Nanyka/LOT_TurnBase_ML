@@ -58,7 +58,7 @@ namespace JumpeeIsland
 
             // reset all agent's moving state
             foreach (var enemy in m_Enemies)
-                enemy.ResetMoveState();
+                enemy.NewTurnReset();
 
             KickOffNewTurn();
         }

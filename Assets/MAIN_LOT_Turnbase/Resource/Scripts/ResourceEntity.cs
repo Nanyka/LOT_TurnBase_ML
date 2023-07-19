@@ -105,7 +105,7 @@ namespace JumpeeIsland
 
         #region ANIMATION
 
-        public override void SetAnimation(AnimateType animation, bool isTurnOn)
+        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new System.NotImplementedException();
         }

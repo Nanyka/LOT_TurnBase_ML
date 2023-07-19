@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using JumpeeIsland;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity
+    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity, ICreatureMove
     {
-        [Header("Creature Components")] [SerializeField]
-        protected Transform _rotatePart;
-
-        // [SerializeField] private Renderer _agentRenderer;
+        [FormerlySerializedAs("_rotatePart")]
+        [Header("Creature Components")] 
+        [SerializeField] protected Transform _tranformPart;
         [SerializeField] protected CreatureEntity m_Entity;
 
         protected IFactionController m_FactionController;
@@ -24,13 +24,11 @@ namespace JumpeeIsland
         {
             m_Entity.Init(creatureData);
             m_Transform.position = creatureData.Position;
-            _rotatePart.eulerAngles = creatureData.Rotation;
+            _tranformPart.eulerAngles = creatureData.Rotation;
             
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
             MarkAsUsedThisTurn();
-            // TODO: Check the game work or not if the new creature do not mark as used
-            // m_FactionController.WaitForCreature();
         }
 
         public virtual void OnEnable()
@@ -50,19 +48,31 @@ namespace JumpeeIsland
 
             _movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
-
-            // Change agent direction before the agent jump to the new position
-            if (_movement.targetPos != m_Transform.position)
-                _rotatePart.forward = _movement.targetPos - m_Transform.position;
+            
+            // // Change agent direction before the agent jump to the new position
+            // if (_movement.targetPos != m_Transform.position)
+            //     _rotatePart.forward = _movement.targetPos - m_Transform.position;
 
             MarkAsUsedThisTurn();
-            StartCoroutine(MoveOverTime(_movement.targetPos));
+            CreatureStartMove(m_Transform.position,moveDirection);
+            // StartCoroutine(MoveOverTime(_movement.targetPos));
+        }
+        
+        public void CreatureStartMove(Vector3 currentPos, int direction)
+        {
+            m_Entity.ConductCreatureMove(currentPos,direction, this);
+        }
+
+        public virtual void CreatureEndMove()
+        {
+            m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
+            m_FactionController.WaitForCreature();
         }
 
         private IEnumerator MoveOverTime(Vector3 targetPos)
         {
             m_Entity.SetAnimation(AnimateType.Walk, true);
-            m_Entity.UpdateTransform(_movement.targetPos, _rotatePart.eulerAngles);
+            m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
             while (m_Transform.position != targetPos)
             {
                 m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 2f * Time.deltaTime);
@@ -78,6 +88,10 @@ namespace JumpeeIsland
             _isUsed = false;
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
+            var position = _tranformPart.position;
+            position = new Vector3(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y),
+                Mathf.RoundToInt(position.z));
+            _tranformPart.position = position;
             m_Entity.SetActiveMaterial();
         }
 
@@ -107,7 +121,7 @@ namespace JumpeeIsland
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _rotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
+            return (m_Transform.position, _tranformPart.forward, _movement.jumpCount, m_FactionController.GetFaction());
         }
 
         public EntityData GetEntityData()
@@ -168,11 +182,11 @@ namespace JumpeeIsland
                 environmentData.EnemyData.Remove((CreatureData) m_Entity.GetData());
         }
 
-        public void ResetMoveState()
-        {
-            _isUsed = false;
-            m_Entity.SetActiveMaterial();
-        }
+        // public void ResetMoveState()
+        // {
+        //     _isUsed = false;
+        //     m_Entity.SetActiveMaterial();
+        // }
 
         #endregion
     }

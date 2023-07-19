@@ -54,18 +54,19 @@ namespace JumpeeIsland
         public override void CollectExp(int expAmount)
         {
             m_CreatureData.CurrentExp += expAmount;
-            if (m_CreatureData.CurrentExp >= m_CurrentStat.ExpToLevelUp && m_CreatureData.CurrentLevel + 1 < m_UnitStats.Length)
+            if (m_CreatureData.CurrentExp >= m_CurrentStat.ExpToLevelUp &&
+                m_CreatureData.CurrentLevel + 1 < m_UnitStats.Length)
             {
                 // Level up
                 m_CreatureData.CurrentLevel++;
-                
+
                 // Reset stats and appearance
                 m_CurrentStat = m_UnitStats[m_CreatureData.CurrentLevel];
                 var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
                 m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
                 m_CreatureData.CurrentDamage = m_CurrentStat.Strengh;
                 m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
-                
+
                 SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
             }
         }
@@ -78,7 +79,7 @@ namespace JumpeeIsland
         {
             m_SkinComp.SetActiveMaterial();
         }
-        
+
         public void SetDisableMaterial()
         {
             m_SkinComp.SetDisableMaterial();
@@ -103,7 +104,7 @@ namespace JumpeeIsland
         {
             OnUnitDie.RemoveAllListeners();
             // Set animation and effect when entity die here
-            m_AnimateComp.SetAnimation(AnimateType.Die, true);
+            m_AnimateComp.SetAnimation(AnimateType.Die);
         }
 
         #endregion
@@ -113,10 +114,10 @@ namespace JumpeeIsland
         public override void AttackSetup(IGetCreatureInfo unitInfo)
         {
             m_Info = unitInfo;
-            m_AnimateComp.SetAnimation(AnimateType.Attack,true);
+            m_AnimateComp.SetAnimation(AnimateType.Attack);
             Attack(); // TESTING
         }
-        
+
         // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
         public void Attack()
         {
@@ -124,7 +125,7 @@ namespace JumpeeIsland
             var attackRange =
                 m_SkillComp.AttackPoints(currentState.midPos, currentState.direction, currentState.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
-            m_AttackComp.Attack(attackPoints, this, m_CreatureData.CurrentDamage , m_Info.GetEnvironment());
+            m_AttackComp.Attack(attackPoints, this, m_CreatureData.CurrentDamage, m_Info.GetEnvironment());
 
             ShowAttackRange(attackPoints);
             m_EffectComp.AttackVFX(currentState.jumpStep);
@@ -142,6 +143,15 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region MOVE
+
+        public void ConductCreatureMove(Vector3 currPos, int direction, ICreatureMove creature)
+        {
+            m_AnimateComp.MoveToTarget(currPos, direction, creature);
+        }
+
+        #endregion
+
         #region SKILL
 
         public override IEnumerable<Skill_SO> GetSkills()
@@ -153,26 +163,26 @@ namespace JumpeeIsland
 
         #region ANIMATE COMPONENT
 
-        public override void SetAnimation(AnimateType animation, bool isTurnOn)
+        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
-            m_AnimateComp.SetAnimation(animation, isTurnOn);
+            m_AnimateComp.SetAnimation(animateType);
         }
 
         #endregion
 
         #region GENERAL
-        
+
         public override void ContributeCommands()
         {
             foreach (var command in m_CurrentStat.Commands)
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_CreatureData.Position);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CreatureData.Position);
         }
-        
+
         public override void RefreshEntity()
         {
             // Set stats based on currentLevel
             m_CurrentStat = m_UnitStats[m_CreatureData.CurrentLevel];
-            
+
             // Initiate entity data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
             m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
@@ -182,18 +192,17 @@ namespace JumpeeIsland
                 m_CreatureData.CurrentHp = m_CurrentStat.HealthPoint;
                 m_CreatureData.CurrentDamage = m_CurrentStat.Strengh;
             }
-            
+
             // Retrieve entity data
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
-            
+
             // Check expand map
             SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         #endregion
-
     }
 }

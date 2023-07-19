@@ -471,7 +471,7 @@ Transform:
   m_GameObject: {fileID: 1110894661480072732}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8889937163186809630}
@@ -1446,6 +1446,7 @@ GameObject:
   - component: {fileID: 4353410399031800137}
   - component: {fileID: 6140101825608116966}
   - component: {fileID: 8337792952249461858}
+  - component: {fileID: 7531725492977864457}
   m_Layer: 0
   m_Name: Creture1_lv1
   m_TagString: Untagged
@@ -1462,7 +1463,7 @@ Transform:
   m_GameObject: {fileID: 2603001729698975480}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2713487610783222848}
@@ -1546,6 +1547,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7531725492977864457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603001729698975480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b6b536e28f24ee588c95af67140ab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2761918927793406594
 GameObject:
   m_ObjectHideFlags: 0

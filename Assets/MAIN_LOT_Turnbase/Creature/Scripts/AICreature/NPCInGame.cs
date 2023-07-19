@@ -108,16 +108,23 @@ namespace JumpeeIsland
             InferMoving = selectedAction;
 
             // Change agent direction before the agent jump to the new position
-            if (selectedAction.TargetPos != m_Transform.position)
-                _rotatePart.forward = selectedAction.TargetPos - m_Transform.position;
+            // if (selectedAction.TargetPos != m_Transform.position)
+            //     _rotatePart.forward = selectedAction.TargetPos - m_Transform.position;
 
-            StartCoroutine(MoveOverTime());
+            CreatureStartMove(m_Transform.position,InferMoving.Action);
+            // StartCoroutine(MoveOverTime());
+        }
+        
+        public override void CreatureEndMove()
+        {
+            m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
+            m_FactionController.KickOffNewTurn();
         }
 
         private IEnumerator MoveOverTime()
         {
             m_Entity.SetAnimation(AnimateType.Walk, true);
-            m_Entity.UpdateTransform(InferMoving.TargetPos, _rotatePart.eulerAngles);
+            m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
             while (transform.position != InferMoving.TargetPos)
             {
                 m_Transform.position = Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 2f * Time.deltaTime);
@@ -145,7 +152,7 @@ namespace JumpeeIsland
 
         public new (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _rotatePart.forward, InferMoving.JumpCount, m_FactionController.GetFaction());
+            return (m_Transform.position, _tranformPart.forward, InferMoving.JumpCount, m_FactionController.GetFaction());
         }
 
         public new EnvironmentManager GetEnvironment()

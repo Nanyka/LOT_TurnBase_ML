@@ -62,6 +62,7 @@ namespace JumpeeIsland
 
         private bool CheckTileExist(Vector3 plot)
         {
+            plot = new (Mathf.RoundToInt(plot.x), Mathf.RoundToInt(plot.y), Mathf.RoundToInt(plot.z));
             return _tileAreas.Contains(plot);
         }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class RootMotionMove : MonoBehaviour
+    public class RootMotionMoveComp : MonoBehaviour
     {
         [SerializeField] private Animator m_Animator;
         public List<Transform> tiles;
@@ -12,14 +12,16 @@ namespace JumpeeIsland
         private Transform m_Transform;
         private Vector3 direction;
         private Vector3 destination; // Ending point of the jump (Point B)
-        private bool isStartMoves = false; // Flag to track if the object is in a move loop
-        private bool isMoving = false; // Flag to track if the object is jumping
+        private bool isStartMoves; // Flag to track if the object is in a move loop
+        private bool isMoving; // Flag to track if the object is jumping
         private int moveIndex;
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int JumpUp = Animator.StringToHash("JumpUp");
         private static readonly int JumpDown = Animator.StringToHash("JumpDown");
         private static readonly int JumpUp1 = Animator.StringToHash("JumpUp1");
         private static readonly int JumpDown1 = Animator.StringToHash("JumpDown1");
+        private static readonly int Attack = Animator.StringToHash("Attack");
+        private static readonly int Die = Animator.StringToHash("Die");
 
         private void Start()
         {
@@ -84,6 +86,27 @@ namespace JumpeeIsland
                 // Debug.Log($"End moves at {transform.position}");
                 isStartMoves = false;
             }
+        }
+        
+        public void SetAnimation(AnimateType animate, bool isOn)
+        {
+            switch (animate)
+            {
+                case AnimateType.Walk:
+                    m_Animator.SetBool(Walk,isOn);
+                    break;
+                case AnimateType.Attack:
+                    m_Animator.SetTrigger(Attack);
+                    break;
+                case AnimateType.Die:
+                    m_Animator.SetTrigger(Die);
+                    break;
+            }
+        }
+
+        public void SetAnimator(Animator animator)
+        {
+            m_Animator = animator;
         }
     }
 }
