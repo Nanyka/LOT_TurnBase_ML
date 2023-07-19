@@ -10,7 +10,10 @@ namespace JumpeeIsland
     public class NPCInGame : CreatureInGame, IGetCreatureInfo
     {
         public DummyAction InferMoving;
+        [Tooltip("NPC will switch brain to infer their motion based on skills")]
         public bool _isSwitchBrain = true;
+        [Tooltip("Some NPC just move around without jumping. If NPC can not jump, its animator is not set as root motion and not require ParentGoWithRoot script")]
+        public bool _isJumpable = true;
 
         private BehaviorParameters m_BehaviorParameters;
         private Agent m_Agent;
@@ -107,14 +110,18 @@ namespace JumpeeIsland
             MarkAsUsedThisTurn();
             InferMoving = selectedAction;
 
-            // Change agent direction before the agent jump to the new position
-            // if (selectedAction.TargetPos != m_Transform.position)
-            //     _rotatePart.forward = selectedAction.TargetPos - m_Transform.position;
+            if (_isJumpable == false)
+            {
+                // Change agent direction before the agent jump to the new position
+                if (selectedAction.TargetPos != m_Transform.position)
+                    _tranformPart.forward = selectedAction.TargetPos - m_Transform.position;
 
-            CreatureStartMove(m_Transform.position,InferMoving.Action);
-            // StartCoroutine(MoveOverTime());
+                StartCoroutine(MoveOverTime());
+            }
+            else
+                CreatureStartMove(m_Transform.position, InferMoving.Action);
         }
-        
+
         public override void CreatureEndMove()
         {
             m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
@@ -127,7 +134,8 @@ namespace JumpeeIsland
             m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
             while (transform.position != InferMoving.TargetPos)
             {
-                m_Transform.position = Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 2f * Time.deltaTime);
+                m_Transform.position =
+                    Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 2f * Time.deltaTime);
                 yield return null;
             }
 
@@ -152,7 +160,8 @@ namespace JumpeeIsland
 
         public new (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _tranformPart.forward, InferMoving.JumpCount, m_FactionController.GetFaction());
+            return (m_Transform.position, _tranformPart.forward, InferMoving.JumpCount,
+                m_FactionController.GetFaction());
         }
 
         public new EnvironmentManager GetEnvironment()

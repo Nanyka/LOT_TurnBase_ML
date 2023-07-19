@@ -18,7 +18,7 @@ namespace JumpeeIsland
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
-        [SerializeField] private bool _isUsed;
+        private bool _isUsed;
 
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {

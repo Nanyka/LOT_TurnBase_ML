@@ -11,9 +11,14 @@ namespace JumpeeIsland
         private CreatureData m_CreatureData;
         private Vector3 _enemyPos;
 
-        private void Start()
+        // public void Init()
+        // {
+        //     m_CreatureData = (CreatureData) GetComponent<GOAPCreatureBrain>().GetCreature().GetEntity().GetData();
+        // }
+
+        public override void Init(CreatureData creatureData)
         {
-            m_CreatureData = (CreatureData) GetComponent<GOAPCreatureBrain>().GetCreature().GetEntity().GetData();
+            m_CreatureData = creatureData;
         }
 
         public override void DetectEnvironment(WorldStates beliefs)

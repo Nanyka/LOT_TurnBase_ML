@@ -7,8 +7,8 @@ namespace JumpeeIsland
     public class AnimateComp : MonoBehaviour
     {
         [SerializeField] private Animator m_Animator;
-        public List<Vector3> tiles = new();
-
+        
+        private List<Vector3> tiles = new();
         private Transform m_Transform;
         private ICreatureMove m_Creature;
         private Vector3 direction;
