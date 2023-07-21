@@ -5082,6 +5082,7 @@ GameObject:
   - component: {fileID: 2946913750074214306}
   - component: {fileID: 1279593107085608571}
   - component: {fileID: 8709917246665982101}
+  - component: {fileID: -559963871492752077}
   m_Layer: 7
   m_Name: Boss1
   m_TagString: unit1
@@ -5229,7 +5230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 2620425889297591781}
   m_UnitStats:
-  - {fileID: 11400000, guid: dc99744dff0564c65af4ca79342af4e0, type: 2}
+  - {fileID: 11400000, guid: 2d8085b9981de4423ba7bf38794c95fa, type: 2}
   m_SkinComp: {fileID: 6450651223250892772}
   m_HealthComp: {fileID: 957914198933142178}
   m_AttackComp: {fileID: 7025476617163877904}
@@ -5358,6 +5359,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 0}
+--- !u!114 &-559963871492752077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825909677220324287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f211fee3a2e6422593983d1dda588d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inventoryId: CREATURE2
 --- !u!1 &2059756995457810896
 GameObject:
   m_ObjectHideFlags: 0

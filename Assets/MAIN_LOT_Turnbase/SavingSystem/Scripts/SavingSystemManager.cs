@@ -318,6 +318,12 @@ namespace JumpeeIsland
 
             m_EnvLoader.TrainACreature(newCreature);
         }
+        
+        public void OnTrainACreature(CreatureData creatureData, Vector3 position)
+        {
+            creatureData.Position = position;
+            m_EnvLoader.TrainACreature(creatureData);
+        }
 
         public void SpawnMovableEntity(string itemId, Vector3 position)
         {

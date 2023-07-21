@@ -6,9 +6,9 @@ namespace JumpeeIsland
 {
     public class BattleEnvLoader : EnvironmentLoader
     {
-        [SerializeField] private EnvironmentData _playerEnvCache;
+        [SerializeField] protected EnvironmentData _playerEnvCache;
 
-        private List<JIInventoryItem> _spawnList = new();
+        // protected List<JIInventoryItem> _spawnList = new();
         private bool _isFinishPlaceCreatures;
         
         public override async void Init()
@@ -21,23 +21,23 @@ namespace JumpeeIsland
             _playerEnvCache = _environmentData;
             
             // Load EnemyEnv
-            _environmentData = await SavingSystemManager.Instance.GetEnemyEnv();;
+            _environmentData = await SavingSystemManager.Instance.GetEnemyEnv();
             
             // Customize battle env from enemy env and player env
             _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
             
             // Send creature data to Creature menu as JIInventoryItem
-            foreach (var creatureData in _playerEnvCache.PlayerData)
-            {
-                var inventoryItem = creatureData.GetInventoryItem();
-                inventoryItem.EntityData = creatureData;
-                _spawnList.Add(inventoryItem);
-            }
+            // foreach (var creatureData in _playerEnvCache.PlayerData)
+            // {
+            //     var inventoryItem = creatureData.GetInventoryItem();
+            //     inventoryItem.EntityData = creatureData;
+            //     _spawnList.Add(inventoryItem);
+            // }
             
             ExecuteEnvData();
         }
 
-        private void AnnounceFinishPlaceCreature()
+        protected void AnnounceFinishPlaceCreature()
         {
             _isFinishPlaceCreatures = true;
         }
@@ -48,9 +48,9 @@ namespace JumpeeIsland
             return _playerEnvCache;
         }
 
-        public List<JIInventoryItem> GetSpawnList()
+        public List<CreatureData> GetSpawnList()
         {
-            return _spawnList;
+            return _playerEnvCache.PlayerData;
         }
     }
 }

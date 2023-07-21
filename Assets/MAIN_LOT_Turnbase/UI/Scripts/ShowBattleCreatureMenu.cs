@@ -15,7 +15,7 @@ namespace JumpeeIsland
         public void OnOpenCreatureMenu()
         {
             MainUI.Instance.OnHideAllMenu.Invoke();
-            MainUI.Instance.OnShowCreatureMenu.Invoke(_battleEnvLoader.GetSpawnList());
+            MainUI.Instance.OnShowDropTroopMenu.Invoke(_battleEnvLoader.GetSpawnList());
         }
     }
 }

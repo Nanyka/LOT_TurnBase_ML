@@ -31,8 +31,6 @@ namespace JumpeeIsland
         {
             _movementInspector = GetComponent<MovementInspector>();
             _domainManager = GetComponent<DomainManager>();
-
-            // OnOneTeamZeroTroop.AddListener(OneTeamWin);
         }
 
         private void Start()
@@ -49,9 +47,6 @@ namespace JumpeeIsland
             
             // Start refurbish loop
             InvokeRepeating(nameof(WaitToAddMove), _refurbishPeriod, _refurbishPeriod);
-            
-            // Start game
-            KickOffEnvironment();
         }
 
         #region ENVIRONMENT IN GAME
@@ -60,12 +55,6 @@ namespace JumpeeIsland
         {
             OnChangeFaction.Invoke();
         }
-
-        // private void OneTeamWin()
-        // {
-        //     MainUI.Instance.OnGameOver.Invoke(winFaction);
-        //     Debug.Log("Wait for player claim loot");
-        // }
 
         public void ChangeFaction()
         {
