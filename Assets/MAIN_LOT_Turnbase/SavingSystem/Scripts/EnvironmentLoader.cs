@@ -69,6 +69,15 @@ namespace JumpeeIsland
             removeInterface.Remove(_environmentData);
         }
 
+        #region TILES
+
+        public List<Transform> GetTiles()
+        {
+            return tileManager.GetTiles();
+        }
+
+        #endregion
+
         #region RESOURCE
 
         public void SpawnResource(ResourceData resourceData)

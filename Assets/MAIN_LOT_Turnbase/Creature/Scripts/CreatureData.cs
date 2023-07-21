@@ -10,6 +10,7 @@ namespace JumpeeIsland
         public int CurrentExp;
         public int TurnCount;
         public int CurrentDamage;
+        public int StregthBoostRemain;
 
         // Just used for BattleMode
         public JIInventoryItem GetInventoryItem()

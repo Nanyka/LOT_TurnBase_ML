@@ -16,7 +16,7 @@ namespace JumpeeIsland
 
         public float GetSkillMagnitude(int jumpStep)
         {
-            return m_SkillSOs[jumpStep-1].GetMagnitude();
+            return m_SkillSOs[jumpStep-1].GetDuration();
         }
 
         public IEnumerable<Skill_SO> GetSkills()

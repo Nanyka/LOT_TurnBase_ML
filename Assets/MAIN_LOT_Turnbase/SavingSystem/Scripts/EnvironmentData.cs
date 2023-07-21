@@ -174,14 +174,15 @@ namespace JumpeeIsland
         public Vector3 GetFreeLocation()
         {
             var returnPos = Vector3.negativeInfinity;
-            var listTile = GeneralAlgorithm.SpiralPatternConstructor(mapSize);
+            var listTile = SavingSystemManager.Instance.GetTiles();
+            // var listTile = GeneralAlgorithm.SpiralPatternConstructor(mapSize);
             foreach (var tile in listTile)
             {
-                if (BuildingData.Count(t => Vector3.Distance(t.Position, tile.GetPosition(0f, 1f)) < 0.1f) > 0)
+                if (BuildingData.Count(t => Vector3.Distance(t.Position, tile.position) < 0.1f) > 0)
                     continue;
-                if (PlayerData.Count(t => Vector3.Distance(t.Position, tile.GetPosition(0f, 1f)) < 0.1f) > 0)
+                if (PlayerData.Count(t => Vector3.Distance(t.Position, tile.position) < 0.1f) > 0)
                     continue;
-                returnPos = tile.GetPosition(0f, 1f);
+                returnPos = tile.position;
                 break;
             }
 

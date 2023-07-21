@@ -89,6 +89,15 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
+        #region EFFECT
+        
+        public override EffectComp GetEffectComp()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
         public override void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new System.NotImplementedException();

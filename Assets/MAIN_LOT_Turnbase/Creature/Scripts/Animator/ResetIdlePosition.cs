@@ -7,13 +7,21 @@ namespace JumpeeIsland
 {
     public class ResetIdlePosition : StateMachineBehaviour
     {
+        private Transform m_Transform;
+        private Transform _parentTransform;
+        
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            var position = animator.transform.position;
-            animator.transform.position = new Vector3(Mathf.RoundToInt(position.x),
+            if (m_Transform == null)
+                m_Transform = animator.transform;
+            
+            if (_parentTransform == null)
+                _parentTransform = GetParent(m_Transform);
+
+            var position = m_Transform.position;
+            _parentTransform.position = new Vector3(Mathf.RoundToInt(position.x),
                 Mathf.RoundToInt(position.y), Mathf.RoundToInt(position.z));
-            Debug.Log($"{animator.gameObject} idle at {animator.transform.position}");
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -39,6 +47,18 @@ namespace JumpeeIsland
         //{
         //    // Implement code that sets up animation IK (inverse kinematics)
         //}
+        
+        private Transform GetParent(Transform upperLevel)
+        {
+            if (upperLevel.TryGetComponent(out CreatureInGame creatureInGame))
+                return upperLevel;
+            
+            if (upperLevel.parent == null)
+                return upperLevel;
+            
+            upperLevel = upperLevel.parent;
+            return GetParent(upperLevel);
+        }
     }
 }
 

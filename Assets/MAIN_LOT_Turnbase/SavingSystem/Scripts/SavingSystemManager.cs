@@ -21,7 +21,7 @@ namespace JumpeeIsland
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
         // invoke at CreatureEntity, BuildingEntity, Creature
-        [NonSerialized] public UnityEvent OnCheckExpandMap = new(); //TODO check expand map just invoke 1 time???
+        // [NonSerialized] public UnityEvent OnCheckExpandMap = new(); //TODO check expand map just invoke 1 time???
 
         // invoke at TileManager
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
@@ -223,6 +223,11 @@ namespace JumpeeIsland
                 m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
                 ResetBasicInventory();
             }
+        }
+
+        public List<Transform> GetTiles()
+        {
+            return m_EnvLoader.GetTiles();
         }
 
         public void OnSpawnResource(string resourceId, Vector3 position)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CreatureEntity : Entity
+    public class CreatureEntity : Entity, IStatsProvider<UnitStats>
     {
         [SerializeField] private UnitStats[] m_UnitStats;
         [SerializeField] private SkinComp m_SkinComp;
@@ -67,7 +68,7 @@ namespace JumpeeIsland
                 m_CreatureData.CurrentDamage = m_CurrentStat.Strengh;
                 m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
 
-                SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
+                // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
             }
         }
 
@@ -125,10 +126,10 @@ namespace JumpeeIsland
             var attackRange =
                 m_SkillComp.AttackPoints(currentState.midPos, currentState.direction, currentState.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
-            m_AttackComp.Attack(attackPoints, this, m_CreatureData.CurrentDamage, m_Info.GetEnvironment());
+            m_AttackComp.Attack(attackPoints, this,currentState.jumpStep, m_Info.GetEnvironment());
 
             ShowAttackRange(attackPoints);
-            m_EffectComp.AttackVFX(currentState.jumpStep);
+            // m_EffectComp.AttackVFX(currentState.jumpStep);
         }
 
         private void ShowAttackRange(IEnumerable<Vector3> attackRange)
@@ -157,6 +158,15 @@ namespace JumpeeIsland
         public override IEnumerable<Skill_SO> GetSkills()
         {
             return m_SkillComp.GetSkills();
+        }
+
+        #endregion
+
+        #region EFFECT
+
+        public override EffectComp GetEffectComp()
+        {
+            return m_EffectComp;
         }
 
         #endregion
@@ -196,13 +206,19 @@ namespace JumpeeIsland
             // Retrieve entity data
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
+            m_EffectComp.Init(this);
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
 
             // Check expand map
-            SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
+            // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         #endregion
+
+        public UnitStats GetStats()
+        {
+            return m_CurrentStat;
+        }
     }
 }

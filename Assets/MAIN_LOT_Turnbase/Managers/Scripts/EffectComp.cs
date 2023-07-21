@@ -5,11 +5,51 @@ namespace JumpeeIsland
 {
     public class EffectComp : MonoBehaviour
     {
-        [SerializeField] private List<ParticleSystem> _attackVFX;
+        private Entity m_Entity;
+        private bool _isStrengthBoost = false;
 
-        public void AttackVFX(int vfxIndex)
+        public void Init(Entity entity)
         {
-            _attackVFX[vfxIndex-1]?.Play();
+            m_Entity = entity;
+            GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(EffectCountDown);
+
+            if (m_Entity.GetType() == typeof(CreatureEntity))
+            {
+                var creatureData = (CreatureData)m_Entity.GetData();
+                if (creatureData.StregthBoostRemain > 0)
+                    _isStrengthBoost = true;
+            }
+        }
+
+        private void EffectCountDown()
+        {
+            if (GameFlowManager.Instance.GetEnvManager().GetCurrFaction() != m_Entity.GetFaction())
+                return;
+
+            if (_isStrengthBoost)
+            {
+                if (m_Entity.GetType() == typeof(CreatureEntity))
+                {
+                    var creatureData = (CreatureData)m_Entity.GetData();
+                    creatureData.StregthBoostRemain--;
+                    if (creatureData.StregthBoostRemain <= 0)
+                    {
+                        creatureData.StregthBoostRemain = 0;
+                        if (m_Entity is IStatsProvider<UnitStats> statsProvider)
+                            creatureData.CurrentDamage = statsProvider.GetStats().Strengh;
+                        _isStrengthBoost = false;
+                    }
+                }
+            }
+        }
+
+        // TODO entity take effect from attack
+        public bool StrengthBoost()
+        {
+            if (_isStrengthBoost)
+                return false;
+            _isStrengthBoost = true;
+            return true;
         }
     }
 }

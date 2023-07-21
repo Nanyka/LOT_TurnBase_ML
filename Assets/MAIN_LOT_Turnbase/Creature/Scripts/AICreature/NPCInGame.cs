@@ -10,9 +10,12 @@ namespace JumpeeIsland
     public class NPCInGame : CreatureInGame, IGetCreatureInfo
     {
         public DummyAction InferMoving;
+
         [Tooltip("NPC will switch brain to infer their motion based on skills")]
         public bool _isSwitchBrain = true;
-        [Tooltip("Some NPC just move around without jumping. If NPC can not jump, its animator is not set as root motion and not require ParentGoWithRoot script")]
+
+        [Tooltip(
+            "Some NPC just move around without jumping. If NPC can not jump, its animator is not set as root motion and not require ParentGoWithRoot script")]
         public bool _isJumpable = true;
 
         private BehaviorParameters m_BehaviorParameters;
@@ -64,7 +67,10 @@ namespace JumpeeIsland
 
         public virtual void AskForAction()
         {
-            m_Agent?.RequestDecision();
+            if (m_BehaviorParameters.Model == null)
+                m_FactionController.WaitForCreature();
+            else
+                m_Agent?.RequestDecision();
         }
 
         public virtual void ResponseAction(int direction)
@@ -98,7 +104,8 @@ namespace JumpeeIsland
 
         public void SetBrain(NNModel brain)
         {
-            m_BehaviorParameters.Model = brain;
+            if (brain != null)
+                m_BehaviorParameters.Model = brain;
         }
 
         #endregion

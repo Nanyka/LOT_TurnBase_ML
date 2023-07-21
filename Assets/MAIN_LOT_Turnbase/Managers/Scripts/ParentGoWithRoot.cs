@@ -20,7 +20,9 @@ namespace JumpeeIsland
         {
             if (_parentTransform == null)
                 return;
-
+            
+            // TODO turn off when it is idle
+            
             // Get root motion values
             Vector3 rootMotion = _animator.deltaPosition;
             Quaternion rootRotation = _animator.deltaRotation;
@@ -28,6 +30,8 @@ namespace JumpeeIsland
             // Apply root motion to the parent game object
             _parentTransform.position += rootMotion;
             _parentTransform.rotation *= rootRotation;
+            
+            Debug.Log("In parentGoWithRoot");
         }
         
         private Transform GetParent(Transform upperLevel)

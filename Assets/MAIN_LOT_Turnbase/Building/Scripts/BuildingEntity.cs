@@ -61,7 +61,7 @@ namespace JumpeeIsland
 
                 // Reset stats and appearance
                 ResetEntity();
-                SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
+                // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
             }
         }
 
@@ -184,6 +184,15 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region EFFECT
+        
+        public override EffectComp GetEffectComp()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         #region ANIMATION
 
         public override int GetAttackDamage()
@@ -202,7 +211,6 @@ namespace JumpeeIsland
 
         public override void ContributeCommands()
         {
-            // TODO contribute its resource based on storage amount
             throw new NotImplementedException();
         }
 
@@ -216,7 +224,7 @@ namespace JumpeeIsland
             OnUnitDie.AddListener(DieIndividualProcess);
 
             // Check expand map
-            SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
+            // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         private void ResetEntity()

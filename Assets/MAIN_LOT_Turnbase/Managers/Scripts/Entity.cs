@@ -50,6 +50,12 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region EFFECT
+
+        public abstract EffectComp GetEffectComp();
+
+        #endregion
+
         #region ANIMATE COMPONENT
 
         public abstract void SetAnimation(AnimateType animateType ,bool isTurnOn);
