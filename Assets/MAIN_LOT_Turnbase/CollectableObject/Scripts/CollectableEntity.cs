@@ -17,6 +17,12 @@ namespace JumpeeIsland
             m_CollectableData = collectableData;
             RefreshEntity();
         }
+        
+        // Remove all listener when entity completed die process
+        private void OnDisable()
+        {
+            OnUnitDie.RemoveAllListeners();
+        }
 
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
@@ -70,7 +76,6 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
-            OnUnitDie.RemoveAllListeners();
             // TODO add animation or effect here
         }
 

@@ -597,6 +597,32 @@ namespace JumpeeIsland
             m_GameProcess.currentTutorial = tutorial;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
+        
+        public async void SaveBattleResult(int starAmount)
+        {
+            switch (starAmount)
+            {
+                case 1:
+                    m_GameProcess.win1StarCount++;
+                    break;
+                case 2:
+                    m_GameProcess.win2StarCount++;
+                    break;
+                case 3:
+                    m_GameProcess.win3StarCount++;
+                    break;
+            }
+
+            m_GameProcess.battleCount++;
+            
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
+
+        public async void SaveBossUnlock(int bossIndex)
+        {
+            m_GameProcess.bossUnlock = bossIndex;
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
 
         #endregion
 
@@ -619,6 +645,11 @@ namespace JumpeeIsland
         public EnvironmentData GetEnvDataForSave()
         {
             return m_EnvLoader.GetDataForSave();
+        }
+
+        public GameProcessData GetGameProcess()
+        {
+            return m_GameProcess;
         }
 
         /// <summary>

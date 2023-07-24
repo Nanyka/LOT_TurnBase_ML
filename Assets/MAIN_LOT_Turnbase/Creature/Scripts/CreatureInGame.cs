@@ -88,10 +88,10 @@ namespace JumpeeIsland
             _isUsed = false;
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
-            var position = _tranformPart.position;
-            position = new Vector3(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y),
-                Mathf.RoundToInt(position.z));
-            _tranformPart.position = position;
+            // var position = _tranformPart.position;
+            // position = new Vector3(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y),
+            //     Mathf.RoundToInt(position.z));
+            // _tranformPart.position = position;
             m_Entity.SetActiveMaterial();
         }
 
@@ -170,7 +170,7 @@ namespace JumpeeIsland
 
         private IEnumerator DieVisual()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             gameObject.SetActive(false);
         }
 

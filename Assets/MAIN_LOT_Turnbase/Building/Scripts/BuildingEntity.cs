@@ -25,6 +25,12 @@ namespace JumpeeIsland
             m_BuildingData = buildingData;
             RefreshEntity();
         }
+        
+        // Remove all listener when entity completed die process
+        private void OnDisable()
+        {
+            OnUnitDie.RemoveAllListeners();
+        }
 
         #region BUILDING DATA
 
@@ -160,7 +166,6 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
-            OnUnitDie.RemoveAllListeners();
             // TODO die visualization
         }
 

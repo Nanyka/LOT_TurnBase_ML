@@ -27,6 +27,12 @@ namespace JumpeeIsland
             m_CreatureData = creatureData;
             RefreshEntity();
         }
+        
+        // Remove all listener when entity completed die process
+        private void OnDisable()
+        {
+            OnUnitDie.RemoveAllListeners();
+        }
 
         #region CREATURE DATA
 
@@ -103,7 +109,6 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
-            OnUnitDie.RemoveAllListeners();
             // Set animation and effect when entity die here
             m_AnimateComp.SetAnimation(AnimateType.Die);
         }

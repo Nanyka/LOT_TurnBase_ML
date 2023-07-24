@@ -31,7 +31,7 @@ namespace JumpeeIsland
         {
             middlePos = new Vector3(Mathf.RoundToInt(middlePos.x),
                 Mathf.RoundToInt(middlePos.y), Mathf.RoundToInt(middlePos.z));
-            
+
             for (int index = 0; index <= 3; index++)
             {
                 _movingPoints[index].SwitchProjector(false);
@@ -58,6 +58,9 @@ namespace JumpeeIsland
         {
             if (Input.GetMouseButtonDown(0))
             {
+                if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
+                    return;
+                
                 var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
                 if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
                     return;

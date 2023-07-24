@@ -18,68 +18,50 @@ namespace JumpeeIsland
         public int MapSize;
 
         public CurrencyType Currency;
-
         [VerticalGroup("Currency", VisibleIf = "@Currency != JumpeeIsland.CurrencyType.NONE")]
-        [VerticalGroup("Currency/Row1")]
-        public CompareType CurrencyCompare;
-
+        [VerticalGroup("Currency/Row1")] public CompareType CurrencyCompare;
         [VerticalGroup("Currency/Row2")] public int CurrencyAmount;
 
         public CurrencyType Storage;
-
         [VerticalGroup("Storage", VisibleIf = "@Storage != JumpeeIsland.CurrencyType.NONE")]
-        [VerticalGroup("Storage/Row1")]
-        public CompareType StorageCompare;
-
+        [VerticalGroup("Storage/Row1")] public CompareType StorageCompare;
         [VerticalGroup("Storage/Row2")] public int StorageAmount;
 
         public CurrencyType Resource;
-
         [VerticalGroup("Resource", VisibleIf = "@Resource != JumpeeIsland.CurrencyType.NONE")]
-        [VerticalGroup("Resource/Row1")]
-        public CompareType ResourceCompare;
-
+        [VerticalGroup("Resource/Row1")] public CompareType ResourceCompare;
         [VerticalGroup("Resource/Row2")] public int ResourceAmount;
 
         public CollectableType Collectable;
-
         [VerticalGroup("CollectableType", VisibleIf = "@Collectable != JumpeeIsland.CollectableType.NONE")]
-        [VerticalGroup("CollectableType/Row1")]
-        public CompareType CollectableCompare;
-
-        [VerticalGroup("CollectableType/Row2")]
-        public int CollectableAmount;
+        [VerticalGroup("CollectableType/Row1")] public CompareType CollectableCompare;
+        [VerticalGroup("CollectableType/Row2")] public int CollectableAmount;
 
         public BuildingType Building;
-
         [VerticalGroup("Building", VisibleIf = "@Building != JumpeeIsland.BuildingType.NONE")]
-        [VerticalGroup("Building/Row1")]
-        public CompareType BuildingCompare;
-
+        [VerticalGroup("Building/Row1")] public CompareType BuildingCompare;
         [VerticalGroup("Building/Row2")] public int BuildingAmount;
 
         public CreatureType Creature;
-
         [VerticalGroup("Creature", VisibleIf = "@Creature != JumpeeIsland.CreatureType.NONE")]
-        [VerticalGroup("Creature/Row1")]
-        public CompareType CreatureCompare;
-
+        [VerticalGroup("Creature/Row1")] public CompareType CreatureCompare;
         [VerticalGroup("Creature/Row2")] public int CreatureAmount;
 
         public bool IsUICondition;
         [ShowIf("@IsUICondition == true")] public string UIElement;
 
         public bool IsScoreCondition;
-
-        [VerticalGroup("Score", VisibleIf = "@IsScoreCondition == true")] [VerticalGroup("Score/Row2")]
-        public CompareType ScoreCompare;
-
+        [VerticalGroup("Score", VisibleIf = "@IsScoreCondition == true")] 
+        [VerticalGroup("Score/Row2")] public CompareType ScoreCompare;
         [VerticalGroup("Score/Row1")] public int ScoreAmount;
+
+        public bool IsCheckBattle;
+        [ShowIf("@IsCheckBattle == true")] public int BattleCount;
 
         public bool CheckPass()
         {
             return CheckMapSize() && CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
-                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore();
+                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore() && CheckBattleCount();
         }
 
         private bool CheckMapSize()
@@ -258,6 +240,14 @@ namespace JumpeeIsland
             }
 
             return true;
+        }
+
+        private bool CheckBattleCount()
+        {
+            if (IsCheckBattle == false)
+                return true;
+            
+            return SavingSystemManager.Instance.GetGameProcess().battleCount >= BattleCount;
         }
     }
 }

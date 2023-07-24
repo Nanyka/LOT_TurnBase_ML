@@ -7,19 +7,16 @@ namespace JumpeeIsland
 {
     public class ResetIdlePosition : StateMachineBehaviour
     {
-        private Transform m_Transform;
-        private Transform _parentTransform;
+        [SerializeField] private Transform _parentTransform;
         
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (m_Transform == null)
-                m_Transform = animator.transform;
-            
             if (_parentTransform == null)
-                _parentTransform = GetParent(m_Transform);
+                _parentTransform = GetParent(animator.transform);
 
-            var position = m_Transform.position;
+            Debug.Log($"Parent of {animator.gameObject.name} is {_parentTransform.name}");
+            var position = _parentTransform.position;
             _parentTransform.position = new Vector3(Mathf.RoundToInt(position.x),
                 Mathf.RoundToInt(position.y), Mathf.RoundToInt(position.z));
         }

@@ -4,7 +4,7 @@ namespace JumpeeIsland
 {
     public class AdjustParentPos : StateMachineBehaviour
     {
-        private Transform _parentTransform;
+        [SerializeField] private Transform _parentTransform;
         
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -14,7 +14,18 @@ namespace JumpeeIsland
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-        public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        // public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        // {
+        //     // Get root motion values
+        //     Vector3 rootMotion = animator.deltaPosition;
+        //     Quaternion rootRotation = animator.deltaRotation;
+        //
+        //     // Apply root motion to the parent game object
+        //     _parentTransform.position += rootMotion;
+        //     _parentTransform.rotation *= rootRotation;
+        // }
+        
+        public override void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             // Get root motion values
             Vector3 rootMotion = animator.deltaPosition;

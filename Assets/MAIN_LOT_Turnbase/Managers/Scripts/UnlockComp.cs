@@ -8,7 +8,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private string _inventoryId;
         
-        private void Start()
+        private void OnEnable()
         {
             GetComponent<Entity>().OnUnitDie.AddListener(Unlock);
         }
@@ -24,7 +24,7 @@ namespace JumpeeIsland
 
         private IEnumerator WaitToEndGame()
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1.5f);
             MainUI.Instance.OnGameOver.Invoke();
         }
     }

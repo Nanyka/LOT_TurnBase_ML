@@ -150,11 +150,11 @@ namespace JumpeeIsland
         public void RemoveObject(GameObject targetObject, FactionType faction)
         {
             _domainManager.RemoveObject(targetObject, faction);
-            if (GameFlowManager.Instance.IsEcoMode == false)
-            {
-                if (_domainManager.CheckOneFactionZeroTroop())
-                    MainUI.Instance.OnGameOver.Invoke();
-            }
+            // if (GameFlowManager.Instance.IsEcoMode == false)
+            // {
+            //     if (_domainManager.CheckOneFactionZeroTroop())
+            //         MainUI.Instance.OnGameOver.Invoke();
+            // }
         }
 
         #endregion
