@@ -38,7 +38,7 @@ namespace JumpeeIsland
         
         #region ATTACK
         
-        public abstract void AttackSetup(IGetCreatureInfo unitInfo);
+        public abstract void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser);
 
         public abstract int GetAttackDamage();
 

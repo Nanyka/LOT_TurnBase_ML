@@ -132,7 +132,10 @@ namespace JumpeeIsland
         public override void CreatureEndMove()
         {
             m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
-            m_FactionController.KickOffNewTurn();
+            if (GetJumpStep() > 0)
+                Attack();
+            else
+                m_FactionController.KickOffNewTurn();
         }
 
         private IEnumerator MoveOverTime()
@@ -148,12 +151,20 @@ namespace JumpeeIsland
 
             m_Entity.SetAnimation(AnimateType.Walk, false);
             // Ask for the next inference
-            m_FactionController.KickOffNewTurn();
+            if (GetJumpStep() > 0)
+                Attack();
+            else
+                m_FactionController.KickOffNewTurn();
         }
 
-        public new void Attack()
+        private new void Attack()
         {
-            m_Entity.AttackSetup(this);
+            m_Entity.AttackSetup(this, this);
+        }
+        
+        public override void AttackResponse()
+        {
+            m_FactionController.KickOffNewTurn();
         }
 
         #endregion

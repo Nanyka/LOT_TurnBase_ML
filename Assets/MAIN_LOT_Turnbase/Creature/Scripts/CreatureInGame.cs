@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity, ICreatureMove
+    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity, ICreatureMove, IAttackResponse
     {
         [FormerlySerializedAs("_rotatePart")]
         [Header("Creature Components")] 
@@ -48,10 +48,6 @@ namespace JumpeeIsland
 
             _movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
-            
-            // // Change agent direction before the agent jump to the new position
-            // if (_movement.targetPos != m_Transform.position)
-            //     _rotatePart.forward = _movement.targetPos - m_Transform.position;
 
             MarkAsUsedThisTurn();
             CreatureStartMove(m_Transform.position,moveDirection);
@@ -66,38 +62,42 @@ namespace JumpeeIsland
         public virtual void CreatureEndMove()
         {
             m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
-            m_FactionController.WaitForCreature();
+            if (GetJumpStep() > 0)
+                Attack();
+            else
+                m_FactionController.WaitForCreature();
         }
 
-        private IEnumerator MoveOverTime(Vector3 targetPos)
-        {
-            m_Entity.SetAnimation(AnimateType.Walk, true);
-            m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
-            while (m_Transform.position != targetPos)
-            {
-                m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 2f * Time.deltaTime);
-                yield return null;
-            }
-
-            m_Entity.SetAnimation(AnimateType.Walk, false);
-            m_FactionController.WaitForCreature();
-        }
+        // private IEnumerator MoveOverTime(Vector3 targetPos)
+        // {
+        //     m_Entity.SetAnimation(AnimateType.Walk, true);
+        //     m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
+        //     while (m_Transform.position != targetPos)
+        //     {
+        //         m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 2f * Time.deltaTime);
+        //         yield return null;
+        //     }
+        //
+        //     m_Entity.SetAnimation(AnimateType.Walk, false);
+        //     m_FactionController.WaitForCreature();
+        // }
 
         public void NewTurnReset()
         {
             _isUsed = false;
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
-            // var position = _tranformPart.position;
-            // position = new Vector3(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y),
-            //     Mathf.RoundToInt(position.z));
-            // _tranformPart.position = position;
             m_Entity.SetActiveMaterial();
         }
 
-        public void Attack()
+        private void Attack()
         {
-            m_Entity.AttackSetup(this);
+            m_Entity.AttackSetup(this, this);
+        }
+
+        public virtual void AttackResponse()
+        {
+            m_FactionController.WaitForCreature();
         }
 
         #region GET & SET

@@ -15,7 +15,7 @@ namespace JumpeeIsland
             if (_parentTransform == null)
                 _parentTransform = GetParent(animator.transform);
 
-            Debug.Log($"Parent of {animator.gameObject.name} is {_parentTransform.name}");
+            // Debug.Log($"Parent of {animator.gameObject.name} is {_parentTransform.name}");
             var position = _parentTransform.position;
             _parentTransform.position = new Vector3(Mathf.RoundToInt(position.x),
                 Mathf.RoundToInt(position.y), Mathf.RoundToInt(position.z));

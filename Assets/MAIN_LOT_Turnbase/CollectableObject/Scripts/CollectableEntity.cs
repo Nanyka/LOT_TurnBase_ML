@@ -79,7 +79,7 @@ namespace JumpeeIsland
             // TODO add animation or effect here
         }
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo)
+        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }

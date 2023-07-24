@@ -140,13 +140,13 @@ namespace JumpeeIsland
         private void EndTurn()
         {
             // Attack nearby enemy
-            foreach (var unit in _creatures)
-            {
-                if (unit.GetJumpStep() == 0)
-                    continue;
-
-                unit.Attack();
-            }
+            // foreach (var unit in _creatures)
+            // {
+            //     if (unit.GetJumpStep() == 0)
+            //         continue;
+            //
+            //     unit.Attack();
+            // }
 
             foreach (var unitMovement in _creatures)
                 unitMovement.SetDisableMaterial();
