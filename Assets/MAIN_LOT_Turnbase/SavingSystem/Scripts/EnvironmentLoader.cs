@@ -71,10 +71,10 @@ namespace JumpeeIsland
 
         #region TILES
 
-        public List<Transform> GetTiles()
-        {
-            return tileManager.GetTiles();
-        }
+        // public List<Transform> GetTiles()
+        // {
+        //     return tileManager.GetTiles();
+        // }
 
         #endregion
 

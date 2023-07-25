@@ -155,6 +155,11 @@ namespace JumpeeIsland
         {
             m_AnimateComp.MoveToTarget(currPos, direction, creature);
         }
+        
+        // public void ConductCreatureMove(Vector3 currPos, int direction, ICreatureMove creature)
+        // {
+        //     m_AnimateComp.MoveToTarget(currPos, direction, creature);
+        // }
 
         #endregion
 

@@ -17,20 +17,38 @@ namespace JumpeeIsland
         public (Vector3 returnPos, int jumpCount, int overEnemy) MovingPath(Vector3 curPos, int direction,
             int jumpCount, int overEnemy)
         {
-            var newPos = curPos + DirectionTo(direction);
+            var newPos = _environment.GetTilePosByGeoPos(curPos + DirectionTo(direction));
+
+            if (newPos == Vector3.negativeInfinity || _environment.CheckOutOfBoundary(newPos))
+                return (curPos, jumpCount, overEnemy);
 
             if (CheckAvailableMove(newPos))
             {
                 if (jumpCount == 0)
-                    return (newPos, jumpCount, overEnemy);
+                {
+                    // If newPos.y is different from curPos.y
+                    // jumpCount increase and update curPos to go to the new loop
+                    // but if newPos and curPos is similar in velocity
+                    // return newPos
+
+                    if (_environment.CheckTileHeight(curPos, newPos))
+                        return (newPos, jumpCount, overEnemy);
+                    
+                    jumpCount++;
+                    curPos = newPos;
+                    return MovingPath(curPos, direction, jumpCount, overEnemy);
+                }
 
                 return (curPos, jumpCount, overEnemy);
             }
 
+            if (_environment.CheckHigherTile(curPos,newPos))
+                return (curPos, jumpCount, overEnemy);
+
             if (CheckAvailableMove(newPos + DirectionTo(direction)))
             {
                 jumpCount++;
-                curPos = newPos + DirectionTo(direction);
+                curPos = _environment.GetTilePosByGeoPos(newPos + DirectionTo(direction));
                 return MovingPath(curPos, direction, jumpCount, overEnemy);
             }
 
@@ -40,18 +58,30 @@ namespace JumpeeIsland
         // Get list of jumping positions
         public List<Vector3> MovingPath(Vector3 curPos, int direction, List<Vector3> jumpingPoints)
         {
-            var newPos = curPos + DirectionTo(direction);
-
+            var newPos = _environment.GetTilePosByGeoPos(curPos + DirectionTo(direction));
+            if (newPos == Vector3.negativeInfinity || _environment.CheckOutOfBoundary(newPos))
+                return jumpingPoints;
+            
             if (CheckAvailableMove(newPos))
             {
                 if (jumpingPoints.Count == 0)
+                {
                     jumpingPoints.Add(newPos);
+                    if (_environment.CheckTileHeight(curPos, newPos) == false)
+                    {
+                        curPos = newPos;
+                        return MovingPath(curPos, direction, jumpingPoints);
+                    }
+                }
                 return jumpingPoints;
             }
+            
+            if (_environment.CheckHigherTile(curPos,newPos))
+                return jumpingPoints;
 
             if (CheckAvailableMove(newPos + DirectionTo(direction)))
             {
-                curPos = newPos + DirectionTo(direction);
+                curPos = _environment.GetTilePosByGeoPos(newPos + DirectionTo(direction));
                 jumpingPoints.Add(curPos);
                 return MovingPath(curPos, direction, jumpingPoints);
             }

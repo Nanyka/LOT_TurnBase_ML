@@ -225,10 +225,10 @@ namespace JumpeeIsland
             }
         }
 
-        public List<Transform> GetTiles()
-        {
-            return m_EnvLoader.GetTiles();
-        }
+        // public List<Transform> GetTiles()
+        // {
+        //     return m_EnvLoader.GetTiles();
+        // }
 
         public void OnSpawnResource(string resourceId, Vector3 position)
         {

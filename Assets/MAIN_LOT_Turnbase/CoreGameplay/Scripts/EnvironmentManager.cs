@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -9,14 +10,22 @@ namespace JumpeeIsland
     [RequireComponent(typeof(MovingVisual))]
     public class EnvironmentManager : MonoBehaviour
     {
-        [HideInInspector] public UnityEvent OnChangeFaction; // invoke at EnemyFactionController, PlayerFactionController;
-        // [HideInInspector] public UnityEvent OnOneTeamZeroTroop; // sent to FactionManagers, MainUI 
-        [HideInInspector] public UnityEvent<Vector3> OnShowMovingPath; // send to MovingVisual; invoke at FactionController
-        [HideInInspector] public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingVisual
-        [HideInInspector] public UnityEvent<Vector3> OnHighlightUnit; // send to MovingVisual; invoke at FactionController
+        [HideInInspector]
+        public UnityEvent OnChangeFaction; // invoke at EnemyFactionController, PlayerFactionController;
 
-        [Header("Game Configurations")]
-        [SerializeField] protected bool _isObstacleAsTeam1;
+        // [HideInInspector] public UnityEvent OnOneTeamZeroTroop; // sent to FactionManagers, MainUI 
+        [HideInInspector]
+        public UnityEvent<Vector3> OnShowMovingPath; // send to MovingVisual; invoke at FactionController
+
+        [HideInInspector]
+        public UnityEvent<int> OnTouchSelection; // send to PlayerFactionManager; invoke at MovingVisual
+
+        [HideInInspector]
+        public UnityEvent<Vector3> OnHighlightUnit; // send to MovingVisual; invoke at FactionController
+
+        [Header("Game Configurations")] [SerializeField]
+        protected bool _isObstacleAsTeam1;
+
         [SerializeField] protected FactionType _currFaction = FactionType.Player;
         [SerializeField] protected int _minStep;
         [SerializeField] protected int _step;
@@ -43,8 +52,8 @@ namespace JumpeeIsland
 
         private void Init(long moveAmount)
         {
-            _step = (int) moveAmount;
-            
+            _step = (int)moveAmount;
+
             // Start refurbish loop
             InvokeRepeating(nameof(WaitToAddMove), _refurbishPeriod, _refurbishPeriod);
         }
@@ -75,7 +84,7 @@ namespace JumpeeIsland
 
             if (_isObstacleAsTeam1)
                 _currFaction = FactionType.Player;
-            
+
             OnChangeFaction.Invoke();
         }
 
@@ -100,11 +109,29 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnContributeCommand.Invoke(CommandName.JI_SPEND_MOVE);
         }
 
+        public bool CheckTileHeight(Vector3 geoPos1, Vector3 geoPos2)
+        {
+            return _domainManager.CheckTilesHeight(geoPos1, geoPos2);
+        }
+
+        public bool CheckHigherTile(Vector3 curTile, Vector3 checkTile)
+        {
+            return _domainManager.CheckHigherTile(curTile, checkTile);
+        }
+
+        public Vector3 GetTilePosByGeoPos(Vector3 geoPos)
+        {
+            var tile = _domainManager.GetTileByGeoCoordinates(geoPos);
+            if (tile == null)
+                return Vector3.negativeInfinity;
+            return _domainManager.GetTileByGeoCoordinates(geoPos).GetPosition();
+        }
+
         #endregion
 
         #region OBSTACLES
 
-        public void UpdateTileArea(Vector3 tilePos)
+        private void UpdateTileArea(MovableTile tilePos)
         {
             _domainManager.UpdateTileArea(tilePos);
         }
@@ -124,13 +151,18 @@ namespace JumpeeIsland
             return _domainManager.CheckFreeToMove(checkPos);
         }
 
+        public bool CheckOutOfBoundary(Vector3 checkPos)
+        {
+            return !_domainManager.CheckTileExist(checkPos);
+        }
+
         public FactionType CheckFaction(Vector3 objectPos)
         {
             var faction = FactionType.Neutral;
-            
+
             if (_domainManager.CheckTeam(objectPos, FactionType.Player))
                 faction = FactionType.Player;
-            
+
             if (_domainManager.CheckTeam(objectPos, FactionType.Enemy))
                 faction = FactionType.Enemy;
 

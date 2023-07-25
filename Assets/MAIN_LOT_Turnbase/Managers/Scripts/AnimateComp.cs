@@ -52,16 +52,10 @@ namespace JumpeeIsland
         {
             m_Creature ??= creature;
             tiles.Clear();
-
-            // currPos = new Vector3(Mathf.RoundToInt(currPos.x), Mathf.RoundToInt(currPos.y),
-            //     Mathf.RoundToInt(currPos.z));
-            // m_Transform.position = currPos;
             GameFlowManager.Instance.GetEnvManager().GetMovementInspector().MovingPath(currPos, moveDir, tiles);
-            // Debug.Log($"{gameObject} move to {moveDir} from {currPos} over {tiles.Count} tiles");
-
             ResetMoves();
         }
-
+        
         private void ResetMoves()
         {
             moveIndex = 0;
@@ -88,9 +82,12 @@ namespace JumpeeIsland
                     m_Animator.SetTrigger(Jump);
             }
             else if (destination.y > transform.position.y)
+            {
+                // Debug.Log($"Jump up from {transform.position} to {destination}: {Mathf.Abs(Vector3.Distance(destination, transform.position))}");
                 m_Animator.SetTrigger(Mathf.Abs(Vector3.Distance(destination, transform.position)) < 1.5f
                     ? JumpUp1
                     : JumpUp);
+            }
             else if (destination.y < transform.position.y)
                 m_Animator.SetTrigger(Mathf.Abs(Vector3.Distance(destination, transform.position)) < 1.5f
                     ? JumpDown1

@@ -25,7 +25,7 @@ namespace JumpeeIsland
         [FormerlySerializedAs("_totalTile")] [SerializeField] private int _mapIndex;
         [SerializeField] private MapContainer m_MapContainer;
         
-        private List<Transform> m_Tiles;
+        private List<MovableTile> m_Tiles;
         private List<TilePosition> _listTilePos = new();
 
         public void Init(int mapIndex)
@@ -39,70 +39,36 @@ namespace JumpeeIsland
 
         private void SpawnTileMap(int mapIndex)
         {
-            // TODO register tile to domainManager
             _mapIndex = mapIndex;
             foreach (var tile in m_Tiles)
             {
-                GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile.position);
-            }
-            
-            // SpiralPatternConstructor(tileAmount);
-            //
-            // // Spawn tiles
-            // for (int i = 0; i < _totalTile; i++)
-            // {
-            //     var tile = _tilePool.GetObject();
-            //     tile.transform.position = _listTilePos[i].GetPosition(0f, 1f);
-            //     GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile.transform.position);
-            //     tile.SetActive(true);
-            // }
-        }
-
-        private void SpiralPatternConstructor(int tileAmount)
-        {
-            _mapIndex = tileAmount;
-            var spiralSpace = Mathf.RoundToInt(Mathf.Sqrt(_mapIndex)) + 1;
-
-            int printValue = 0;
-            int c1 = 0, c2 = 1;
-            while (printValue < spiralSpace * spiralSpace)
-            {
-                //Right Direction Move  
-                for (int i = c1 + 1; i <= c2; i++)
-                    _listTilePos.Add(new TilePosition(c1, i, printValue++));
-                //Up Direction Move  
-                for (int j = c1 + 1; j <= c2; j++)
-                    _listTilePos.Add(new TilePosition(j, c2, printValue++));
-                //Left Direction Move  
-                for (int i = c2 - 1; i >= c1; i--)
-                    _listTilePos.Add(new TilePosition(c2, i, printValue++));
-                //Down Direction Move  
-                for (int j = c2 - 1; j >= c1; j--)
-                    _listTilePos.Add(new TilePosition(j, c1, printValue++));
-                c1--;
-                c2++;
+                GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile);
             }
         }
 
-        // private void CheckExpand()
+        // private void SpiralPatternConstructor(int tileAmount)
         // {
-        //     var currentScore = SavingSystemManager.Instance.CalculateEnvScore();
+        //     _mapIndex = tileAmount;
+        //     var spiralSpace = Mathf.RoundToInt(Mathf.Sqrt(_mapIndex)) + 1;
         //
-        //     foreach (var point in _expandPoints)
+        //     int printValue = 0;
+        //     int c1 = 0, c2 = 1;
+        //     while (printValue < spiralSpace * spiralSpace)
         //     {
-        //         if (point.CheckToExpand(_totalTile, currentScore))
-        //         {
-        //             SpiralPatternConstructor(_totalTile + 1);
-        //             var tile = _tilePool.GetObject();
-        //             tile.transform.position = _listTilePos[_totalTile - 1].GetPosition(0f, 1f);
-        //             GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile.transform.position);
-        //             tile.SetActive(true);
-        //
-        //             // Save environment data after expand
-        //             SavingSystemManager.Instance.GetEnvironmentData().mapSize = _totalTile;
-        //             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
-        //             break;
-        //         }
+        //         //Right Direction Move  
+        //         for (int i = c1 + 1; i <= c2; i++)
+        //             _listTilePos.Add(new TilePosition(c1, i, printValue++));
+        //         //Up Direction Move  
+        //         for (int j = c1 + 1; j <= c2; j++)
+        //             _listTilePos.Add(new TilePosition(j, c2, printValue++));
+        //         //Left Direction Move  
+        //         for (int i = c2 - 1; i >= c1; i--)
+        //             _listTilePos.Add(new TilePosition(c2, i, printValue++));
+        //         //Down Direction Move  
+        //         for (int j = c2 - 1; j >= c1; j--)
+        //             _listTilePos.Add(new TilePosition(j, c1, printValue++));
+        //         c1--;
+        //         c2++;
         //     }
         // }
 
@@ -112,9 +78,9 @@ namespace JumpeeIsland
             _listTilePos = new();
         }
 
-        public List<Transform> GetTiles()
-        {
-            return m_Tiles;
-        }
+        // public List<Transform> GetTiles()
+        // {
+        //     return m_Tiles;
+        // }
     }
 }
