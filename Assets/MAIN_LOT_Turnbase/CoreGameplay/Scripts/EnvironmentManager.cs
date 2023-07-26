@@ -136,7 +136,7 @@ namespace JumpeeIsland
             _domainManager.UpdateTileArea(tilePos);
         }
 
-        public void DomainRegister(GameObject domainOwner, FactionType factionType)
+        private void DomainRegister(GameObject domainOwner, FactionType factionType)
         {
             _domainManager.UpdateDomainOwner(domainOwner, factionType);
         }
@@ -182,11 +182,6 @@ namespace JumpeeIsland
         public void RemoveObject(GameObject targetObject, FactionType faction)
         {
             _domainManager.RemoveObject(targetObject, faction);
-            // if (GameFlowManager.Instance.IsEcoMode == false)
-            // {
-            //     if (_domainManager.CheckOneFactionZeroTroop())
-            //         MainUI.Instance.OnGameOver.Invoke();
-            // }
         }
 
         #endregion

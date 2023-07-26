@@ -19419,7 +19419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6824173235661951956}
   - component: {fileID: 8189328185401524035}
-  - component: {fileID: 4482796839916751611}
+  - component: {fileID: 2559487142414478394}
   - component: {fileID: 8875070415745457599}
   - component: {fileID: 8040072830879622060}
   - component: {fileID: 5892890124370789172}
@@ -19464,7 +19464,7 @@ MonoBehaviour:
   - GoalId: GOAWAY
     Remove: 0
     Weight: 1
---- !u!114 &4482796839916751611
+--- !u!114 &2559487142414478394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19473,10 +19473,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2768427019344741368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 473f9a78b39148519a757a80f252d668, type: 3}
+  m_Script: {fileID: 11500000, guid: ad9707d168994fbf9f13bb84bea476d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _checkingRadius: 2
+  m_Entity: {fileID: 9072602217414707417}
+  m_Skills: {fileID: 1670896166245438440}
+  detectRange: 2
 --- !u!114 &8875070415745457599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19497,7 +19499,7 @@ MonoBehaviour:
     Weight: 0
   finishDistance: 3
   m_GoalManager: {fileID: 8189328185401524035}
-  m_Sensor: {fileID: 4482796839916751611}
+  m_Sensor: {fileID: 2559487142414478394}
 --- !u!114 &8040072830879622060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24728,9 +24730,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillSOs:
-  - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: fa1e369e9f75345c99e19f4db8a46893, type: 2}
+  - {fileID: 11400000, guid: 59da13f6d365245a28fedfbebb3acde6, type: 2}
+  - {fileID: 11400000, guid: 72abe4fb9be184ff8be9bb601bc2a817, type: 2}
+  - {fileID: 11400000, guid: 6a5dde6c53b944093b4e98011f68111b, type: 2}
 --- !u!114 &935929486893718955
 MonoBehaviour:
   m_ObjectHideFlags: 0

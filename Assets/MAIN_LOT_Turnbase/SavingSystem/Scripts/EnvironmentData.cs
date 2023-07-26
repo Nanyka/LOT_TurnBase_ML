@@ -171,24 +171,6 @@ namespace JumpeeIsland
             PlayerData.Add(newCreature);
         }
 
-        // public Vector3 GetFreeLocation()
-        // {
-        //     var returnPos = Vector3.negativeInfinity;
-        //     var listTile = SavingSystemManager.Instance.GetTiles();
-        //     // var listTile = GeneralAlgorithm.SpiralPatternConstructor(mapSize);
-        //     foreach (var tile in listTile)
-        //     {
-        //         if (BuildingData.Count(t => Vector3.Distance(t.Position, tile.position) < 0.1f) > 0)
-        //             continue;
-        //         if (PlayerData.Count(t => Vector3.Distance(t.Position, tile.position) < 0.1f) > 0)
-        //             continue;
-        //         returnPos = tile.position;
-        //         break;
-        //     }
-        //
-        //     return returnPos;
-        // }
-
         #endregion
     }
 }

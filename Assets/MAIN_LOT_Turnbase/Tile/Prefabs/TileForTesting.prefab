@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4091791603262602102}
   - component: {fileID: 4013050813103837338}
+  - component: {fileID: 8927347657254864384}
   m_Layer: 6
   m_Name: TileForTesting
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 4518573782585695822}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &4013050813103837338
 BoxCollider:
@@ -54,6 +55,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.0000001, z: 1.0000001}
   m_Center: {x: 0, y: -0.49999997, z: 0}
+--- !u!114 &8927347657254864384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460493598669035283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4094295966796637911
 GameObject:
   m_ObjectHideFlags: 0

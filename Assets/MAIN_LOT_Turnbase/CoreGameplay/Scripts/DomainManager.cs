@@ -157,9 +157,9 @@ namespace JumpeeIsland
 
         public MovableTile GetTileByGeoCoordinates(Vector3 coordinates)
         {
-            var tile = _tileAreas.Find(t => t.CheckGeoCoordinates(coordinates));
-            if (tile == null)
-                Debug.Log($"Coordinates to get null tile: {coordinates}");
+            // var tile = _tileAreas.Find(t => t.CheckGeoCoordinates(coordinates));
+            // if (tile == null)
+            //     Debug.Log($"Coordinates to get null tile: {coordinates}");
             
             return _tileAreas.Find(t => t.CheckGeoCoordinates(coordinates));
         }

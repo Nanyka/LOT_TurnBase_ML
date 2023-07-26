@@ -1,4 +1,3 @@
-using System;
 using GOAP;
 using UnityEngine;
 
@@ -9,16 +8,13 @@ namespace JumpeeIsland
         [SerializeField] private int _checkingRadius;
 
         private CreatureData m_CreatureData;
+        private Transform m_Transform;
         private Vector3 _enemyPos;
-
-        // public void Init()
-        // {
-        //     m_CreatureData = (CreatureData) GetComponent<GOAPCreatureBrain>().GetCreature().GetEntity().GetData();
-        // }
 
         public override void Init(CreatureData creatureData)
         {
             m_CreatureData = creatureData;
+            m_Transform = transform;
         }
 
         public override void DetectEnvironment(WorldStates beliefs)
@@ -27,6 +23,8 @@ namespace JumpeeIsland
 
             DetectEnemy(beliefs);
         }
+
+        #region LURE
 
         private void DetectEnemy(WorldStates beliefs)
         {
@@ -109,5 +107,8 @@ namespace JumpeeIsland
                     break;
             }
         }
+
+        #endregion
+        
     }
 }
