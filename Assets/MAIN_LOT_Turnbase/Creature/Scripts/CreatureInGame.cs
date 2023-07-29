@@ -134,7 +134,7 @@ namespace JumpeeIsland
             return m_FactionController.GetEnvironment();
         }
 
-        public int GetJumpStep()
+        private int GetJumpStep()
         {
             return _movement.jumpCount;
         }

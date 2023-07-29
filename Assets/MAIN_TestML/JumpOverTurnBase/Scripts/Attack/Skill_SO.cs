@@ -7,21 +7,20 @@ using UnityEngine.Serialization;
 public class Skill_SO : ScriptableObject
 {
     //Manage attribute of unit's skills
-    [Header("Skill variable")] 
+    [Header("Skill variable")]
     [SerializeField] private string _animTrigger;
-    [FormerlySerializedAs("_magnitude")] [SerializeField] private int _duration;
+    [SerializeField] private int _duration;
     [SerializeField] private int _magnitude;
-    
     
     [Header("Skill range")]
     [SerializeField] private RangeType _rangeType;
     [SerializeField] private int _numberOfSteps;
-
-    [Header("Skill effect")] 
+    
+    [Header("Skill effect")]
     [SerializeField] private SkillEffectType _skillEffectType;
     private SkillEffect _skillEffect;
     
-    [Header("ML property")] 
+    [Header("ML property")]
     [SerializeField] private NNModel MLModel;
     private SkillRange _skillRange;
 
@@ -78,6 +77,12 @@ public class Skill_SO : ScriptableObject
             case RangeType.CurrentPos:
                 _skillRange = new CurrentPos();
                 break;
+            case RangeType.FrontStrike:
+                _skillRange = new FrontStrike();
+                break;
+            case RangeType.AccurateAttack:
+                _skillRange = new AccurateAttack();
+                break;
         }
     }
     
@@ -87,6 +92,9 @@ public class Skill_SO : ScriptableObject
         {
             case SkillEffectType.StrengthBoost:
                 _skillEffect = new StrengthBooster(_duration,_magnitude);
+                break;
+            case SkillEffectType.Teleport:
+                _skillEffect = new Teleport();
                 break;
         }
     }

@@ -30,23 +30,6 @@ namespace JumpeeIsland
                     if (skillEffect != null)
                         skillEffect.TakeEffectOn(mEntity, targetEntity);
                 }
-                
-                // if (attackFaction != mEntity.GetFaction())
-                // {
-                //     var enemy = mEnvironment.GetObjectByPosition(attackPoint, attackFaction);
-                //     if (enemy == null)
-                //         continue;
-                //
-                //     if (target.TryGetComponent(out Entity enemyEntity))
-                //     {
-                //         enemyEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
-                //         var skillEffect = mEntity.GetSkills().ElementAt(jumpStep).GetSkillEffect();
-                //         if (skillEffect != null)
-                //         {
-                //             skillEffect.TakeEffectOn(mEntity, enemyEntity);
-                //         }
-                //     }
-                // }
             }
 
             AttackVFX(jumpStep);

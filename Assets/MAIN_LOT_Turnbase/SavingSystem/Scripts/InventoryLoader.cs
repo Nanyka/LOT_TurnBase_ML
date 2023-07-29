@@ -40,6 +40,7 @@ namespace JumpeeIsland
         public string virtualPurchaseId; // How much does it cost to place this item in the game
         public List<string> skinAddress;
         public EntityData EntityData; // Just used in BattleMode to place creatures
+        public List<string> skillsAddress;
     }
 
     public enum InventoryType

@@ -27,7 +27,7 @@ namespace JumpeeIsland
             m_CreatureData = creatureData;
             RefreshEntity();
         }
-        
+
         // Remove all listener when entity completed die process
         private void OnDisable()
         {
@@ -38,6 +38,9 @@ namespace JumpeeIsland
 
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
+            m_Transform.position = position;
+            m_Transform.eulerAngles = rotation;
+
             m_CreatureData.Position = position;
             m_CreatureData.Rotation = rotation;
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
@@ -131,7 +134,10 @@ namespace JumpeeIsland
             var attackRange =
                 m_SkillComp.AttackPoints(currentState.midPos, currentState.direction, currentState.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
-            m_AttackComp.Attack(attackPoints, this,currentState.jumpStep, m_Info.GetEnvironment());
+            // Check jumping boost
+            if (m_EffectComp.UseJumpBoost())
+                currentState.jumpStep += m_EffectComp.GetJumpBoost();
+            m_AttackComp.Attack(attackPoints, this, currentState.jumpStep, m_Info.GetEnvironment());
 
             ShowAttackRange(attackPoints);
             attackResponser.AttackResponse();
@@ -155,7 +161,7 @@ namespace JumpeeIsland
         {
             m_AnimateComp.MoveToTarget(currPos, direction, creature);
         }
-        
+
         // public void ConductCreatureMove(Vector3 currPos, int direction, ICreatureMove creature)
         // {
         //     m_AnimateComp.MoveToTarget(currPos, direction, creature);
@@ -217,6 +223,7 @@ namespace JumpeeIsland
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
             m_EffectComp.Init(this);
+            m_SkillComp.Init(m_CreatureData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
 

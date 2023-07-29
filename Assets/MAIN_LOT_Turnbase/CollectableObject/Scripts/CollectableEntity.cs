@@ -17,7 +17,7 @@ namespace JumpeeIsland
             m_CollectableData = collectableData;
             RefreshEntity();
         }
-        
+
         // Remove all listener when entity completed die process
         private void OnDisable()
         {
@@ -48,7 +48,7 @@ namespace JumpeeIsland
         {
             return m_CollectableData.FactionType;
         }
-        
+
         public bool CheckSelfCollect()
         {
             return m_CurrentStat.IsSelfCollect;
@@ -76,6 +76,10 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
+            // grant effect on killedByEntity
+            if (killedByEntity != this&& m_CurrentStat._skillEffectType != SkillEffectType.None)
+                    m_CurrentStat.GetSkillEffect().TakeEffectOn(this, killedByEntity);
+
             // TODO add animation or effect here
         }
 
@@ -95,7 +99,7 @@ namespace JumpeeIsland
         }
 
         #region EFFECT
-        
+
         public override EffectComp GetEffectComp()
         {
             throw new System.NotImplementedException();
@@ -109,12 +113,14 @@ namespace JumpeeIsland
         }
 
         #region GENERAL
-        
+
         public override void ContributeCommands()
         {
+            // If collectable item include currency rewards
             foreach (var command in m_CurrentStat.Commands)
                 SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
 
+            // If collectable item include creature rewards
             if (m_CurrentStat.SpawnedEntityType == EntityType.NONE)
                 return;
 
@@ -125,7 +131,8 @@ namespace JumpeeIsland
                         true);
                     break;
                 case EntityType.ENEMY:
-                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,m_CollectableData.Position);
+                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,
+                        m_CollectableData.Position);
                     break;
             }
         }

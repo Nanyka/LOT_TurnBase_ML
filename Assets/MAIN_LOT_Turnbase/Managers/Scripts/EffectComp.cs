@@ -6,7 +6,10 @@ namespace JumpeeIsland
     public class EffectComp : MonoBehaviour
     {
         private Entity m_Entity;
+        private int _remainTempJumpBoost;
+        private int _magnitudeJumpBoost;
         private bool _isStrengthBoost = false;
+        private bool _isTempJumpBoost = false;
 
         public void Init(Entity entity)
         {
@@ -51,5 +54,27 @@ namespace JumpeeIsland
             _isStrengthBoost = true;
             return true;
         }
+
+        #region TEMPORARY JUMP BOOST
+
+        public void JumpBoost(int duration, int magnitude)
+        {
+            _remainTempJumpBoost = duration;
+            _magnitudeJumpBoost = magnitude;
+        }
+        
+        public int GetJumpBoost()
+        {
+            return _magnitudeJumpBoost;
+        }
+
+        public bool UseJumpBoost()
+        {
+            if (_remainTempJumpBoost <= 0)
+                return false;
+            _remainTempJumpBoost--;
+            return true;
+        }
+        #endregion
     }
 }

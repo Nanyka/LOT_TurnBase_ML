@@ -98,14 +98,17 @@ namespace JumpeeIsland
                         .MovingPath(enemy.Position, i, 0, 0);
                     if (movement.jumpCount > 0)
                     {
-                        var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i),
-                            movement.jumpCount);
+                        var enemyInventory = SavingSystemManager.Instance.GetInventoryItemByName(enemy.EntityName);
+                        var enemySkill = (Skill_SO)AddressableManager.Instance.GetAddressableSO(
+                            enemyInventory.skillsAddress[movement.jumpCount - 1]);
+
+                        var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i), enemySkill);
                         if (attackPoints == null)
                             continue;
 
                         foreach (var attackPoint in attackPoints)
                         {
-                            if (attackPoint == m_Transform.position)
+                            if (Vector3.Distance(attackPoint, m_Transform.position) < 0.1f)
                             {
                                 enemyHits = (List<Vector3>)attackPoints;
                                 goto LoopEnd;
@@ -121,7 +124,8 @@ namespace JumpeeIsland
                 {
                     for (int i = 1; i < 5; i++)
                     {
-                        if (enemyHits.Contains(m_Transform.position + JIGeneralUtils.DirectionTo(i)) == false)
+                        var lurePos = m_Transform.position + JIGeneralUtils.DirectionTo(i);
+                        if (enemyHits.Contains(lurePos) == false && _envManager.FreeToMove(lurePos))
                         {
                             movingIndex = i;
                             break;
@@ -268,11 +272,10 @@ namespace JumpeeIsland
 
         private void DetectOppotunity(WorldStates beliefs)
         {
-            // Get positions in range
-            // Check available movements in each tiles
-            // If any position provide successful attack, get it
+            // Get object in range
+            // Check any available position to execute successful attacks from the objects
+            // Check jumping point for that attack is available or not
             // Check the movement that bring character as close to the intent position as possible
-
             movingIndex = 0;
             Vector3 potentilPos = Vector3.negativeInfinity;
 
@@ -281,28 +284,35 @@ namespace JumpeeIsland
                 for (int j = -detectRange; j <= detectRange; j++)
                 {
                     var detectPos = new Vector3(i, 0f, j);
+                    if (detectPos == Vector3.zero)
+                        continue;
+
                     detectPos += m_Transform.position;
 
-                    if (_envManager.FreeToMove(detectPos) == false)
+                    if (_envManager.FreeToMove(detectPos) || _envManager.CheckOutOfBoundary(detectPos))
                         continue;
 
                     for (int k = 1; k < 5; k++)
                     {
-                        var movement = _envManager.GetMovementInspector()
-                            .MovingPath(detectPos, k, 0, 0);
-                        if (movement.jumpCount > 0)
+                        var jumpPos = detectPos + JIGeneralUtils.AdverseDirectionTo(k);
+                        if (_envManager.FreeToMove(jumpPos))
                         {
-                            var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
-                                movement.jumpCount);
-                            if (attackPoints == null)
-                                continue;
-
-                            foreach (var attackPoint in attackPoints)
+                            var movement = _envManager.GetMovementInspector()
+                                .MovingPath(jumpPos, k, 0, 0);
+                            if (movement.jumpCount > 0)
                             {
-                                if (_envManager.CheckEnemy(attackPoint, m_Entity.GetFaction()))
+                                var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
+                                    movement.jumpCount);
+                                if (attackPoints == null)
+                                    continue;
+                            
+                                foreach (var attackPoint in attackPoints)
                                 {
-                                    potentilPos = detectPos;
-                                    goto LoopEnd;
+                                    if (_envManager.CheckEnemy(attackPoint, m_Entity.GetFaction()))
+                                    {
+                                        potentilPos = jumpPos;
+                                        goto LoopEnd;
+                                    }
                                 }
                             }
                         }
@@ -358,6 +368,11 @@ namespace JumpeeIsland
             if (m_Skills.GetSkillAmount() < jumpStep || m_Skills.GetSkillByIndex(jumpStep - 1) == null)
                 return null;
             return m_Skills.GetSkillByIndex(jumpStep - 1).CalculateSkillRange(targetPos, direction);
+        }
+
+        private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, Skill_SO skill)
+        {
+            return skill.CalculateSkillRange(targetPos, direction);
         }
     }
 }
