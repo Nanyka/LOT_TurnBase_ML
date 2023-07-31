@@ -17,14 +17,18 @@ namespace JumpeeIsland
         [SerializeField] private AttackPath m_AttackPath;
         [SerializeField] private AnimateComp m_AnimateComp;
 
-        [SerializeField] private CreatureData m_CreatureData;
+        private CreatureData m_CreatureData;
         private UnitStats m_CurrentStat;
         private IGetCreatureInfo m_Info;
+        private IEnumerable<Vector3> attackRange;
         private bool _isDie;
 
         public void Init(CreatureData creatureData)
         {
             m_CreatureData = creatureData;
+            var envManager = GameFlowManager.Instance.GetEnvManager();
+            if (envManager.FreeToMove(creatureData.Position) == false)
+                UpdateTransform(envManager.GetRandomAvailableTile(), m_CreatureData.Rotation);
             RefreshEntity();
         }
 
@@ -130,14 +134,14 @@ namespace JumpeeIsland
         // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
         private void Attack(IAttackResponse attackResponser)
         {
-            var currentState = m_Info.GetCurrentState();
-            var attackRange =
-                m_SkillComp.AttackPoints(currentState.midPos, currentState.direction, currentState.jumpStep);
-            var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
+            var currentJump = m_Info.GetCurrentState();
             // Check jumping boost
             if (m_EffectComp.UseJumpBoost())
-                currentState.jumpStep += m_EffectComp.GetJumpBoost();
-            m_AttackComp.Attack(attackPoints, this, currentState.jumpStep, m_Info.GetEnvironment());
+                currentJump.jumpStep += m_EffectComp.GetJumpBoost();
+            
+            attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
+            var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
+            m_AttackComp.Attack(attackPoints, this, currentJump.jumpStep, m_Info.GetEnvironment());
 
             ShowAttackRange(attackPoints);
             attackResponser.AttackResponse();
@@ -183,6 +187,11 @@ namespace JumpeeIsland
         public override EffectComp GetEffectComp()
         {
             return m_EffectComp;
+        }
+
+        public int GetJumpBoost()
+        {
+            return m_EffectComp.GetJumpBoost();
         }
 
         #endregion
@@ -236,6 +245,11 @@ namespace JumpeeIsland
         public UnitStats GetStats()
         {
             return m_CurrentStat;
+        }
+
+        public IEnumerable<Vector3> GetAttackRange()
+        {
+            return attackRange;
         }
     }
 }

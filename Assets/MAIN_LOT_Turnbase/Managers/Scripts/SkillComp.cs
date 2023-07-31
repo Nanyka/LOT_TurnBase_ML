@@ -14,6 +14,9 @@ namespace JumpeeIsland
                 return;
 
             var enemyInventory = SavingSystemManager.Instance.GetInventoryItemByName(creatureName);
+            if (enemyInventory.skillsAddress == null)
+                return;
+            
             foreach (var skillAddress in enemyInventory.skillsAddress)
                 m_SkillSOs.Add((Skill_SO)AddressableManager.Instance.GetAddressableSO(skillAddress));
         }

@@ -24553,6 +24553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5897075231589375173}
   - component: {fileID: 7791693430879858001}
+  - component: {fileID: 6303727920448924408}
   - component: {fileID: 4521518596673802021}
   - component: {fileID: 9072602217414707417}
   - component: {fileID: 7200372622406747792}
@@ -24610,6 +24611,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9, y: 0.1, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6303727920448924408
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3426229457550688422}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &4521518596673802021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24659,20 +24687,6 @@ MonoBehaviour:
   m_EffectComp: {fileID: 935929486893718955}
   m_AttackPath: {fileID: 6420186199625587287}
   m_AnimateComp: {fileID: 7685358287014474119}
-  m_CreatureData:
-    EntityName: 
-    SkinAddress: 
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    FactionType: 0
-    CurrentHp: 0
-    CurrentLevel: 0
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 0
-    StregthBoostRemain: 0
 --- !u!114 &7200372622406747792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24714,9 +24728,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackVFX:
-  - {fileID: 8922260366908258746}
-  - {fileID: 7504832660983321866}
 --- !u!114 &1670896166245438440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24792,7 +24803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f211fee3a2e6422593983d1dda588d59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventoryId: CREATURE0
+  _inventoryId: CREATURE2
 --- !u!1 &3682097021817728150
 GameObject:
   m_ObjectHideFlags: 0

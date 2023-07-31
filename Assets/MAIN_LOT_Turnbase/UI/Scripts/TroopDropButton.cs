@@ -28,7 +28,6 @@ namespace JumpeeIsland
         {
             m_CreatureItem = creatureItem;
             _inventoryItem = creatureItem.GetInventoryItem();
-            Debug.Log($"Sprite key: {_inventoryItem.spriteAddress} from {creatureItem.EntityName}");
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(_inventoryItem.spriteAddress);
             m_Level.text = creatureItem.CurrentLevel.ToString();
             // TODO add Stats address and set Health Slider here

@@ -21,11 +21,13 @@ namespace JumpeeIsland
         
         private EnvironmentManager _environmentManager;
         private TutorialController _tutorialController;
+        private GlobalVfx _globalVfx;
         
         private void Start()
         {
             _environmentManager = FindObjectOfType<EnvironmentManager>();
             _tutorialController = FindObjectOfType<TutorialController>();
+            _globalVfx = GetComponent<GlobalVfx>();
             
             OnStartGame.AddListener(RecordStartedState);
             
@@ -50,6 +52,11 @@ namespace JumpeeIsland
                 return;
             
             _tutorialController.Init(currentTutorial);
+        }
+
+        public void AskGlobalVfx(GlobalVfxType vfxType, Vector3 atPos)
+        {
+            _globalVfx.PlayGlobalVfx(vfxType,atPos);
         }
     }
 }

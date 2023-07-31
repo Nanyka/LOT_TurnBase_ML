@@ -131,6 +131,7 @@ namespace JumpeeIsland
 
         public override void CreatureEndMove()
         {
+            _isMoving = false;
             m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
             if (GetJumpStep() > 0)
                 Attack();

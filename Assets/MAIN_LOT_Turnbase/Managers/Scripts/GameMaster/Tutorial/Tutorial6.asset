@@ -38,23 +38,25 @@ MonoBehaviour:
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
   conditions:
   - MapSize: 0
     Currency: 0
     CurrencyCompare: 0
     CurrencyAmount: 1
-    Storage: 0
-    StorageCompare: 0
-    StorageAmount: 0
+    Storage: 2
+    StorageCompare: 1
+    StorageAmount: 10
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 1
     Collectable: 0
     CollectableCompare: 2
     CollectableAmount: 1
-    Building: 3
+    Building: 0
     BuildingCompare: 2
-    BuildingAmount: 1
+    BuildingAmount: 10
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
@@ -63,6 +65,8 @@ MonoBehaviour:
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
   steps:
   - Pointer: 1
     EntitySelection: 1
@@ -111,6 +115,8 @@ MonoBehaviour:
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 0
+      IsCheckBattle: 0
+      BattleCount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 
@@ -161,6 +167,8 @@ MonoBehaviour:
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 10
+      IsCheckBattle: 0
+      BattleCount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 
@@ -191,9 +199,9 @@ MonoBehaviour:
       Currency: 0
       CurrencyCompare: 0
       CurrencyAmount: 0
-      Storage: 0
+      Storage: 2
       StorageCompare: 0
-      StorageAmount: 0
+      StorageAmount: 10
       Resource: 0
       ResourceCompare: 0
       ResourceAmount: 0
@@ -208,9 +216,11 @@ MonoBehaviour:
       CreatureAmount: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 1
+      IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 9
+      IsCheckBattle: 0
+      BattleCount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 

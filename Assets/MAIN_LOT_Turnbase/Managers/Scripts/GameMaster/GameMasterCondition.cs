@@ -57,11 +57,15 @@ namespace JumpeeIsland
 
         public bool IsCheckBattle;
         [ShowIf("@IsCheckBattle == true")] public int BattleCount;
+        
+        public bool IsCheckBossUnlock;
+        [ShowIf("@IsCheckBossUnlock == true")] public int BossUnlockAmount;
 
         public bool CheckPass()
         {
             return CheckMapSize() && CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
-                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore() && CheckBattleCount();
+                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore() && CheckBattleCount() &&
+                   CheckBossUnlock();
         }
 
         private bool CheckMapSize()
@@ -248,6 +252,14 @@ namespace JumpeeIsland
                 return true;
             
             return SavingSystemManager.Instance.GetGameProcess().battleCount >= BattleCount;
+        }
+        
+        private bool CheckBossUnlock()
+        {
+            if (IsCheckBossUnlock == false)
+                return true;
+            
+            return SavingSystemManager.Instance.GetGameProcess().bossUnlock >= BossUnlockAmount;
         }
     }
 }

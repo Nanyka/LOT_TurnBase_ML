@@ -37,6 +37,8 @@ namespace JumpeeIsland
                 DetectSupport(beliefs);
             if (beliefs.GetStates().Count == 0)
                 DetectOppotunity(beliefs);
+            if (beliefs.GetStates().Count == 0)
+                DeteckPickUp(beliefs);
         }
 
         #region ATTACK
@@ -52,11 +54,12 @@ namespace JumpeeIsland
             for (int i = 1; i < 5; i++)
             {
                 var movement = _envManager.GetMovementInspector().MovingPath(m_Transform.position, i, 0, 0);
-
-                if (movement.jumpCount > 0)
+                int dummyJump = movement.jumpCount + m_Entity.GetJumpBoost();
+                
+                if (dummyJump > 0)
                 {
                     var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i),
-                        movement.jumpCount);
+                        dummyJump);
                     if (attackPoints == null)
                         continue;
 
@@ -248,22 +251,8 @@ namespace JumpeeIsland
                 }
             }
 
-            if (supportPos != Vector3.negativeInfinity)
-            {
-                float minDistance = Mathf.Infinity;
-                for (int i = 1; i < 5; i++)
-                {
-                    var curDistance = Vector3.Distance((m_Transform.position + JIGeneralUtils.DirectionTo(i)),
-                        supportPos);
-                    if (curDistance < minDistance)
-                    {
-                        minDistance = curDistance;
-                        movingIndex = i;
-                    }
-                }
-
-                DecideAction(beliefs, movingIndex);
-            }
+            MoveToTarget(supportPos);
+            DecideAction(beliefs, movingIndex);
         }
 
         #endregion
@@ -301,6 +290,7 @@ namespace JumpeeIsland
                                 .MovingPath(jumpPos, k, 0, 0);
                             if (movement.jumpCount > 0)
                             {
+                                movement.jumpCount += m_Entity.GetJumpBoost();
                                 var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
                                     movement.jumpCount);
                                 if (attackPoints == null)
@@ -322,20 +312,31 @@ namespace JumpeeIsland
 
             LoopEnd:
             {
-                if (potentilPos != Vector3.negativeInfinity)
-                {
-                    float minDistance = Mathf.Infinity;
-                    for (int i = 1; i < 5; i++)
-                    {
-                        var curDistance = Vector3.Distance((m_Transform.position + JIGeneralUtils.DirectionTo(i)),
-                            potentilPos);
-                        if (curDistance < minDistance)
-                        {
-                            minDistance = curDistance;
-                            movingIndex = i;
-                        }
-                    }
-                }
+                MoveToTarget(potentilPos);
+                DecideAction(beliefs, movingIndex);
+            }
+        }
+
+        #endregion
+
+        #region PICK UP
+
+        public void DeteckPickUp(WorldStates beliefs)
+        {
+            var pickUpList = SavingSystemManager.Instance.GetEnvironmentData().CollectableData;
+            var pickUpPos = Vector3.negativeInfinity;
+            movingIndex = 0;
+            
+            foreach (var pickUp in pickUpList)
+            {
+                // Test the first item
+                pickUpPos = pickUp.Position;
+                goto LoopEnd;
+            }
+            
+            LoopEnd:
+            {
+                MoveToTarget(pickUpPos);
 
                 DecideAction(beliefs, movingIndex);
             }
@@ -373,6 +374,24 @@ namespace JumpeeIsland
         private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, Skill_SO skill)
         {
             return skill.CalculateSkillRange(targetPos, direction);
+        }
+
+        private void MoveToTarget(Vector3 target)
+        {
+            if (target != Vector3.negativeInfinity)
+            {
+                float minDistance = Mathf.Infinity;
+                for (int i = 1; i < 5; i++)
+                {
+                    var curDistance = Vector3.Distance((m_Transform.position + JIGeneralUtils.DirectionTo(i)),
+                        target);
+                    if (curDistance < minDistance && _envManager.FreeToMove(target))
+                    {
+                        minDistance = curDistance;
+                        movingIndex = i;
+                    }
+                }
+            }
         }
     }
 }

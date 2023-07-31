@@ -8,8 +8,7 @@ namespace JumpeeIsland
         private Entity m_Entity;
         private int _remainTempJumpBoost;
         private int _magnitudeJumpBoost;
-        private bool _isStrengthBoost = false;
-        private bool _isTempJumpBoost = false;
+        private bool _isStrengthBoost;
 
         public void Init(Entity entity)
         {

@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
-        [SerializeField] private List<ParticleSystem> _attackVFX;
+        // [SerializeField] private List<ParticleSystem> _attackVFX;
 
         public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep,
             EnvironmentManager mEnvironment)
@@ -32,12 +32,12 @@ namespace JumpeeIsland
                 }
             }
 
-            AttackVFX(jumpStep);
+            // AttackVFX(jumpStep);
         }
 
-        private void AttackVFX(int vfxIndex)
-        {
-            _attackVFX[vfxIndex - 1]?.Play();
-        }
+        // private void AttackVFX(int vfxIndex)
+        // {
+        //     _attackVFX[vfxIndex - 1]?.Play();
+        // }
     }
 }

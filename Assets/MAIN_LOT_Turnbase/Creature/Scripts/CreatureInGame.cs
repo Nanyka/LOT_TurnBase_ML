@@ -7,25 +7,27 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity, ICreatureMove, IAttackResponse
+    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity, ICreatureMove,
+        IAttackResponse
     {
-        [FormerlySerializedAs("_rotatePart")]
-        [Header("Creature Components")] 
-        [SerializeField] protected Transform _tranformPart;
+        [FormerlySerializedAs("_rotatePart")] [Header("Creature Components")] [SerializeField]
+        protected Transform _tranformPart;
+
         [SerializeField] protected CreatureEntity m_Entity;
 
         protected IFactionController m_FactionController;
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
+        protected bool _isMoving;
         private bool _isUsed;
 
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
-            m_Transform.position = creatureData.Position;
             _tranformPart.eulerAngles = creatureData.Rotation;
-            
+            m_Transform.position = creatureData.Position;
+
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
             MarkAsUsedThisTurn();
@@ -50,37 +52,25 @@ namespace JumpeeIsland
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
 
             MarkAsUsedThisTurn();
-            CreatureStartMove(m_Transform.position,moveDirection);
+            CreatureStartMove(m_Transform.position, moveDirection);
             // StartCoroutine(MoveOverTime(_movement.targetPos));
         }
-        
+
         public void CreatureStartMove(Vector3 currentPos, int direction)
         {
-            m_Entity.ConductCreatureMove(currentPos,direction, this);
+            _isMoving = true;
+            m_Entity.ConductCreatureMove(currentPos, direction, this);
         }
 
         public virtual void CreatureEndMove()
         {
+            _isMoving = false;
             m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
             if (GetJumpStep() > 0)
                 Attack();
             else
                 m_FactionController.WaitForCreature();
         }
-
-        // private IEnumerator MoveOverTime(Vector3 targetPos)
-        // {
-        //     m_Entity.SetAnimation(AnimateType.Walk, true);
-        //     m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
-        //     while (m_Transform.position != targetPos)
-        //     {
-        //         m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, 2f * Time.deltaTime);
-        //         yield return null;
-        //     }
-        //
-        //     m_Entity.SetAnimation(AnimateType.Walk, false);
-        //     m_FactionController.WaitForCreature();
-        // }
 
         public void NewTurnReset()
         {
@@ -128,10 +118,15 @@ namespace JumpeeIsland
         {
             return m_Entity.GetData();
         }
-        
+
         public EnvironmentManager GetEnvironment()
         {
             return m_FactionController.GetEnvironment();
+        }
+
+        public bool IsMoving()
+        {
+            return _isMoving;
         }
 
         private int GetJumpStep()
@@ -177,16 +172,10 @@ namespace JumpeeIsland
         public void Remove(EnvironmentData environmentData)
         {
             if (m_FactionController.GetFaction() == FactionType.Player)
-                environmentData.PlayerData.Remove((CreatureData) m_Entity.GetData());
+                environmentData.PlayerData.Remove((CreatureData)m_Entity.GetData());
             if (m_FactionController.GetFaction() == FactionType.Enemy)
-                environmentData.EnemyData.Remove((CreatureData) m_Entity.GetData());
+                environmentData.EnemyData.Remove((CreatureData)m_Entity.GetData());
         }
-
-        // public void ResetMoveState()
-        // {
-        //     _isUsed = false;
-        //     m_Entity.SetActiveMaterial();
-        // }
 
         #endregion
     }

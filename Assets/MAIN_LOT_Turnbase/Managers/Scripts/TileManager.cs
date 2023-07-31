@@ -44,6 +44,11 @@ namespace JumpeeIsland
             {
                 GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile);
             }
+
+            foreach (var obstacle in m_MapContainer.GetObstacles())
+            {
+                GameFlowManager.Instance.OnDomainRegister.Invoke(obstacle,FactionType.Neutral);
+            }
         }
 
         // private void SpiralPatternConstructor(int tileAmount)

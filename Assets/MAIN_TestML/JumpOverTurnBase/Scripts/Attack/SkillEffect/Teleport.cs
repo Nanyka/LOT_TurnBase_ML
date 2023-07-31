@@ -8,12 +8,15 @@ public class Teleport : SkillEffect
     public void TakeEffectOn(Entity attackEntity, Entity sufferEntity)
     {
         var envManager = GameFlowManager.Instance.GetEnvManager();
-        
+
         var currentEntity = attackEntity.GetFaction();
         var enemies = SavingSystemManager.Instance.GetEnvironmentData().PlayerData;
         if (currentEntity == FactionType.Player)
             enemies = SavingSystemManager.Instance.GetEnvironmentData().EnemyData;
 
+        if (enemies.Count == 0)
+            return;
+        
         var lowHealthEnemy = enemies.Aggregate((l, r) => l.CurrentHp < r.CurrentHp ? l : r);
         var selectedEnemyPos = lowHealthEnemy.Position;
         var telePos = Vector3.negativeInfinity;
@@ -23,11 +26,11 @@ public class Teleport : SkillEffect
             teleIndex = i;
             telePos = selectedEnemyPos + JIGeneralUtils.DirectionTo(teleIndex);
             telePos = envManager.GetTilePosByGeoPos(telePos);
-            if (envManager.FreeToMove(telePos) 
+            if (envManager.FreeToMove(telePos)
                 && envManager.CheckHigherTile(selectedEnemyPos, telePos) == false)
                 break;
         }
-        
+
         if (telePos != Vector3.negativeInfinity)
         {
             attackEntity.UpdateTransform(telePos, JIGeneralUtils.AdverseRotateTo(teleIndex));

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial5
   m_EditorClassIdentifier: 
-  UsePassCondition: 0
+  UsePassCondition: 1
   PassCondition:
     MapSize: 0
-    Currency: 0
+    Currency: 5
     CurrencyCompare: 0
     CurrencyAmount: 0
     Storage: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 0
-    Collectable: 1
+    Collectable: 0
     CollectableCompare: 2
     CollectableAmount: 0
     Building: 0
@@ -38,18 +38,20 @@ MonoBehaviour:
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
   conditions:
   - MapSize: 0
     Currency: 0
     CurrencyCompare: 0
     CurrencyAmount: 1
-    Storage: 0
-    StorageCompare: 0
+    Storage: 5
+    StorageCompare: 2
     StorageAmount: 0
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 1
-    Collectable: 1
+    Collectable: 0
     CollectableCompare: 2
     CollectableAmount: 0
     Building: 0
@@ -63,6 +65,8 @@ MonoBehaviour:
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
   steps:
   - Pointer: 1
     EntitySelection: 1
@@ -91,13 +95,13 @@ MonoBehaviour:
       Currency: 0
       CurrencyCompare: 0
       CurrencyAmount: 0
-      Storage: 0
+      Storage: 5
       StorageCompare: 0
       StorageAmount: 0
       Resource: 0
       ResourceCompare: 0
       ResourceAmount: 0
-      Collectable: 1
+      Collectable: 0
       CollectableCompare: 2
       CollectableAmount: 0
       Building: 0
@@ -111,6 +115,8 @@ MonoBehaviour:
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 0
+      IsCheckBattle: 0
+      BattleCount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 

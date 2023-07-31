@@ -146,6 +146,11 @@ namespace JumpeeIsland
             return _domainManager.GetPotentialTile();
         }
 
+        public Vector3 GetRandomAvailableTile()
+        {
+            return _domainManager.GetAvailableTile();
+        }
+
         public bool FreeToMove(Vector3 checkPos)
         {
             return _domainManager.CheckFreeToMove(checkPos);
@@ -172,6 +177,11 @@ namespace JumpeeIsland
         public bool CheckEnemy(Vector3 pos, FactionType myFaction)
         {
             return _domainManager.CheckEnemy(pos, myFaction);
+        }
+        
+        public bool CheckAlly(Vector3 pos, FactionType myFaction)
+        {
+            return _domainManager.CheckAlly(pos, myFaction);
         }
 
         public GameObject GetObjectByPosition(Vector3 position, FactionType fromFaction)

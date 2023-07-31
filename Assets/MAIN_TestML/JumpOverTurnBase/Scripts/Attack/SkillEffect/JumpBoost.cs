@@ -15,9 +15,6 @@ public class JumpBoost : SkillEffect
     public void TakeEffectOn(Entity attackEntity, Entity sufferEntity)
     {
         if (sufferEntity.GetType() == typeof(CreatureEntity))
-        {
-            Debug.Log($"Jump boost of {sufferEntity.name} during {_duration} steps.");
             sufferEntity.GetEffectComp().JumpBoost(_duration, _magnitude);
-        }
     }
 }

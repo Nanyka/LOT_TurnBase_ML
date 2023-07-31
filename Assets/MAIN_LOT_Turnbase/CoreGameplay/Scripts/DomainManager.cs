@@ -52,6 +52,21 @@ namespace JumpeeIsland
 
             return Vector3.negativeInfinity;
         }
+        
+        public Vector3 GetAvailableTile()
+        {
+            GeneralAlgorithm.Shuffle(_tileAreas);
+
+            foreach (var movableTile in _tileAreas)
+            {
+                var tile = movableTile.GetPosition();
+                
+                if (CheckFreeToMove(tile))
+                    return tile;
+            }
+
+            return Vector3.negativeInfinity;
+        }
 
         #endregion
 
@@ -83,6 +98,7 @@ namespace JumpeeIsland
         public bool CheckTeam(Vector3 position, FactionType faction)
         {
             var returnValue = false;
+            position = new (Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y), Mathf.RoundToInt(position.z));
             var listByFaction = GetListObjByFaction(faction);
             foreach (var item in listByFaction)
             {
@@ -104,6 +120,11 @@ namespace JumpeeIsland
             if (faction == FactionType.Player)
                 return CheckTeam(targetPos, FactionType.Enemy);
             return CheckTeam(targetPos, FactionType.Player);
+        }
+
+        public bool CheckAlly(Vector3 targetPos, FactionType faction)
+        {
+            return CheckTeam(targetPos, faction);
         }
 
         public bool CheckTilesHeight(Vector3 tile1, Vector3 tile2)
