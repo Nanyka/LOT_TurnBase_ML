@@ -31324,7 +31324,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c0c3b4abebbb048998b6007d76b96ae0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: daf5360ea93094de9ac1ed69eef85046, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -46108,7 +46108,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -56202,7 +56201,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7322449676737429726}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7322449676737429728}
+        m_TargetAssemblyTypeName: JumpeeIsland.ChangeModeButton, Assembly-CSharp
+        m_MethodName: OnClickChangeMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7322449676737429724
 GameObject:
   m_ObjectHideFlags: 0
@@ -56215,6 +56226,7 @@ GameObject:
   - component: {fileID: 7322449676737429727}
   - component: {fileID: 7322449676737429726}
   - component: {fileID: 7322449676737429720}
+  - component: {fileID: 7322449676737429728}
   m_Layer: 5
   m_Name: Button_Yeah
   m_TagString: Untagged
@@ -56281,6 +56293,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7322449676737429724}
   m_CullTransparentMesh: 0
+--- !u!114 &7322449676737429728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7322449676737429724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c50494bdec462581db7cd25ecf8134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ModeScene: EcoModeScene
 --- !u!224 &7322449676858117568
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56765,7 +56790,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Yeah!!!
+  m_text: YEAH!!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}
   m_sharedMaterial: {fileID: 2517202264660172603, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}

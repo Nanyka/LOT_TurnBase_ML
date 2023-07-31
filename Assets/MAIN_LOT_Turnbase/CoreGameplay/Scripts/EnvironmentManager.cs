@@ -73,6 +73,7 @@ namespace JumpeeIsland
                 if (_step <= _minStep && _currFaction == FactionType.Player)
                 {
                     Debug.Log("Show Run out of steps panel");
+                    MainUI.Instance.OnConversationUI.Invoke("Run out of steps",true);
                     return;
                 }
 

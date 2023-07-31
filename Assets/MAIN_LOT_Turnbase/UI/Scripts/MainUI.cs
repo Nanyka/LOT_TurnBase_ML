@@ -22,7 +22,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<List<CreatureData>> OnShowDropTroopMenu = new(); // send to DropTroopMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
         [NonSerialized] public UnityEvent<Vector3,bool> OnSwitchButtonPointer = new(); // send to ButtonPointer, invoke at TutorialController
-        [NonSerialized] public UnityEvent<string, bool> OnConversationUI = new(); // send to ConversationDialog, invoke at 
+        [NonSerialized] public UnityEvent<string, bool> OnConversationUI = new(); // send to ConversationDialog, invoke at TutorialController
 
         public bool IsInteractable;
 

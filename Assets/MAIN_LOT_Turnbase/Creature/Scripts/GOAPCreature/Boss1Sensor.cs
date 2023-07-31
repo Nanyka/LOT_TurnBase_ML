@@ -266,7 +266,7 @@ namespace JumpeeIsland
             // Check jumping point for that attack is available or not
             // Check the movement that bring character as close to the intent position as possible
             movingIndex = 0;
-            Vector3 potentilPos = Vector3.negativeInfinity;
+            Vector3 potentialPos = Vector3.negativeInfinity;
 
             for (int i = -detectRange; i <= detectRange; i++)
             {
@@ -300,7 +300,7 @@ namespace JumpeeIsland
                                 {
                                     if (_envManager.CheckEnemy(attackPoint, m_Entity.GetFaction()))
                                     {
-                                        potentilPos = jumpPos;
+                                        potentialPos = jumpPos;
                                         goto LoopEnd;
                                     }
                                 }
@@ -312,7 +312,7 @@ namespace JumpeeIsland
 
             LoopEnd:
             {
-                MoveToTarget(potentilPos);
+                MoveToTarget(potentialPos);
                 DecideAction(beliefs, movingIndex);
             }
         }
@@ -378,7 +378,7 @@ namespace JumpeeIsland
 
         private void MoveToTarget(Vector3 target)
         {
-            if (target != Vector3.negativeInfinity)
+            if (target.x.CompareTo(float.NegativeInfinity) == 1)
             {
                 float minDistance = Mathf.Infinity;
                 for (int i = 1; i < 5; i++)
