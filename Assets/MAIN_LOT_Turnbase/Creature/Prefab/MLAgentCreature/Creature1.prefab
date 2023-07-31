@@ -15037,9 +15037,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 709bc3ad896143bd8531f3fee5abe879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotatePart: {fileID: 5121614693150466284}
+  _tranformPart: {fileID: 6024829749437263407}
   m_Entity: {fileID: 347806203205721731}
-  _isUsed: 0
   InferMoving:
     AgentIndex: 0
     Action: 0
@@ -15051,6 +15050,7 @@ MonoBehaviour:
     Reward: 0
     VoteAmount: 0
   _isSwitchBrain: 1
+  _isJumpable: 1
 --- !u!114 &347806203205721731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15086,6 +15086,7 @@ MonoBehaviour:
     CurrentExp: 0
     TurnCount: 0
     CurrentDamage: 0
+    StregthBoostRemain: 0
 --- !u!114 &3100976775438255294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15127,6 +15128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackVFX:
+  - {fileID: 5326698967971819107}
+  - {fileID: 5919318625885062259}
 --- !u!114 &3224619648339758090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15140,9 +15144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillSOs:
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
-  - {fileID: 11400000, guid: fa1e369e9f75345c99e19f4db8a46893, type: 2}
+  - {fileID: 11400000, guid: 59da13f6d365245a28fedfbebb3acde6, type: 2}
+  - {fileID: 11400000, guid: 72abe4fb9be184ff8be9bb601bc2a817, type: 2}
+  - {fileID: 11400000, guid: 6a5dde6c53b944093b4e98011f68111b, type: 2}
 --- !u!114 &432717761436961589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15155,9 +15159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackVFX:
-  - {fileID: 5326698967971819107}
-  - {fileID: 5919318625885062259}
 --- !u!114 &129415396433205140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15192,7 +15193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 0}
+  m_Animator: {fileID: 0}
 --- !u!1 &2519806773560449328
 GameObject:
   m_ObjectHideFlags: 0

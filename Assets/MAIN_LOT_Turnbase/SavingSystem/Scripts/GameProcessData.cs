@@ -1,3 +1,5 @@
+using UnityEngine.Serialization;
+
 namespace JumpeeIsland
 {
     [System.Serializable]
@@ -7,5 +9,10 @@ namespace JumpeeIsland
         public long timestamp;
         public long lastTimestamp;
         public long moveTimestamp;
+        public int battleCount;
+        public int win1StarCount;
+        public int win2StarCount;
+        public int win3StarCount;
+        public int bossUnlock;
     }
 }

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using GOAP;
-using JumpeeIsland;
 using UnityEngine;
 
 namespace JumpeeIsland

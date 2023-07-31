@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf1697fabb846e3b99a078da6de5cd6, type: 3}
   m_Name: SpawnTree
   m_EditorClassIdentifier: 
-  Conditions:
-  - MapSize: 0
+  Condition:
+    MapSize: 0
     Currency: 0
     CurrencyCompare: 0
-    CurrencyAmount: 25
+    CurrencyAmount: 0
     Storage: 0
     StorageCompare: 0
     StorageAmount: 0
@@ -29,4 +29,15 @@ MonoBehaviour:
     Building: 0
     BuildingCompare: 0
     BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsUICondition: 0
+    UIElement: 
+    IsScoreCondition: 0
+    ScoreCompare: 0
+    ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
   State: NEEDTREE
+  GapDuration: 0

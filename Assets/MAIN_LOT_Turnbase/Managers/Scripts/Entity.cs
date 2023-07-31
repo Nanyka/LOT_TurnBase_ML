@@ -38,7 +38,7 @@ namespace JumpeeIsland
         
         #region ATTACK
         
-        public abstract void AttackSetup(IGetCreatureInfo unitInfo);
+        public abstract void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser);
 
         public abstract int GetAttackDamage();
 
@@ -50,9 +50,15 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region EFFECT
+
+        public abstract EffectComp GetEffectComp();
+
+        #endregion
+
         #region ANIMATE COMPONENT
 
-        public abstract void SetAnimation(AnimateType animation ,bool isTurnOn);
+        public abstract void SetAnimation(AnimateType animateType ,bool isTurnOn);
 
         #endregion
 

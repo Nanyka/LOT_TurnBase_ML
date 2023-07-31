@@ -21,7 +21,7 @@ namespace JumpeeIsland
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
         // invoke at CreatureEntity, BuildingEntity, Creature
-        [NonSerialized] public UnityEvent OnCheckExpandMap = new(); //TODO check expand map just invoke 1 time???
+        // [NonSerialized] public UnityEvent OnCheckExpandMap = new(); //TODO check expand map just invoke 1 time???
 
         // invoke at TileManager
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
@@ -225,6 +225,11 @@ namespace JumpeeIsland
             }
         }
 
+        // public List<Transform> GetTiles()
+        // {
+        //     return m_EnvLoader.GetTiles();
+        // }
+
         public void OnSpawnResource(string resourceId, Vector3 position)
         {
             var inventoryItems = m_InventoryLoader.GetInventoriesByType(InventoryType.Resource);
@@ -312,6 +317,12 @@ namespace JumpeeIsland
             }
 
             m_EnvLoader.TrainACreature(newCreature);
+        }
+        
+        public void OnTrainACreature(CreatureData creatureData, Vector3 position)
+        {
+            creatureData.Position = position;
+            m_EnvLoader.TrainACreature(creatureData);
         }
 
         public void SpawnMovableEntity(string itemId, Vector3 position)
@@ -586,6 +597,32 @@ namespace JumpeeIsland
             m_GameProcess.currentTutorial = tutorial;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
+        
+        public async void SaveBattleResult(int starAmount)
+        {
+            switch (starAmount)
+            {
+                case 1:
+                    m_GameProcess.win1StarCount++;
+                    break;
+                case 2:
+                    m_GameProcess.win2StarCount++;
+                    break;
+                case 3:
+                    m_GameProcess.win3StarCount++;
+                    break;
+            }
+
+            m_GameProcess.battleCount++;
+            
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
+
+        public async void SaveBossUnlock(int bossIndex)
+        {
+            m_GameProcess.bossUnlock = bossIndex;
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
 
         #endregion
 
@@ -608,6 +645,11 @@ namespace JumpeeIsland
         public EnvironmentData GetEnvDataForSave()
         {
             return m_EnvLoader.GetDataForSave();
+        }
+
+        public GameProcessData GetGameProcess()
+        {
+            return m_GameProcess;
         }
 
         /// <summary>

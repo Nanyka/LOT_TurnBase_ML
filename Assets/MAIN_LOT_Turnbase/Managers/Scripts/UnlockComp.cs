@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -7,7 +8,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private string _inventoryId;
         
-        private void Start()
+        private void OnEnable()
         {
             GetComponent<Entity>().OnUnitDie.AddListener(Unlock);
         }
@@ -15,6 +16,16 @@ namespace JumpeeIsland
         private void Unlock(Entity killBy)
         {
             SavingSystemManager.Instance.GrantInventory(_inventoryId);
+            
+            // Show Unlock new character panel in Monster Mode
+            if (GameFlowManager.Instance.IsEcoMode == false)
+                StartCoroutine(WaitToEndGame());
+        }
+
+        private IEnumerator WaitToEndGame()
+        {
+            yield return new WaitForSeconds(1.5f);
+            MainUI.Instance.OnGameOver.Invoke();
         }
     }
 }

@@ -14,29 +14,82 @@ namespace JumpeeIsland
             _environment = GetComponent<EnvironmentManager>();
         }
 
-        public (Vector3 returnPos, int jumpCount, int overEnemy) MovingPath(Vector3 curPos, int direction, int jumpCount, int overEnemy)
+        public (Vector3 returnPos, int jumpCount, int overEnemy) MovingPath(Vector3 curPos, int direction,
+            int jumpCount, int overEnemy)
         {
-            var newPos = curPos + DirectionToVector(direction);
+            var newPos = _environment.GetTilePosByGeoPos(curPos + DirectionTo(direction));
+
+            if (newPos == Vector3.negativeInfinity || _environment.CheckOutOfBoundary(newPos))
+                return (curPos, jumpCount, overEnemy);
 
             if (CheckAvailableMove(newPos))
             {
                 if (jumpCount == 0)
-                    return (newPos, jumpCount, overEnemy);
+                {
+                    // If newPos.y is different from curPos.y
+                    // jumpCount increase and update curPos to go to the new loop
+                    // but if newPos and curPos is similar in velocity
+                    // return newPos
+
+                    if (_environment.CheckTileHeight(curPos, newPos))
+                        return (newPos, jumpCount, overEnemy);
+                    
+                    jumpCount++;
+                    curPos = newPos;
+                    return MovingPath(curPos, direction, jumpCount, overEnemy);
+                }
 
                 return (curPos, jumpCount, overEnemy);
             }
 
-            if (CheckAvailableMove(newPos + DirectionToVector(direction)))
+            if (_environment.CheckHigherTile(curPos,newPos))
+                return (curPos, jumpCount, overEnemy);
+
+            if (CheckAvailableMove(newPos + DirectionTo(direction)))
             {
                 jumpCount++;
-                curPos = newPos + DirectionToVector(direction);
+                curPos = _environment.GetTilePosByGeoPos(newPos + DirectionTo(direction));
                 return MovingPath(curPos, direction, jumpCount, overEnemy);
             }
 
             return (curPos, jumpCount, overEnemy);
         }
 
-        private Vector3 DirectionToVector(int direction)
+        // Get list of jumping positions
+        public List<Vector3> MovingPath(Vector3 curPos, int direction, List<Vector3> jumpingPoints)
+        {
+            var newPos = _environment.GetTilePosByGeoPos(curPos + DirectionTo(direction));
+            if (newPos == Vector3.negativeInfinity || _environment.CheckOutOfBoundary(newPos))
+                return jumpingPoints;
+            
+            if (CheckAvailableMove(newPos))
+            {
+                if (jumpingPoints.Count == 0)
+                {
+                    jumpingPoints.Add(newPos);
+                    if (_environment.CheckTileHeight(curPos, newPos) == false)
+                    {
+                        curPos = newPos;
+                        return MovingPath(curPos, direction, jumpingPoints);
+                    }
+                }
+                return jumpingPoints;
+            }
+            
+            if (_environment.CheckHigherTile(curPos,newPos))
+                return jumpingPoints;
+
+            if (CheckAvailableMove(newPos + DirectionTo(direction)))
+            {
+                curPos = _environment.GetTilePosByGeoPos(newPos + DirectionTo(direction));
+                jumpingPoints.Add(curPos);
+                return MovingPath(curPos, direction, jumpingPoints);
+            }
+
+            return jumpingPoints;
+        }
+
+        private Vector3 DirectionTo(int direction)
         {
             var checkVector = Vector3.zero;
 
@@ -63,32 +116,7 @@ namespace JumpeeIsland
 
         private bool CheckAvailableMove(Vector3 newPos)
         {
-            // if (maxRow == 0f || maxCol == 0f)
-            //     InputPlatformSize();
-
             return _environment.FreeToMove(newPos);
         }
-
-        // private bool CheckInBoundary(Vector3 checkPos)
-        // {
-        //     if (maxRow == 0f || maxCol == 0f)
-        //         InputPlatformSize();
-        //
-        //     return Mathf.Abs(checkPos.x - _platformPos.x) <= maxCol &&
-        //            Mathf.Abs(checkPos.z - _platformPos.z) <= maxRow;
-        // }
-
-        // private void InputPlatformSize()
-        // {
-        //     _platformPos = _environment.GetPlatformCollider().transform.position;
-        //     var platformSize = _environment.GetPlatformCollider().bounds.size;
-        //     maxCol = Mathf.RoundToInt((platformSize.x - 1) / 2);
-        //     maxRow = Mathf.RoundToInt((platformSize.z - 1) / 2);
-        // }
-
-        // public Vector3 GetPlatformPosition()
-        // {
-        //     return _platformPos;
-        // }
     }
 }

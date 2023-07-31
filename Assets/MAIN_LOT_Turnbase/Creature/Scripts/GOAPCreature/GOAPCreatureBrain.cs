@@ -25,6 +25,7 @@ namespace JumpeeIsland
         public void Init(GOAPCreatureInGame creatureInGame)
         {
             m_Creature = creatureInGame;
+            m_Sensor.Init((CreatureData)m_Creature.GetEntityData());
         }
 
         #region APLUS ALGORITHM

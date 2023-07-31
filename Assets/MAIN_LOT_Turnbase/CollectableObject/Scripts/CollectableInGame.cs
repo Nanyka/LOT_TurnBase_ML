@@ -36,7 +36,7 @@ namespace JumpeeIsland
         
         private void DestroyEntity(Entity killedByEntity)
         {
-            // just contribute commands when it is killed by player faction
+            // just contribute commands when it is killed by player faction or itself
             if (killedByEntity.GetFaction() == FactionType.Player || m_Entity.CheckSelfCollect())
                 m_Entity.ContributeCommands();
             

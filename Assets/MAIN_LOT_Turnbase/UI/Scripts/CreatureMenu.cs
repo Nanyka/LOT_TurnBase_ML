@@ -8,7 +8,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private GameObject _creatureMenu;
         [SerializeField] private GameObject _confirmPanel;
-        [SerializeField] private List<CreatureBuyButton> _buyButtons;
+        [SerializeField] protected List<CreatureBuyButton> _buyButtons;
         [SerializeField] private Transform _settlePoint;
 
         private int _layerMask = 1 << 6;
@@ -18,7 +18,7 @@ namespace JumpeeIsland
         private IConfirmFunction _currentConfirm;
         private bool _isInADeal;
 
-        private void Start()
+        protected virtual void Start()
         {
             MainUI.Instance.OnShowCreatureMenu.AddListener(ShowCreatureMenu);
             MainUI.Instance.OnHideAllMenu.AddListener(HideCreatureMenu);

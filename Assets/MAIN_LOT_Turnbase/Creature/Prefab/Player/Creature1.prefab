@@ -5034,9 +5034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c338ef61a2e524b2194085da572acada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotatePart: {fileID: 9060558413840833960}
+  _tranformPart: {fileID: 4208259070068577294}
   m_Entity: {fileID: 7265869194925086169}
-  _isUsed: 0
 --- !u!114 &7265869194925086169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5051,8 +5050,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 4208259070068577294}
   m_UnitStats:
-  - {fileID: 11400000, guid: 7d36a385aaf20457185ba64c4b1b0581, type: 2}
-  - {fileID: 11400000, guid: 57df76cebcd1a47d995d8754e43270f2, type: 2}
+  - {fileID: 11400000, guid: 25bdc3723b77643eb84aca9a159fe4ff, type: 2}
+  - {fileID: 11400000, guid: 7d389877d20d54feeadfdeb26f81216c, type: 2}
   m_SkinComp: {fileID: 998753140285131627}
   m_HealthComp: {fileID: 5059295567355198043}
   m_AttackComp: {fileID: 6629649504239936674}
@@ -5060,19 +5059,6 @@ MonoBehaviour:
   m_EffectComp: {fileID: 948350743607959146}
   m_AttackPath: {fileID: 851019992999892168}
   m_AnimateComp: {fileID: 8277637650047650755}
-  m_CreatureData:
-    EntityName: 
-    SkinAddress: 
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    FactionType: 0
-    CurrentHp: 0
-    CurrentLevel: 0
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 0
 --- !u!114 &998753140285131627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5127,9 +5113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillSOs:
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
-  - {fileID: 11400000, guid: fa1e369e9f75345c99e19f4db8a46893, type: 2}
+  - {fileID: 11400000, guid: ecd8ea942d8304f4586acc4f2acd1829, type: 2}
+  - {fileID: 11400000, guid: faaeb1a0e52294303a61972542f82753, type: 2}
+  - {fileID: 11400000, guid: 1737343eb48e5429882832db9f95dcbe, type: 2}
 --- !u!114 &948350743607959146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5142,9 +5128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackVFX:
-  - {fileID: 8510146057417606282}
-  - {fileID: 2966955974040531039}
 --- !u!114 &851019992999892168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5179,7 +5162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 0}
+  m_Animator: {fileID: 0}
 --- !u!1 &683708144907513341
 GameObject:
   m_ObjectHideFlags: 0

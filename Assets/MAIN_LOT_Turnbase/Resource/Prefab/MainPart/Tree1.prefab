@@ -115,7 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06716385b61b48ddaa0999080d07435d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ResourceType: 2
   m_Entity: {fileID: 2808739560712090945}
 --- !u!114 &2808739560712090945
 MonoBehaviour:
@@ -149,8 +148,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 7544168857196311008}
-  m_BodyMesh: {fileID: 0}
-  _factionRenderer: {fileID: 0}
+  _factionRenderers: []
+  _activeMaterial: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &8624498452039744269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 0}
+  m_Animator: {fileID: 0}
+  tiles: []
 --- !u!1 &8622443213498383354
 GameObject:
   m_ObjectHideFlags: 0

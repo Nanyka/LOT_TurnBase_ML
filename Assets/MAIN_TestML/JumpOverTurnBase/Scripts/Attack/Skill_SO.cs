@@ -1,35 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Barracuda;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Skill", menuName = "JumpeeIsland/Skill", order = 1)]
 public class Skill_SO : ScriptableObject
 {
     //Manage attribute of unit's skills
-    [Header("Skill variable")] 
+    [Header("Skill variable")]
     [SerializeField] private string _animTrigger;
-    [SerializeField] private float _magnitude;
+    [SerializeField] private int _duration;
+    [SerializeField] private int _magnitude;
     
     [Header("Skill range")]
     [SerializeField] private RangeType _rangeType;
     [SerializeField] private int _numberOfSteps;
-
-    [Header("ML property")] [SerializeField]
-    private NNModel MLModel;
-
+    
+    [Header("Skill effect")]
+    [SerializeField] private SkillEffectType _skillEffectType;
+    private SkillEffect _skillEffect;
+    
+    [Header("ML property")]
+    [SerializeField] private NNModel MLModel;
     private SkillRange _skillRange;
 
     #region Skill Range
-
-    public Vector3 InvokeAt(Vector3 currPos, Vector3 direction)
-    {
-        CheckSkillRangeNull();
-
-        return _skillRange.InvokeAt(currPos, direction);
-    }
 
     public IEnumerable<Vector3> CalculateSkillRange(Vector3 currPos, Vector3 direction)
     {
@@ -43,6 +38,17 @@ public class Skill_SO : ScriptableObject
     {
         if (_skillRange == null)
             SetRangeType();
+    }
+
+    #endregion
+
+    #region Skill Effect
+
+    public SkillEffect GetSkillEffect()
+    {
+        if (_skillEffect == null)
+            SetEffectType();
+        return _skillEffect;
     }
 
     #endregion
@@ -68,14 +74,36 @@ public class Skill_SO : ScriptableObject
             case RangeType.SquareArea:
                 _skillRange = new SquareArea();
                 break;
+            case RangeType.CurrentPos:
+                _skillRange = new CurrentPos();
+                break;
+            case RangeType.FrontStrike:
+                _skillRange = new FrontStrike();
+                break;
+            case RangeType.AccurateAttack:
+                _skillRange = new AccurateAttack();
+                break;
+        }
+    }
+    
+    private void SetEffectType()
+    {
+        switch (_skillEffectType)
+        {
+            case SkillEffectType.StrengthBoost:
+                _skillEffect = new StrengthBooster(_duration,_magnitude);
+                break;
+            case SkillEffectType.Teleport:
+                _skillEffect = new Teleport();
+                break;
         }
     }
 
     #endregion
 
-    public float GetMagnitude()
+    public int GetDuration()
     {
-        return _magnitude;
+        return _duration;
     }
 
     public NNModel GetModel()

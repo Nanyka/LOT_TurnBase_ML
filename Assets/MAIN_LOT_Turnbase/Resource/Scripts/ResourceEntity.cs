@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,12 @@ namespace JumpeeIsland
         {
             m_ResourceData = resourceData;
             RefreshEntity();
+        }
+
+        // Remove all listener when entity completed die process
+        private void OnDisable()
+        {
+            OnUnitDie.RemoveAllListeners();
         }
 
         #region RESOURCE DATA
@@ -75,14 +82,13 @@ namespace JumpeeIsland
         public override void DieIndividualProcess(Entity killedByEntity)
         {
             // TODO add animation or effect here
-            OnUnitDie.RemoveAllListeners();
         }
 
         #endregion
 
         #region ATTACK
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo)
+        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }
@@ -103,9 +109,18 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region EFFECT
+        
+        public override EffectComp GetEffectComp()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
         #region ANIMATION
 
-        public override void SetAnimation(AnimateType animation, bool isTurnOn)
+        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new System.NotImplementedException();
         }

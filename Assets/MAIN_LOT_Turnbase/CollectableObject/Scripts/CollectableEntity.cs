@@ -18,6 +18,12 @@ namespace JumpeeIsland
             RefreshEntity();
         }
 
+        // Remove all listener when entity completed die process
+        private void OnDisable()
+        {
+            OnUnitDie.RemoveAllListeners();
+        }
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             throw new System.NotImplementedException();
@@ -42,7 +48,7 @@ namespace JumpeeIsland
         {
             return m_CollectableData.FactionType;
         }
-        
+
         public bool CheckSelfCollect()
         {
             return m_CurrentStat.IsSelfCollect;
@@ -70,11 +76,14 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
-            OnUnitDie.RemoveAllListeners();
+            // grant effect on killedByEntity
+            if (killedByEntity != this&& m_CurrentStat._skillEffectType != SkillEffectType.None)
+                    m_CurrentStat.GetSkillEffect().TakeEffectOn(this, killedByEntity);
+
             // TODO add animation or effect here
         }
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo)
+        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }
@@ -89,18 +98,29 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override void SetAnimation(AnimateType animation, bool isTurnOn)
+        #region EFFECT
+
+        public override EffectComp GetEffectComp()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
+        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new System.NotImplementedException();
         }
 
         #region GENERAL
-        
+
         public override void ContributeCommands()
         {
+            // If collectable item include currency rewards
             foreach (var command in m_CurrentStat.Commands)
                 SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
 
+            // If collectable item include creature rewards
             if (m_CurrentStat.SpawnedEntityType == EntityType.NONE)
                 return;
 
@@ -111,7 +131,8 @@ namespace JumpeeIsland
                         true);
                     break;
                 case EntityType.ENEMY:
-                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,m_CollectableData.Position);
+                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,
+                        m_CollectableData.Position);
                     break;
             }
         }

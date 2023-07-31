@@ -19712,9 +19712,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba288a18de3014bc29c02ab2e7697ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotatePart: {fileID: 3973109056894181792}
+  _tranformPart: {fileID: 5897075231589375173}
   m_Entity: {fileID: 9072602217414707417}
-  _isUsed: 0
   InferMoving:
     AgentIndex: 0
     Action: 0
@@ -19726,6 +19725,7 @@ MonoBehaviour:
     Reward: 0
     VoteAmount: 0
   _isSwitchBrain: 0
+  _isJumpable: 0
   m_Brain: {fileID: 8875070415745457599}
 --- !u!114 &9072602217414707417
 MonoBehaviour:
@@ -19803,6 +19803,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackVFX:
+  - {fileID: 8922260366908258746}
+  - {fileID: 7504832660983321866}
 --- !u!114 &1670896166245438440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19831,9 +19834,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackVFX:
-  - {fileID: 8922260366908258746}
-  - {fileID: 7504832660983321866}
 --- !u!114 &6420186199625587287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19868,7 +19868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 0}
+  m_Animator: {fileID: 0}
 --- !u!1 &3682097021817728150
 GameObject:
   m_ObjectHideFlags: 0

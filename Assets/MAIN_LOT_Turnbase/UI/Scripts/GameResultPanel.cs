@@ -21,7 +21,6 @@ namespace JumpeeIsland
         private void BattleStatsCache()
         {
             _startGameEnemyCount = GameFlowManager.Instance.GetEnvManager().CountFaction(FactionType.Enemy);
-            Debug.Log($"Start amount of {FactionType.Enemy}: {_startGameEnemyCount}");
         }
 
         private async void ShowGameOverPanel()
@@ -104,6 +103,9 @@ namespace JumpeeIsland
             {
                 _gameoverPanel.SetActive(true);
             }
+
+            // Save battle statistic
+            SavingSystemManager.Instance.SaveBattleResult(winStar);
         }
     }
 }

@@ -25,6 +25,12 @@ namespace JumpeeIsland
             m_BuildingData = buildingData;
             RefreshEntity();
         }
+        
+        // Remove all listener when entity completed die process
+        private void OnDisable()
+        {
+            OnUnitDie.RemoveAllListeners();
+        }
 
         #region BUILDING DATA
 
@@ -61,7 +67,7 @@ namespace JumpeeIsland
 
                 // Reset stats and appearance
                 ResetEntity();
-                SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
+                // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
             }
         }
 
@@ -160,7 +166,6 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
-            OnUnitDie.RemoveAllListeners();
             // TODO die visualization
         }
 
@@ -168,7 +173,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo)
+        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new NotImplementedException();
         }
@@ -184,6 +189,15 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region EFFECT
+        
+        public override EffectComp GetEffectComp()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         #region ANIMATION
 
         public override int GetAttackDamage()
@@ -191,7 +205,7 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public override void SetAnimation(AnimateType animation, bool isTurnOn)
+        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new NotImplementedException();
         }
@@ -202,7 +216,6 @@ namespace JumpeeIsland
 
         public override void ContributeCommands()
         {
-            // TODO contribute its resource based on storage amount
             throw new NotImplementedException();
         }
 
@@ -216,7 +229,7 @@ namespace JumpeeIsland
             OnUnitDie.AddListener(DieIndividualProcess);
 
             // Check expand map
-            SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
+            // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         private void ResetEntity()

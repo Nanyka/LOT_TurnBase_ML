@@ -18,8 +18,11 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnBuyBuildingMenu = new(); // send to BuyBuildingMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent<IConfirmFunction> OnInteractBuildingMenu = new(); // send to SellBuildingMenu, invoke at BuildingController
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnShowCreatureMenu = new(); // send to CreatureMenu, invoke at InventoryLoader
+        [NonSerialized] public UnityEvent OnShowBossSelector = new(); // send to BossSelector, invoke at ShowBossSelectorButton
+        [NonSerialized] public UnityEvent<List<CreatureData>> OnShowDropTroopMenu = new(); // send to DropTroopMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
         [NonSerialized] public UnityEvent<Vector3,bool> OnSwitchButtonPointer = new(); // send to ButtonPointer, invoke at TutorialController
+        [NonSerialized] public UnityEvent<string, bool> OnConversationUI = new(); // send to ConversationDialog, invoke at 
 
         public bool IsInteractable;
 

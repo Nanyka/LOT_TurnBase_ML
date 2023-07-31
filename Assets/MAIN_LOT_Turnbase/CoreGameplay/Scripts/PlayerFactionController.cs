@@ -75,9 +75,6 @@ namespace JumpeeIsland
         public void KickOffNewTurn()
         {
             _countMovedUnit = 0;
-            // if (_creatures.Count == 0)
-            //     EndTurn();
-                
             SelectUnit(_creatures[0].GetCurrentPosition());
         }
 
@@ -143,13 +140,13 @@ namespace JumpeeIsland
         private void EndTurn()
         {
             // Attack nearby enemy
-            foreach (var unit in _creatures)
-            {
-                if (unit.GetJumpStep() == 0)
-                    continue;
-
-                unit.Attack();
-            }
+            // foreach (var unit in _creatures)
+            // {
+            //     if (unit.GetJumpStep() == 0)
+            //         continue;
+            //
+            //     unit.Attack();
+            // }
 
             foreach (var unitMovement in _creatures)
                 unitMovement.SetDisableMaterial();
@@ -184,7 +181,7 @@ namespace JumpeeIsland
 
         private CreatureInGame GetUnitByPos(Vector3 unitPos)
         {
-            return _creatures.Find(x => Vector3.Distance(x.transform.position, unitPos) < Mathf.Epsilon);
+            return _creatures.Find(x => Vector3.Distance(x.transform.position, unitPos) < 0.1f);
         }
 
         public void RemoveAgent(CreatureInGame unitMovement)
