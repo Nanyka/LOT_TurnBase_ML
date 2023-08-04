@@ -19,7 +19,6 @@ namespace JumpeeIsland
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
-        protected bool _isMoving;
         private bool _isUsed;
 
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
@@ -58,13 +57,12 @@ namespace JumpeeIsland
 
         public void CreatureStartMove(Vector3 currentPos, int direction)
         {
-            _isMoving = true;
+            MainUI.Instance.OnShowInfo.Invoke(this);
             m_Entity.ConductCreatureMove(currentPos, direction, this);
         }
 
         public virtual void CreatureEndMove()
         {
-            _isMoving = false;
             m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
             if (GetJumpStep() > 0)
                 Attack();
@@ -102,11 +100,13 @@ namespace JumpeeIsland
             return m_Transform.position;
         }
 
-        public string ShowInfo()
+        public (Entity,int) ShowInfo()
         {
-            var data = (CreatureData)m_Entity.GetData();
-            return
-                $"{data.EntityName}\nHp:{data.CurrentHp}\nDamage:{data.CurrentDamage}\nJumpCount:{_movement.jumpCount}";
+            // var data = (CreatureData)m_Entity.GetData();
+            // return
+            //     $"{data.EntityName}\nHp:{data.CurrentHp}\nDamage:{data.CurrentDamage}\nJumpCount:{_movement.jumpCount}";
+
+            return (m_Entity, GetJumpStep());
         }
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
@@ -122,11 +122,6 @@ namespace JumpeeIsland
         public EnvironmentManager GetEnvironment()
         {
             return m_FactionController.GetEnvironment();
-        }
-
-        public bool IsMoving()
-        {
-            return _isMoving;
         }
 
         private int GetJumpStep()

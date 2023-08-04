@@ -47,11 +47,12 @@ namespace JumpeeIsland
             return m_Entity.GetCurrentStorage(currency, ref selectedBuildings);
         }
 
-        public string ShowInfo()
+        public (Entity,int) ShowInfo()
         {
-            var data = (BuildingData)m_Entity.GetData();
-            return
-                $"{data.EntityName}\nHp:{data.CurrentHp}\nStore:{data.StorageCurrency}\nSpace:{data.CurrentStorage}/{data.StorageCapacity}";
+            // var data = (BuildingData)m_Entity.GetData();
+            // return
+            //     $"{data.EntityName}\nHp:{data.CurrentHp}\nStore:{data.StorageCurrency}\nSpace:{data.CurrentStorage}/{data.StorageCapacity}";
+            return (m_Entity, 0);
         }
 
         public void ClickYes()

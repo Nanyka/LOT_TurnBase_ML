@@ -19,7 +19,7 @@ namespace JumpeeIsland
         {
             var newPos = _environment.GetTilePosByGeoPos(curPos + DirectionTo(direction));
 
-            if (newPos == Vector3.negativeInfinity || _environment.CheckOutOfBoundary(newPos))
+            if (newPos.x.CompareTo(float.NegativeInfinity) == 0 || _environment.CheckOutOfBoundary(newPos))
                 return (curPos, jumpCount, overEnemy);
 
             if (CheckAvailableMove(newPos))
@@ -59,7 +59,7 @@ namespace JumpeeIsland
         public List<Vector3> MovingPath(Vector3 curPos, int direction, List<Vector3> jumpingPoints)
         {
             var newPos = _environment.GetTilePosByGeoPos(curPos + DirectionTo(direction));
-            if (newPos == Vector3.negativeInfinity || _environment.CheckOutOfBoundary(newPos))
+            if (newPos.x.CompareTo(float.NegativeInfinity) == 0 || _environment.CheckOutOfBoundary(newPos))
                 return jumpingPoints;
             
             if (CheckAvailableMove(newPos))

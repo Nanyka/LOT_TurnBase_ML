@@ -10,8 +10,8 @@ namespace JumpeeIsland
         public override bool PrePerform()
         {
             var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
-            if (availableTile != Vector3.negativeInfinity)
-                SavingSystemManager.Instance.OnSpawnResource(_resourceId,availableTile);
+            if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                SavingSystemManager.Instance.OnSpawnCollectable(_resourceId,availableTile,0);
         
             return true;
         }

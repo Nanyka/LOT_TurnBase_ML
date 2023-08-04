@@ -54,7 +54,7 @@ namespace JumpeeIsland
             return m_CurrentStat.IsSelfCollect;
         }
 
-        public override int GetExpReward()
+        public virtual int GetExpReward()
         {
             throw new System.NotImplementedException();
         }

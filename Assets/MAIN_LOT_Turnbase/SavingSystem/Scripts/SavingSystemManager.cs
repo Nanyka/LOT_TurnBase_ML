@@ -264,7 +264,7 @@ namespace JumpeeIsland
 
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)
         {
-            if (await ConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
+            if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
 
             // ...and get the building in place
             var newBuilding = new BuildingData
@@ -283,7 +283,7 @@ namespace JumpeeIsland
                 return;
 
             if (isFromCollectable == false)
-                if (await ConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false)
+                if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false)
                     return;
 
             // ...and get the building in place
@@ -300,7 +300,7 @@ namespace JumpeeIsland
         {
             if (isWaitForPurchase)
             {
-                if (await ConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
+                if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
             }
 
             var newCreature = new CreatureData()
@@ -318,7 +318,7 @@ namespace JumpeeIsland
 
             m_EnvLoader.TrainACreature(newCreature);
         }
-        
+
         public void OnTrainACreature(CreatureData creatureData, Vector3 position)
         {
             creatureData.Position = position;
@@ -336,26 +336,6 @@ namespace JumpeeIsland
                 CurrentLevel = 0
             };
             m_EnvLoader.SpawnAnEnemy(newEntity);
-        }
-
-        private async Task<bool> ConductVirtualPurchase(string virtualPurchaseId)
-        {
-            await RefreshEconomy();
-
-            var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(virtualPurchaseId);
-            if (purchaseHandler == null)
-            {
-                Debug.Log($"Show \"Lack of {virtualPurchaseId}\" panel");
-                return false;
-            }
-
-            // Pay for constructing the building...
-            var constructingCost = m_CloudConnector.GetVirtualPurchaseCost(virtualPurchaseId);
-            foreach (var cost in constructingCost)
-                DeductCurrencyFromBuildings(cost.id, cost.amount);
-            // m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
-
-            return true;
         }
 
         #endregion
@@ -501,6 +481,11 @@ namespace JumpeeIsland
             m_InventoryLoader.SendInventoriesToCreatureMenu();
         }
 
+        public void OnAskForShowingShoppingMenu()
+        {
+            m_CloudConnector.SendPurchasesToShoppingMenu();
+        }
+
         // REFACTOR: Move any function related to this function to this script
         public JIInventoryItem GetInventoryItemByName(string entityName)
         {
@@ -519,6 +504,47 @@ namespace JumpeeIsland
         public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
         {
             return m_CloudConnector.GetPurchaseDefinition(id);
+        }
+
+        public List<JIItemAndAmountSpec> GetPurchaseCost(string purchaseId)
+        {
+            return m_CloudConnector.GetVirtualPurchaseCost(purchaseId);
+        }
+
+        public List<JIItemAndAmountSpec> GetPurchaseReward(string purchaseId)
+        {
+            return m_CloudConnector.GetVirtualPurchaseReward(purchaseId);
+        }
+
+        public async Task<bool> OnConductVirtualPurchase(string virtualPurchaseId)
+        {
+            await RefreshEconomy();
+
+            var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(virtualPurchaseId);
+            if (purchaseHandler == null)
+            {
+                Debug.Log($"Show \"Lack of {virtualPurchaseId}\" panel");
+                return false;
+            }
+
+            // Pay for constructing the building...
+            var constructingCost = m_CloudConnector.GetVirtualPurchaseCost(virtualPurchaseId);
+            foreach (var cost in constructingCost)
+                DeductCurrencyFromBuildings(cost.id, cost.amount);
+            // m_CurrencyLoader.IncrementCurrency(cost.id, cost.amount * -1);
+
+            var rewards = m_CloudConnector.GetVirtualPurchaseReward(virtualPurchaseId);
+            foreach (var reward in rewards)
+            {
+                if (reward.id.Equals(CurrencyType.GOLD.ToString()) ||
+                    reward.id.Equals(CurrencyType.GEM.ToString()) ||
+                    reward.id.Equals(CurrencyType.MOVE.ToString()))
+                    IncrementLocalCurrency(reward.id, reward.amount);
+                else
+                    m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
+            }
+
+            return true;
         }
 
         #endregion
@@ -597,7 +623,7 @@ namespace JumpeeIsland
             m_GameProcess.currentTutorial = tutorial;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
-        
+
         public async void SaveBattleResult(int starAmount)
         {
             switch (starAmount)
@@ -614,7 +640,7 @@ namespace JumpeeIsland
             }
 
             m_GameProcess.battleCount++;
-            
+
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 

@@ -9,7 +9,7 @@ namespace JumpeeIsland
     public class CreatureBuyButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction
     {
         [SerializeField] private GameObject m_Container;
-        [SerializeField] private TextMeshProUGUI m_ItemName;
+        // [SerializeField] private TextMeshProUGUI m_ItemName;
         [SerializeField] private Image m_ItemIcon;
         
         // private AsyncOperationHandle m_UCDObjectLoadingHandle;
@@ -27,7 +27,7 @@ namespace JumpeeIsland
         public virtual void TurnOn(JIInventoryItem creatureItem, CreatureMenu creatureMenu)
         {
             m_CreatureItem = creatureItem;
-            m_ItemName.text = m_CreatureItem.inventoryName;
+            // m_ItemName.text = m_CreatureItem.inventoryName;
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(m_CreatureItem.spriteAddress);
             if (m_CreatureMenu == null)
                 m_CreatureMenu = creatureMenu;

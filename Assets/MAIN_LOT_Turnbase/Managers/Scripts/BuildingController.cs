@@ -78,7 +78,7 @@ namespace JumpeeIsland
                     availableSpace += t.GetStoreSpace(currency, ref selectedBuildings);
 
             if (amount > availableSpace)
-                Debug.Log($"Lack of {currencyId} STORAGE. Current storage is {availableSpace} and need for {amount}");    
+                MainUI.Instance.OnConversationUI.Invoke($"Lack of {currencyId} STORAGE. Current storage is {availableSpace} and need for {amount}",true);
             
             amount = amount > availableSpace ? availableSpace : amount;
 

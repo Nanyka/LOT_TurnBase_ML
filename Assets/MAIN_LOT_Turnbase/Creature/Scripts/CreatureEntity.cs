@@ -26,9 +26,9 @@ namespace JumpeeIsland
         public void Init(CreatureData creatureData)
         {
             m_CreatureData = creatureData;
-            var envManager = GameFlowManager.Instance.GetEnvManager();
-            if (envManager.FreeToMove(creatureData.Position) == false)
-                UpdateTransform(envManager.GetRandomAvailableTile(), m_CreatureData.Rotation);
+            // var envManager = GameFlowManager.Instance.GetEnvManager();
+            // if (envManager.FreeToMove(creatureData.Position) == false)
+            //     UpdateTransform(envManager.GetRandomAvailableTile(), m_CreatureData.Rotation);
             RefreshEntity();
         }
 
@@ -60,7 +60,7 @@ namespace JumpeeIsland
             return m_CreatureData.FactionType;
         }
 
-        public override int GetExpReward()
+        public virtual int GetExpReward()
         {
             return m_CurrentStat.ExpReward;
         }

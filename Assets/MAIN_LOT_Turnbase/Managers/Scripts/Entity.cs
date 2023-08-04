@@ -20,8 +20,6 @@ namespace JumpeeIsland
 
         public abstract FactionType GetFaction();
 
-        public abstract int GetExpReward();
-
         public abstract void CollectExp(int expAmount);
 
         #endregion

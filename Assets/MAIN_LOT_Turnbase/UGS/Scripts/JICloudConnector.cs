@@ -328,10 +328,20 @@ namespace JumpeeIsland
         {
             return _economyManager.GetVirtualPurchaseCost(virtualPurchaseId);
         }
+        
+        public List<JIItemAndAmountSpec> GetVirtualPurchaseReward(string virtualPurchaseId)
+        {
+            return _economyManager.GetVirtualPurchaseReward(virtualPurchaseId);
+        }
 
         public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
         {
             return _economyManager.GetPurchaseDefinition(id);
+        }
+
+        public void SendPurchasesToShoppingMenu()
+        {
+            MainUI.Instance.OnShowShoppingMenu.Invoke(_economyManager.GetPurchasedDefinitions());
         }
 
         #endregion
