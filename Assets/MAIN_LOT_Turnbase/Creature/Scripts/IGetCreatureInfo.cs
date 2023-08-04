@@ -10,6 +10,6 @@ namespace JumpeeIsland
 
     public interface IShowInfo
     {
-        public string ShowInfo();
+        public (Entity entity,int jump) ShowInfo();
     }
 }

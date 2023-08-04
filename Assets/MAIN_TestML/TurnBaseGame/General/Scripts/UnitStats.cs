@@ -9,7 +9,7 @@ public class UnitStats : ScriptableObject
 {
     public int HealthPoint;
     public int Strengh;
-    public int Agility;
+    [FormerlySerializedAs("Defend")] [FormerlySerializedAs("Agility")] public int Armor;
     [Tooltip("Amount of exp to level up this unit")]
     public int ExpToLevelUp;
     [Tooltip("Amount of exp that entity destroying this resource can collect")]

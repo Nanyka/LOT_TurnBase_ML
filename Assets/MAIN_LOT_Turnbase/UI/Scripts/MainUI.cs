@@ -18,6 +18,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnBuyBuildingMenu = new(); // send to BuyBuildingMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent<IConfirmFunction> OnInteractBuildingMenu = new(); // send to SellBuildingMenu, invoke at BuildingController
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnShowCreatureMenu = new(); // send to CreatureMenu, invoke at InventoryLoader
+        [NonSerialized] public UnityEvent<List<VirtualPurchaseDefinition>> OnShowShoppingMenu = new(); // send to ShoppingMenu, invoke at JICloudConnector
         [NonSerialized] public UnityEvent OnShowBossSelector = new(); // send to BossSelector, invoke at ShowBossSelectorButton
         [NonSerialized] public UnityEvent<List<CreatureData>> OnShowDropTroopMenu = new(); // send to DropTroopMenu, invoke at InventoryLoader
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
@@ -75,5 +76,10 @@ namespace JumpeeIsland
             }
             return null;
         }
+
+        // public void HideAllMenu()
+        // {
+        //     OnHideAllMenu.Invoke();
+        // }
     }
 }

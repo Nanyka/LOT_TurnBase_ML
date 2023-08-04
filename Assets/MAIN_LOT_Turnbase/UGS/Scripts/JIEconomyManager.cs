@@ -42,7 +42,6 @@ namespace JumpeeIsland
 
         public string GetSpriteAddress(string currencyId)
         {
-            Debug.Log($"Get sprite of {currencyId}");
             return currencyDefinitions.Find(t => t.Id.Equals(currencyId)).
                 CustomDataDeserializable.GetAs<CurrencyCustomData>().spriteAddress;
         }
@@ -270,10 +269,20 @@ namespace JumpeeIsland
         {
             return virtualPurchaseTransactions[virtualPurchaseId].costs;
         }
+        
+        public List<JIItemAndAmountSpec> GetVirtualPurchaseReward(string virtualPurchaseId)
+        {
+            return virtualPurchaseTransactions[virtualPurchaseId].rewards;
+        }
 
         public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
         {
             return m_VirtualPurchaseDefinitions.Find(t => t.Id == id);
+        }
+
+        public List<VirtualPurchaseDefinition> GetPurchasedDefinitions()
+        {
+            return m_VirtualPurchaseDefinitions;
         }
 
         #endregion

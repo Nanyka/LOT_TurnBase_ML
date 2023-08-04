@@ -54,7 +54,7 @@ namespace JumpeeIsland
             return m_ResourceData.FactionType;
         }
 
-        public override int GetExpReward()
+        public virtual int GetExpReward()
         {
             return m_CurrentStats.ExpReward;
         }
