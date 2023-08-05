@@ -13,9 +13,10 @@ namespace JumpeeIsland
             GetComponent<Entity>().OnUnitDie.AddListener(Unlock);
         }
 
-        private void Unlock(Entity killBy)
+        private async void Unlock(Entity killBy)
         {
             SavingSystemManager.Instance.GrantInventory(_inventoryId);
+            await SavingSystemManager.Instance.RefreshEconomy();
             
             // Show Unlock new character panel in Monster Mode
             if (GameFlowManager.Instance.IsEcoMode == false)

@@ -55,5 +55,10 @@ namespace JumpeeIsland
         {
             _currentConfirm.ClickYes();
         }
+
+        public void OnCloseMenu()
+        {
+            MainUI.Instance.OnHideAllMenu.Invoke();
+        }
     }
 }

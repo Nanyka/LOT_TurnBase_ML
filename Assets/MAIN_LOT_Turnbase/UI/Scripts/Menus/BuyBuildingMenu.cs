@@ -85,6 +85,8 @@ namespace JumpeeIsland
         {
             foreach (Transform child in _buildPoint)
                 Destroy(child.gameObject);
+            
+            MainUI.Instance.OnHideAllMenu.Invoke();
         }
 
         public bool IsInADeal()

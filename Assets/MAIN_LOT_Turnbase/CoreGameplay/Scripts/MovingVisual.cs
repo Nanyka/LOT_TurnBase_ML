@@ -71,7 +71,7 @@ namespace JumpeeIsland
             }
         }
 
-        private void DisableMovingPath()
+        public void DisableMovingPath()
         {
             foreach (var circle in _movingPoints)
                 circle.SwitchProjector(false);

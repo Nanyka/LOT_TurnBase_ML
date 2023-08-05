@@ -55,7 +55,7 @@ namespace JumpeeIsland
         {
             if (m_Environment.GetCurrFaction() != m_Faction)
                 return;
-
+            
             // reset all agent's moving state
             foreach (var enemy in m_Enemies)
                 enemy.NewTurnReset();
