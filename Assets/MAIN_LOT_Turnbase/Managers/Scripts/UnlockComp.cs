@@ -26,7 +26,7 @@ namespace JumpeeIsland
         private IEnumerator WaitToEndGame()
         {
             yield return new WaitForSeconds(1.5f);
-            MainUI.Instance.OnGameOver.Invoke();
+            GameFlowManager.Instance.OnGameOver.Invoke();
         }
     }
 }

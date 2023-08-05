@@ -6,16 +6,19 @@ namespace JumpeeIsland
     public class CountDownSteps : MonoBehaviour
     {
         [SerializeField] private int _maxSteps;
+        [SerializeField] private GameObject _clock;
         [SerializeField] private TextMeshProUGUI _clockText;
         
         private void Start()
         {
-            GameFlowManager.Instance.OnStartGame.AddListener(Init);
+            GameFlowManager.Instance.OnKickOffEnv.AddListener(Init);
         }
 
-        private void Init(long arg0)
+        private void Init()
         {
             GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(StartCountDown);
+            CountDown();
+            _clock.SetActive(true);
         }
 
         private void StartCountDown()
@@ -31,7 +34,7 @@ namespace JumpeeIsland
             UpdateRemainStepUI();
 
             if (_maxSteps <= 0)
-                MainUI.Instance.OnGameOver.Invoke();
+                GameFlowManager.Instance.OnGameOver.Invoke();
         }
 
         private void UpdateRemainStepUI()

@@ -10,7 +10,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            MainUI.Instance.OnGameOver.AddListener(ShowGameOverPanel);
+            GameFlowManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
         }
 
         private void ShowGameOverPanel()

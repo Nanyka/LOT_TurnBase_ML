@@ -26,25 +26,19 @@ namespace JumpeeIsland
             // Customize battle env from enemy env and player env
             _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
             
-            // Send creature data to Creature menu as JIInventoryItem
-            // foreach (var creatureData in _playerEnvCache.PlayerData)
-            // {
-            //     var inventoryItem = creatureData.GetInventoryItem();
-            //     inventoryItem.EntityData = creatureData;
-            //     _spawnList.Add(inventoryItem);
-            // }
-            
             ExecuteEnvData();
+            MainUI.Instance.OnShowDropTroopMenu.Invoke(GetSpawnList());
         }
 
         protected void AnnounceFinishPlaceCreature()
         {
+            _environmentData.DepositRemainPlayerTroop(_playerEnvCache.PlayerData);
             _isFinishPlaceCreatures = true;
         }
 
         public override EnvironmentData GetDataForSave()
         {
-            _playerEnvCache.PrepareForBattleSave(_environmentData.PlayerData, _isFinishPlaceCreatures);
+            _playerEnvCache.RemoveZeroHpPlayerCreatures();
             return _playerEnvCache;
         }
 

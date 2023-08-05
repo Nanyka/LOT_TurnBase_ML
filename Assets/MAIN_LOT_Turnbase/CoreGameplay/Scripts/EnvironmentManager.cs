@@ -50,13 +50,13 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
-            GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment); // Just for BATTLE MODE
+            GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment);
+            
         }
 
         private void Init(long moveAmount)
         {
             _step = (int)moveAmount;
-            OnChangeFaction.Invoke();
 
             // Start refurbish loop
             InvokeRepeating(nameof(WaitToAddMove), _refurbishPeriod, _refurbishPeriod);
@@ -76,12 +76,14 @@ namespace JumpeeIsland
 
         private void KickOffEnvironment()
         {
-            if (GameFlowManager.Instance.IsEcoMode == false)
-                OnChangeFaction.Invoke();
+            OnChangeFaction.Invoke();
         }
 
         public void ChangeFaction()
         {
+            if (GameFlowManager.Instance._isGameRunning == false)
+                return;
+
             // Just use MOVE currency in EcoMode
             if (GameFlowManager.Instance.IsEcoMode)
             {

@@ -65,30 +65,34 @@ namespace JumpeeIsland
             PlayerData.Clear();
         }
 
-        public void PrepareForBattleSave(List<CreatureData> playerData, bool isFinishPlacing)
+        public void DepositRemainPlayerTroop(List<CreatureData> playerData)
         {
-            // If finish placing creatures, PlayerData will be empty
-            if (isFinishPlacing)
-                if (playerData.Count == 0)
-                {
-                    PlayerData = PlayerData.FindAll(t => t.EntityName.Equals("King"));
-                    return;
-                }
-
-            // If playerData is empty mean player still not place any creature on environment
-            if (playerData.Count == 0)
-                return;
-
-            var kingData = PlayerData.Find(t => t.EntityName.Equals("King"));
-            PlayerData = new List<CreatureData>(playerData);
-            if (kingData != null)
-            {
-                PlayerData.Add(kingData);
-            }
-
-            // TODO: Reset creature position
-            
+            foreach (var creatureData in playerData)
+                PlayerData.Add(creatureData);
         }
+
+        // public void PrepareForBattleSave(List<CreatureData> playerData, bool isFinishPlacing)
+        // {
+        //     // If finish placing creatures, PlayerData will be empty
+        //     // if (isFinishPlacing)
+        //     //     if (playerData.Count == 0)
+        //     //     {
+        //     //         PlayerData = PlayerData.FindAll(t => t.EntityName.Equals("King"));
+        //     //         return;
+        //     //     }
+        //
+        //     // If playerData is empty mean player still not place any creature on environment
+        //     if (playerData.Count == 0)
+        //         return;
+        //
+        //     // var kingData = PlayerData.Find(t => t.EntityName.Equals("King"));
+        //     PlayerData = new List<CreatureData>(playerData);
+        //     // if (kingData != null)
+        //     // {
+        //     //     PlayerData.Add(kingData);
+        //     // }
+        //
+        // }
 
         public void StoreRewardAtBuildings(string currencyId, int amount)
         {
@@ -172,5 +176,10 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        public void RemoveZeroHpPlayerCreatures()
+        {
+            PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
+        }
     }
 }

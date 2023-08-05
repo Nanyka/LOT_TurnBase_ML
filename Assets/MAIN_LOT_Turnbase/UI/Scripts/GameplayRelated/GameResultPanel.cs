@@ -15,7 +15,7 @@ namespace JumpeeIsland
         private void Start()
         {
             MainUI.Instance.OnEnableInteract.AddListener(BattleStatsCache);
-            MainUI.Instance.OnGameOver.AddListener(ShowGameOverPanel);
+            GameFlowManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
         }
 
         private void BattleStatsCache()

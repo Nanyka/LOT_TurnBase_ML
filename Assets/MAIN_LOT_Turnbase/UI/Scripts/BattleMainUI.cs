@@ -11,7 +11,7 @@ namespace JumpeeIsland
             _creatureMenu = GetComponent<CreatureMenu>();
             
             OnEnableInteract.AddListener(EnableInteractable);
-            OnGameOver.AddListener(DisableInteractable);
+            GameFlowManager.Instance.OnGameOver.AddListener(DisableInteractable);
         }
 
         private void EnableInteractable()

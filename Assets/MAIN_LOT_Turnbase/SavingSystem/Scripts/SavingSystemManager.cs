@@ -20,16 +20,13 @@ namespace JumpeeIsland
     [RequireComponent(typeof(CurrencyLoader))]
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
-        // invoke at CreatureEntity, BuildingEntity, Creature
-        // [NonSerialized] public UnityEvent OnCheckExpandMap = new(); //TODO check expand map just invoke 1 time???
-
         // invoke at TileManager
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
 
         // invoke at EnvironmentManager
         [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new();
 
-        // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
+        // send to EnvironmentLoader, invoke at ResourceInGame, BuildingInGame, CreatureInGame;
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new();
 
         // invoke at JICloudCodeManager
@@ -523,7 +520,7 @@ namespace JumpeeIsland
             var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(virtualPurchaseId);
             if (purchaseHandler == null)
             {
-                Debug.Log($"Show \"Lack of {virtualPurchaseId}\" panel");
+                MainUI.Instance.OnConversationUI.Invoke($"\"Lack of resource for {virtualPurchaseId}\"", false);
                 return false;
             }
 

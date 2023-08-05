@@ -132,9 +132,9 @@ namespace JumpeeIsland
             return Math.Abs(GetTileByGeoCoordinates(tile1).GetPosition().y - GetTileByGeoCoordinates(tile2).GetPosition().y) < 0.1f;
         }
         
-        public bool CheckHigherTile(Vector3 curTile, Vector3 checkTile)
+        public bool CheckHigherTile(Vector3 curPos, Vector3 checkPos)
         {
-            return GetTileByGeoCoordinates(curTile).GetPosition().y < GetTileByGeoCoordinates(checkTile).GetPosition().y;
+            return GetTileByGeoCoordinates(curPos).GetPosition().y < GetTileByGeoCoordinates(checkPos).GetPosition().y;
         }
 
         #endregion
@@ -178,10 +178,6 @@ namespace JumpeeIsland
 
         public MovableTile GetTileByGeoCoordinates(Vector3 coordinates)
         {
-            // var tile = _tileAreas.Find(t => t.CheckGeoCoordinates(coordinates));
-            // if (tile == null)
-            //     Debug.Log($"Coordinates to get null tile: {coordinates}");
-            
             return _tileAreas.Find(t => t.CheckGeoCoordinates(coordinates));
         }
 
