@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial0
   m_EditorClassIdentifier: 
+  m_tutorialStepId: Tutorial0
   UsePassCondition: 0
   PassCondition:
     MapSize: 0
@@ -38,6 +39,10 @@ MonoBehaviour:
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   conditions:
   - MapSize: 20
     Currency: 0
@@ -63,6 +68,10 @@ MonoBehaviour:
     IsScoreCondition: 0
     ScoreCompare: 0
     ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   steps:
   - Pointer: 1
     EntitySelection: 1
@@ -111,6 +120,10 @@ MonoBehaviour:
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 0
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 1
     Message: Welcome to JUMPEE ISLAND
@@ -161,6 +174,10 @@ MonoBehaviour:
       IsScoreCondition: 0
       ScoreCompare: 0
       ScoreAmount: 0
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 

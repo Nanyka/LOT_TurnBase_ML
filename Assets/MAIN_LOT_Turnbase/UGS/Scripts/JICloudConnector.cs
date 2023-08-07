@@ -19,7 +19,8 @@ namespace JumpeeIsland
         [SerializeField] private JICommandBatchSystem _commandBatchManager;
         [SerializeField] private JIRemoteConfigManager _remoteConfigManager;
         [SerializeField] private JILeaderboardManager _leaderboardManager;
-
+        [SerializeField] private JICustomEventSender _customEventSender;
+ 
         public async Task Init()
         {
             try
@@ -434,6 +435,20 @@ namespace JumpeeIsland
         public async Task<long> OnGrantMove()
         {
             return await _cloudCodeManager.CallGrantMove();
+        }
+
+        #endregion
+
+        #region CUSTOM EVENT SENDER
+
+        public void SendBossQuestEvent(int playerScore, int bossId)
+        {
+            _customEventSender.SendBossQuestEvent(playerScore, bossId);
+        }
+
+        public void SendTutorialTrackEvent(string stepId)
+        {
+            _customEventSender.SendTutorialTrackEvent(stepId);
         }
 
         #endregion

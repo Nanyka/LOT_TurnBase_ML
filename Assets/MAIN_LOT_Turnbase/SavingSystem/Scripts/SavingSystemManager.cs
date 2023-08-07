@@ -649,6 +649,20 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region CUSTOM EVENTS SENDER
+
+        public void SendBossQuestEvent(int bossId)
+        {
+            m_CloudConnector.SendBossQuestEvent(m_EnvLoader.GetData().CalculateScore(),bossId);
+        }
+
+        public void SendTutorialTrackEvent(string stepId)
+        {
+            m_CloudConnector.SendTutorialTrackEvent(stepId);
+        }
+
+        #endregion
+
         #region GET & SET
 
         private string GetSavingPath(SavingPath tailPath)

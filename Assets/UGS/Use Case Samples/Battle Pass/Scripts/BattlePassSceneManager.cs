@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JumpeeIsland;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
@@ -17,6 +18,7 @@ namespace Unity.Services.Samples.BattlePass
         public TierPopupView tierPopupView;
         public CountdownView countdownView;
 
+        private bool m_FinishedInit;
         bool m_Updating;
         float m_EventSecondsRemaining;
 
@@ -25,9 +27,15 @@ namespace Unity.Services.Samples.BattlePass
 
         async void Start()
         {
+            GameFlowManager.Instance.OnOpenBattlePass.AddListener(Init);
+        }
+
+        private async void Init()
+        {
             try
             {
                 await InitializeServices();
+                m_FinishedInit = true;
             }
             catch (Exception e)
             {
@@ -37,6 +45,9 @@ namespace Unity.Services.Samples.BattlePass
 
         void Update()
         {
+            if (m_FinishedInit == false)
+                return;
+
             if (!m_Updating)
             {
                 m_EventSecondsRemaining -= Time.deltaTime;
@@ -155,7 +166,8 @@ namespace Unity.Services.Samples.BattlePass
 
                 if (this == null) return;
 
-                UpdateCachedBattlePassProgress(battlePassState.seasonXP, battlePassState.ownsBattlePass, result.seasonTierStates);
+                UpdateCachedBattlePassProgress(battlePassState.seasonXP, battlePassState.ownsBattlePass,
+                    result.seasonTierStates);
 
                 battlePassView.Refresh(battlePassState);
 

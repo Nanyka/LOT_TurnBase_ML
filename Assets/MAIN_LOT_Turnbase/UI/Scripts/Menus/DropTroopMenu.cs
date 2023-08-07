@@ -90,15 +90,16 @@ namespace JumpeeIsland
             CleanGhostCreature();
         }
 
+        public void CancelTheDeal()
+        {
+            _confirmPanel.SetActive(false);
+            CleanGhostCreature();
+        }
+
         private void CleanGhostCreature()
         {
             foreach (Transform child in _settlePoint)
                 Destroy(child.gameObject);
-        }
-
-        public bool IsInADeal()
-        {
-            return _isInADeal;
         }
 
         #endregion

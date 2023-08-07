@@ -17,6 +17,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<EntityData> OnSelectEntity = new(); // send to TutorialController; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent OnKickOffEnv = new(); // send to EnvironmentManager; invoke at CreatureMenu in BATTLE MODE, at this script in ECO MODE
         [NonSerialized] public UnityEvent OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, UnlockComp, PlayerFactionController
+        [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
         
         public bool IsEcoMode = true;
         [FormerlySerializedAs("_isGameStarted")] [SerializeField] public bool _isGameRunning; // { get; private set; }
