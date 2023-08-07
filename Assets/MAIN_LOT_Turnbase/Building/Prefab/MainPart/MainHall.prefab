@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 5906459776894642978}
   - component: {fileID: 6105367046324210439}
   - component: {fileID: 418207618415105855}
+  - component: {fileID: 2139280082619884275}
   m_Layer: 9
   m_Name: MainHall
   m_TagString: Untagged
@@ -156,7 +157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackVFX: []
 --- !u!114 &3338951543123989966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +206,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 0}
+  m_Animator: {fileID: 0}
+--- !u!114 &2139280082619884275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136725998028430087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f65722cc0e480fbdf904f4f185e249, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3194885446414522042
 GameObject:
   m_ObjectHideFlags: 0

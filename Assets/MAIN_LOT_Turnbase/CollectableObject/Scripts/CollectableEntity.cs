@@ -24,6 +24,11 @@ namespace JumpeeIsland
             OnUnitDie.RemoveAllListeners();
         }
 
+        public override void Relocate(Vector3 position)
+        {
+            m_Transform.position = position;
+        }
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             throw new System.NotImplementedException();

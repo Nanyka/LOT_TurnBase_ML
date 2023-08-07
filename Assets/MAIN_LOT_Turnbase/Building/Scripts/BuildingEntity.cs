@@ -25,7 +25,7 @@ namespace JumpeeIsland
             m_BuildingData = buildingData;
             RefreshEntity();
         }
-        
+
         // Remove all listener when entity completed die process
         private void OnDisable()
         {
@@ -34,9 +34,19 @@ namespace JumpeeIsland
 
         #region BUILDING DATA
 
+        public override void Relocate(Vector3 position)
+        {
+            m_Transform.position = position;
+        }
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
-            throw new NotImplementedException();
+            m_Transform.position = position;
+            m_Transform.eulerAngles = rotation;
+
+            m_BuildingData.Position = position;
+            m_BuildingData.Rotation = rotation;
+            SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         public override EntityData GetData()
@@ -57,18 +67,23 @@ namespace JumpeeIsland
         public override void CollectExp(int expAmount)
         {
             m_BuildingData.CurrentExp += expAmount;
-            if (m_BuildingData.CurrentExp >= m_CurrentStats.ExpToUpdate &&
-                m_BuildingData.CurrentLevel + 1 < m_BuildingStats.Length)
-            {
-                // Level up
-                m_BuildingData.CurrentLevel++;
-                m_BuildingData.CurrentExp = 0;
-                m_BuildingData.TurnCount = 0;
+        }
 
-                // Reset stats and appearance
-                ResetEntity();
-                // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
-            }
+        public void BuildingUpdate()
+        {
+            if (m_BuildingData.CurrentLevel + 1 >= m_BuildingStats.Length)
+                return;
+            
+            m_BuildingData.CurrentLevel++;
+            m_BuildingData.TurnCount = 0;
+
+            // Reset stats and appearance
+            ResetEntity();
+        }
+
+        public int GetUpgradePrice()
+        {
+            return m_BuildingStats[m_BuildingData.CurrentLevel].PriceToUpdate;
         }
 
         public int GetStorageSpace(CurrencyType currencyType, ref List<BuildingEntity> selectedBuildings)
@@ -122,12 +137,12 @@ namespace JumpeeIsland
 
         public int CalculateSellingPrice()
         {
-            return m_CurrentStats.Level * m_BuildingData.TurnCount;
+            return m_CurrentStats.Level * m_BuildingData.CurrentExp;
         }
 
         public int CalculateUpgradePrice()
         {
-            return m_CurrentStats.ExpToUpdate - m_BuildingData.CurrentExp;
+            return m_CurrentStats.PriceToUpdate;
         }
 
         public void DurationDeduct()
@@ -190,7 +205,7 @@ namespace JumpeeIsland
         #endregion
 
         #region EFFECT
-        
+
         public override EffectComp GetEffectComp()
         {
             throw new NotImplementedException();

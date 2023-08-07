@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -11,7 +12,7 @@ namespace JumpeeIsland
         public CurrencyType StoreCurrency;
         public int MaxHp;
         public int Level;
-        public int ExpToUpdate;
+        [FormerlySerializedAs("ExpToUpdate")] public int PriceToUpdate;
         public int StorageCapacity;
         public int AttackDamage;
         public float AttackRange;

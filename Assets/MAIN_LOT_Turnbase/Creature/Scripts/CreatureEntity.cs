@@ -40,6 +40,11 @@ namespace JumpeeIsland
 
         #region CREATURE DATA
 
+        public override void Relocate(Vector3 position)
+        {
+            m_Transform.position = position;
+        }
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             m_Transform.position = position;

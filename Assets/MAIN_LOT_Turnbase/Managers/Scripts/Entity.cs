@@ -14,6 +14,8 @@ namespace JumpeeIsland
         
         #region ENTITY DATA
 
+        public abstract void Relocate(Vector3 position);
+        
         public abstract void UpdateTransform(Vector3 position, Vector3 rotation);
 
         public abstract EntityData GetData();

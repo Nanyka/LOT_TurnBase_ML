@@ -11,7 +11,6 @@ namespace JumpeeIsland
     public class BuildingBuyButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction
     {
         [SerializeField] private GameObject m_Container;
-        // [SerializeField] private TextMeshProUGUI m_ItemName;
         [SerializeField] private Image m_ItemIcon;
         
 
