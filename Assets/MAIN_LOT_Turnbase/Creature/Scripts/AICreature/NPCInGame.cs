@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class NPCInGame : CreatureInGame, IGetCreatureInfo
+    public class NPCInGame : CreatureInGame, IGetEntityInfo
     {
         public DummyAction InferMoving;
 

@@ -93,7 +93,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser)
+        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }

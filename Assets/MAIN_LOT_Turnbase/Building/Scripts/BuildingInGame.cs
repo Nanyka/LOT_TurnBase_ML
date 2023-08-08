@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class BuildingInGame: MonoBehaviour, IShowInfo, IConfirmFunction, IRemoveEntity
+    public class BuildingInGame: MonoBehaviour, IShowInfo, IConfirmFunction, IRemoveEntity, IGetEntityInfo, IAttackResponse
     {
         [SerializeField] private BuildingEntity m_Entity;
 
@@ -23,7 +23,7 @@ namespace JumpeeIsland
         {
             m_Entity.OnUnitDie.AddListener(DestroyBuilding);
         }
-
+        
         private void OnDisable()
         {
             m_Entity.OnUnitDie.RemoveListener(DestroyBuilding);
@@ -49,15 +49,13 @@ namespace JumpeeIsland
 
         public (Entity,int) ShowInfo()
         {
-            // var data = (BuildingData)m_Entity.GetData();
-            // return
-            //     $"{data.EntityName}\nHp:{data.CurrentHp}\nStore:{data.StorageCurrency}\nSpace:{data.CurrentStorage}/{data.StorageCapacity}";
             return (m_Entity, 0);
         }
 
         public void ClickYes()
         {
             DestroyBuilding(m_Entity);
+            SellBuilding(SavingSystemManager.Instance.GetEnvironmentData());
         }
 
         public Entity GetEntity()
@@ -90,7 +88,31 @@ namespace JumpeeIsland
 
         public void Remove(EnvironmentData environmentData)
         {
+            // Building will not be deleted from player data, unless player sell it out
+            // environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
+        }
+
+        private void SellBuilding(EnvironmentData environmentData)
+        {
             environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
+        }
+
+        public void AskForAttack()
+        {
+            if (m_Entity.GetBuildingType() == BuildingType.TOWER)
+            {
+                m_Entity.AttackSetup(this,this);
+            }
+        }
+
+        public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
+        {
+            return (transform.position, Vector3.zero, 1, m_Entity.GetFaction());
+        }
+
+        public void AttackResponse()
+        {
+            // Debug.Log("Building finished an attack");
         }
     }
 }

@@ -7,5 +7,6 @@ public enum RangeType
     SquareArea,
     CurrentPos,
     FrontStrike,
-    AccurateAttack,
+    AccurateAttackByHp,
+    AccurateAttackByDistance
 }

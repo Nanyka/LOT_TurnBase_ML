@@ -19,7 +19,7 @@ namespace JumpeeIsland
 
         private CreatureData m_CreatureData;
         private UnitStats m_CurrentStat;
-        private IGetCreatureInfo m_Info;
+        private IGetEntityInfo m_Info;
         private IEnumerable<Vector3> attackRange;
         private bool _isDie;
 
@@ -129,11 +129,11 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponse)
+        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse)
         {
             m_Info = unitInfo;
             m_AnimateComp.SetAnimation(AnimateType.Attack);
-            Attack(attackResponse); // TESTING
+            Attack(attackResponse);
         }
 
         // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
@@ -146,7 +146,7 @@ namespace JumpeeIsland
             
             attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
-            m_AttackComp.Attack(attackPoints, this, currentJump.jumpStep, m_Info.GetEnvironment());
+            m_AttackComp.Attack(attackPoints, this, currentJump.jumpStep);
 
             ShowAttackRange(attackPoints);
             attackResponser.AttackResponse();

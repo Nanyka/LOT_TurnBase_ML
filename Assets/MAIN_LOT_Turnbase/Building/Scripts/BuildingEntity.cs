@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -12,10 +14,10 @@ namespace JumpeeIsland
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private EffectComp m_EffectComp;
-        [SerializeField] private StorageComp m_StorageComp;
-        [SerializeField] private LevelComp m_LevelComp;
-        [SerializeField] private AttackPath m_AttackPath;
+        [SerializeField] private SkillComp m_SkillComp;
+        [SerializeField] private FireComp m_FireComp;
         [SerializeField] private AnimateComp m_AnimateComp;
+        [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
 
         private BuildingData m_BuildingData { get; set; }
         private BuildingStats m_CurrentStats;
@@ -59,6 +61,11 @@ namespace JumpeeIsland
             return m_BuildingData.FactionType;
         }
 
+        public BuildingType GetBuildingType()
+        {
+            return m_BuildingData.BuildingType;
+        }
+
         public virtual int GetExpReward()
         {
             return m_CurrentStats.ExpReward;
@@ -73,9 +80,10 @@ namespace JumpeeIsland
         {
             if (m_BuildingData.CurrentLevel + 1 >= m_BuildingStats.Length)
                 return;
-            
+
             m_BuildingData.CurrentLevel++;
             m_BuildingData.TurnCount = 0;
+            OnThisBuildingUpgrade.Invoke();
 
             // Reset stats and appearance
             ResetEntity();
@@ -188,9 +196,25 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser)
+        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
-            throw new NotImplementedException();
+            Attack(unitInfo, attackResponser);
+        }
+
+        private void Attack(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
+        {
+            var currenState = unitInfo.GetCurrentState();
+            var attackRange = m_SkillComp.AttackPoints(currenState.midPos, currenState.direction, currenState.jumpStep);
+            m_AttackComp.Attack(attackRange, this, currenState.jumpStep);
+
+            ShowAttackRange(attackRange);
+            attackResponser.AttackResponse();
+        }
+
+        private void ShowAttackRange(IEnumerable<Vector3> attackRange)
+        {
+            if (attackRange.Any())
+                m_FireComp.PlayCurveFX(attackRange.ElementAt(0));
         }
 
         #endregion
@@ -199,7 +223,7 @@ namespace JumpeeIsland
 
         public override IEnumerable<Skill_SO> GetSkills()
         {
-            throw new System.NotImplementedException();
+            return m_SkillComp.GetSkills();
         }
 
         #endregion
@@ -217,7 +241,7 @@ namespace JumpeeIsland
 
         public override int GetAttackDamage()
         {
-            throw new NotImplementedException();
+            return m_BuildingData.CurrentDamage;
         }
 
         public override void SetAnimation(AnimateType animateType, bool isTurnOn)
@@ -239,12 +263,9 @@ namespace JumpeeIsland
             ResetEntity();
 
             // Load data to entity
-            m_SkinComp.Init(m_BuildingData.SkinAddress);
+            // m_SkinComp.Init(m_BuildingData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
             OnUnitDie.AddListener(DieIndividualProcess);
-
-            // Check expand map
-            // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         private void ResetEntity()
@@ -264,10 +285,9 @@ namespace JumpeeIsland
             m_BuildingData.SkinAddress = inventoryItem.skinAddress.Count > m_BuildingData.CurrentLevel
                 ? inventoryItem.skinAddress[m_BuildingData.CurrentLevel]
                 : inventoryItem.skinAddress[0];
+            m_SkinComp.Init(m_BuildingData.SkinAddress);
             if (m_BuildingData.CurrentHp == 0)
-            {
                 m_BuildingData.CurrentHp = m_CurrentStats.MaxHp;
-            }
         }
 
         #endregion

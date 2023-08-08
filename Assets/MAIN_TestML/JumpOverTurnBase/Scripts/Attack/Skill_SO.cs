@@ -10,6 +10,7 @@ public class Skill_SO : ScriptableObject
     [Header("Skill variable")]
     [SerializeField] private string _animTrigger;
     [SerializeField] private int _duration;
+    [Tooltip("It might be strength multiplier or available range of attack")]
     [SerializeField] private int _magnitude;
     
     [Header("Skill range")]
@@ -80,8 +81,11 @@ public class Skill_SO : ScriptableObject
             case RangeType.FrontStrike:
                 _skillRange = new FrontStrike();
                 break;
-            case RangeType.AccurateAttack:
-                _skillRange = new AccurateAttack();
+            case RangeType.AccurateAttackByHp:
+                _skillRange = new AccurateAttackByHp();
+                break;
+            case RangeType.AccurateAttackByDistance:
+                _skillRange = new AccurateAttackByDistance(_magnitude);
                 break;
         }
     }

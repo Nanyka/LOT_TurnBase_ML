@@ -6,14 +6,12 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
-        // [SerializeField] private List<ParticleSystem> _attackVFX;
-
-        public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep,
-            EnvironmentManager mEnvironment)
+        public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep)
         {
             if (attackPoints == null)
                 return;
 
+            var mEnvironment = GameFlowManager.Instance.GetEnvManager();
             foreach (var attackPoint in attackPoints)
             {
                 var attackFaction = mEnvironment.CheckFaction(attackPoint);

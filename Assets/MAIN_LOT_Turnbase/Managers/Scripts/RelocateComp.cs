@@ -32,18 +32,19 @@ namespace JumpeeIsland
                 if (!Physics.Raycast(moveRay, out var moveHit, 100f, _buildingLayer))
                     return;
 
-                _isSelectEntity = true;
+                if (moveHit.transform == transform)
+                    _isSelectEntity = true;
             }
 
             if (Input.GetMouseButton(0))
             {
                 if (_isSelectEntity == false)
                     return;
-                
+
                 var ray = _camera.ScreenPointToRay(Input.mousePosition);
                 if (!Physics.Raycast(ray, out var collidedTile, 100f, _tileLayer))
                     return;
-                
+
                 m_Entity.Relocate(collidedTile.transform.position);
             }
 
@@ -51,7 +52,7 @@ namespace JumpeeIsland
             {
                 _isSelectEntity = false;
                 var mTransform = transform;
-                m_Entity.UpdateTransform(mTransform.position,mTransform.eulerAngles);
+                m_Entity.UpdateTransform(mTransform.position, mTransform.eulerAngles);
             }
         }
     }

@@ -16,13 +16,19 @@ namespace JumpeeIsland
         {
             _camera = Camera.main;
             m_Environment = GameFlowManager.Instance.GetEnvManager();
-            m_Environment.OnChangeFaction.AddListener(DurationDeduct);
+            m_Environment.OnChangeFaction.AddListener(BuildingInTurn);
         }
 
-        private void DurationDeduct()
+        private void BuildingInTurn()
         {
             foreach (var building in m_buildings)
+            {
+                if (m_Environment.GetCurrFaction() != building.GetEntity().GetFaction())
+                    continue;
+                
                 building.DurationDeduct(m_Environment.GetCurrFaction());
+                building.AskForAttack();
+            }
         }
 
         public void AddBuildingToList(BuildingInGame building)
