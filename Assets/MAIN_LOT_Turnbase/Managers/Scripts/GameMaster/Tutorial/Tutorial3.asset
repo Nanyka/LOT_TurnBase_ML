@@ -12,6 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial3
   m_EditorClassIdentifier: 
+  UsePassCondition: 1
+  PassCondition:
+    MapSize: 0
+    Currency: 2
+    CurrencyCompare: 0
+    CurrencyAmount: 2
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
+    Resource: 0
+    ResourceCompare: 0
+    ResourceAmount: 0
+    Collectable: 0
+    CollectableCompare: 0
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsUICondition: 0
+    UIElement: 
+    IsScoreCondition: 0
+    ScoreCompare: 0
+    ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   conditions:
   - MapSize: 0
     Currency: 0
@@ -29,17 +59,29 @@ MonoBehaviour:
     Building: 0
     BuildingCompare: 0
     BuildingAmount: 1
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsUICondition: 0
+    UIElement: 
+    IsScoreCondition: 0
+    ScoreCompare: 0
+    ScoreAmount: 0
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   steps:
   - Pointer: 1
     EntitySelection: 1
     EntityType: 1
     CurrencyFromResource: 2
     BuildingType: 0
-    EnemyType: 0
+    CreatureType: 0
     ArrowSign: 0
     MinJump: 0
-    UISelection: 0
-    UIName: 
+    ButtonSelection: 0
+    ButtonName: 
     CheckPosition: 0
     CheckEntity: 0
     Spawner: 0
@@ -49,16 +91,18 @@ MonoBehaviour:
     SpawnResource: 
     SpawnCollectable: 
     SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
     CheckEndCondition: 1
     EndCondition:
       MapSize: 0
-      Currency: 0
+      Currency: 2
       CurrencyCompare: 0
-      CurrencyAmount: 0
+      CurrencyAmount: 2
       Storage: 0
       StorageCompare: 0
       StorageAmount: 0
-      Resource: 2
+      Resource: 0
       ResourceCompare: 1
       ResourceAmount: 2
       Collectable: 0
@@ -67,6 +111,19 @@ MonoBehaviour:
       Building: 0
       BuildingCompare: 0
       BuildingAmount: 1
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
+      IsUICondition: 0
+      UIElement: 
+      IsScoreCondition: 0
+      ScoreCompare: 0
+      ScoreAmount: 0
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
+    IsEndTutorial: 0
     Conversation: 0
     Message: 
   nextTutorial: /Tutorials/Tutorial4

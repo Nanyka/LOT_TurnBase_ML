@@ -25,5 +25,11 @@ namespace JumpeeIsland
         {
             _lockIcon.SetActive(isLock);
         }
+
+        public void ShowSkill(bool isLocked)
+        {
+            m_Icon.color = isLocked? _deactivateColor: Color.white;
+            _lockIcon.SetActive(isLocked);
+        }
     }
 }

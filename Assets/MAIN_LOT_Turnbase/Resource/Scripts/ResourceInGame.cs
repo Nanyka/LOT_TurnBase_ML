@@ -43,8 +43,8 @@ namespace JumpeeIsland
                     m_Entity.ContributeCommands();
             
                 // Add exp for entity who killed this resource
-                if (killedByEntity != m_Entity)
-                    killedByEntity.CollectExp(m_Entity.GetExpReward());
+                // if (killedByEntity != m_Entity)
+                //     killedByEntity.CollectExp(m_Entity.GetExpReward());
             }
             
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);

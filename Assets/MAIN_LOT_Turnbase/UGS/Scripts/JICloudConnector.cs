@@ -310,6 +310,21 @@ namespace JumpeeIsland
         {
             await _economyManager.OnGrantInventory(inventoryId);
         }
+        
+        public async Task OnGrantInventory(string inventoryId, int level)
+        {
+            await _economyManager.OnGrantInventory(inventoryId, level);
+        }
+
+        public async Task OnUpdateInventory(string inventoryId, int level)
+        {
+            await _economyManager.OnUpdatePlayerInventory(inventoryId, level);
+        }
+
+        public int GetInventoryLevel(string inventoryId)
+        {
+            return _economyManager.GetInventoryLevel(inventoryId);
+        }
 
         #endregion
 

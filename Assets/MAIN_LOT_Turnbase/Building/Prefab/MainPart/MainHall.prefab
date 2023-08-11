@@ -101,25 +101,12 @@ MonoBehaviour:
   m_HealthComp: {fileID: 6329133142135403996}
   m_AttackComp: {fileID: 4171252776145318713}
   m_EffectComp: {fileID: 4123322022964983800}
-  m_StorageComp: {fileID: 3338951543123989966}
-  m_LevelComp: {fileID: 5906459776894642978}
-  m_AttackPath: {fileID: 6105367046324210439}
+  m_SkillComp: {fileID: 0}
+  m_FireComp: {fileID: 0}
   m_AnimateComp: {fileID: 418207618415105855}
-  OnBuildingUpgrade:
+  OnThisBuildingUpgrade:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3801708278274774709}
-        m_TargetAssemblyTypeName: JumpeeIsland.UnlockComp, Assembly-CSharp
-        m_MethodName: OnAskForUnlock
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &3013237499186709174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,9 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f211fee3a2e6422593983d1dda588d59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventoryId:
-  - ARCHERTOWER
-  _isUnlockWhenKilled: 0
+  _inventoryId: ARCHERTOWER
+  _isUnlockCreature: 0
 --- !u!1 &3194885446414522042
 GameObject:
   m_ObjectHideFlags: 0

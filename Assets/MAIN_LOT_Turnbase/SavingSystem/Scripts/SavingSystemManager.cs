@@ -31,6 +31,9 @@ namespace JumpeeIsland
 
         // invoke at JICloudCodeManager
         [NonSerialized] public UnityEvent OnRefreshBalances = new();
+        
+        // invoke at CreatureDetailMenu
+        [NonSerialized] public UnityEvent<string> OnCreatureUpgrade = new();
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
@@ -201,10 +204,9 @@ namespace JumpeeIsland
 
             if (result == SaveResult.Success)
             {
-                data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
+                // data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
                 m_EnvLoader.SetData(data);
                 await m_CloudConnector.OnSaveEnvData(); // Update cloud data
-                m_CloudConnector.PlayerRecordScore(data.CalculateScore());
             }
         }
 
@@ -216,16 +218,10 @@ namespace JumpeeIsland
             {
                 m_EnvLoader.SetData(cloudEnvData);
                 SavePlayerEnv();
-                m_CloudConnector.PlayerRecordScore(cloudEnvData.CalculateScore());
                 m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
                 ResetBasicInventory();
             }
         }
-
-        // public List<Transform> GetTiles()
-        // {
-        //     return m_EnvLoader.GetTiles();
-        // }
 
         public void OnSpawnResource(string resourceId, Vector3 position)
         {
@@ -493,6 +489,27 @@ namespace JumpeeIsland
         {
             await m_CloudConnector.OnGrantInventory(inventoryId);
         }
+        
+        public async void GrantInventory(string inventoryId, int level)
+        {
+            await m_CloudConnector.OnGrantInventory(inventoryId, level);
+        }
+        
+        public async void UpgradeInventory(string inventoryId)
+        {
+            await m_CloudConnector.OnUpdateInventory(inventoryId, 0);
+        }
+
+        public async void UpgradeInventory(string inventoryId, int level)
+        {
+            await m_CloudConnector.OnUpdateInventory(inventoryId, level);
+            OnCreatureUpgrade.Invoke(inventoryId);
+        }
+
+        public int GetInventoryLevel(string inventoryId)
+        {
+            return m_CloudConnector.GetInventoryLevel(inventoryId);
+        }
 
         #endregion
 
@@ -598,9 +615,9 @@ namespace JumpeeIsland
             return await m_CloudConnector.GetEnemyEnvironment();
         }
 
-        public int CalculateEnvScore()
+        public int CalculateExp()
         {
-            return m_EnvLoader.GetData().CalculateScore();
+            return m_GameProcess.CalculateExp();
         }
 
         #endregion
@@ -610,6 +627,7 @@ namespace JumpeeIsland
         private async Task LoadGameProcess()
         {
             m_GameProcess = await m_CloudConnector.OnLoadGameProcess();
+            m_CloudConnector.PlayerRecordScore(m_GameProcess.CalculateExp());
             GameFlowManager.Instance.LoadCurrentTutorial(m_GameProcess == null
                 ? "/Tutorials/Tutorial0"
                 : m_GameProcess.currentTutorial);
@@ -653,7 +671,7 @@ namespace JumpeeIsland
 
         public void SendBossQuestEvent(int bossId)
         {
-            m_CloudConnector.SendBossQuestEvent(m_EnvLoader.GetData().CalculateScore(),bossId);
+            m_CloudConnector.SendBossQuestEvent(m_GameProcess.CalculateExp(),bossId);
         }
 
         public void SendTutorialTrackEvent(string stepId)

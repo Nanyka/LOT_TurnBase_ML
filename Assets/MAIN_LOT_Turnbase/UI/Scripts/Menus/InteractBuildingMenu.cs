@@ -44,10 +44,16 @@ namespace JumpeeIsland
         
         private void Start()
         {
-            MainUI.Instance.OnInteractBuildingMenu.AddListener(ShowSellBuildingMenu);
+            MainUI.Instance.OnInteractBuildingMenu.AddListener(ShowInteractBuildingMenu);
+            MainUI.Instance.OnHideAllMenu.AddListener(HideInteractMenu);
         }
 
-        private void ShowSellBuildingMenu(IConfirmFunction confirmFunction)
+        private void HideInteractMenu()
+        {
+            _interactBuildingMenu.SetActive(false);
+        }
+
+        private void ShowInteractBuildingMenu(IConfirmFunction confirmFunction)
         {
             _currentConfirm = confirmFunction;
             _interactBuildingMenu.SetActive(true);

@@ -232,7 +232,7 @@ namespace JumpeeIsland
             if (IsScoreCondition == false)
                 return true;
 
-            var totalScore = SavingSystemManager.Instance.CalculateEnvScore();
+            var totalScore = SavingSystemManager.Instance.CalculateExp();
             switch (BuildingCompare)
             {
                 case CompareType.Higher:

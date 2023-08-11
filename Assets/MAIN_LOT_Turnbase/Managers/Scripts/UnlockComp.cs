@@ -2,26 +2,26 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class UnlockComp : MonoBehaviour
     {
-        [SerializeField] private string[] _inventoryId;
-        [SerializeField] private bool _isUnlockWhenKilled;
+        [SerializeField] private string _inventoryId;
+        [SerializeField] private bool _isUnlockCreature;
 
-        #region UNLOCK WHEN BE KILLED
+        #region UNLOCK CREATURE
 
         private void OnEnable()
         {
-            if (_isUnlockWhenKilled)
+            if (_isUnlockCreature)
                 GetComponent<Entity>().OnUnitDie.AddListener(Unlock);
         }
 
         private async void Unlock(Entity killBy)
         {
-            foreach (var unlockedInventory in _inventoryId)
-                SavingSystemManager.Instance.GrantInventory(unlockedInventory);
+            SavingSystemManager.Instance.GrantInventory(_inventoryId,0);
             await SavingSystemManager.Instance.RefreshEconomy();
 
             // Show Unlock new character panel in Monster Mode
@@ -37,7 +37,7 @@ namespace JumpeeIsland
 
         #endregion
 
-        #region UNLOCK WHEN BE CALLED
+        #region UNLOCK BUILDING
 
         public void OnAskForUnlock()
         {
@@ -47,9 +47,8 @@ namespace JumpeeIsland
         private async void CheckToUnlock()
         {
             if (!GameFlowManager.Instance.IsEcoMode) return;
-            
-            foreach (var unlockedInventory in _inventoryId)
-                SavingSystemManager.Instance.GrantInventory(unlockedInventory);
+
+            SavingSystemManager.Instance.GrantInventory(_inventoryId);
             await SavingSystemManager.Instance.RefreshEconomy();
         }
 

@@ -59,16 +59,6 @@ namespace JumpeeIsland
             return m_CurrentStat.IsSelfCollect;
         }
 
-        public virtual int GetExpReward()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void CollectExp(int expAmount)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void TakeDamage(int damage, Entity fromEntity)
         {
             throw new System.NotImplementedException();

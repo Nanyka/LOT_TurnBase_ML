@@ -8,9 +8,9 @@ namespace JumpeeIsland
     [System.Serializable]
     public class EnvironmentData
     {
-        public long timestamp;
-        public long lastTimestamp;
-        public long moveTimestamp;
+        // public long timestamp;
+        // public long lastTimestamp;
+        // public long moveTimestamp;
         public int mapSize;
         public List<ResourceData> ResourceData;
         public List<BuildingData> BuildingData;
@@ -133,19 +133,19 @@ namespace JumpeeIsland
 
         #region SCORE
 
-        public int CalculateScore()
-        {
-            int totalScore = 0;
-            foreach (var building in BuildingData)
-                totalScore += (building.CurrentHp + building.CurrentDamage + building.CurrentShield) *
-                              (1 + building.CurrentLevel);
-
-            foreach (var creature in PlayerData)
-                totalScore += (creature.CurrentHp + creature.CurrentDamage + creature.CurrentShield) *
-                              (1 + creature.CurrentLevel);
-
-            return totalScore;
-        }
+        // public int CalculateScore()
+        // {
+        //     int totalScore = 0;
+        //     foreach (var building in BuildingData)
+        //         totalScore += (building.CurrentHp + building.CurrentDamage + building.CurrentShield) *
+        //                       (1 + building.CurrentLevel);
+        //
+        //     foreach (var creature in PlayerData)
+        //         totalScore += (creature.CurrentHp + creature.CurrentDamage + creature.CurrentShield) *
+        //                       (1 + creature.CurrentLevel);
+        //
+        //     return totalScore;
+        // }
 
         #endregion
 
@@ -180,6 +180,15 @@ namespace JumpeeIsland
         public void RemoveZeroHpPlayerCreatures()
         {
             PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
+        }
+
+        public void AbstractInBattleCreatures(List<CreatureData> inbattleCreatures)
+        {
+            foreach (var creature in inbattleCreatures)
+            {
+                if (PlayerData.Contains(creature))
+                    PlayerData.Remove(creature);
+            }
         }
     }
 }

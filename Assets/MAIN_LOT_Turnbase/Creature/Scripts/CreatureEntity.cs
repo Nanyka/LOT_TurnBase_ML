@@ -26,9 +26,9 @@ namespace JumpeeIsland
         public void Init(CreatureData creatureData)
         {
             m_CreatureData = creatureData;
-            // var envManager = GameFlowManager.Instance.GetEnvManager();
-            // if (envManager.FreeToMove(creatureData.Position) == false)
-            //     UpdateTransform(envManager.GetRandomAvailableTile(), m_CreatureData.Rotation);
+
+            SavingSystemManager.Instance.OnCreatureUpgrade.AddListener(CreatureUpgrade);
+
             RefreshEntity();
         }
 
@@ -65,29 +65,40 @@ namespace JumpeeIsland
             return m_CreatureData.FactionType;
         }
 
-        public virtual int GetExpReward()
+        public int GetUpgradeCost()
         {
-            return m_CurrentStat.ExpReward;
+            return m_CurrentStat.CostToLevelUp;
         }
 
-        public override void CollectExp(int expAmount)
+        // public virtual int GetExpReward()
+        // {
+        //     return m_CurrentStat.ExpReward;
+        // }
+
+        // public override void CollectExp(int expAmount)
+        // {
+        //     m_CreatureData.CurrentExp += expAmount;
+        //     if (m_CreatureData.CurrentExp >= m_CurrentStat.ExpToLevelUp &&
+        //         m_CreatureData.CurrentLevel + 1 < m_UnitStats.Length)
+        //     {
+        //         CreatureUpgrade();
+        //     }
+        // }
+
+        private void CreatureUpgrade(string creatureId)
         {
-            m_CreatureData.CurrentExp += expAmount;
-            if (m_CreatureData.CurrentExp >= m_CurrentStat.ExpToLevelUp &&
-                m_CreatureData.CurrentLevel + 1 < m_UnitStats.Length)
-            {
-                // Level up
-                m_CreatureData.CurrentLevel++;
+            if (creatureId.Equals(m_CreatureData.EntityName) == false)
+                return;
 
-                // Reset stats and appearance
-                m_CurrentStat = m_UnitStats[m_CreatureData.CurrentLevel];
-                var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
-                m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
-                m_CreatureData.CurrentDamage = m_CurrentStat.Strengh;
-                m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
+            // Level up
+            m_CreatureData.CurrentLevel++;
 
-                // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
-            }
+            // Reset stats and appearance
+            m_CurrentStat = m_UnitStats[m_CreatureData.CurrentLevel];
+            var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
+            m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
+            m_CreatureData.CurrentDamage = m_CurrentStat.Strengh;
+            m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
         }
 
         #endregion
@@ -143,7 +154,7 @@ namespace JumpeeIsland
             // Check jumping boost
             if (m_EffectComp.UseJumpBoost())
                 currentJump.jumpStep += m_EffectComp.GetJumpBoost();
-            
+
             attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
             m_AttackComp.Attack(attackPoints, this, currentJump.jumpStep);
@@ -221,6 +232,8 @@ namespace JumpeeIsland
         public override void RefreshEntity()
         {
             // Set stats based on currentLevel
+            var creatureLevel = SavingSystemManager.Instance.GetInventoryLevel(m_CreatureData.EntityName);
+            m_CreatureData.CurrentLevel = creatureLevel == 0 ? m_CreatureData.CurrentLevel : creatureLevel;
             m_CurrentStat = m_UnitStats[m_CreatureData.CurrentLevel];
 
             // Initiate entity data if it's new

@@ -56,6 +56,11 @@ namespace JumpeeIsland
             return m_BuildingData;
         }
 
+        public BuildingStats GetStats()
+        {
+            return m_CurrentStats;
+        }
+
         public override FactionType GetFaction()
         {
             return m_BuildingData.FactionType;
@@ -64,16 +69,6 @@ namespace JumpeeIsland
         public BuildingType GetBuildingType()
         {
             return m_BuildingData.BuildingType;
-        }
-
-        public virtual int GetExpReward()
-        {
-            return m_CurrentStats.ExpReward;
-        }
-
-        public override void CollectExp(int expAmount)
-        {
-            m_BuildingData.CurrentExp += expAmount;
         }
 
         public void BuildingUpdate()
@@ -135,7 +130,6 @@ namespace JumpeeIsland
         public void StoreCurrency(int amount)
         {
             m_BuildingData.CurrentStorage += amount;
-            CollectExp(amount);
         }
 
         public void DeductCurrency(int amount)

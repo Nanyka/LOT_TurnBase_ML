@@ -32,13 +32,14 @@ namespace JumpeeIsland
 
         protected void AnnounceFinishPlaceCreature()
         {
-            _environmentData.DepositRemainPlayerTroop(_playerEnvCache.PlayerData);
+            // _environmentData.DepositRemainPlayerTroop(_playerEnvCache.PlayerData);
             _isFinishPlaceCreatures = true;
         }
 
         public override EnvironmentData GetDataForSave()
         {
-            _playerEnvCache.RemoveZeroHpPlayerCreatures();
+            // _playerEnvCache.RemoveZeroHpPlayerCreatures();
+            _playerEnvCache.AbstractInBattleCreatures(_environmentData.PlayerData);
             return _playerEnvCache;
         }
 

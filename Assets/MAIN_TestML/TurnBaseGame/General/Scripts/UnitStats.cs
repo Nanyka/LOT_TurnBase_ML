@@ -11,9 +11,9 @@ public class UnitStats : ScriptableObject
     public int Strengh;
     [FormerlySerializedAs("Defend")] [FormerlySerializedAs("Agility")] public int Armor;
     [Tooltip("Amount of exp to level up this unit")]
-    public int ExpToLevelUp;
+    public int CostToLevelUp;
     [Tooltip("Amount of exp that entity destroying this resource can collect")]
     public int ExpReward;
-    [FormerlySerializedAs("Command")] public CommandName[] Commands;
+    public CommandName[] Commands;
     public CreatureType CreatureType;
 }
