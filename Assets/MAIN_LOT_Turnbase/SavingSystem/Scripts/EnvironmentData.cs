@@ -8,9 +8,9 @@ namespace JumpeeIsland
     [System.Serializable]
     public class EnvironmentData
     {
-        // public long timestamp;
-        // public long lastTimestamp;
-        // public long moveTimestamp;
+        public long timestamp;
+        public long lastTimestamp;
+        public long moveTimestamp;
         public int mapSize;
         public List<ResourceData> ResourceData;
         public List<BuildingData> BuildingData;
@@ -46,6 +46,18 @@ namespace JumpeeIsland
         public bool CheckStorable()
         {
             return ResourceData.Any() || BuildingData.Any();
+        }
+
+        public bool CheckFullCapacity()
+        {
+            var totalSpace = BuildingData.Count(t => t.BuildingType == BuildingType.TOWNHOUSE);
+            return (1 + totalSpace) * SavingSystemManager.Instance.GetTownhouseSpace() <= PlayerData.Count;
+        }
+
+        public int GetTownhouseSpace()
+        {
+            var totalSpace = BuildingData.Count(t => t.BuildingType == BuildingType.TOWNHOUSE);
+            return (1 + totalSpace) * SavingSystemManager.Instance.GetTownhouseSpace();
         }
 
         #region BATTLE MODE

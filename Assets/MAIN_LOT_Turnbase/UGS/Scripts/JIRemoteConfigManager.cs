@@ -11,7 +11,7 @@ namespace JumpeeIsland
     {
         public Dictionary<string, List<Reward>> commandRewards = new(5);
         public Dictionary<string, int> numericConfig = new();
-        public Dictionary<string, BattleLoot> BattleLoots = new();
+        private Dictionary<string, BattleLoot> BattleLoots = new();
 
         #region STATIC CONFIG
 
@@ -88,6 +88,7 @@ namespace JumpeeIsland
             Debug.Log("Got numeric config value");
             GetNumericConfig(CommandName.JI_MAX_MOVE.ToString());
             GetNumericConfig(NumericConfigName.JI_COLLECT_CREATURE_RATE.ToString());
+            GetNumericConfig(NumericConfigName.JI_TOWNHOUSE_SPACE.ToString());
         }
 
         private void GetNumericConfig(string configKey)
@@ -121,11 +122,6 @@ namespace JumpeeIsland
             public string service;
             public string id;
             public int amount;
-        }
-        
-        public enum NumericConfigName
-        {
-            JI_COLLECT_CREATURE_RATE
         }
 
         #endregion
@@ -196,7 +192,11 @@ namespace JumpeeIsland
         }
 
         #endregion
-
-        
+    }
+    
+    public enum NumericConfigName
+    {
+        JI_COLLECT_CREATURE_RATE,
+        JI_TOWNHOUSE_SPACE
     }
 }

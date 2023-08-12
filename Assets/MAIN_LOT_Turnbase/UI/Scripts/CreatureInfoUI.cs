@@ -66,12 +66,19 @@ namespace JumpeeIsland
                 var buildingInGame = buildingEntity.GetComponent<BuildingInGame>();
                 MainUI.Instance.OnInteractBuildingMenu.Invoke(buildingInGame);
             }
+            
+            MainUI.Instance.OnShowAnUI.Invoke();
         }
 
         public void OnClickCharacterIcon()
         {
             if (_selectedEntity.TryGetComponent(out CreatureEntity creatureEntity))
                 MainUI.Instance.OnShowCreatureDetails.Invoke(creatureEntity);
+        }
+
+        public Entity GetSelectedEntity()
+        {
+            return _selectedEntity;
         }
     }
 }

@@ -46,6 +46,10 @@ namespace JumpeeIsland
                 if (this == null)
                     return;
 
+                await _leaderboardManager.RefreshPlayerScore();
+                if (this == null)
+                    return;
+
                 await FetchUpdatedServicesData();
                 if (this == null) return;
 
@@ -396,7 +400,7 @@ namespace JumpeeIsland
                 }
             }
 
-            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.GetPlayerScore(),battleConfig);
+            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.UpdatePlayerScore(),battleConfig);
         }
 
         #endregion
@@ -415,9 +419,19 @@ namespace JumpeeIsland
             return await _cloudCodeManager.CallLoadEnemyEnvironment(selectRandomPlayer);
         }
 
+        public async Task<List<LeaderboardEntry>> GetPlayerRange()
+        {
+            return await _leaderboardManager.GetPlayerRange();
+        }
+
         public void PlayerRecordScore(int playerScore)
         {
             _leaderboardManager.AddScore(playerScore);
+        }
+
+        public int GetPlayerScore()
+        {
+            return _leaderboardManager.GetPlayerScore();
         }
 
         #endregion

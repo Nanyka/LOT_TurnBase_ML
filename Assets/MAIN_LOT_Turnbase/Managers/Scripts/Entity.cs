@@ -58,7 +58,7 @@ namespace JumpeeIsland
 
         #region ANIMATE COMPONENT
 
-        public abstract void SetAnimation(AnimateType animateType ,bool isTurnOn);
+        public abstract void SetAnimation(AnimateType animateType, bool isTurnOn);
 
         #endregion
 

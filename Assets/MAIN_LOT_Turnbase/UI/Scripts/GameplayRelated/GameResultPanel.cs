@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class GameResultPanel : MonoBehaviour
     {
         [SerializeField] private GameObject _gameoverPanel;
+        [SerializeField] private GameObject _stackHolder;
+        [SerializeField] private TextMeshProUGUI _scoreText;
+        [SerializeField] private TextMeshProUGUI _stackText;
         [SerializeField] private List<StarHolder> _starHolders;
         [SerializeField] private List<BattleRewardItem> _rewardItemUI;
 
@@ -27,6 +32,7 @@ namespace JumpeeIsland
         {
             var enemyCount = GameFlowManager.Instance.GetEnvManager().CountFaction(FactionType.Enemy);
             int winStar = 0;
+            int score = 0;
 
             // +1star for demolishing enemy's mainHall
             if (SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall())
@@ -72,10 +78,11 @@ namespace JumpeeIsland
                     var rewardItemUI = _rewardItemUI[currentRewardItemUI];
                     rewardItemUI.ShowReward(SavingSystemManager.Instance.GetCurrencySprite(rewardItem.Key),
                         rewardItem.Value.ToString(),
-                        rewardItem.Key == CurrencyType.GEM.ToString() || rewardItem.Key == CurrencyType.GOLD.ToString());
+                        rewardItem.Key == CurrencyType.GEM.ToString() ||
+                        rewardItem.Key == CurrencyType.GOLD.ToString());
                     rewardItemUI.gameObject.SetActive(true);
                     currentRewardItemUI++;
-                    
+
                     // Store currencies to buildings of player's EnvData
                     SavingSystemManager.Instance.StoreCurrencyByEnvData(rewardItem.Key, rewardItem.Value,
                         SavingSystemManager.Instance.GetEnvDataForSave());
@@ -86,17 +93,34 @@ namespace JumpeeIsland
                 {
                     var creatureLoot = battleLoot.CreatureLoot[Random.Range(0, battleLoot.CreatureLoot.Count)];
                     var creatureData = SavingSystemManager.Instance.GetInventoryItemByName(creatureLoot);
-                    
+
                     // Show rewardItemUI and get Stats from Translator
                     var rewardItemUI = _rewardItemUI[currentRewardItemUI];
-                    rewardItemUI.ShowReward(creatureData.spriteAddress, "1",true);
+                    rewardItemUI.ShowReward(creatureData.spriteAddress, "1", true);
                     rewardItemUI.gameObject.SetActive(true);
-                    
+
                     SavingSystemManager.Instance.GetEnvironmentData().GatherCreature(creatureLoot);
                 }
 
                 for (int i = 0; i < winStar; i++)
                     _starHolders[i].EnableStar();
+
+                var gameProcess = SavingSystemManager.Instance.GetGameProcess();
+                if (gameProcess.winStack > 0)
+                {
+                    gameProcess.winStack++;
+                    _stackText.text = gameProcess.winStack.ToString();
+                    _stackHolder.SetActive(true);
+                }
+                else
+                    _stackHolder.SetActive(false);
+
+                if (winStar == 0)
+                    score = -1 * Mathf.RoundToInt(Random.Range(winRate, 1f) * 10);
+                else
+                    score = Mathf.RoundToInt(Random.Range(0, gameProcess.winStack > 0 ? 1 : 0 + winStar) * 10);
+                _scoreText.text = score.ToString();
+                
                 _gameoverPanel.SetActive(true);
             }
             else
@@ -104,8 +128,9 @@ namespace JumpeeIsland
                 _gameoverPanel.SetActive(true);
             }
 
+            // Record score
             // Save battle statistic
-            SavingSystemManager.Instance.SaveBattleResult(winStar);
+            SavingSystemManager.Instance.SaveBattleResult(winStar,score);
         }
     }
 }

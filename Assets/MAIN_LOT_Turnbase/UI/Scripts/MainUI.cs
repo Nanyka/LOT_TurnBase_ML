@@ -40,6 +40,8 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
+        [NonSerialized] public UnityEvent OnShowAnUI = new(); // send to TutorialController, invoke at CreatureInfoUI;
+
         public bool IsInteractable;
 
         [SerializeField] private GameObject[] _panels;
@@ -47,6 +49,7 @@ namespace JumpeeIsland
 
         private BuyBuildingMenu _buyBuildingMenu;
         protected CreatureMenu _creatureMenu;
+        private CreatureInfoUI _creatureInfo;
         private Camera _mainCamera;
         private int _layerMask = 1 << 9 | 1 << 7;
 
@@ -54,6 +57,7 @@ namespace JumpeeIsland
         {
             _buyBuildingMenu = GetComponent<BuyBuildingMenu>();
             _creatureMenu = GetComponent<CreatureMenu>();
+            _creatureInfo = GetComponent<CreatureInfoUI>();
             _mainCamera = Camera.main;
 
             GameFlowManager.Instance.OnStartGame.AddListener(EnableInteract);
@@ -99,6 +103,11 @@ namespace JumpeeIsland
             }
 
             return null;
+        }
+
+        public Entity GetSelectedEntity()
+        {
+            return _creatureInfo.GetSelectedEntity();
         }
     }
 }

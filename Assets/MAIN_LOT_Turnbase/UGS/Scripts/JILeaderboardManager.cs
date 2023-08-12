@@ -12,6 +12,13 @@ namespace JumpeeIsland
         [SerializeField] private string _leaderboardId;
         [Tooltip("Returns a total of rangeLimit*2+1 entries (the given player plus rangeLimit on either side)")]
         [SerializeField] private int _rangeLimit = 5;
+
+        private int _playerScore;
+        
+        public async Task RefreshPlayerScore()
+        {
+            _playerScore = await UpdatePlayerScore();
+        }
         
         public async void AddScore(int playerScore)
         {
@@ -25,10 +32,9 @@ namespace JumpeeIsland
             // Debug.Log(JsonConvert.SerializeObject(scoresResponse));
         }
 
-        public async Task<int> GetPlayerScore()
+        public async Task<int> UpdatePlayerScore()
         {
-            var scoreResponse =
-                await LeaderboardsService.Instance.GetPlayerScoreAsync(_leaderboardId);
+            var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(_leaderboardId);
             return (int)scoreResponse.Score;
         }
         
@@ -40,6 +46,11 @@ namespace JumpeeIsland
             );
             
             return scoresResponse.Results;
+        }
+
+        public int GetPlayerScore()
+        {
+            return _playerScore;
         }
     }
 }

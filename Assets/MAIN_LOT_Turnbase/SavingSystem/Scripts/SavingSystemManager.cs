@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Economy.Model;
+using Unity.Services.Leaderboards.Models;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -291,6 +292,12 @@ namespace JumpeeIsland
 
         public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isWaitForPurchase)
         {
+            if (m_EnvLoader.GetData().CheckFullCapacity())
+            {
+                MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
+                return;
+            }
+            
             if (isWaitForPurchase)
             {
                 if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
@@ -338,6 +345,11 @@ namespace JumpeeIsland
         public int GetMaxMove()
         {
             return m_CloudConnector.GetNumericByConfig(CommandName.JI_MAX_MOVE.ToString());
+        }
+        
+        public int GetTownhouseSpace()
+        {
+            return m_CloudConnector.GetNumericByConfig(NumericConfigName.JI_TOWNHOUSE_SPACE.ToString());
         }
 
         public async Task<JIRemoteConfigManager.BattleLoot> GetBattleLootByStar(int stars)
@@ -609,15 +621,20 @@ namespace JumpeeIsland
         #endregion
 
         #region LEADERBOARD
-
+        
         public async Task<EnvironmentData> GetEnemyEnv()
         {
             return await m_CloudConnector.GetEnemyEnvironment();
         }
 
-        public int CalculateExp()
+        public async Task<List<LeaderboardEntry>> GetPlayerRange()
         {
-            return m_GameProcess.CalculateExp();
+            return await m_CloudConnector.GetPlayerRange();
+        }
+
+        private int GetScore()
+        {
+            return m_CloudConnector.GetPlayerScore();
         }
 
         #endregion
@@ -627,7 +644,7 @@ namespace JumpeeIsland
         private async Task LoadGameProcess()
         {
             m_GameProcess = await m_CloudConnector.OnLoadGameProcess();
-            m_CloudConnector.PlayerRecordScore(m_GameProcess.CalculateExp());
+            // m_CloudConnector.PlayerRecordScore(m_GameProcess.CalculateExp());
             GameFlowManager.Instance.LoadCurrentTutorial(m_GameProcess == null
                 ? "/Tutorials/Tutorial0"
                 : m_GameProcess.currentTutorial);
@@ -639,8 +656,13 @@ namespace JumpeeIsland
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
-        public async void SaveBattleResult(int starAmount)
+        public async void SaveBattleResult(int starAmount, int score)
         {
+            if (starAmount == 0)
+                m_GameProcess.winStack = 0;
+            else
+                m_GameProcess.winStack++;
+            
             switch (starAmount)
             {
                 case 1:
@@ -655,7 +677,8 @@ namespace JumpeeIsland
             }
 
             m_GameProcess.battleCount++;
-
+            
+            m_CloudConnector.PlayerRecordScore(score);
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
@@ -671,7 +694,7 @@ namespace JumpeeIsland
 
         public void SendBossQuestEvent(int bossId)
         {
-            m_CloudConnector.SendBossQuestEvent(m_GameProcess.CalculateExp(),bossId);
+            m_CloudConnector.SendBossQuestEvent(GetScore(),bossId);
         }
 
         public void SendTutorialTrackEvent(string stepId)
@@ -682,7 +705,7 @@ namespace JumpeeIsland
         #endregion
 
         #region GET & SET
-
+        
         private string GetSavingPath(SavingPath tailPath)
         {
             var envPath = _gamePath + "/" + tailPath;

@@ -141,15 +141,17 @@ namespace JumpeeIsland
         private IEnumerator MoveOverTime()
         {
             m_Entity.SetAnimation(AnimateType.Walk, true);
-            m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
+            Debug.Log("Invoke Walk animation");
             while (transform.position != InferMoving.TargetPos)
             {
                 m_Transform.position =
-                    Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 2f * Time.deltaTime);
+                    Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 0.5f * Time.deltaTime);
                 yield return null;
             }
 
             m_Entity.SetAnimation(AnimateType.Walk, false);
+            Debug.Log("Stop Walk animation");
+            m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
             // Ask for the next inference
             if (GetJumpStep() > 0)
                 Attack();

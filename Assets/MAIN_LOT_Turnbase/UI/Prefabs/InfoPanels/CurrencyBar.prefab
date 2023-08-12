@@ -5516,8 +5516,8 @@ GameObject:
   - component: {fileID: 6336660272937875460}
   - component: {fileID: 4476822023348772931}
   - component: {fileID: 1920891436567880439}
-  - component: {fileID: 2686531199407608663}
   - component: {fileID: 3208636932359251560}
+  - component: {fileID: 2686531199407608663}
   m_Layer: 5
   m_Name: CurrencyBar
   m_TagString: Untagged
@@ -5532,7 +5532,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2528902434308000623}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5591,26 +5591,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
---- !u!114 &2686531199407608663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2528902434308000623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 983e05a929084ca3871e02e4284fdff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currenciesText: {fileID: 0}
-  _currencyButtons:
-  - {fileID: 2399073486783854505}
-  - {fileID: 6791742125327116051}
-  - {fileID: 5825999582410951491}
-  - {fileID: 7090451176088704327}
-  - {fileID: 6647826639254970779}
-  - {fileID: 5932169915401893666}
 --- !u!223 &3208636932359251560
 Canvas:
   m_ObjectHideFlags: 0
@@ -5634,6 +5614,24 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!114 &2686531199407608663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2528902434308000623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983e05a929084ca3871e02e4284fdff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currencyButtons:
+  - {fileID: 6791742125327116051}
+  - {fileID: 5825999582410951491}
+  - {fileID: 7090451176088704327}
+  - {fileID: 6647826639254970779}
+  - {fileID: 5932169915401893666}
 --- !u!1 &2890804814580630741
 GameObject:
   m_ObjectHideFlags: 0
@@ -5648,6 +5646,7 @@ GameObject:
   - component: {fileID: 5254901964781340559}
   - component: {fileID: 33144092283654811}
   - component: {fileID: 2399073486783854505}
+  - component: {fileID: 5904855316402024507}
   m_Layer: 5
   m_Name: Stats_Population
   m_TagString: Untagged
@@ -5770,6 +5769,20 @@ MonoBehaviour:
   m_Icon: {fileID: 4624105218512259811}
   m_Balance: {fileID: 8789815607048042284}
   m_Currency: POP
+--- !u!114 &5904855316402024507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2890804814580630741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46e3340df9f449780b3ca73ebe1535b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  populationButton: {fileID: 2399073486783854505}
+  iconAddress: /Icons/Currency/Pop
 --- !u!1 &2978005623625257750
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,10 +50,8 @@ namespace JumpeeIsland
         public bool IsUICondition;
         [ShowIf("@IsUICondition == true")] public string UIElement;
 
-        public bool IsScoreCondition;
-        [VerticalGroup("Score", VisibleIf = "@IsScoreCondition == true")] 
-        [VerticalGroup("Score/Row2")] public CompareType ScoreCompare;
-        [VerticalGroup("Score/Row1")] public int ScoreAmount;
+        public bool IsSelectEntity;
+        [ShowIf("@IsSelectEntity == true")] public string EntityName;
 
         public bool IsCheckBattle;
         [ShowIf("@IsCheckBattle == true")] public int BattleCount;
@@ -64,8 +62,8 @@ namespace JumpeeIsland
         public bool CheckPass()
         {
             return CheckMapSize() && CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
-                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore() && CheckBattleCount() &&
-                   CheckBossUnlock();
+                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckBattleCount() && CheckBossUnlock() &&
+                   CheckEntityCondition();
         }
 
         private bool CheckMapSize()
@@ -226,24 +224,13 @@ namespace JumpeeIsland
 
             return MainUI.Instance.CheckUIActive(UIElement);
         }
-
-        private bool CheckScore()
+        
+        private bool CheckEntityCondition()
         {
-            if (IsScoreCondition == false)
+            if (IsSelectEntity == false)
                 return true;
 
-            var totalScore = SavingSystemManager.Instance.CalculateExp();
-            switch (BuildingCompare)
-            {
-                case CompareType.Higher:
-                    return totalScore > ScoreAmount;
-                case CompareType.Lower:
-                    return totalScore < ScoreAmount;
-                case CompareType.Equal:
-                    return totalScore == ScoreAmount;
-            }
-
-            return true;
+            return MainUI.Instance.GetSelectedEntity().GetData().EntityName.Equals(EntityName);
         }
 
         private bool CheckBattleCount()

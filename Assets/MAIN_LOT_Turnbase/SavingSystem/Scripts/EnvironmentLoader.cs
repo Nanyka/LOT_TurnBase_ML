@@ -14,7 +14,7 @@ namespace JumpeeIsland
         [SerializeField] private BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
         [SerializeField] private CreatureLoader enemyLoader;
-        [FormerlySerializedAs("_collectableLoader")] [SerializeField] private CollectableObjectLoader collectableLoader;
+        [SerializeField] private CollectableObjectLoader collectableLoader;
         [SerializeField] protected EnvironmentData _environmentData;
 
         public virtual void Init()

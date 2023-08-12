@@ -83,6 +83,7 @@ namespace JumpeeIsland
             _interactBuildingMenu.SetActive(false);
             _confirmPanel.SetActive(true);
             _coinText.text = coinText;
+            MainUI.Instance.OnShowAnUI.Invoke();
         }
     }
 }
