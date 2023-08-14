@@ -8,8 +8,10 @@ namespace JumpeeIsland
 {
     public class AttackVisual : MonoBehaviour
     {
+        [SerializeField] private Transform m_HitContainer;
+        [SerializeField] private Transform m_AttackContainer;
         [SerializeField] private ParticleSystem m_HitVfx;
-        [SerializeField] private Transform m_VfxContainer;
+        [SerializeField] private ParticleSystem[] m_AttackVfx;
 
         private CreatureEntity m_Creature;
 
@@ -42,7 +44,7 @@ namespace JumpeeIsland
             if (environment.CheckEnemy(hitPoint, m_Creature.GetFaction()) ||
                 environment.CheckAlly(hitPoint, FactionType.Neutral))
             {
-                m_VfxContainer.position = hitPoint;
+                m_HitContainer.position = hitPoint;
                 m_HitVfx.Play();
             }
         }
@@ -50,6 +52,12 @@ namespace JumpeeIsland
         public void ExecuteJumpEffect()
         {
             GameFlowManager.Instance.AskGlobalVfx(GlobalVfxType.JUMP, transform.position);
+        }
+
+        public void ExecuteAttackEffect(int index)
+        {
+            m_AttackContainer.position = m_Creature.GetData().Position;
+            m_AttackVfx[index].Play();
         }
     }
 }

@@ -8,9 +8,9 @@ namespace JumpeeIsland
     public class NPCActionInferer : MonoBehaviour
     {
         public List<DummyAction> m_ActionCache = new();
-        
+
         private EnemyFactionController _enemiesController;
-        [SerializeField]private List<Skill_SO> m_SkillSOs = new();
+        [SerializeField] private List<Skill_SO> m_SkillSOs = new();
 
         public void Init()
         {
@@ -59,12 +59,12 @@ namespace JumpeeIsland
         public void ActionBrainstorming()
         {
             //--> START brainstorming from here
-        
+
             // Sort by reward
             foreach (var action in m_ActionCache)
             {
                 // Debug.Log($"Agent {action.AgentIndex} action as {action.Action} with direction {action.Direction} have reward {action.Reward} and {action.VoteAmount} votes");
-        
+
                 // Calculate reward for each agent
                 if (action.JumpCount > 0)
                 {
@@ -74,21 +74,22 @@ namespace JumpeeIsland
 
                     if (attackPoints == null)
                         continue;
-                    
+
                     foreach (var attackPoint in attackPoints)
-                        if (_enemiesController.GetEnvironment().CheckEnemy(attackPoint, _enemiesController.GetFaction()))
+                        if (_enemiesController.GetEnvironment()
+                            .CheckEnemy(attackPoint, _enemiesController.GetFaction()))
                             action.Reward++;
                 }
             }
-        
+
             // Sort by reward
             var orderedAction = m_ActionCache.OrderByDescending(x => x.Reward).ElementAt(0);
             if (orderedAction.Reward == 0)
-                orderedAction = m_ActionCache.OrderByDescending(x => x.VoteAmount).ElementAt(0);
-        
+                orderedAction = m_ActionCache.OrderByDescending(x => x.Action > 0).ThenByDescending(x => x.VoteAmount).ElementAt(0);
+
             // Get top tuple
             _enemiesController.GetEnemies()[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
-            
+
             // StartCoroutine(WaitBeforeAction(orderedAction)); // --TESTING--
         }
 

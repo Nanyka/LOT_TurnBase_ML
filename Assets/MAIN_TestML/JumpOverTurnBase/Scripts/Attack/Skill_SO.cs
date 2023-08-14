@@ -87,6 +87,9 @@ public class Skill_SO : ScriptableObject
             case RangeType.AccurateAttackByDistance:
                 _skillRange = new AccurateAttackByDistance(_magnitude);
                 break;
+            case RangeType.Circle:
+                _skillRange = new Circle();
+                break;
         }
     }
     

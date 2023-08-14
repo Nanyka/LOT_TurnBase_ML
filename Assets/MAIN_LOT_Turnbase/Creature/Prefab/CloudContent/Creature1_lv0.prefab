@@ -677,6 +677,7 @@ Transform:
   - {fileID: 3142107538059679037}
   - {fileID: 3068485724776520514}
   - {fileID: 5738968322145335565}
+  - {fileID: 6541109319101714135}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -713,8 +714,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3aa8209c6644a48c0cabf1481ddc9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HitContainer: {fileID: 5738968322145335565}
+  m_AttackContainer: {fileID: 6541109319101714135}
   m_HitVfx: {fileID: 6781572355675142767}
-  m_VfxContainer: {fileID: 5738968322145335565}
+  m_AttackVfx: []
 --- !u!1 &1691975077273902547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1254,7 +1257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5738968322145335565}
   m_Layer: 0
-  m_Name: VfxContainer
+  m_Name: HitContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11500,8 +11503,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3aa8209c6644a48c0cabf1481ddc9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HitContainer: {fileID: 0}
+  m_AttackContainer: {fileID: 0}
   m_HitVfx: {fileID: 6781572355675142767}
-  m_VfxContainer: {fileID: 0}
+  m_AttackVfx: []
 --- !u!1 &4817061556984971123
 GameObject:
   m_ObjectHideFlags: 0
@@ -11563,6 +11568,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5238247140477619994}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5273677879836476147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6541109319101714135}
+  m_Layer: 0
+  m_Name: AttackContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6541109319101714135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5273677879836476147}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2857795032283443154}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5290065726694153435

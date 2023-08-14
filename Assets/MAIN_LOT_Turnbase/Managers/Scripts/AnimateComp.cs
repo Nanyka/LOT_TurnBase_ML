@@ -25,6 +25,7 @@ namespace JumpeeIsland
         private static readonly int Attack = Animator.StringToHash("Attack");
         private static readonly int Die = Animator.StringToHash("Die");
         private static readonly int Jump = Animator.StringToHash("Jump");
+        private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
 
         private void Start()
         {
@@ -113,6 +114,8 @@ namespace JumpeeIsland
 
         public void SetAnimation(AnimateType animate)
         {
+            m_Animator.SetInteger(AttackIndex, moveIndex);
+            
             switch (animate)
             {
                 case AnimateType.Attack:

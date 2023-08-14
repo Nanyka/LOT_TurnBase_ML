@@ -6,6 +6,8 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
+        
+        
         public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep)
         {
             if (attackPoints == null)

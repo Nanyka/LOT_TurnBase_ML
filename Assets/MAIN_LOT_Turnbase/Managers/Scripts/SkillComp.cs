@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class SkillComp : MonoBehaviour
     {
-        [SerializeField] private List<Skill_SO> m_SkillSOs = new();
+        private List<Skill_SO> m_SkillSOs = new();
 
         public void Init(string creatureName)
         {

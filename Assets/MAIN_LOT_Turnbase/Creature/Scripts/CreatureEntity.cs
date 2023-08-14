@@ -70,21 +70,6 @@ namespace JumpeeIsland
             return m_CurrentStat.CostToLevelUp;
         }
 
-        // public virtual int GetExpReward()
-        // {
-        //     return m_CurrentStat.ExpReward;
-        // }
-
-        // public override void CollectExp(int expAmount)
-        // {
-        //     m_CreatureData.CurrentExp += expAmount;
-        //     if (m_CreatureData.CurrentExp >= m_CurrentStat.ExpToLevelUp &&
-        //         m_CreatureData.CurrentLevel + 1 < m_UnitStats.Length)
-        //     {
-        //         CreatureUpgrade();
-        //     }
-        // }
-
         private void CreatureUpgrade(string creatureId)
         {
             if (creatureId.Equals(m_CreatureData.EntityName) == false)
@@ -151,9 +136,15 @@ namespace JumpeeIsland
         private void Attack(IAttackResponse attackResponser)
         {
             var currentJump = m_Info.GetCurrentState();
+            
             // Check jumping boost
             if (m_EffectComp.UseJumpBoost())
                 currentJump.jumpStep += m_EffectComp.GetJumpBoost();
+            
+            // Adjust by current level
+            currentJump.jumpStep = currentJump.jumpStep < m_SkillComp.GetSkillAmount()
+                ? currentJump.jumpStep
+                : m_SkillComp.GetSkillAmount();
 
             attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
@@ -253,9 +244,6 @@ namespace JumpeeIsland
             m_SkillComp.Init(m_CreatureData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
-
-            // Check expand map
-            // SavingSystemManager.Instance.OnCheckExpandMap.Invoke();
         }
 
         #endregion

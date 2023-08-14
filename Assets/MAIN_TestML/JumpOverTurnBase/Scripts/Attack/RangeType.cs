@@ -8,5 +8,6 @@ public enum RangeType
     CurrentPos,
     FrontStrike,
     AccurateAttackByHp,
-    AccurateAttackByDistance
+    AccurateAttackByDistance,
+    Circle
 }
