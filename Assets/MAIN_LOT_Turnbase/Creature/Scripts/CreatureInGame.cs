@@ -19,7 +19,7 @@ namespace JumpeeIsland
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
-        private bool _isUsed;
+        [SerializeField] private bool _isUsed;
 
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
@@ -45,7 +45,6 @@ namespace JumpeeIsland
 
         public void MoveDirection(int moveDirection)
         {
-            Debug.Log($"{gameObject} is moving along direction {moveDirection}");
             if (_isUsed) return; // Avoid double moving
 
             _movement = m_FactionController.GetMovementInspector()
@@ -73,13 +72,15 @@ namespace JumpeeIsland
 
         public void SkipThisTurn()
         {
+            Debug.Log("TODO: Show SKIP TURN visual");
             MarkAsUsedThisTurn();
             m_FactionController.WaitForCreature();
         }
 
         public void NewTurnReset()
         {
-            _isUsed = false;
+            m_Entity.GetEffectComp().EffectCountDown();
+            _isUsed = m_Entity.GetEffectComp().CheckSkipTurn();
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
             m_Entity.SetActiveMaterial();
@@ -107,7 +108,7 @@ namespace JumpeeIsland
             return m_Transform.position;
         }
 
-        public (Entity,int) ShowInfo()
+        public (Entity, int) ShowInfo()
         {
             // var data = (CreatureData)m_Entity.GetData();
             // return
@@ -146,7 +147,7 @@ namespace JumpeeIsland
             m_Entity.SetDisableMaterial();
         }
 
-        public void MarkAsUsedThisTurn()
+        protected void MarkAsUsedThisTurn()
         {
             _isUsed = true;
         }

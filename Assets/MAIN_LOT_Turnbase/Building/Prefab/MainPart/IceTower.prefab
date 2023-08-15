@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 6152383224630437360}
   - component: {fileID: 4297554099346640943}
   - component: {fileID: 5356349646565512584}
+  - component: {fileID: 6705855016001013650}
   - component: {fileID: 1211437792985760529}
   - component: {fileID: 5304201636825629582}
   - component: {fileID: 1153739175525897861}
@@ -496,7 +497,7 @@ Transform:
   - {fileID: 2436322301743074447}
   - {fileID: 3797048706133095196}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1226642660935090774
 BoxCollider:
@@ -552,7 +553,7 @@ MonoBehaviour:
   m_AttackComp: {fileID: 5356349646565512584}
   m_EffectComp: {fileID: 5304201636825629582}
   m_SkillComp: {fileID: 1211437792985760529}
-  m_FireComp: {fileID: 6327105612585864470}
+  m_FireComp: {fileID: 6705855016001013650}
   m_AnimateComp: {fileID: 4483748710247664385}
   OnThisBuildingUpgrade:
     m_PersistentCalls:
@@ -598,6 +599,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6705855016001013650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5337466649734972244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d45bf48ee4a4f11a160cf791836416c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletFX: {fileID: 8580833316166449429}
+  _targetPos: {x: 0, y: 0, z: 0}
+  _angle: 0
+  _reloadDuration: 3
+  _isInPlaceFire: 1
 --- !u!114 &1211437792985760529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,7 +687,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3797048706133095196}
-  - component: {fileID: 6327105612585864470}
   m_Layer: 0
   m_Name: FirePoint
   m_TagString: Untagged
@@ -693,22 +710,6 @@ Transform:
   m_Father: {fileID: 7933684697770221139}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6327105612585864470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7354349156272122920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d45bf48ee4a4f11a160cf791836416c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletFX: {fileID: 8580833316166449429}
-  _targetPos: {x: 0, y: 0, z: 0}
-  _angle: 0
-  _isInPlaceFire: 0
 --- !u!1 &7589142679210192461
 GameObject:
   m_ObjectHideFlags: 0

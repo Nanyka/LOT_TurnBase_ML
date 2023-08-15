@@ -149,7 +149,8 @@ namespace JumpeeIsland
 
         public void DurationDeduct()
         {
-            m_BuildingData.TurnCount++;
+            m_BuildingData.TurnCount = Mathf.Clamp(m_BuildingData.TurnCount-1, 0, m_BuildingData.TurnCount-1);
+            SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         #endregion
@@ -192,6 +193,9 @@ namespace JumpeeIsland
 
         public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
+            if (m_BuildingData.TurnCount > 0)
+                return;
+            
             Attack(unitInfo, attackResponser);
         }
 
@@ -199,7 +203,7 @@ namespace JumpeeIsland
         {
             var currenState = unitInfo.GetCurrentState();
             var attackRange = m_SkillComp.AttackPoints(currenState.midPos, currenState.direction, currenState.jumpStep);
-            
+
             m_AttackComp.Attack(attackRange, this, currenState.jumpStep);
 
             ShowAttackRange(attackRange);
@@ -212,7 +216,10 @@ namespace JumpeeIsland
                 return;
 
             if (attackRange.Any())
+            {
                 m_FireComp.PlayCurveFX(attackRange);
+                m_BuildingData.TurnCount = m_FireComp.GetReloadDuration();
+            }
         }
 
         #endregion
@@ -227,7 +234,7 @@ namespace JumpeeIsland
         #endregion
 
         #region SKIN
-        
+
         public override SkinComp GetSkin()
         {
             return m_SkinComp;

@@ -3,18 +3,16 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    // Custom comparer to sort Vector3 objects by distance to the target point
-
-
     public class FireComp : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _bulletFX;
         [SerializeField] private Vector3 _targetPos;
         [SerializeField] private float _angle;
+        [SerializeField] private int _reloadDuration;
         [SerializeField] private bool _isInPlaceFire;
-        
+
         private Vector3 _velocity;
-        
+
         public void PlayCurveFX()
         {
             if (_bulletFX != null)
@@ -28,7 +26,7 @@ namespace JumpeeIsland
                 _bulletFX.Play();
             }
         }
-        
+
         public void PlayCurveFX(IEnumerable<Vector3> targetPos)
         {
             if (_bulletFX != null)
@@ -51,7 +49,7 @@ namespace JumpeeIsland
             }
         }
 
-        public void PlayerPointFX()
+        private void PlayerPointFX()
         {
             if (_bulletFX != null)
                 _bulletFX.Play();
@@ -75,6 +73,11 @@ namespace JumpeeIsland
             // calculate velocity
             float velocity = Mathf.Sqrt(distance * Physics.gravity.magnitude / Mathf.Sin(2 * a));
             return velocity * direction.normalized;
+        }
+
+        public int GetReloadDuration()
+        {
+            return _reloadDuration;
         }
     }
 }

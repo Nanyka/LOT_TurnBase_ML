@@ -66,6 +66,7 @@ namespace JumpeeIsland
                 return;
             }
 
+            StopAllCoroutines();
             foreach (var creature in _creatures)
                 creature.NewTurnReset();
 
@@ -74,8 +75,11 @@ namespace JumpeeIsland
 
         public void KickOffNewTurn()
         {
-            _countMovedUnit = 0;
-            SelectUnit(_creatures[0].GetCurrentPosition());
+            _countMovedUnit = _creatures.Count(t => t.CheckUsedThisTurn());
+            if (_countMovedUnit == _creatures.Count)
+                EndTurn();
+            else
+                SelectUnit(_creatures[0].GetCurrentPosition());
         }
 
         // Show unit selection && Show moving path when unit is still available

@@ -14,17 +14,13 @@ namespace JumpeeIsland
         public void Init(Entity entity)
         {
             m_Entity = entity;
-            GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(EffectCountDown);
 
             if (m_Entity.GetType() == typeof(CreatureEntity))
                 m_CreatureData = (CreatureData)m_Entity.GetData();
         }
 
-        private void EffectCountDown()
+        public void EffectCountDown()
         {
-            if (GameFlowManager.Instance.GetEnvManager().GetCurrFaction() != m_Entity.GetFaction())
-                return;
-
             foreach (var effect in m_CreatureData.EffectCaches)
             {
                 // Reset entity if the effect is over
@@ -42,19 +38,13 @@ namespace JumpeeIsland
                     }
                 }
                 
-                // Take effect each turn
-                if (effect.EffectRemain > 0)
-                {
-                    switch (effect.EffectType)
-                    {
-                        case SkillEffectType.Frozen:
-                            SufferFrozen();
-                            break;
-                    }
-                }
-                
                 effect.EffectRemain = Mathf.Clamp(effect.EffectRemain - 1, 0, effect.EffectRemain - 1);
             }
+        }
+
+        public bool CheckSkipTurn()
+        {
+            return GetEffectCache(SkillEffectType.Frozen).EffectRemain > 0;
         }
 
         #region STRENGTH BOOST
