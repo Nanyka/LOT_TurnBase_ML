@@ -31,14 +31,15 @@ namespace JumpeeIsland
         public void SensorInProcess()
         {
             foreach (var sensor in m_Sensors)
-                ResponseToCreature(sensor.Execute(m_CreatureData,m_Transform,_envManager,m_Entity,m_Skills));
+                ResponseToCreature(sensor.Execute(m_CreatureData,m_Transform,_envManager,m_Entity,m_Skills),
+                    sensor.SensorWeight);
         }
         
         #region CONNECT TO CREATURE
 
-        private void ResponseToCreature(int actionIndex)
+        private void ResponseToCreature(int actionIndex, int weight)
         {
-            m_Creature.ResponseAction(actionIndex);
+            m_Creature.ResponseAction(actionIndex, weight);
         }
 
         #endregion

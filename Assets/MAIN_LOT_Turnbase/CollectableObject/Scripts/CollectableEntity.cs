@@ -92,6 +92,15 @@ namespace JumpeeIsland
         {
             throw new System.NotImplementedException();
         }
+        
+        #region SKIN
+        
+        public override SkinComp GetSkin()
+        {
+            return m_SkinComp;
+        }
+
+        #endregion
 
         #region EFFECT
 
@@ -126,7 +135,7 @@ namespace JumpeeIsland
                         true);
                     break;
                 case EntityType.ENEMY:
-                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,
+                    SavingSystemManager.Instance.OnSpawnMovableEntity(m_CurrentStat.EntityName,
                         m_CollectableData.Position);
                     break;
             }

@@ -1,8 +1,10 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    [System.Serializable]
+    [Serializable]
     public class CreatureData: EntityData
     {
         public CreatureType CreatureType;
@@ -10,12 +12,24 @@ namespace JumpeeIsland
         public int CurrentExp;
         public int TurnCount;
         public int CurrentDamage;
-        public int StregthBoostRemain;
+        public List<EffectCache> EffectCaches;
 
         // Just used for BattleMode
         public JIInventoryItem GetInventoryItem()
         {
             return SavingSystemManager.Instance.GetInventoryItemByName(EntityName);
+        }
+    }
+
+    [Serializable]
+    public class EffectCache
+    {
+        public SkillEffectType EffectType;
+        public int EffectRemain;
+
+        public EffectCache(SkillEffectType effectType)
+        {
+            EffectType = effectType;
         }
     }
 }

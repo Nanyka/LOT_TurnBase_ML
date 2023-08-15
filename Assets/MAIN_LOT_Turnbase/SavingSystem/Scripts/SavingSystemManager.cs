@@ -325,7 +325,7 @@ namespace JumpeeIsland
             m_EnvLoader.TrainACreature(creatureData);
         }
 
-        public void SpawnMovableEntity(string itemId, Vector3 position)
+        public void OnSpawnMovableEntity(string itemId, Vector3 position)
         {
             var item = GetInventoryItemByName(itemId);
 

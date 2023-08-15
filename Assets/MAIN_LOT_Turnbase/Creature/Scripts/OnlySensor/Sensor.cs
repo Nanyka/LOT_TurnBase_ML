@@ -18,6 +18,7 @@ namespace JumpeeIsland
     {
         public int DetectRange;
         public SensorType SensorType;
+        public int SensorWeight;
         private ISensorExecute SensorExecute;
 
         public int Execute(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,

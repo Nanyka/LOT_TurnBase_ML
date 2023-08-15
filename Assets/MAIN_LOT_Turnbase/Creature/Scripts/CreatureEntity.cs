@@ -89,6 +89,10 @@ namespace JumpeeIsland
         #endregion
 
         #region SKIN
+        public override SkinComp GetSkin()
+        {
+            return m_SkinComp;
+        }
 
         public void SetActiveMaterial()
         {

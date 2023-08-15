@@ -6,6 +6,7 @@ public enum SkillEffectType
     StrengthBoost,
     Teleport,
     JumpBoost,
+    Frozen
 }
 
 public interface SkillEffect

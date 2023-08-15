@@ -133,8 +133,7 @@ namespace JumpeeIsland
         {
             if (_currentUnit == null || !_currentUnit.IsAvailable())
                 return;
-            _currentUnit.MarkAsUsedThisTurn();
-            WaitForCreature();
+            _currentUnit.SkipThisTurn();
         }
 
         private void EndTurn()

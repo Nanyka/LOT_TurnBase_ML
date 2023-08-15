@@ -39,6 +39,15 @@ namespace JumpeeIsland
             _currenInferer.AddActionToCache(InferMoving);
         }
 
+        public void ResponseAction(int direction, int weight)
+        {
+            InferMoving.Action = direction;
+            InferMoving.CurrentPos = m_Transform.position;
+            GetPositionByDirection(InferMoving.Action);
+            InferMoving.VoteAmount += weight;
+            _currenInferer.AddActionToCache(InferMoving);
+        }
+
         protected override void GetPositionByDirection(int direction)
         {
             var movement = m_FactionController.GetMovementInspector()

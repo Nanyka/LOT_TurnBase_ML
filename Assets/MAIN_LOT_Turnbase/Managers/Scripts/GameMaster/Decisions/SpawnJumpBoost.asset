@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf1697fabb846e3b99a078da6de5cd6, type: 3}
   m_Name: SpawnJumpBoost
   m_EditorClassIdentifier: 
-  Condition:
+  m_EntityType: 5
+  _getThroughCondition:
     MapSize: 0
     Currency: 0
     CurrencyCompare: 0
@@ -24,22 +25,54 @@ MonoBehaviour:
     ResourceCompare: 0
     ResourceAmount: 0
     Collectable: 1
-    CollectableCompare: 2
-    CollectableAmount: 0
+    CollectableCompare: 0
+    CollectableAmount: 1
     Building: 0
     BuildingCompare: 0
     BuildingAmount: 0
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
     IsCheckBattle: 0
     BattleCount: 0
     IsCheckBossUnlock: 0
     BossUnlockAmount: 0
-  State: NEEDJUMPBOOST
-  GapDuration: 5
+  _mainCondition:
+    MapSize: 0
+    Currency: 0
+    CurrencyCompare: 0
+    CurrencyAmount: 0
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
+    Resource: 0
+    ResourceCompare: 0
+    ResourceAmount: 0
+    Collectable: 1
+    CollectableCompare: 1
+    CollectableAmount: 2
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
+    IsUICondition: 0
+    UIElement: 
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
+  _objects:
+  - JumpBoost
+  _gapDuration: 3

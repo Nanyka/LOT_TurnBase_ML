@@ -9,5 +9,6 @@ public enum RangeType
     FrontStrike,
     AccurateAttackByHp,
     AccurateAttackByDistance,
-    Circle
+    Circle,
+    TShapeFront
 }

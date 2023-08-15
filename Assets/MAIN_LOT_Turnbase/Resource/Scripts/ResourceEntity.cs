@@ -104,8 +104,17 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region SKIN
+
+        public override SkinComp GetSkin()
+        {
+            return m_SkinComp;
+        }
+
+        #endregion
+
         #region EFFECT
-        
+
         public override EffectComp GetEffectComp()
         {
             throw new System.NotImplementedException();
@@ -127,7 +136,7 @@ namespace JumpeeIsland
         public override void ContributeCommands()
         {
             foreach (var command in m_CurrentStats.Commands)
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_ResourceData.Position);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_ResourceData.Position);
         }
 
         public override void RefreshEntity()
@@ -143,7 +152,7 @@ namespace JumpeeIsland
                 m_ResourceData.CurrentHp = m_CurrentStats.MaxHp;
                 m_ResourceData.CollectedCurrency = m_CurrentStats.CollectedCurrency;
             }
-            
+
             // Retrieve entity data
             m_SkinComp.Init(m_ResourceData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);

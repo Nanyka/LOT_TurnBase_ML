@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -10,6 +11,7 @@ namespace JumpeeIsland
         [SerializeField] private ParticleSystem _bulletFX;
         [SerializeField] private Vector3 _targetPos;
         [SerializeField] private float _angle;
+        [SerializeField] private bool _isInPlaceFire;
         
         private Vector3 _velocity;
         
@@ -27,18 +29,32 @@ namespace JumpeeIsland
             }
         }
         
-        public void PlayCurveFX(Vector3 targetPos)
+        public void PlayCurveFX(IEnumerable<Vector3> targetPos)
         {
             if (_bulletFX != null)
             {
-                var position = _bulletFX.transform.position;
-                _velocity = CalcBallisticVelocityVector(position, targetPos, _angle);
-                _bulletFX.transform.LookAt(new Vector3(targetPos.x, position.y, targetPos.z));
-                _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
-                var main = _bulletFX.main;
-                main.startSpeed = _velocity.magnitude;
-                _bulletFX.Play();
+                if (_isInPlaceFire)
+                    PlayerPointFX();
+                else
+                {
+                    foreach (var target in targetPos)
+                    {
+                        var position = _bulletFX.transform.position;
+                        _velocity = CalcBallisticVelocityVector(position, target, _angle);
+                        _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
+                        _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
+                        var main = _bulletFX.main;
+                        main.startSpeed = _velocity.magnitude;
+                        _bulletFX.Play();
+                    }
+                }
             }
+        }
+
+        public void PlayerPointFX()
+        {
+            if (_bulletFX != null)
+                _bulletFX.Play();
         }
 
         private Vector3 CalcBallisticVelocityVector(Vector3 source, Vector3 target, float angle)

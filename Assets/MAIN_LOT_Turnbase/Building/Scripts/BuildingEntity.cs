@@ -199,6 +199,7 @@ namespace JumpeeIsland
         {
             var currenState = unitInfo.GetCurrentState();
             var attackRange = m_SkillComp.AttackPoints(currenState.midPos, currenState.direction, currenState.jumpStep);
+            
             m_AttackComp.Attack(attackRange, this, currenState.jumpStep);
 
             ShowAttackRange(attackRange);
@@ -207,8 +208,11 @@ namespace JumpeeIsland
 
         private void ShowAttackRange(IEnumerable<Vector3> attackRange)
         {
+            if (attackRange == null)
+                return;
+
             if (attackRange.Any())
-                m_FireComp.PlayCurveFX(attackRange.ElementAt(0));
+                m_FireComp.PlayCurveFX(attackRange);
         }
 
         #endregion
@@ -218,6 +222,15 @@ namespace JumpeeIsland
         public override IEnumerable<Skill_SO> GetSkills()
         {
             return m_SkillComp.GetSkills();
+        }
+
+        #endregion
+
+        #region SKIN
+        
+        public override SkinComp GetSkin()
+        {
+            return m_SkinComp;
         }
 
         #endregion
@@ -256,9 +269,8 @@ namespace JumpeeIsland
         {
             ResetEntity();
 
-            // Load data to entity
-            // m_SkinComp.Init(m_BuildingData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
+            m_SkillComp.Init(m_BuildingData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
         }
 

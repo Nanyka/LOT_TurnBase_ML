@@ -45,6 +45,7 @@ namespace JumpeeIsland
 
         public void MoveDirection(int moveDirection)
         {
+            Debug.Log($"{gameObject} is moving along direction {moveDirection}");
             if (_isUsed) return; // Avoid double moving
 
             _movement = m_FactionController.GetMovementInspector()
@@ -68,6 +69,12 @@ namespace JumpeeIsland
                 Attack();
             else
                 m_FactionController.WaitForCreature();
+        }
+
+        public void SkipThisTurn()
+        {
+            MarkAsUsedThisTurn();
+            m_FactionController.WaitForCreature();
         }
 
         public void NewTurnReset()

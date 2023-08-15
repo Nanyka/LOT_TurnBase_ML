@@ -47,6 +47,9 @@ namespace JumpeeIsland
         [VerticalGroup("Creature/Row1")] public CompareType CreatureCompare;
         [VerticalGroup("Creature/Row2")] public int CreatureAmount;
 
+        public bool IsExpCondition;
+        [ShowIf("@IsExpCondition == true")] public int playerExp;
+
         public bool IsUICondition;
         [ShowIf("@IsUICondition == true")] public string UIElement;
 
@@ -63,7 +66,7 @@ namespace JumpeeIsland
         {
             return CheckMapSize() && CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
                    CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckBattleCount() && CheckBossUnlock() &&
-                   CheckEntityCondition();
+                   CheckEntityCondition() && CheckPlayerExp();
         }
 
         private bool CheckMapSize()
@@ -152,7 +155,7 @@ namespace JumpeeIsland
             foreach (var collectable in collectables)
                 if (collectable.CollectableType == Collectable)
                     totalAmount++;
-
+            
             switch (CollectableCompare)
             {
                 case CompareType.Higher:
@@ -247,6 +250,14 @@ namespace JumpeeIsland
                 return true;
             
             return SavingSystemManager.Instance.GetGameProcess().bossUnlock >= BossUnlockAmount;
+        }
+
+        private bool CheckPlayerExp()
+        {
+            if (IsExpCondition == false)
+                return true;
+                
+            return SavingSystemManager.Instance.GetGameProcess().CalculateExp() > playerExp;
         }
     }
 }

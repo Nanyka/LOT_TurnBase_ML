@@ -35,6 +35,11 @@ namespace JumpeeIsland
             // _environmentData.DepositRemainPlayerTroop(_playerEnvCache.PlayerData);
             _isFinishPlaceCreatures = true;
         }
+        
+        public override EnvironmentData GetData()
+        {
+            return _environmentData;
+        }
 
         public override EnvironmentData GetDataForSave()
         {

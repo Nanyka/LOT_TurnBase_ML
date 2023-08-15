@@ -50,6 +50,12 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region SKIN
+
+        public abstract SkinComp GetSkin();
+
+        #endregion
+
         #region EFFECT
 
         public abstract EffectComp GetEffectComp();

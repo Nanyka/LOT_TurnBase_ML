@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GOAP;
 using JumpeeIsland;
 using UnityEngine;
@@ -33,10 +34,10 @@ namespace JumpeeIsland
             if (_spawnTree == null)
                 return;
             
-            var responseDecision = _spawnTree.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
+            var responseDecision = _spawnTree.GetObjectsToSpawn();
+            if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
                 return;
-            beliefs.ModifyState(responseDecision, 0);
+            beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
 
         private void AskForHuntingGame(WorldStates beliefs)
@@ -44,10 +45,10 @@ namespace JumpeeIsland
             if (_spawnGame == null)
                 return;
             
-            var responseDecision = _spawnGame.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
+            var responseDecision = _spawnGame.GetObjectsToSpawn();
+            if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
                 return;
-            beliefs.ModifyState(responseDecision, 0);
+            beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
         
         private void AskForObstacle(WorldStates beliefs)
@@ -55,10 +56,10 @@ namespace JumpeeIsland
             if (_spawnObstacle == null)
                 return;
             
-            var responseDecision = _spawnObstacle.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
+            var responseDecision = _spawnObstacle.GetObjectsToSpawn();
+            if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
                 return;
-            beliefs.ModifyState(responseDecision, 0);
+            beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
         
         private void AskForChess(WorldStates beliefs)
@@ -66,10 +67,10 @@ namespace JumpeeIsland
             if (_spawnChess == null)
                 return;
             
-            var responseDecision = _spawnChess.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
+            var responseDecision = _spawnChess.GetObjectsToSpawn();
+            if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
                 return;
-            beliefs.ModifyState(responseDecision, 0);
+            beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
         
         private void AskForBoss(WorldStates beliefs)
@@ -77,10 +78,10 @@ namespace JumpeeIsland
             if (_spawnBoss == null)
                 return;
             
-            var responseDecision = _spawnBoss.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
+            var responseDecision = _spawnBoss.GetObjectsToSpawn();
+            if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
                 return;
-            beliefs.ModifyState(responseDecision, 0);
+            beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
 
         private void AskForChangeDecision(WorldStates beliefs)
@@ -90,10 +91,10 @@ namespace JumpeeIsland
 
             foreach (var decision in _changeDesicion)
             {
-                var responseDecision = decision.MakeDecision();
-                if (String.IsNullOrEmpty(responseDecision))
+                var responseDecision = decision.GetObjectsToSpawn();
+                if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
                     return;
-                beliefs.ModifyState(responseDecision, 0);
+                beliefs.ModifyState(responseDecision.ElementAt(0), 0);
             }
         }
     }

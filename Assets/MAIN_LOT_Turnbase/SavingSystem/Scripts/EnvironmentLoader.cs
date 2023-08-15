@@ -46,7 +46,7 @@ namespace JumpeeIsland
             tileManager.Init(_environmentData.mapSize);
         }
 
-        public EnvironmentData GetData()
+        public virtual EnvironmentData GetData()
         {
             return _environmentData;
         }

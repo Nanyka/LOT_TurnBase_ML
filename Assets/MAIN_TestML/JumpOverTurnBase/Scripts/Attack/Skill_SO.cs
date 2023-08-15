@@ -19,6 +19,7 @@ public class Skill_SO : ScriptableObject
     
     [Header("Skill effect")]
     [SerializeField] private SkillEffectType _skillEffectType;
+    [SerializeField] private Material _effectMaterial;
     private SkillEffect _skillEffect;
     
     [Header("ML property")]
@@ -90,6 +91,9 @@ public class Skill_SO : ScriptableObject
             case RangeType.Circle:
                 _skillRange = new Circle();
                 break;
+            case RangeType.TShapeFront:
+                _skillRange = new TShapeFront();
+                break;
         }
     }
     
@@ -102,6 +106,9 @@ public class Skill_SO : ScriptableObject
                 break;
             case SkillEffectType.Teleport:
                 _skillEffect = new Teleport();
+                break;
+            case SkillEffectType.Frozen:
+                _skillEffect = new Frozen(_duration, _effectMaterial);
                 break;
         }
     }

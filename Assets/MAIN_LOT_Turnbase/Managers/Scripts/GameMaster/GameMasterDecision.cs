@@ -1,31 +1,44 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     [CreateAssetMenu(fileName = "GameMasterDecision", menuName = "JumpeeIsland/GameMasterDecision", order = 5)]
     public class GameMasterDecision : ScriptableObject
     {
-        [SerializeField] private GameMasterCondition Condition;
-        [SerializeField] private string State;
-        [SerializeField] private int GapDuration;
+        [SerializeField] private EntityType m_EntityType;
+        [SerializeField] private GameMasterCondition _getThroughCondition;
+        [SerializeField] private GameMasterCondition _mainCondition;
+        [SerializeField] private string[] _objects;
+        [SerializeField] private int _gapDuration;
 
         private int currentGapCount;
 
-        public string MakeDecision()
+        public IEnumerable<string> GetObjectsToSpawn()
         {
             if (currentGapCount > 0)
             {
                 currentGapCount--;
-                return String.Empty;
+                return null;
             }
             
-            if (Condition.CheckPass() == false)
-                return String.Empty;
+            if (_mainCondition.CheckPass() == false)
+                return null;
             
-            currentGapCount = GapDuration;
-            return State;
+            currentGapCount = _gapDuration;
+            return _objects;
+        }
+
+        public bool CheckGetThrough()
+        {
+            return _getThroughCondition.CheckPass();
+        }
+
+        public EntityType GetEntityType()
+        {
+            return m_EntityType;
         }
     }
 }
