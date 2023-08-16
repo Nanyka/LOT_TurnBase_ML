@@ -9,12 +9,14 @@ namespace JumpeeIsland
     public class GameMasterDecision : ScriptableObject
     {
         [SerializeField] private EntityType m_EntityType;
+        [Tooltip("If it true, don't make this decision")]
         [SerializeField] private GameMasterCondition _getThroughCondition;
+        [Tooltip("If it false, don't make this decision")]
         [SerializeField] private GameMasterCondition _mainCondition;
         [SerializeField] private string[] _objects;
         [SerializeField] private int _gapDuration;
 
-        private int currentGapCount;
+        [SerializeField] private int currentGapCount;
 
         public IEnumerable<string> GetObjectsToSpawn()
         {

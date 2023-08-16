@@ -7,9 +7,9 @@ namespace JumpeeIsland
     {
         private Entity m_Entity;
         private CreatureData m_CreatureData;
-        private int _remainTempJumpBoost;
+        [SerializeField] private int _remainTempJumpBoost;
 
-        private int _magnitudeJumpBoost;
+        [SerializeField] private int _magnitudeJumpBoost;
 
         public void Init(Entity entity)
         {
@@ -21,6 +21,9 @@ namespace JumpeeIsland
 
         public void EffectCountDown()
         {
+            if (m_CreatureData.EffectCaches == null)
+                return;
+
             foreach (var effect in m_CreatureData.EffectCaches)
             {
                 // Reset entity if the effect is over
@@ -31,13 +34,13 @@ namespace JumpeeIsland
                         case SkillEffectType.StrengthBoost:
                             ResetStrength();
                             break;
-                        
+
                         case SkillEffectType.Frozen:
                             RecoverFromFrozenState();
                             break;
                     }
                 }
-                
+
                 effect.EffectRemain = Mathf.Clamp(effect.EffectRemain - 1, 0, effect.EffectRemain - 1);
             }
         }
@@ -92,11 +95,11 @@ namespace JumpeeIsland
         #endregion
 
         #region FROZEN
-        
+
         public void RecordFrozen(int duration, Material effectMaterial)
         {
             m_Entity.GetSkin().SetCustomMaterial(effectMaterial);
-            
+
             var frozenCache = GetEffectCache(SkillEffectType.Frozen);
             if (frozenCache.EffectRemain <= 0)
             {
@@ -110,11 +113,12 @@ namespace JumpeeIsland
             if (m_Entity.TryGetComponent(out CreatureInGame creatureInGame))
                 creatureInGame.SkipThisTurn();
         }
-        
+
         private void RecoverFromFrozenState()
         {
             m_Entity.GetSkin().SetActiveMaterial();
         }
+
         #endregion
 
         private EffectCache GetEffectCache(SkillEffectType effectType)

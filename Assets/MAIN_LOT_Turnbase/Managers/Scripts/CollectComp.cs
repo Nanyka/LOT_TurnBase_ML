@@ -6,6 +6,8 @@ namespace JumpeeIsland
 {
     public class CollectComp : MonoBehaviour
     {
+        [SerializeField] private bool _isForBattleMode;
+        
         private UnityEvent<Entity> _dieEvent;
         
         public void Init(UnityEvent<Entity> dieEvent)
@@ -15,6 +17,9 @@ namespace JumpeeIsland
 
         private void OnTriggerEnter(Collider other)
         {
+            if (_isForBattleMode && GameFlowManager.Instance.IsEcoMode)
+                return;
+            
             if (other.TryGetComponent(out CreatureEntity creatureEntity))
             {
                 Die(creatureEntity);

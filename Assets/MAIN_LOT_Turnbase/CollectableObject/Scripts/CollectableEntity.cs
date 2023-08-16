@@ -59,6 +59,11 @@ namespace JumpeeIsland
             return m_CurrentStat.IsSelfCollect;
         }
 
+        public CollectableType GetCollectableType()
+        {
+            return m_CollectableStats[m_CollectableData.CurrentLevel].CollectableType;
+        }
+
         public override void TakeDamage(int damage, Entity fromEntity)
         {
             throw new System.NotImplementedException();
@@ -85,7 +90,7 @@ namespace JumpeeIsland
 
         public override int GetAttackDamage()
         {
-            throw new System.NotImplementedException();
+            return m_CurrentStat.TrapDamage;
         }
 
         public override IEnumerable<Skill_SO> GetSkills()

@@ -111,18 +111,25 @@ namespace JumpeeIsland
                 m_Creature.CreatureEndMove();
             }
         }
-
+        
         public void SetAnimation(AnimateType animate)
         {
-            m_Animator.SetInteger(AttackIndex, moveIndex);
+            switch (animate)
+            {
+                case AnimateType.Die:
+                    m_Animator.SetTrigger(Die);
+                    break;
+            }
+        }
+
+        public void SetAnimation(AnimateType animate, int jumpCount)
+        {
+            m_Animator.SetInteger(AttackIndex, jumpCount);
             
             switch (animate)
             {
                 case AnimateType.Attack:
                     m_Animator.SetTrigger(Attack);
-                    break;
-                case AnimateType.Die:
-                    m_Animator.SetTrigger(Die);
                     break;
             }
         }

@@ -19,7 +19,6 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent OnClickIdleButton = new(); // send to PlayerFactionManager; invoke at DontMoveButton & MovingPath
 
-        // [NonSerialized] public UnityEvent OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, UnlockComp, PlayerFactionController
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnBuyBuildingMenu = new(); // send to BuyBuildingMenu, invoke at InventoryLoader
 
         [NonSerialized] public UnityEvent<IConfirmFunction> OnInteractBuildingMenu = new(); // send to InteractBuildingMenu, invoke at BuildingController

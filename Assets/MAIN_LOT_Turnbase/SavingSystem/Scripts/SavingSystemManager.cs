@@ -29,6 +29,9 @@ namespace JumpeeIsland
 
         // send to EnvironmentLoader, invoke at ResourceInGame, BuildingInGame, CreatureInGame;
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new();
+        
+        // invoke at InventoryLoader
+        [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnSetUpBuildingMenus = new();
 
         // invoke at JICloudCodeManager
         [NonSerialized] public UnityEvent OnRefreshBalances = new();

@@ -13,11 +13,10 @@ namespace JumpeeIsland
         [SerializeField] private GameObject m_Container;
         [SerializeField] private Image m_ItemIcon;
         
-
         private AsyncOperationHandle m_UCDObjectLoadingHandle;
         private BuyBuildingMenu _mBuyBuildingMenu;
-        private JIInventoryItem m_BuidlingItem;
-        private Vector3 _buildingPosition;
+        protected JIInventoryItem m_BuidlingItem;
+        protected Vector3 _buildingPosition;
         private int _layerMask = 1 << 6;
         private Camera _camera;
 
@@ -29,7 +28,6 @@ namespace JumpeeIsland
         public void TurnOn(JIInventoryItem buildingItem, BuyBuildingMenu buyBuildingMenu)
         {
             m_BuidlingItem = buildingItem;
-            // m_ItemName.text = m_BuidlingItem.inventoryName;
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(m_BuidlingItem.spriteAddress);
             if (_mBuyBuildingMenu == null)
                 _mBuyBuildingMenu = buyBuildingMenu;
@@ -63,10 +61,10 @@ namespace JumpeeIsland
                 return;
 
             _buildingPosition = collidedTile.transform.position;
-            _mBuyBuildingMenu.EndDeal(this);
+            _mBuyBuildingMenu.EndSelectionPhase(this);
         }
 
-        public void ClickYes()
+        public virtual void ClickYes()
         {
             SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition);
         }

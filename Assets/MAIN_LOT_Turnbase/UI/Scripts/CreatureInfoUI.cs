@@ -9,6 +9,7 @@ namespace JumpeeIsland
 {
     public class CreatureInfoUI : MonoBehaviour
     {
+        [SerializeField] private GameObject dontMoveButton;
         [SerializeField] private GameObject infoMenu;
         [SerializeField] private Image entityIcon;
         [SerializeField] private Slider hpSlider;
@@ -32,6 +33,7 @@ namespace JumpeeIsland
         private void ShowUnitInfo(IShowInfo infoGetter)
         {
             MainUI.Instance.OnHideAllMenu.Invoke();
+            dontMoveButton.SetActive(false);
 
             var info = infoGetter.ShowInfo();
             _selectedEntity = info.entity;
@@ -50,6 +52,7 @@ namespace JumpeeIsland
                     skills[info.jump - 1].Active();
 
                 infoMenu.SetActive(true);
+                dontMoveButton.SetActive(true);
             }
 
             if (info.entity.TryGetComponent(out BuildingEntity buildingEntity))

@@ -132,7 +132,6 @@ namespace JumpeeIsland
         public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse)
         {
             m_Info = unitInfo;
-            m_AnimateComp.SetAnimation(AnimateType.Attack);
             Attack(attackResponse);
         }
 
@@ -153,7 +152,9 @@ namespace JumpeeIsland
             attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
             m_AttackComp.Attack(attackPoints, this, currentJump.jumpStep);
-
+            
+            // Attack visual parts
+            m_AnimateComp.SetAnimation(AnimateType.Attack, currentJump.jumpStep);
             ShowAttackRange(attackPoints);
             attackResponser.AttackResponse();
         }

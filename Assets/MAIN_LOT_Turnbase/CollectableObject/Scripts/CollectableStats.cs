@@ -16,19 +16,25 @@ namespace JumpeeIsland
         public string SkinAddress;
         
         [Header("Currency rewards")]
+        [VerticalGroup("RewardPart", VisibleIf = "@CollectableType == JumpeeIsland.CollectableType.REWARD")]
+        [VerticalGroup("RewardPart/Row1")]
         public List<CommandName> Commands;
 
         [Header("Entity rewards")] 
+        [VerticalGroup("RewardPart/Row2")]
         public EntityType SpawnedEntityType;
         [ShowIf("@SpawnedEntityType != EntityType.NONE")] public string EntityName;
         
+        [ShowIf("@CollectableType == JumpeeIsland.CollectableType.TRAP")] public int TrapDamage;
+        
         [Header("Effect rewards")]
+        // [VerticalGroup("RewardPart/Row3")]
         public SkillEffectType _skillEffectType;
         [VerticalGroup("SkillEffect", VisibleIf = "@_skillEffectType != SkillEffectType.None")]
         [VerticalGroup("SkillEffect/Row2")] [SerializeField] private int _duration;
         [VerticalGroup("SkillEffect/Row3")] [SerializeField] private int _magnitude;
         private SkillEffect _skillEffect;
-        
+
         public SkillEffect GetSkillEffect()
         {
             if (_skillEffect == null)

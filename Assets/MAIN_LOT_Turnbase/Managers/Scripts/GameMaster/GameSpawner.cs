@@ -11,7 +11,7 @@ namespace JumpeeIsland
     public class SpawningTier
     {
         public GameMasterCondition tierCondition;
-        [FormerlySerializedAs("decision")] public GameMasterDecision spawningDecision;
+        public GameMasterDecision spawningDecision;
     }
 
     public class GameSpawner : MonoBehaviour
@@ -43,7 +43,7 @@ namespace JumpeeIsland
                     break;
                 currentTier = tier;
             }
-
+            
             // Select game to spawn if spawning condition is passed
             if (currentTier.spawningDecision.CheckGetThrough() == false)
             {

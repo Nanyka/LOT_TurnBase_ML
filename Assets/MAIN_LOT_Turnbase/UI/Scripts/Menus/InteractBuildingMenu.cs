@@ -38,7 +38,8 @@ namespace JumpeeIsland
     {
         [SerializeField] private GameObject _interactBuildingMenu;
         [SerializeField] private GameObject _confirmPanel;
-        [SerializeField] private TextMeshProUGUI _coinText;
+        [SerializeField] private CurrencyGroup _currencyGroup;
+        [SerializeField] private TextMeshProUGUI _confirmMessage;
 
         private IConfirmFunction _currentConfirm;
         
@@ -64,13 +65,15 @@ namespace JumpeeIsland
             var buildingEntity = (BuildingEntity)_currentConfirm.GetEntity();
             var fastUpgrade = new FastUpgrade(buildingEntity);
             _currentConfirm = fastUpgrade;
-            ShowConfirmPanel("Cost: "+buildingEntity.CalculateUpgradePrice());
+            _confirmMessage.text = "Upgrade the building";
+            ShowConfirmPanel(buildingEntity.CalculateUpgradePrice());
         }
 
         public void OnClickSell()
         {
+            _confirmMessage.text = "Sell it at this price?";
             var buildingEntity = (BuildingEntity)_currentConfirm.GetEntity();
-            ShowConfirmPanel("Return: "+buildingEntity.CalculateSellingPrice());
+            ShowConfirmPanel(buildingEntity.CalculateSellingPrice());
         }
 
         public void OnMakeTheDeal()
@@ -78,11 +81,11 @@ namespace JumpeeIsland
             _currentConfirm.ClickYes();
         }
 
-        private void ShowConfirmPanel(string coinText)
+        private void ShowConfirmPanel(int amount)
         {
             _interactBuildingMenu.SetActive(false);
             _confirmPanel.SetActive(true);
-            _coinText.text = coinText;
+            _currencyGroup.VisualCurrency("GEM" ,amount);
             MainUI.Instance.OnShowAnUI.Invoke();
         }
     }

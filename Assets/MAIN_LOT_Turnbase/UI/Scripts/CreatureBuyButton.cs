@@ -61,7 +61,7 @@ namespace JumpeeIsland
                 return;
 
             _spawnPosition = collidedTile.transform.position;
-            m_CreatureMenu.EndDeal(this);
+            m_CreatureMenu.EndSelectionPhase(this, m_CreatureItem);
         }
 
         public virtual void ClickYes()

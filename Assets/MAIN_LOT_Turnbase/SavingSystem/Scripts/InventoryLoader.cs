@@ -14,6 +14,8 @@ namespace JumpeeIsland
 
             foreach (var item in inventories)
                 m_Inventories.Add(item.GetItemDefinition().CustomDataDeserializable.GetAs<JIInventoryItem>());
+            
+            SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
         }
 
         public void SendInventoriesToBuildingMenu()
@@ -37,6 +39,7 @@ namespace JumpeeIsland
         public string inventoryName;
         public InventoryType inventoryType; // To decide which category this inventory item is
         public string spriteAddress;
+        public string description = "Have no information about this entity";
         public string virtualPurchaseId; // How much does it cost to place this item in the game
         public List<string> skinAddress;
         public EntityData EntityData; // Just used in BattleMode to place creatures
@@ -49,6 +52,8 @@ namespace JumpeeIsland
         Building,
         Creature,
         Resource,
-        Drug
+        Tower,
+        Trap,
+        Decoration,
     }
 }
