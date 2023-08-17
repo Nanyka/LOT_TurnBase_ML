@@ -179,15 +179,16 @@ namespace JumpeeIsland
 
         // This method is used to help test this Use Case sample by giving some currency to permit
         // transactions to be completed.
-        private async Task GrantDebugInventory(string inventoryId)
+        private async Task<PlayersInventoryItem> GrantDebugInventory(string inventoryId)
         {
             try
             {
-                await EconomyService.Instance.PlayerInventory.AddInventoryItemAsync(inventoryId);
+                return await EconomyService.Instance.PlayerInventory.AddInventoryItemAsync(inventoryId);
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
+                return null;
             }
         }
 
@@ -204,13 +205,13 @@ namespace JumpeeIsland
             }
         }
 
-        public async Task OnGrantInventory(string inventoryId)
+        public async Task<PlayersInventoryItem> OnGrantInventory(string inventoryId)
         {
             foreach (var inventory in _playersInventory)
                 if (inventory.InventoryItemId.Equals(inventoryId))
-                    return;
+                    return null;
 
-            await GrantDebugInventory(inventoryId);
+            return await GrantDebugInventory(inventoryId);
         }
 
         public async Task OnGrantInventory(string inventoryId, int level)

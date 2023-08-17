@@ -116,6 +116,16 @@ namespace JumpeeIsland
             buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId,amount);
         }
 
+        public MainHallTier GetCurrentTier()
+        {
+            return buildingLoader.GetCurrentTier();
+        }
+        
+        public MainHallTier GetUpcomingTier()
+        {
+            return buildingLoader.GetUpcomingTier();
+        }
+
         #endregion
 
         #region CREATURES

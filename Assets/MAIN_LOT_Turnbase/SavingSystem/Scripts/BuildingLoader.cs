@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -11,6 +12,8 @@ namespace JumpeeIsland
 
         private BuildingController _buildingController;
         private List<BuildingData> _buildingDatas;
+        private MainHallTier _currentTier;
+        private MainHallTier _upcomingTier;
         
         public void StartUpLoadData<T>(T data)
         {
@@ -23,12 +26,34 @@ namespace JumpeeIsland
             _buildingController = GetComponent<BuildingController>();
         }
         
-        private void Init()
+        private async void Init()
         {
             foreach (var building in _buildingDatas)
+            {
+                // refresh MainHallTier if the building is mainHall
+                if (building.BuildingType == BuildingType.MAINHALL)
+                    await UpdateTierInfo(building);
+
                 ConstructBuilding(building);
+            }
 
             _buildingController.Init();
+        }
+
+        private async Task UpdateTierInfo(BuildingData building)
+        {
+            _currentTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel);
+            _upcomingTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel+1);
+        }
+
+        public MainHallTier GetCurrentTier()
+        {
+            return _currentTier;
+        }
+        
+        public MainHallTier GetUpcomingTier()
+        {
+            return _upcomingTier;
         }
 
         public void PlaceNewObject<T>(T data)

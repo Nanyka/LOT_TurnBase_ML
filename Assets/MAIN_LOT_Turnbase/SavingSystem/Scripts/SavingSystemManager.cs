@@ -365,6 +365,11 @@ namespace JumpeeIsland
             return m_CloudConnector.GetRewardByCommandId(commandId);
         }
 
+        public async Task<MainHallTier> GetMainHallTier(int mainhallLevel)
+        {
+            return await m_CloudConnector.GetMainHallTier(mainhallLevel);
+        }
+
         #endregion
 
         #region ECONOMY
@@ -470,6 +475,16 @@ namespace JumpeeIsland
             return m_CloudConnector.GetCurrencySprite(currencyId);
         }
 
+        public MainHallTier GetCurrentTier()
+        {
+            return m_EnvLoader.GetCurrentTier();
+        }
+        
+        public MainHallTier GetUpcomingTier()
+        {
+            return m_EnvLoader.GetUpcomingTier();
+        }
+
         #endregion
 
         #region INVENTORY
@@ -500,9 +515,9 @@ namespace JumpeeIsland
             return m_CloudConnector.GetInventoryByNameOrId(entityName);
         }
 
-        public async void GrantInventory(string inventoryId)
+        public async Task<PlayersInventoryItem> GrantInventory(string inventoryId)
         {
-            await m_CloudConnector.OnGrantInventory(inventoryId);
+            return await m_CloudConnector.OnGrantInventory(inventoryId);
         }
         
         public async void GrantInventory(string inventoryId, int level)

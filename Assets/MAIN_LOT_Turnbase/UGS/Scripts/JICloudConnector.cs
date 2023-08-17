@@ -310,9 +310,9 @@ namespace JumpeeIsland
             return null;
         }
 
-        public async Task OnGrantInventory(string inventoryId)
+        public async Task<PlayersInventoryItem> OnGrantInventory(string inventoryId)
         {
-            await _economyManager.OnGrantInventory(inventoryId);
+            return await _economyManager.OnGrantInventory(inventoryId);
         }
         
         public async Task OnGrantInventory(string inventoryId, int level)
@@ -401,6 +401,11 @@ namespace JumpeeIsland
             }
 
             return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.UpdatePlayerScore(),battleConfig);
+        }
+
+        public async Task<MainHallTier> GetMainHallTier(int curMainHallLevel)
+        {
+            return await _remoteConfigManager.GetMainHallTierConfigs(curMainHallLevel);
         }
 
         #endregion

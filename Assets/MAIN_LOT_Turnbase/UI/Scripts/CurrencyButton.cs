@@ -11,6 +11,7 @@ namespace JumpeeIsland
         public Image m_Icon;
         public TextMeshProUGUI m_Balance;
         public string m_Currency;
+        public GameObject m_badge;
 
         private bool _isInitiated;
 

@@ -192,11 +192,62 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        #region MAINHALL TIERs
+        
+        public async Task<MainHallTier> GetMainHallTierConfigs(int curMainHallLevel)
+        {
+            try
+            {
+                var userAttribute = new MainHallTierUserAttribute { currentLevel = curMainHallLevel };
+
+                await RemoteConfigService.Instance.FetchConfigsAsync(userAttribute, new MainHallTierAppAttribute());
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return null;
+
+                return GetTierConfig();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                return null;
+            }
+        }
+
+        private MainHallTier GetTierConfig()
+        {
+            var json = RemoteConfigService.Instance.appConfig.GetJson("JI_MAINHALL_TIER");
+            return JsonUtility.FromJson<MainHallTier>(json);
+        }
+        
+        private struct MainHallTierUserAttribute
+        {
+            public int currentLevel;
+        }
+        
+        private struct MainHallTierAppAttribute { }
+
+        #endregion
     }
     
     public enum NumericConfigName
     {
         JI_COLLECT_CREATURE_RATE,
         JI_TOWNHOUSE_SPACE
+    }
+    
+    [Serializable]
+    public class MainHallTier
+    {
+        public List<TierItem> TierItems = new();
+    }
+    
+    [Serializable]
+    public class TierItem
+    {
+        public string itemName;
+        public string inventoryId;
+        public int amount;
     }
 }
