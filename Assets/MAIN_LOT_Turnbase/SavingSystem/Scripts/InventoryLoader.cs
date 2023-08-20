@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Services.Economy.Model;
 using UnityEngine;
@@ -8,6 +9,11 @@ namespace JumpeeIsland
     {
         private List<JIInventoryItem> m_Inventories;
 
+        private void Start()
+        {
+            GameFlowManager.Instance.OnStartGame.AddListener(SetupBuildingMenu);
+        }
+
         public void SetData(List<PlayersInventoryItem> inventories)
         {
             m_Inventories = new();
@@ -15,6 +21,11 @@ namespace JumpeeIsland
             foreach (var item in inventories)
                 m_Inventories.Add(item.GetItemDefinition().CustomDataDeserializable.GetAs<JIInventoryItem>());
             
+            // SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
+        }
+
+        private void SetupBuildingMenu(long arg0)
+        {
             SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
         }
 

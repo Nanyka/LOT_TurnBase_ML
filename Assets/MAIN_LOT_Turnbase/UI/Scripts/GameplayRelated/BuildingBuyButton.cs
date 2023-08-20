@@ -12,6 +12,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private GameObject m_Container;
         [SerializeField] private Image m_ItemIcon;
+        [SerializeField] private TextMeshProUGUI m_Price;
         
         private AsyncOperationHandle m_UCDObjectLoadingHandle;
         private BuyBuildingMenu _mBuyBuildingMenu;
@@ -32,6 +33,10 @@ namespace JumpeeIsland
             if (_mBuyBuildingMenu == null)
                 _mBuyBuildingMenu = buyBuildingMenu;
 
+            var costs = SavingSystemManager.Instance.GetPurchaseCost(buildingItem.virtualPurchaseId);
+            if (costs.Count > 0)
+                m_Price.text = costs[0].amount.ToString();
+            
             m_Container.SetActive(true);
         }
 

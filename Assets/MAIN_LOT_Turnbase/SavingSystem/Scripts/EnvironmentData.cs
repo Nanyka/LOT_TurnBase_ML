@@ -68,11 +68,11 @@ namespace JumpeeIsland
                 building.FactionType = FactionType.Enemy;
 
             EnemyData.Clear();
-            foreach (var creatureData in PlayerData)
-            {
-                creatureData.FactionType = FactionType.Enemy;
-                EnemyData.Add(creatureData);
-            }
+            // foreach (var creatureData in PlayerData)
+            // {
+            //     creatureData.FactionType = FactionType.Enemy;
+            //     EnemyData.Add(creatureData);
+            // }
 
             PlayerData.Clear();
         }

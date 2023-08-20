@@ -240,6 +240,7 @@ namespace JumpeeIsland
     [Serializable]
     public class MainHallTier
     {
+        public int MaxAmountOfBuilding;
         public List<TierItem> TierItems = new();
     }
     

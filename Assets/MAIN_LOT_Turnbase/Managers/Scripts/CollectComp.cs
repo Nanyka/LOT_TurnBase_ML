@@ -7,6 +7,7 @@ namespace JumpeeIsland
     public class CollectComp : MonoBehaviour
     {
         [SerializeField] private bool _isForBattleMode;
+        [SerializeField] private ParticleSystem _collectingVfx;
         
         private UnityEvent<Entity> _dieEvent;
         
@@ -23,6 +24,7 @@ namespace JumpeeIsland
             if (other.TryGetComponent(out CreatureEntity creatureEntity))
             {
                 Die(creatureEntity);
+                _collectingVfx.Play();
             }
         }
 

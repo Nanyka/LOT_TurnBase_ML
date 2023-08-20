@@ -90,6 +90,11 @@ namespace JumpeeIsland
             }
         }
 
+        public async Task OnSaveEnvById(EnvironmentData envData, string playerId)
+        {
+            await _cloudCodeManager.SaveEnvById(envData, playerId);
+        }
+
         #endregion
 
         #region CURRENCY DATA

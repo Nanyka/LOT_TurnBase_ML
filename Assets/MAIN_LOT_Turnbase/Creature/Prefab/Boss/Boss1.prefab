@@ -19409,220 +19409,6 @@ Transform:
   m_Father: {fileID: 3973109056894181792}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2768427019344741368
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6824173235661951956}
-  - component: {fileID: 8189328185401524035}
-  - component: {fileID: 2559487142414478394}
-  - component: {fileID: 8875070415745457599}
-  - component: {fileID: 8040072830879622060}
-  - component: {fileID: 5892890124370789172}
-  - component: {fileID: 3517056521326505017}
-  - component: {fileID: 1087148151732254873}
-  - component: {fileID: 2798047592650661917}
-  m_Layer: 3
-  m_Name: GOAPBrain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6824173235661951956
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5897075231589375173}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8189328185401524035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7ac63be36732455aa4f22c1140c67ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mCurrentGoal:
-  - GoalId: GOAWAY
-    Remove: 0
-    Weight: 1
---- !u!114 &2559487142414478394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad9707d168994fbf9f13bb84bea476d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Entity: {fileID: 9072602217414707417}
-  m_Skills: {fileID: 1670896166245438440}
-  detectRange: 2
---- !u!114 &8875070415745457599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277837606e15342449d5b9e9dcc820ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Actions: []
-  CurrentAction: {fileID: 0}
-  CurrentGoal:
-    GoalId: 
-    Remove: 0
-    Weight: 0
-  finishDistance: 3
-  m_GoalManager: {fileID: 8189328185401524035}
-  m_Sensor: {fileID: 2559487142414478394}
---- !u!114 &8040072830879622060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f62a0dae0f894abdad468577f508cf13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActionName: Action
-  Cost: 5
-  Target: {fileID: 0}
-  TargetTag: 
-  Duration: 0
-  PreConditions: []
-  AfterEffects:
-  - key: GOAWAY
-    value: 0
-  mNavMeshAgent: {fileID: 0}
-  running: 0
---- !u!114 &5892890124370789172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28ef0c43424246eda89b88b2de47daf3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActionName: Go away
-  Cost: 1
-  Target: {fileID: 0}
-  TargetTag: 
-  Duration: 0
-  PreConditions:
-  - key: GOLEFT
-    value: 0
-  AfterEffects:
-  - key: GOAWAY
-    value: 0
-  mNavMeshAgent: {fileID: 0}
-  running: 0
---- !u!114 &3517056521326505017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e4108f9d054bc28af6d4e629fa37ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActionName: Action
-  Cost: 1
-  Target: {fileID: 0}
-  TargetTag: 
-  Duration: 0
-  PreConditions:
-  - key: GORIGHT
-    value: 0
-  AfterEffects:
-  - key: GOAWAY
-    value: 0
-  mNavMeshAgent: {fileID: 0}
-  running: 0
---- !u!114 &1087148151732254873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0a6636589fc4c48b436f884f31e6210, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActionName: Go backward
-  Cost: 1
-  Target: {fileID: 0}
-  TargetTag: 
-  Duration: 0
-  PreConditions:
-  - key: GOBACKWARD
-    value: 0
-  AfterEffects:
-  - key: GOAWAY
-    value: 0
-  mNavMeshAgent: {fileID: 0}
-  running: 0
---- !u!114 &2798047592650661917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768427019344741368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55b5690d1de142d3a78fb495efe1a8c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActionName: Action
-  Cost: 1
-  Target: {fileID: 0}
-  TargetTag: 
-  Duration: 0
-  PreConditions:
-  - key: GOFORWARD
-    value: 0
-  AfterEffects:
-  - key: GOAWAY
-    value: 0
-  mNavMeshAgent: {fileID: 0}
-  running: 0
 --- !u!1 &3308724003199656534
 GameObject:
   m_ObjectHideFlags: 0
@@ -24554,7 +24340,8 @@ GameObject:
   - component: {fileID: 5897075231589375173}
   - component: {fileID: 7791693430879858001}
   - component: {fileID: 6040687971680747655}
-  - component: {fileID: 4521518596673802021}
+  - component: {fileID: 6786286032253487320}
+  - component: {fileID: 2715792763953433847}
   - component: {fileID: 9072602217414707417}
   - component: {fileID: 7200372622406747792}
   - component: {fileID: 4882782820569169678}
@@ -24583,7 +24370,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6824173235661951956}
   - {fileID: 3973109056894181792}
   - {fileID: 231894882408392285}
   - {fileID: 3443972647525049879}
@@ -24638,7 +24424,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4521518596673802021
+--- !u!114 &6786286032253487320
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24647,11 +24433,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 3426229457550688422}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba288a18de3014bc29c02ab2e7697ceb, type: 3}
+  m_Script: {fileID: 11500000, guid: 02c14ec0fbf04b77a7dcdb0dfef8933a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Sensors:
+  - {fileID: 11400000, guid: 205982bd9bcda4878a1547d6a4f35342, type: 2}
+  - {fileID: 11400000, guid: ec934e9bb750b46bd85d31ec1e82bfcd, type: 2}
+  - {fileID: 11400000, guid: 8e5cd0535e3a7433092adfe634d66348, type: 2}
+--- !u!114 &2715792763953433847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3426229457550688422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d438f779f74cc08c213dc57a685e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _tranformPart: {fileID: 5897075231589375173}
   m_Entity: {fileID: 9072602217414707417}
+  _isUsed: 0
   InferMoving:
     AgentIndex: 0
     Action: 0
@@ -24664,7 +24467,7 @@ MonoBehaviour:
     VoteAmount: 0
   _isSwitchBrain: 0
   _isJumpable: 1
-  m_Brain: {fileID: 8875070415745457599}
+  _sensor: {fileID: 6786286032253487320}
 --- !u!114 &9072602217414707417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24740,10 +24543,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed420d7d5404042af8a87f17a06945b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkillSOs:
-  - {fileID: 11400000, guid: ecd8ea942d8304f4586acc4f2acd1829, type: 2}
-  - {fileID: 11400000, guid: faaeb1a0e52294303a61972542f82753, type: 2}
-  - {fileID: 11400000, guid: 1737343eb48e5429882832db9f95dcbe, type: 2}
 --- !u!114 &935929486893718955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24756,6 +24555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _remainTempJumpBoost: 0
+  _magnitudeJumpBoost: 0
 --- !u!114 &6420186199625587287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24804,7 +24605,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventoryId: CREATURE1
-  _isUnlockCreature: 1
 --- !u!1 &3682097021817728150
 GameObject:
   m_ObjectHideFlags: 0

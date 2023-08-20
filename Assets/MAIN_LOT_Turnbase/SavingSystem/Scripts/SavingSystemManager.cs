@@ -259,10 +259,19 @@ namespace JumpeeIsland
             m_EnvLoader.SpawnCollectable(collectableData);
         }
 
+        // Player pay some cost for constructing the building
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)
         {
+            if (GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
+            {
+                MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
+                return;
+            }
+            
             if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
 
+            Debug.Log("How can you get this line even when reaching the max amount of construction");
+            
             // ...and get the building in place
             var newBuilding = new BuildingData
             {
@@ -273,6 +282,7 @@ namespace JumpeeIsland
             m_EnvLoader.PlaceABuilding(newBuilding);
         }
 
+        // Spawn from a reward, player pay nothing for it
         public async void OnPlaceABuilding(string buildingName, Vector3 position, bool isFromCollectable)
         {
             var inventoryItem = GetInventoryItemByName(buildingName);
@@ -339,6 +349,11 @@ namespace JumpeeIsland
                 CurrentLevel = 0
             };
             m_EnvLoader.SpawnAnEnemy(newEntity);
+        }
+
+        public async void OnSaveEnvById(string playerId)
+        {
+            await m_CloudConnector.OnSaveEnvById(m_EnvLoader.GetData(), playerId);
         }
 
         #endregion

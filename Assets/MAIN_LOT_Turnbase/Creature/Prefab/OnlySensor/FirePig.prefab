@@ -39177,6 +39177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tranformPart: {fileID: 5386727145679241959}
   m_Entity: {fileID: 1414854351259557105}
+  _isUsed: 0
   InferMoving:
     AgentIndex: 0
     Action: 0
@@ -39204,7 +39205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 5386727145679241959}
   m_UnitStats:
-  - {fileID: 11400000, guid: 2d8085b9981de4423ba7bf38794c95fa, type: 2}
+  - {fileID: 11400000, guid: 26c7dde23707c4612bc18a6fd4e71140, type: 2}
   m_SkinComp: {fileID: 1689942937867861285}
   m_HealthComp: {fileID: 5907206403582392406}
   m_AttackComp: {fileID: 5754865612099444142}
@@ -39277,6 +39278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _remainTempJumpBoost: 0
+  _magnitudeJumpBoost: 0
 --- !u!114 &7059332672816675786
 MonoBehaviour:
   m_ObjectHideFlags: 0

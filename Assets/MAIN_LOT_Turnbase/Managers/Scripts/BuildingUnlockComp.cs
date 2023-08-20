@@ -18,12 +18,8 @@ namespace JumpeeIsland
             var upcomingTier = SavingSystemManager.Instance.GetUpcomingTier();
 
             foreach (var item in upcomingTier.TierItems)
-            {
                 if (item.inventoryId.IsNullOrWhitespace())
-                {
-                    SavingSystemManager.Instance.GrantInventory(item.inventoryId);
-                }
-            }
+                    await SavingSystemManager.Instance.GrantInventory(item.inventoryId);
             
             await SavingSystemManager.Instance.RefreshEconomy();
         }

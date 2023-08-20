@@ -21,6 +21,8 @@ namespace JumpeeIsland
             foreach (var creature in creatures)
                 if (creature.CreatureType == CreatureType.BOSS)
                     totalAmount++;
+            
+            Debug.Log($"Total amount of boss: {totalAmount}");
 
             if (totalAmount > 0)
                 _losePanel.SetActive(true);

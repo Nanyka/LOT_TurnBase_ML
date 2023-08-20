@@ -85,8 +85,22 @@ namespace JumpeeIsland
             catch (CloudCodeException e)
             {
                 HandleCloudCodeException(e);
-                throw new CloudCodeResultUnavailableException(e,
-                    "Handled exception in CallResetDataEndpoint.");
+                throw new CloudCodeResultUnavailableException(e, "Handled exception in CallResetDataEndpoint.");
+            }
+        }
+
+        public async Task SaveEnvById(EnvironmentData envData, string playerId)
+        {
+            try
+            {
+                await CloudCodeService.Instance.CallEndpointAsync(
+                        "JumpeeIsland_SetEnvDataByPlayerId",
+                        new Dictionary<string, object>{{"EnvData",envData},{"PlayerId", playerId}});
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e, "Handled exception in SaveEnvById.");
             }
         }
 
