@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbf1697fabb846e3b99a078da6de5cd6, type: 3}
-  m_Name: Tier0
+  m_Name: Tier1_TreeCondition
   m_EditorClassIdentifier: 
-  m_EntityType: 4
+  m_EntityType: 1
   _getThroughCondition:
     MapSize: 0
     Currency: 0
     CurrencyCompare: 0
     CurrencyAmount: 0
-    Storage: 1
-    StorageCompare: 1
-    StorageAmount: 1
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 0
@@ -33,8 +33,8 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
-    IsExpCondition: 0
-    playerExp: 0
+    IsExpCondition: 1
+    playerExp: 20
     IsUICondition: 0
     UIElement: 
     IsSelectEntity: 0
@@ -51,9 +51,9 @@ MonoBehaviour:
     Storage: 0
     StorageCompare: 0
     StorageAmount: 0
-    Resource: 1
+    Resource: 2
     ResourceCompare: 1
-    ResourceAmount: 2
+    ResourceAmount: 3
     Collectable: 0
     CollectableCompare: 0
     CollectableAmount: 0
@@ -74,6 +74,5 @@ MonoBehaviour:
     IsCheckBossUnlock: 0
     BossUnlockAmount: 0
   _objects:
-  - Pig
-  _gapDuration: 3
-  currentGapCount: 3
+  - Tree1
+  _gapDuration: 0

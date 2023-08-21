@@ -43,8 +43,8 @@ namespace JumpeeIsland
 
         public override EnvironmentData GetDataForSave()
         {
-            // _playerEnvCache.RemoveZeroHpPlayerCreatures();
             _playerEnvCache.AbstractInBattleCreatures(_environmentData.PlayerData);
+            _playerEnvCache.RemoveZeroHpPlayerCreatures();
             return _playerEnvCache;
         }
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -57,6 +58,12 @@ namespace JumpeeIsland
                 return;
 
             HideCreatureMenu();
+            StartCoroutine(WaitToStartGame());
+        }
+
+        private IEnumerator WaitToStartGame()
+        {
+            yield return new WaitForSeconds(1f);
             MainUI.Instance.OnEnableInteract.Invoke();
             GameFlowManager.Instance.OnKickOffEnv.Invoke();
         }

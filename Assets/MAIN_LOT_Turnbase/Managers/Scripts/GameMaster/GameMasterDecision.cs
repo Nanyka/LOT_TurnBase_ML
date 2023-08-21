@@ -16,7 +16,7 @@ namespace JumpeeIsland
         [SerializeField] private string[] _objects;
         [SerializeField] private int _gapDuration;
 
-        [SerializeField] private int currentGapCount;
+        private int currentGapCount;
 
         public IEnumerable<string> GetObjectsToSpawn()
         {

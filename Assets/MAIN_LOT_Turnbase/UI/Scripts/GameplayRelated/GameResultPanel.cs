@@ -25,12 +25,14 @@ namespace JumpeeIsland
 
         private void BattleStatsCache()
         {
-            _startGameEnemyCount = GameFlowManager.Instance.GetEnvManager().CountFaction(FactionType.Enemy);
+            _startGameEnemyCount =
+                SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
         }
 
         private async void ShowGameOverPanel()
         {
-            var enemyCount = GameFlowManager.Instance.GetEnvManager().CountFaction(FactionType.Enemy);
+            var enemyBuildingCount =
+                SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
             int winStar = 0;
             int score = 0;
 
@@ -38,7 +40,7 @@ namespace JumpeeIsland
             if (SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall())
                 winStar++;
 
-            var winRate = (enemyCount - _startGameEnemyCount) * 1f / _startGameEnemyCount;
+            var winRate = (enemyBuildingCount - _startGameEnemyCount) * 1f / _startGameEnemyCount;
 
             // +1star for devastating 50% enemy's tribe
             if (winRate > 0.5f)
@@ -120,7 +122,7 @@ namespace JumpeeIsland
                 else
                     score = Mathf.RoundToInt(Random.Range(0, gameProcess.winStack > 0 ? 1 : 0 + winStar) * 10);
                 _scoreText.text = score.ToString();
-                
+
                 _gameoverPanel.SetActive(true);
             }
             else
@@ -130,7 +132,7 @@ namespace JumpeeIsland
 
             // Record score
             // Save battle statistic
-            SavingSystemManager.Instance.SaveBattleResult(winStar,score);
+            SavingSystemManager.Instance.SaveBattleResult(winStar, score);
         }
     }
 }

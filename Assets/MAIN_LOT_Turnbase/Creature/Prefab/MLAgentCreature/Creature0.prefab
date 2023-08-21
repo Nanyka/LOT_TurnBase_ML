@@ -15037,8 +15037,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 709bc3ad896143bd8531f3fee5abe879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tranformPart: {fileID: 6024829749437263407}
+  _rotatePart: {fileID: 5121614693150466284}
   m_Entity: {fileID: 347806203205721731}
+  _isUsed: 0
   InferMoving:
     AgentIndex: 0
     Action: 0
@@ -15073,20 +15074,6 @@ MonoBehaviour:
   m_EffectComp: {fileID: 432717761436961589}
   m_AttackPath: {fileID: 129415396433205140}
   m_AnimateComp: {fileID: 1101228483760157124}
-  m_CreatureData:
-    EntityName: 
-    SkinAddress: 
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    FactionType: 0
-    CurrentHp: 0
-    CurrentLevel: 0
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 0
-    StregthBoostRemain: 0
 --- !u!114 &3100976775438255294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15115,7 +15102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d2ef52d0914d41ba4570437b257075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpSlider: {fileID: 6236706587309151158}
+  _healthBar: {fileID: 345473499233386904}
 --- !u!114 &3318205415804774964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15128,9 +15115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackVFX:
-  - {fileID: 5326698967971819107}
-  - {fileID: 5919318625885062259}
 --- !u!114 &3224619648339758090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15143,10 +15127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed420d7d5404042af8a87f17a06945b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkillSOs:
-  - {fileID: 11400000, guid: 59da13f6d365245a28fedfbebb3acde6, type: 2}
-  - {fileID: 11400000, guid: 72abe4fb9be184ff8be9bb601bc2a817, type: 2}
-  - {fileID: 11400000, guid: 6a5dde6c53b944093b4e98011f68111b, type: 2}
 --- !u!114 &432717761436961589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15159,6 +15139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _remainTempJumpBoost: 0
+  _magnitudeJumpBoost: 0
 --- !u!114 &129415396433205140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15194,6 +15176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 0}
+  m_RotatePart: {fileID: 5121614693150466284}
 --- !u!1 &2519806773560449328
 GameObject:
   m_ObjectHideFlags: 0
@@ -63778,6 +63761,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6433813801746699020, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
       propertyPath: m_Name
       value: HealthCanvas
@@ -63790,24 +63809,28 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7515107552281743395, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
---- !u!224 &5981194135269849869 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 899191763252822658, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
-  m_PrefabInstance: {fileID: 6880350439234926991}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6236706587309151158 stripped
+--- !u!114 &345473499233386904 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 717991934847248953, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6606978653053188119, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
   m_PrefabInstance: {fileID: 6880350439234926991}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Script: {fileID: 11500000, guid: a58913ee4f6c4c89b628cf0ac85e8fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &5981194135269849869 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 899191763252822658, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+  m_PrefabInstance: {fileID: 6880350439234926991}
+  m_PrefabAsset: {fileID: 0}

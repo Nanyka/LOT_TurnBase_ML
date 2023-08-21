@@ -14,6 +14,12 @@ namespace JumpeeIsland
         public void Init(UnityEvent<Entity> dieEvent)
         {
             _dieEvent = dieEvent;
+            MainUI.Instance.OnEnableInteract.AddListener(EnableTrigger);
+        }
+
+        private void EnableTrigger()
+        {
+            GetComponent<Collider>().isTrigger = true;
         }
 
         private void OnTriggerEnter(Collider other)

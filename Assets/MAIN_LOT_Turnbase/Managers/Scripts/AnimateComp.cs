@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class AnimateComp : MonoBehaviour
     {
         [SerializeField] private Animator m_Animator;
-        
+
         private List<Vector3> tiles = new();
-        private Transform m_Transform;
+        [SerializeField] private Transform m_RotatePart;
         private ICreatureMove m_Creature;
         private Vector3 direction;
         private Vector3 destination; // Ending point of the jump (Point B)
@@ -29,7 +30,8 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            m_Transform = transform;
+            if (m_RotatePart == null)
+                m_RotatePart = transform;
         }
 
         private void Update()
@@ -56,7 +58,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.GetEnvManager().GetMovementInspector().MovingPath(currPos, moveDir, tiles);
             ResetMoves();
         }
-        
+
         private void ResetMoves()
         {
             moveIndex = 0;
@@ -72,8 +74,8 @@ namespace JumpeeIsland
             }
 
             destination = tiles[moveIndex];
-            direction = new Vector3(destination.x, m_Transform.position.y, destination.z);
-            m_Transform.LookAt(direction);
+            direction = new Vector3(destination.x, m_RotatePart.position.y, destination.z);
+            m_RotatePart.LookAt(direction);
 
             if (Mathf.Abs(destination.y - transform.position.y) < 0.1f)
             {
@@ -111,7 +113,7 @@ namespace JumpeeIsland
                 m_Creature.CreatureEndMove();
             }
         }
-        
+
         public void SetAnimation(AnimateType animate)
         {
             switch (animate)
@@ -125,7 +127,7 @@ namespace JumpeeIsland
         public void SetAnimation(AnimateType animate, int jumpCount)
         {
             m_Animator.SetInteger(AttackIndex, jumpCount);
-            
+
             switch (animate)
             {
                 case AnimateType.Attack:

@@ -10,9 +10,8 @@ namespace JumpeeIsland
     public class CreatureInGame : MonoBehaviour, IGetEntityInfo, IShowInfo, IRemoveEntity, ICreatureMove,
         IAttackResponse
     {
-        [FormerlySerializedAs("_rotatePart")] [Header("Creature Components")] [SerializeField]
-        protected Transform _tranformPart;
-
+        [Header("Creature Components")] 
+        [SerializeField] protected Transform m_RotatePart;
         [SerializeField] protected CreatureEntity m_Entity;
 
         protected IFactionController m_FactionController;
@@ -24,9 +23,8 @@ namespace JumpeeIsland
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
-            _tranformPart.eulerAngles = creatureData.Rotation;
+            m_RotatePart.eulerAngles = creatureData.Rotation;
             m_Transform.position = creatureData.Position;
-
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
             MarkAsUsedThisTurn();
@@ -46,6 +44,7 @@ namespace JumpeeIsland
         public void MoveDirection(int moveDirection)
         {
             if (_isUsed) return; // Avoid double moving
+            
 
             _movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
@@ -63,8 +62,8 @@ namespace JumpeeIsland
 
         public virtual void CreatureEndMove()
         {
-            m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
-            if (GetJumpStep() > 0)
+            m_Entity.UpdateTransform(_movement.targetPos, m_RotatePart.eulerAngles);
+            if (GetJumpStep() > 0 && m_Entity.CheckEntityDie() == false)
                 Attack();
             else
                 m_FactionController.WaitForCreature();
@@ -119,7 +118,7 @@ namespace JumpeeIsland
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _tranformPart.forward, _movement.jumpCount, m_FactionController.GetFaction());
+            return (m_Transform.position, m_Transform.forward, _movement.jumpCount, m_FactionController.GetFaction());
         }
 
         public EntityData GetEntityData()

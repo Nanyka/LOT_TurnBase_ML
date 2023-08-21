@@ -2164,6 +2164,10 @@ MonoBehaviour:
     prefCollector: {fileID: 644342298}
     amount: 0
     expandable: 1
+  - prefab: {fileID: 4250343066950387967, guid: 90b3ca4328cf74e6ea9968948341ae2f, type: 3}
+    prefCollector: {fileID: 644342298}
+    amount: 0
+    expandable: 1
   pooledItems: []
 --- !u!114 &644342301
 MonoBehaviour:
@@ -4831,7 +4835,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 314.125, y: 0}
   m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &959735593199267580
@@ -5861,6 +5865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dcdb1622976427c8acc780fdc2907e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontMoveButton: {fileID: 0}
   infoMenu: {fileID: 0}
   entityIcon: {fileID: 0}
   hpSlider: {fileID: 1104138478919802956}
@@ -56759,7 +56764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 126.375, y: 0}
   m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2843275376256944562
@@ -57969,6 +57974,7 @@ MonoBehaviour:
   m_Icon: {fileID: 2797046443812559519}
   m_Balance: {fileID: 1497474378925528626}
   m_Currency: FOOD
+  m_badge: {fileID: 0}
 --- !u!1 &4361608524041219826
 GameObject:
   m_ObjectHideFlags: 0
@@ -64299,6 +64305,7 @@ MonoBehaviour:
   m_Icon: {fileID: 8901374369436026952}
   m_Balance: {fileID: 1044907418114920632}
   m_Currency: GEM
+  m_badge: {fileID: 0}
 --- !u!114 &5971606789255052088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64801,6 +64808,7 @@ MonoBehaviour:
   m_Icon: {fileID: 4732015810810041023}
   m_Balance: {fileID: 2178941939679653996}
   m_Currency: WOOD
+  m_badge: {fileID: 0}
 --- !u!114 &6680647860010833041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64894,7 +64902,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 35.75, y: 0}
   m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6794563294647159597
@@ -65025,7 +65033,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983e05a929084ca3871e02e4284fdff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currenciesText: {fileID: 0}
   _currencyButtons:
   - {fileID: 8367785832740901102}
   - {fileID: 4349307966069499247}
@@ -65245,6 +65252,7 @@ MonoBehaviour:
   m_Icon: {fileID: 3146652295014043936}
   m_Balance: {fileID: 7713218037940765689}
   m_Currency: MOVE
+  m_badge: {fileID: 0}
 --- !u!224 &7209388062314621666
 RectTransform:
   m_ObjectHideFlags: 0
@@ -66157,6 +66165,7 @@ MonoBehaviour:
   m_Icon: {fileID: 4957907993294815027}
   m_Balance: {fileID: 41534393999979076}
   m_Currency: POP
+  m_badge: {fileID: 0}
 --- !u!224 &8397342251879938062
 RectTransform:
   m_ObjectHideFlags: 0
@@ -66450,7 +66459,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 220.375, y: 0}
   m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &8774623736906255874
@@ -71432,6 +71441,7 @@ MonoBehaviour:
   m_Icon: {fileID: 5113496917648505260}
   m_Balance: {fileID: 1572856250219365100}
   m_Currency: COIN
+  m_badge: {fileID: 0}
 --- !u!222 &9014880397654281198
 CanvasRenderer:
   m_ObjectHideFlags: 0

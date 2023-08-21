@@ -54,6 +54,7 @@ namespace JumpeeIsland
         // Use a distinct function to get data for saving and override it in BattleEnvLoader
         public virtual EnvironmentData GetDataForSave()
         {
+            _environmentData.RemoveZeroHpPlayerCreatures();
             return _environmentData;
         }
 

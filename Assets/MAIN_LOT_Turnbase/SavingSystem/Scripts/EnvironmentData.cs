@@ -168,6 +168,11 @@ namespace JumpeeIsland
             return BuildingData.Count(t => t.EntityName == "MainHall") == 0;
         }
 
+        public int CountEnemyBuilding(FactionType enemyFaction)
+        {
+            return BuildingData.Count(t => t.FactionType == enemyFaction);
+        }
+
         public void GatherCreature(string creatureName)
         {
             var creatureStats =

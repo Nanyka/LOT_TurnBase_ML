@@ -9,7 +9,7 @@ namespace JumpeeIsland
 {
     public class MainUI : Singleton<MainUI>
     {
-        [NonSerialized] public UnityEvent OnEnableInteract = new(); // send to DontMoveButton; invoke here in EcoMode and at CreatureMenu in BattleMode
+        [NonSerialized] public UnityEvent OnEnableInteract = new(); // send to DontMoveButton; invoke here in EcoMode and at DropTroopMenu in BattleMode
 
         [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController
 

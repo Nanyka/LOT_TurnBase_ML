@@ -54028,7 +54028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba288a18de3014bc29c02ab2e7697ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tranformPart: {fileID: 4635957594234856614}
+  _rotatePart: {fileID: 7434106514571393700}
   m_Entity: {fileID: 1058338714148705559}
   _isUsed: 0
   InferMoving:
@@ -54042,6 +54042,7 @@ MonoBehaviour:
     Reward: 0
     VoteAmount: 0
   _isSwitchBrain: 0
+  _isJumpable: 1
   m_Brain: {fileID: 1671508591420530133}
 --- !u!114 &1058338714148705559
 MonoBehaviour:
@@ -54065,19 +54066,6 @@ MonoBehaviour:
   m_EffectComp: {fileID: 7521671476546444471}
   m_AttackPath: {fileID: 5755475502778399452}
   m_AnimateComp: {fileID: 2533490325625930084}
-  m_CreatureData:
-    EntityName: 
-    SkinAddress: 
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    FactionType: 0
-    CurrentHp: 0
-    CurrentLevel: 0
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 0
 --- !u!114 &4817795886573211842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54106,7 +54094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d2ef52d0914d41ba4570437b257075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpSlider: {fileID: 7202628283973531252}
+  _healthBar: {fileID: 3581071487548056666}
 --- !u!114 &2832907987620167857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54131,10 +54119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed420d7d5404042af8a87f17a06945b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkillSOs:
-  - {fileID: 11400000, guid: 073993c01f8454300b30c26152c77a6c, type: 2}
-  - {fileID: 11400000, guid: b25a0cd75b8524b8489e0e6f4a5e2006, type: 2}
-  - {fileID: 11400000, guid: fa1e369e9f75345c99e19f4db8a46893, type: 2}
 --- !u!114 &7521671476546444471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54147,9 +54131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackVFX:
-  - {fileID: 8349831276442028496}
-  - {fileID: 941806135244347268}
+  _remainTempJumpBoost: 0
+  _magnitudeJumpBoost: 0
 --- !u!114 &5755475502778399452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54185,7 +54168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 0}
-  tiles: []
+  m_RotatePart: {fileID: 7434106514571393700}
 --- !u!1 &8426685239884106004
 GameObject:
   m_ObjectHideFlags: 0
@@ -63858,6 +63841,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2787422168822530689, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 4344730196734632291, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6433813801746699020, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
       propertyPath: m_Name
       value: HealthCanvas
@@ -63870,20 +63889,24 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7515107552281743395, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
---- !u!114 &7202628283973531252 stripped
+--- !u!114 &3581071487548056666 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 717991934847248953, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6606978653053188119, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
   m_PrefabInstance: {fileID: 7638722477199596621}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Script: {fileID: 11500000, guid: a58913ee4f6c4c89b628cf0ac85e8fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7383831608582889167 stripped

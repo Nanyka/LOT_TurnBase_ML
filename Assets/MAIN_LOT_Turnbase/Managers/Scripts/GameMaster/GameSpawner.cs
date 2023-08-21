@@ -11,7 +11,8 @@ namespace JumpeeIsland
     public class SpawningTier
     {
         public GameMasterCondition tierCondition;
-        public GameMasterDecision spawningDecision;
+        public GameMasterDecision spawnGameDecision;
+        public GameMasterDecision spawnTreeDecision;
     }
 
     public class GameSpawner : MonoBehaviour
@@ -45,26 +46,42 @@ namespace JumpeeIsland
             }
             
             // Select game to spawn if spawning condition is passed
-            if (currentTier.spawningDecision.CheckGetThrough() == false)
+            if (currentTier.spawnGameDecision.CheckGetThrough() == false)
             {
-                var gameList = currentTier.spawningDecision.GetObjectsToSpawn();
+                var gameList = currentTier.spawnGameDecision.GetObjectsToSpawn();
                 if (gameList != null && gameList.Any())
                 {
                     var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
                     if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
                     {
-                        switch (currentTier.spawningDecision.GetEntityType())
+                        switch (currentTier.spawnGameDecision.GetEntityType())
                         {
                             case EntityType.COLLECTABLE:
                                 SavingSystemManager.Instance.OnSpawnCollectable(
                                     gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile, 0);
                                 break;
-                            case EntityType.RESOURCE:
-                                SavingSystemManager.Instance.OnSpawnResource(
-                                    gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
-                                break;
                             case EntityType.ENEMY:
                                 SavingSystemManager.Instance.OnSpawnMovableEntity(
+                                    gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
+                                break;
+                        }
+                    }
+                }
+            }
+            
+            // Select game to spawn if spawning condition is passed
+            if (currentTier.spawnTreeDecision.CheckGetThrough() == false)
+            {
+                var gameList = currentTier.spawnTreeDecision.GetObjectsToSpawn();
+                if (gameList != null && gameList.Any())
+                {
+                    var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
+                    if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                    {
+                        switch (currentTier.spawnTreeDecision.GetEntityType())
+                        {
+                            case EntityType.RESOURCE:
+                                SavingSystemManager.Instance.OnSpawnResource(
                                     gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
                                 break;
                         }

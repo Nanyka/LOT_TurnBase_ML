@@ -77,8 +77,8 @@ namespace JumpeeIsland
         public override void DieIndividualProcess(Entity killedByEntity)
         {
             // grant effect on killedByEntity
-            if (killedByEntity != this&& m_CurrentStat._skillEffectType != SkillEffectType.None)
-                    m_CurrentStat.GetSkillEffect().TakeEffectOn(this, killedByEntity);
+            if (killedByEntity != this && m_CurrentStat._skillEffectType != SkillEffectType.None)
+                m_CurrentStat.GetSkillEffect().TakeEffectOn(this, killedByEntity);
 
             // TODO add animation or effect here
         }
@@ -97,9 +97,9 @@ namespace JumpeeIsland
         {
             throw new System.NotImplementedException();
         }
-        
+
         #region SKIN
-        
+
         public override SkinComp GetSkin()
         {
             return m_SkinComp;
@@ -156,7 +156,9 @@ namespace JumpeeIsland
             m_CollectableData.SkinAddress = m_CurrentStat.SkinAddress;
 
             // Retrieve entity data
-            m_SkinComp.Init(m_CollectableData.SkinAddress);
+            if (GameFlowManager.Instance.IsEcoMode || m_CurrentStat.CollectableType != CollectableType.TRAP)
+                m_SkinComp.Init(m_CollectableData.SkinAddress);
+
             m_CollectComp.Init(OnUnitDie);
             OnUnitDie.AddListener(DieIndividualProcess);
         }

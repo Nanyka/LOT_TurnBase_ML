@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GOAP;
 using JumpeeIsland;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -35,8 +36,12 @@ namespace JumpeeIsland
                 return;
             
             var responseDecision = _spawnTree.GetObjectsToSpawn();
+            if (responseDecision == null || !responseDecision.Any())
+                return;
+            
             if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
                 return;
+            
             beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
 

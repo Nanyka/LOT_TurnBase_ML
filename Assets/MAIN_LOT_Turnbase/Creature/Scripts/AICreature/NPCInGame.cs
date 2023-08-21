@@ -121,7 +121,7 @@ namespace JumpeeIsland
             {
                 // Change agent direction before the agent jump to the new position
                 if (selectedAction.TargetPos != m_Transform.position)
-                    _tranformPart.forward = selectedAction.TargetPos - m_Transform.position;
+                    m_RotatePart.forward = selectedAction.TargetPos - m_Transform.position;
 
                 StartCoroutine(MoveOverTime());
             }
@@ -131,7 +131,7 @@ namespace JumpeeIsland
 
         public override void CreatureEndMove()
         {
-            m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
+            m_Entity.UpdateTransform(InferMoving.TargetPos, m_RotatePart.eulerAngles);
             if (GetJumpStep() > 0)
                 Attack();
             else
@@ -141,7 +141,6 @@ namespace JumpeeIsland
         private IEnumerator MoveOverTime()
         {
             m_Entity.SetAnimation(AnimateType.Walk, true);
-            Debug.Log("Invoke Walk animation");
             while (transform.position != InferMoving.TargetPos)
             {
                 m_Transform.position =
@@ -150,8 +149,7 @@ namespace JumpeeIsland
             }
 
             m_Entity.SetAnimation(AnimateType.Walk, false);
-            Debug.Log("Stop Walk animation");
-            m_Entity.UpdateTransform(InferMoving.TargetPos, _tranformPart.eulerAngles);
+            m_Entity.UpdateTransform(InferMoving.TargetPos, m_RotatePart.eulerAngles);
             // Ask for the next inference
             if (GetJumpStep() > 0)
                 Attack();
@@ -180,7 +178,7 @@ namespace JumpeeIsland
 
         public new (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _tranformPart.forward, InferMoving.JumpCount,
+            return (m_Transform.position, m_RotatePart.forward, InferMoving.JumpCount,
                 m_FactionController.GetFaction());
         }
 

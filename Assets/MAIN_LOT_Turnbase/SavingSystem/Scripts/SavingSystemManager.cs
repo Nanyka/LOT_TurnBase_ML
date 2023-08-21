@@ -63,10 +63,14 @@ namespace JumpeeIsland
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
             OnRefreshBalances.AddListener(RefreshBalances);
-            // GameFlowManager.Instance.OnLoadData.AddListener(StartUpLoadData);
         }
 
-        private async void OnDisable()
+        private void OnDisable()
+        {
+            SaveGameState();
+        }
+
+        private async void SaveGameState()
         {
             if (!CheckLoadingPhaseFinished()) return;
             if (m_EnvLoader.GetDataForSave().CheckStorable() == false)

@@ -48,7 +48,7 @@ namespace JumpeeIsland
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             m_Transform.position = position;
-            m_Transform.eulerAngles = rotation;
+            // m_Transform.eulerAngles = rotation;
 
             m_CreatureData.Position = position;
             m_CreatureData.Rotation = rotation;
@@ -86,6 +86,11 @@ namespace JumpeeIsland
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
         }
 
+        public bool CheckEntityDie()
+        {
+            return _isDie;
+        }
+
         #endregion
 
         #region SKIN
@@ -121,6 +126,8 @@ namespace JumpeeIsland
 
         public override void DieIndividualProcess(Entity killedByEntity)
         {
+            _isDie = true;
+            
             // Set animation and effect when entity die here
             m_AnimateComp.SetAnimation(AnimateType.Die);
         }

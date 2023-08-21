@@ -130,6 +130,8 @@ namespace JumpeeIsland
         public void StoreCurrency(int amount)
         {
             m_BuildingData.CurrentStorage += amount;
+            m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);
+            m_HealthComp.UpdatePriceText(CalculateSellingPrice());
         }
 
         public void DeductCurrency(int amount)
@@ -277,6 +279,8 @@ namespace JumpeeIsland
             ResetEntity();
 
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
+            m_HealthComp.UpdatePriceText(CalculateSellingPrice());
+            m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);
             m_SkillComp.Init(m_BuildingData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
         }
