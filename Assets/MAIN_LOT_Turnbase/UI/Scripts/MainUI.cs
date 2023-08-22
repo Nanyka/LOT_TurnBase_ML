@@ -41,6 +41,8 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent OnShowAnUI = new(); // send to TutorialController, invoke at CreatureInfoUI;
 
+        [NonSerialized] public UnityEvent<string, int, Vector3> OnShowCurrencyVfx = new(); // send to CollectCurrencyEffects; invoke at SavingSystemManager
+
         public bool IsInteractable;
 
         [SerializeField] private GameObject[] _panels;

@@ -788,6 +788,10 @@ namespace JumpeeIsland
                             IncrementLocalCurrency(reward.id, reward.amount);
                         else
                             m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
+                        
+                        // show currency vfx
+                        MainUI.Instance.OnShowCurrencyVfx.Invoke(reward.id, reward.amount,fromPos);
+                        
                         break;
                     }
                 }

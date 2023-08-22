@@ -118,7 +118,7 @@ namespace JumpeeIsland
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, m_Transform.forward, _movement.jumpCount, m_FactionController.GetFaction());
+            return (m_Transform.position, m_RotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
         }
 
         public EntityData GetEntityData()

@@ -8,6 +8,7 @@ namespace JumpeeIsland
 {
     public class CreatureEntity : Entity, IStatsProvider<UnitStats>
     {
+        [SerializeField] private Transform m_RotatePart;
         [SerializeField] private UnitStats[] m_UnitStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
@@ -48,7 +49,7 @@ namespace JumpeeIsland
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             m_Transform.position = position;
-            // m_Transform.eulerAngles = rotation;
+            m_RotatePart.eulerAngles = rotation;
 
             m_CreatureData.Position = position;
             m_CreatureData.Rotation = rotation;
@@ -156,6 +157,7 @@ namespace JumpeeIsland
                 ? currentJump.jumpStep
                 : m_SkillComp.GetSkillAmount();
 
+            // must use rotatePart to assign direction
             attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
             var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
             m_AttackComp.Attack(attackPoints, this, currentJump.jumpStep);
