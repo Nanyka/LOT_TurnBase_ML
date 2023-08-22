@@ -33,11 +33,16 @@ MonoBehaviour:
     Creature: 2
     CreatureCompare: 0
     CreatureAmount: 1
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   conditions:
   - MapSize: 0
     Currency: 0
@@ -58,11 +63,16 @@ MonoBehaviour:
     Creature: 2
     CreatureCompare: 2
     CreatureAmount: 1
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   steps:
   - Pointer: 1
     EntitySelection: 0
@@ -106,14 +116,19 @@ MonoBehaviour:
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 1
       UIElement: TrainCreatureMenu
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
-    Conversation: 0
-    Message: 
+    Conversation: 1
+    Message: Right! Our tribe must be a crowded place
   - Pointer: 1
     EntitySelection: 0
     EntityType: 0
@@ -156,11 +171,16 @@ MonoBehaviour:
       Creature: 2
       CreatureCompare: 0
       CreatureAmount: 1
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 

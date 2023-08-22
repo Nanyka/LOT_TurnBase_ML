@@ -117,64 +117,17 @@ namespace JumpeeIsland
             return checkVector;
         }
 
-        public int ChangeDirectionByRotatePart(Vector3 toward, int translateIndex)
+        public int ChangeActionByDirection(Vector3 toward)
         {
-            if (Vector3.Distance(toward, Vector3.right) < 0.1f)
-            {
-                switch (translateIndex)
-                {
-                    case 1:
-                        translateIndex = 4;
-                        break;
-                    case 2:
-                        translateIndex = 3;
-                        break;
-                    case 3:
-                        translateIndex = 1;
-                        break;
-                    case 4:
-                        translateIndex = 2;
-                        break;
-                }
-            }
-            if (Vector3.Distance(toward, Vector3.back) < 0.1f)
-            {
-                switch (translateIndex)
-                {
-                    case 1:
-                        translateIndex = 2;
-                        break;
-                    case 2:
-                        translateIndex = 1;
-                        break;
-                    case 3:
-                        translateIndex = 4;
-                        break;
-                    case 4:
-                        translateIndex = 3;
-                        break;
-                }
-            }
             if (Vector3.Distance(toward, Vector3.left) < 0.1f)
-            {
-                switch (translateIndex)
-                {
-                    case 1:
-                        translateIndex = 3;
-                        break;
-                    case 2:
-                        translateIndex = 4;
-                        break;
-                    case 3:
-                        translateIndex = 2;
-                        break;
-                    case 4:
-                        translateIndex = 1;
-                        break;
-                }
-            }
-            
-            return translateIndex;
+                return 1;
+            if (Vector3.Distance(toward, Vector3.right) < 0.1f)
+                return 2;
+            if (Vector3.Distance(toward, Vector3.back) < 0.1f)
+                return 3;
+            if (Vector3.Distance(toward, Vector3.forward) < 0.1f)
+                return 4;
+            return 0;
         }
 
         private bool CheckAvailableMove(Vector3 newPos)

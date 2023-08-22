@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
@@ -47,8 +49,11 @@ namespace JumpeeIsland
                 winStar++;
 
             // +1star for devastating 100% enemy's tribe
-            if (winRate == 0f)
+            if (Math.Abs(winRate - 1f) < Mathf.Epsilon)
                 winStar++;
+
+            Debug.Log(
+                $"Win rate: {winRate}, Demolishing mainHall: {SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall()}, star count: {winStar}");
 
             if (winStar > 0)
             {
@@ -117,21 +122,19 @@ namespace JumpeeIsland
                 else
                     _stackHolder.SetActive(false);
 
-                if (winStar == 0)
-                    score = -1 * Mathf.RoundToInt(Random.Range(winRate, 1f) * 10);
-                else
-                    score = Mathf.RoundToInt(Random.Range(0, gameProcess.winStack > 0 ? 1 : 0 + winStar) * 10);
-                _scoreText.text = score.ToString();
-
+                score = Mathf.RoundToInt(Random.Range(0, gameProcess.winStack > 0 ? 1 : 0 + winStar) * 10);
                 _gameoverPanel.SetActive(true);
             }
             else
             {
+                score = -1 * Mathf.RoundToInt(Random.Range(winRate, 1f) * 10);
+                _stackHolder.SetActive(false);
                 _gameoverPanel.SetActive(true);
             }
 
-            // Record score
-            // Save battle statistic
+            _scoreText.text = score.ToString();
+
+            // Save battle statistic & Record score
             SavingSystemManager.Instance.SaveBattleResult(winStar, score);
         }
     }

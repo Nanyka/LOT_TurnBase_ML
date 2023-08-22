@@ -11,12 +11,29 @@ namespace JumpeeIsland
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
         private List<MovableTile> _tileAreas = new();
         private List<Vector3> _potentialPos = new(4);
+        private readonly AStar _aStarGrid = new();
 
         #region INIT SET UP
+
+        private void Start()
+        {
+            GameFlowManager.Instance.OnStartGame.AddListener(InitiateAStar);
+        }
 
         public void UpdateTileArea(MovableTile tilePos)
         {
             _tileAreas.Add(tilePos);
+        }
+
+        private void InitiateAStar(long arg0)
+        {
+            _aStarGrid.InitializeGrid(_tileAreas);
+        }
+
+        public List<Node> GetAStarPath(Vector3 starPos, Vector3 endPos)
+        {
+            _aStarGrid.UpdateObstacle();
+            return _aStarGrid.FindPath(starPos, endPos);
         }
 
         // Get tile that allow player take jump

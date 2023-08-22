@@ -147,15 +147,28 @@ namespace JumpeeIsland
         private void Attack(IAttackResponse attackResponser)
         {
             var currentJump = m_Info.GetCurrentState();
-            
+
             // Check jumping boost
             if (m_EffectComp.UseJumpBoost())
                 currentJump.jumpStep += m_EffectComp.GetJumpBoost();
-            
+
             // Adjust by current level
             currentJump.jumpStep = currentJump.jumpStep < m_SkillComp.GetSkillAmount()
                 ? currentJump.jumpStep
                 : m_SkillComp.GetSkillAmount();
+            
+            // If the skill include some global effect (Teleport), execute it before take any damage on enemy
+            var selectedSkill = m_SkillComp.GetSkills().ElementAt(currentJump.jumpStep - 1);
+            var skillEffect = selectedSkill.GetSkillEffect();
+            if (selectedSkill.CheckGlobalTarget())
+            {
+                if (skillEffect != null)
+                {
+                    skillEffect.TakeEffectOn(this, null);
+                    currentJump.midPos = m_Transform.position;
+                    currentJump.direction = m_RotatePart.forward;
+                }
+            }
 
             // must use rotatePart to assign direction
             attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);

@@ -18,7 +18,8 @@ namespace JumpeeIsland
 
         public async void ClickYes()
         {
-            if (SavingSystemManager.Instance.CheckEnoughCurrency("GEM", _buildingEntity.GetUpgradePrice()))
+            if (SavingSystemManager.Instance.CheckEnoughCurrency(_buildingEntity.GetUpgradeCurrency().ToString(),
+                    _buildingEntity.GetUpgradePrice()))
             {
                 if (_buildingEntity.GetBuildingType() == BuildingType.MAINHALL)
                 {
@@ -36,7 +37,8 @@ namespace JumpeeIsland
                                 if (grantReturn != null)
                                 {
                                     await SavingSystemManager.Instance.RefreshEconomy();
-                                    SavingSystemManager.Instance.DeductCurrencyFromBuildings("GEM", _buildingEntity.GetUpgradePrice());
+                                    SavingSystemManager.Instance.DeductCurrencyFromBuildings(_buildingEntity.GetUpgradeCurrency().ToString(),
+                                        _buildingEntity.GetUpgradePrice());
                                     _buildingEntity.BuildingUpdate();
                                 }
                             }
@@ -49,19 +51,19 @@ namespace JumpeeIsland
                 }
                 else
                 {
-                    SavingSystemManager.Instance.DeductCurrencyFromBuildings("GEM", _buildingEntity.GetUpgradePrice());
+                    SavingSystemManager.Instance.DeductCurrencyFromBuildings(_buildingEntity.GetUpgradeCurrency().ToString(), _buildingEntity.GetUpgradePrice());
                     _buildingEntity.BuildingUpdate();
                 }
             }
             else
             {
-                Debug.Log($"SHOW panel: Not enough GEM for upgrading {_buildingEntity.GetData().EntityName}");
+                Debug.Log($"SHOW panel: Not enough {_buildingEntity.GetUpgradeCurrency().ToString()} to upgrade {_buildingEntity.GetData().EntityName}");
             }
         }
 
         public Entity GetEntity()
         {
-            throw new System.NotImplementedException();
+            return _buildingEntity;
         }
     }
 
@@ -130,7 +132,8 @@ namespace JumpeeIsland
         {
             _interactBuildingMenu.SetActive(false);
             _confirmPanel.SetActive(true);
-            _currencyGroup.VisualCurrency("GEM", amount);
+            var buildingEntity = (BuildingEntity)_currentConfirm.GetEntity();
+            _currencyGroup.VisualCurrency(buildingEntity.GetUpgradeCurrency().ToString(), amount);
             MainUI.Instance.OnShowAnUI.Invoke();
         }
     }

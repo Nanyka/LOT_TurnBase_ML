@@ -15,9 +15,9 @@ MonoBehaviour:
   UsePassCondition: 1
   PassCondition:
     MapSize: 0
-    Currency: 5
+    Currency: 2
     CurrencyCompare: 0
-    CurrencyAmount: 0
+    CurrencyAmount: 4
     Storage: 0
     StorageCompare: 0
     StorageAmount: 0
@@ -33,13 +33,16 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
     IsCheckBattle: 0
     BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   conditions:
   - MapSize: 0
     Currency: 0
@@ -60,13 +63,16 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
     IsCheckBattle: 0
     BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   steps:
   - Pointer: 1
     EntitySelection: 1
@@ -95,9 +101,9 @@ MonoBehaviour:
       Currency: 0
       CurrencyCompare: 0
       CurrencyAmount: 0
-      Storage: 5
+      Storage: 2
       StorageCompare: 0
-      StorageAmount: 0
+      StorageAmount: 4
       Resource: 0
       ResourceCompare: 0
       ResourceAmount: 0
@@ -110,14 +116,17 @@ MonoBehaviour:
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
       IsCheckBattle: 0
       BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
-    Conversation: 0
-    Message: 
+    Conversation: 1
+    Message: Wow! Another chest there...
   nextTutorial: /Tutorials/Tutorial6

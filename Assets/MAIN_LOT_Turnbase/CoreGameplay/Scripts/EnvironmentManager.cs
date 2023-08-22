@@ -151,6 +151,16 @@ namespace JumpeeIsland
             return _domainManager.GetTileByGeoCoordinates(geoPos).GetPosition();
         }
 
+        public List<Node> GetAStarPath(Vector3 startPos, Vector3 endPos)
+        {
+            return _domainManager.GetAStarPath(startPos, endPos);
+        }
+
+        public int GetActionByDirection(Vector3 direction)
+        {
+            return _movementInspector.ChangeActionByDirection(direction);
+        }
+
         #endregion
 
         #region OBSTACLES

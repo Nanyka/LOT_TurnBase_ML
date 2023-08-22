@@ -6,21 +6,22 @@ namespace JumpeeIsland
     public class FindOpportunitySensor : ISensorExecute
     {
         private int _detectRange;
+        List<Vector3> potentialPos = new();
 
         public FindOpportunitySensor(int detectRange)
         {
             _detectRange = detectRange;
         }
         
-        public int DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
-            CreatureEntity m_Entity, SkillComp skillComp)
+        public int DecideDirection(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
+            CreatureEntity mEntity, SkillComp skillComp)
         {
             // Get object in range
             // Check any available position to execute successful attacks from the objects
             // Check jumping point for that attack is available or not
             // Check the movement that bring character as close to the intent position as possible
             int movingIndex = 0;
-            Vector3 potentialPos = Vector3.negativeInfinity;
+            potentialPos.Clear();
 
             for (int i = -_detectRange; i <= _detectRange; i++)
             {
@@ -30,21 +31,28 @@ namespace JumpeeIsland
                     if (detectPos == Vector3.zero)
                         continue;
 
-                    detectPos += m_Transform.position;
+                    detectPos += mTransform.position;
 
-                    if (_envManager.FreeToMove(detectPos) || _envManager.CheckOutOfBoundary(detectPos))
+                    if (envManager.FreeToMove(detectPos) || envManager.CheckOutOfBoundary(detectPos))
                         continue;
 
                     for (int k = 1; k < 5; k++)
                     {
                         var jumpPos = detectPos + JIGeneralUtils.AdverseDirectionTo(k);
-                        if (_envManager.FreeToMove(jumpPos))
+                        if (envManager.FreeToMove(jumpPos))
                         {
-                            var movement = _envManager.GetMovementInspector()
+                            var movement = envManager.GetMovementInspector()
                                 .MovingPath(jumpPos, k, 0, 0);
                             if (movement.jumpCount > 0)
                             {
-                                movement.jumpCount += m_Entity.GetJumpBoost();
+                                movement.jumpCount += mEntity.GetJumpBoost();
+
+                                if (skillComp.GetSkillByIndex(movement.jumpCount - 1).CheckGlobalTarget())
+                                {
+                                    potentialPos.Add(jumpPos);
+                                    continue;
+                                }
+                                
                                 var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
                                     movement.jumpCount, skillComp);
                                 if (attackPoints == null)
@@ -52,10 +60,10 @@ namespace JumpeeIsland
                             
                                 foreach (var attackPoint in attackPoints)
                                 {
-                                    if (_envManager.CheckEnemy(attackPoint, m_Entity.GetFaction()))
+                                    if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
                                     {
-                                        potentialPos = jumpPos;
-                                        goto LoopEnd;
+                                        // Debug.Log($"Detect pos: {detectPos}, jump pos: {jumpPos}, jump count: {movement.jumpCount}");
+                                        potentialPos.Add(jumpPos);
                                     }
                                 }
                             }
@@ -64,25 +72,27 @@ namespace JumpeeIsland
                 }
             }
 
-            LoopEnd:
+            float minDistance = Mathf.Infinity;
+            Vector3 target = Vector3.negativeInfinity;
+            foreach (var pos in potentialPos)
             {
-                if (potentialPos.x.CompareTo(float.NegativeInfinity) == 1)
+                var curDistance = Vector3.Distance(pos, mTransform.position);
+                if (curDistance < minDistance)
                 {
-                    float minDistance = Mathf.Infinity;
-                    for (int i = 1; i < 5; i++)
-                    {
-                        var curDistance = Vector3.Distance((m_Transform.position + JIGeneralUtils.DirectionTo(i)),
-                            potentialPos);
-                        if (curDistance < minDistance && _envManager.FreeToMove(potentialPos))
-                        {
-                            minDistance = curDistance;
-                            movingIndex = i;
-                        }
-                    }
+                    minDistance = curDistance;
+                    target = pos;
                 }
             }
+                
+            if (target.x.CompareTo(float.NegativeInfinity) < 0.1f)
+            {
+                return movingIndex;
+            }
+                
+            var movingPath = GameFlowManager.Instance.GetEnvManager()
+                .GetAStarPath(mTransform.position, target);
 
-            return movingIndex;
+            return movingPath == null? 0 : envManager.GetActionByDirection(movingPath[0].position - mTransform.position);
         }
         
         private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep, SkillComp m_Skills)

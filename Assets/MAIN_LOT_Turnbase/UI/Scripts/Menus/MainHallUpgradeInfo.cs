@@ -7,7 +7,7 @@ namespace JumpeeIsland
     public class MainHallUpgradeInfo : MonoBehaviour
     {
         [SerializeField] private GameObject _infoContainer;
-        [SerializeField] private TextMeshProUGUI _upgradeText;
+        [SerializeField] private CurrencyGroup _upgradeGroup;
         [SerializeField] private CurrencyButton[] _tierItems;
 
         public void ShowUpgradeInfo(int upgradePrice)
@@ -33,7 +33,7 @@ namespace JumpeeIsland
                 }
             }
 
-            _upgradeText.text = upgradePrice.ToString();
+            _upgradeGroup.VisualCurrency("COIN",upgradePrice);
             _infoContainer.SetActive(true);
         }
     }

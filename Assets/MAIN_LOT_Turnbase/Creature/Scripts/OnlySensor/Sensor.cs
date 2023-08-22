@@ -21,13 +21,16 @@ namespace JumpeeIsland
         public int SensorWeight;
         private ISensorExecute SensorExecute;
 
-        public int Execute(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
-            CreatureEntity m_Entity, SkillComp skillComp)
+        public int Execute(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
+            CreatureEntity mEntity, SkillComp skillComp)
         {
             if (SensorExecute == null)
                 InitiateSensor();
 
-            return SensorExecute.DecideDirection(m_CreatureData,m_Transform,_envManager,m_Entity,skillComp);
+            if (SensorExecute != null)
+                return SensorExecute.DecideDirection(mCreatureData, mTransform, envManager, mEntity, skillComp);
+
+            return 0;
         }
 
         private void InitiateSensor()

@@ -84,6 +84,11 @@ namespace JumpeeIsland
             ResetEntity();
         }
 
+        public CurrencyType GetUpgradeCurrency()
+        {
+            return m_BuildingStats[m_BuildingData.CurrentLevel].UpgradeCurrency;
+        }
+
         public int GetUpgradePrice()
         {
             return m_BuildingStats[m_BuildingData.CurrentLevel].PriceToUpdate;

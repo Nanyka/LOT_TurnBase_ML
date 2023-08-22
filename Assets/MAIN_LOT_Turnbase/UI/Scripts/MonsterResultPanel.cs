@@ -32,6 +32,7 @@ namespace JumpeeIsland
                 if (SavingSystemManager.Instance.GetGameProcess().bossUnlock < m_BossIndex)
                     SavingSystemManager.Instance.SaveBossUnlock(m_BossIndex);
             }
+            SavingSystemManager.Instance.SaveBossBattle();
         }
     }
 }

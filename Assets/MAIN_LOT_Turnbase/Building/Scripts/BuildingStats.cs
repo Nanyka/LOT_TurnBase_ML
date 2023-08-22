@@ -12,7 +12,8 @@ namespace JumpeeIsland
         public CurrencyType StoreCurrency;
         public int MaxHp;
         public int Level;
-        [FormerlySerializedAs("ExpToUpdate")] public int PriceToUpdate;
+        public CurrencyType UpgradeCurrency;
+        public int PriceToUpdate;
         public int StorageCapacity;
         public int AttackDamage;
         public float AttackRange;

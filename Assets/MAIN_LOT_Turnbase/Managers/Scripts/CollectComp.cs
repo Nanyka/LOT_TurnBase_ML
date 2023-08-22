@@ -6,8 +6,10 @@ namespace JumpeeIsland
 {
     public class CollectComp : MonoBehaviour
     {
-        [SerializeField] private bool _isForBattleMode;
         [SerializeField] private ParticleSystem _collectingVfx;
+        [SerializeField] private bool _isGlobalVfx;
+        [SerializeField] private GlobalVfxType _globalVfxType;
+        [SerializeField] private bool _isForBattleMode;
         
         private UnityEvent<Entity> _dieEvent;
         
@@ -31,6 +33,9 @@ namespace JumpeeIsland
             {
                 Die(creatureEntity);
                 _collectingVfx.Play();
+
+                if (_isGlobalVfx)
+                    GameFlowManager.Instance.AskGlobalVfx(_globalVfxType,transform.position);
             }
         }
 

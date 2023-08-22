@@ -16,6 +16,7 @@ namespace JumpeeIsland
         public int win3StarCount;
         public int winStack;
         public int bossUnlock;
+        public int score;
 
         public int CalculateExp()
         {

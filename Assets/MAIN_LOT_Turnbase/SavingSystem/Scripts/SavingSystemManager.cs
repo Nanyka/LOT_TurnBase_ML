@@ -714,8 +714,15 @@ namespace JumpeeIsland
             }
 
             m_GameProcess.battleCount++;
+            m_GameProcess.score = Mathf.Clamp(m_GameProcess.score + score, 0, m_GameProcess.score + score);
             
-            m_CloudConnector.PlayerRecordScore(score);
+            m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
+        
+        public async void SaveBossBattle()
+        {
+            m_GameProcess.battleCount++;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 

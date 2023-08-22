@@ -21,7 +21,7 @@ namespace JumpeeIsland
             _environmentData = _monsterEnv;
             
             // Customize battle env from enemy env and player env
-            _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
+            _environmentData.PrepareForBossMode(_playerEnvCache.PlayerData);
             
             ExecuteEnvData();
             MainUI.Instance.OnShowDropTroopMenu.Invoke(GetSpawnList());

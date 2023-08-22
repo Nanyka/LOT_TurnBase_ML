@@ -76,6 +76,18 @@ namespace JumpeeIsland
 
             PlayerData.Clear();
         }
+        
+        public void PrepareForBossMode(List<CreatureData> playerData)
+        {
+            EnemyData.Clear();
+            foreach (var creatureData in PlayerData)
+            {
+                creatureData.FactionType = FactionType.Enemy;
+                EnemyData.Add(creatureData);
+            }
+
+            PlayerData.Clear();
+        }
 
         public void DepositRemainPlayerTroop(List<CreatureData> playerData)
         {

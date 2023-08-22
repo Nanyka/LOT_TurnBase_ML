@@ -15,11 +15,13 @@ public class Skill_SO : ScriptableObject
     
     [Header("Skill range")]
     [SerializeField] private RangeType _rangeType;
+    [Tooltip("It might be range of attack for Creature or amount of targets for buildings")]
     [SerializeField] private int _numberOfSteps;
     
     [Header("Skill effect")]
     [SerializeField] private SkillEffectType _skillEffectType;
     [SerializeField] private Material _effectMaterial;
+    [SerializeField] private bool _isGlobalTarget;
     private SkillEffect _skillEffect;
     
     [Header("ML property")]
@@ -128,5 +130,10 @@ public class Skill_SO : ScriptableObject
     public string GetAnimation()
     {
         return _animTrigger;
+    }
+
+    public bool CheckGlobalTarget()
+    {
+        return _isGlobalTarget;
     }
 }

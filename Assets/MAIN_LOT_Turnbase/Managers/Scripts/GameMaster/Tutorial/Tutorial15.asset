@@ -33,14 +33,15 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
-    IsCheckBattle: 0
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 1
     BattleCount: 1
-    IsCheckBossUnlock: 1
+    IsCheckBossUnlock: 0
     BossUnlockAmount: 1
   conditions:
   - MapSize: 0
@@ -62,11 +63,12 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 1
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
     IsCheckBattle: 0
     BattleCount: 0
     IsCheckBossUnlock: 1
@@ -114,16 +116,18 @@ MonoBehaviour:
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
       IsCheckBattle: 0
       BattleCount: 0
       IsCheckBossUnlock: 1
       BossUnlockAmount: 1
     IsEndTutorial: 0
-    Conversation: 0
-    Message: 
+    Conversation: 1
+    Message: Now we have another BOSS and he live in another island.\n I suppose
+      it is not an easy one but nothing can stop our steps
   nextTutorial: 

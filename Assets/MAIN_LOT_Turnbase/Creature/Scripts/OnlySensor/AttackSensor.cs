@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -13,7 +14,13 @@ namespace JumpeeIsland
             {
                 var movement = _envManager.GetMovementInspector().MovingPath(m_Transform.position, i, 0, 0);
                 int dummyJump = movement.jumpCount + m_Entity.GetJumpBoost();
-                
+
+                if (dummyJump > 0 && skillComp.GetSkillByIndex(dummyJump-1).CheckGlobalTarget())
+                {
+                    movingIndex = i;
+                    break;
+                }
+
                 if (dummyJump > 0)
                 {
                     var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i), dummyJump, skillComp);

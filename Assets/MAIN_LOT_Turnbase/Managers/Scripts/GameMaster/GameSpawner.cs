@@ -13,11 +13,14 @@ namespace JumpeeIsland
         public GameMasterCondition tierCondition;
         public GameMasterDecision spawnGameDecision;
         public GameMasterDecision spawnTreeDecision;
+        public GameMasterDecision spawnCollectableObjDecision;
     }
 
     public class GameSpawner : MonoBehaviour
     {
-        [SerializeField] private List<SpawningTier> _spawningGameTiers;
+        [FormerlySerializedAs("_spawningGameTiers")] [SerializeField]
+        private List<SpawningTier> _spawningTiers;
+
         private EnvironmentManager _environmentManager;
 
         private void Start()
@@ -37,53 +40,81 @@ namespace JumpeeIsland
                 return;
 
             // withdrawn the SpawningTier that fit with player's condition
-            SpawningTier currentTier = _spawningGameTiers[0];
-            foreach (var tier in _spawningGameTiers)
+            if (_spawningTiers.Any() == false)
+                return;
+
+            SpawningTier currentTier = _spawningTiers[0];
+            foreach (var tier in _spawningTiers)
             {
                 if (tier.tierCondition.CheckPass() == false)
                     break;
                 currentTier = tier;
             }
-            
+
             // Select game to spawn if spawning condition is passed
-            if (currentTier.spawnGameDecision.CheckGetThrough() == false)
+            if (currentTier.spawnGameDecision != null)
             {
-                var gameList = currentTier.spawnGameDecision.GetObjectsToSpawn();
-                if (gameList != null && gameList.Any())
+                if (currentTier.spawnGameDecision.CheckGetThrough() == false)
                 {
-                    var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
-                    if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                    var gameList = currentTier.spawnGameDecision.GetObjectsToSpawn();
+                    if (gameList != null && gameList.Any())
                     {
-                        switch (currentTier.spawnGameDecision.GetEntityType())
+                        var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
+                        if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
                         {
-                            case EntityType.COLLECTABLE:
-                                SavingSystemManager.Instance.OnSpawnCollectable(
-                                    gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile, 0);
-                                break;
-                            case EntityType.ENEMY:
-                                SavingSystemManager.Instance.OnSpawnMovableEntity(
-                                    gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
-                                break;
+                            switch (currentTier.spawnGameDecision.GetEntityType())
+                            {
+                                case EntityType.ENEMY:
+                                    SavingSystemManager.Instance.OnSpawnMovableEntity(
+                                        gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
+                                    break;
+                            }
                         }
                     }
                 }
             }
-            
+
             // Select game to spawn if spawning condition is passed
-            if (currentTier.spawnTreeDecision.CheckGetThrough() == false)
+            if (currentTier.spawnTreeDecision != null)
             {
-                var gameList = currentTier.spawnTreeDecision.GetObjectsToSpawn();
-                if (gameList != null && gameList.Any())
+                if (currentTier.spawnTreeDecision.CheckGetThrough() == false)
                 {
-                    var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
-                    if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                    var gameList = currentTier.spawnTreeDecision.GetObjectsToSpawn();
+                    if (gameList != null && gameList.Any())
                     {
-                        switch (currentTier.spawnTreeDecision.GetEntityType())
+                        var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
+                        if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
                         {
-                            case EntityType.RESOURCE:
-                                SavingSystemManager.Instance.OnSpawnResource(
-                                    gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
-                                break;
+                            switch (currentTier.spawnTreeDecision.GetEntityType())
+                            {
+                                case EntityType.RESOURCE:
+                                    SavingSystemManager.Instance.OnSpawnResource(
+                                        gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Select collectable objects to spawn if spawning condition is passed
+            if (currentTier.spawnCollectableObjDecision != null)
+            {
+                if (currentTier.spawnCollectableObjDecision.CheckGetThrough() == false)
+                {
+                    var gameList = currentTier.spawnCollectableObjDecision.GetObjectsToSpawn();
+                    if (gameList != null && gameList.Any())
+                    {
+                        var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
+                        if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                        {
+                            switch (currentTier.spawnCollectableObjDecision.GetEntityType())
+                            {
+                                case EntityType.COLLECTABLE:
+                                    SavingSystemManager.Instance.OnSpawnCollectable(
+                                        gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile, 0);
+                                    break;
+                            }
                         }
                     }
                 }
