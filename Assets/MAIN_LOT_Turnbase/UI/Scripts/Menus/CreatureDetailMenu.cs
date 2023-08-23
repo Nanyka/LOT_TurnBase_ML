@@ -47,8 +47,15 @@ namespace JumpeeIsland
 
         public void ShowUpgradePanel()
         {
+            if (_currentCreature.CheckMaxLevel())
+            {
+                MainUI.Instance.OnConversationUI.Invoke("This troop reach max level", true);
+                return;
+            }
+
             upgradeCost.VisualCurrency("COIN",_currentCreature.GetUpgradeCost());
             confirmPanel.SetActive(true);
+            MainUI.Instance.OnShowAnUI.Invoke();
         }
 
         public void UpgradeCreature()

@@ -66,9 +66,7 @@ namespace JumpeeIsland
             // Reset spawnTransform
             foreach (Transform child in spawnTransform)
                 Destroy(child.gameObject);
-            
-            
-
+                 
             var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
             var skin = handle.WaitForCompletion();
             animateComp.SetAnimator(skin.GetComponent<Animator>());

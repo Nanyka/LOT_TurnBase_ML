@@ -91,6 +91,11 @@ namespace JumpeeIsland
             return _isDie;
         }
 
+        public bool CheckMaxLevel()
+        {
+            return m_CreatureData.CurrentLevel >= m_UnitStats.Count()-1;
+        }
+
         #endregion
 
         #region SKIN
@@ -261,7 +266,7 @@ namespace JumpeeIsland
 
             // Initiate entity data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
-            m_CreatureData.SkinAddress = inventoryItem.skinAddress[m_CreatureData.CurrentLevel];
+            m_CreatureData.SkinAddress = inventoryItem.skinAddress[Mathf.Clamp(m_CreatureData.CurrentLevel,0,inventoryItem.skinAddress.Count-1)];
             m_CreatureData.CreatureType = m_CurrentStat.CreatureType;
             if (m_CreatureData.CurrentHp <= 0)
             {

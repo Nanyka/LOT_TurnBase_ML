@@ -50,11 +50,11 @@ namespace JumpeeIsland
         [SerializeField] private GameObject[] _panels;
         [SerializeField] private GameObject[] _buttons;
 
-        private BuyBuildingMenu _buyBuildingMenu;
+        protected BuyBuildingMenu _buyBuildingMenu;
         protected CreatureMenu _creatureMenu;
         private CreatureInfoUI _creatureInfo;
-        private Camera _mainCamera;
-        private int _layerMask = 1 << 9 | 1 << 8 | 1 << 7;
+        protected Camera _mainCamera;
+        protected int _layerMask = 1 << 9 | 1 << 8 | 1 << 7;
 
         protected virtual void Start()
         {
