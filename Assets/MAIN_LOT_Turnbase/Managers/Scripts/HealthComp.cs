@@ -24,11 +24,12 @@ namespace JumpeeIsland
             if (entityData is BuildingData)
             {
                 var buildingData = (BuildingData)entityData;
-                _healthBar.ShowHealthBar(GameFlowManager.Instance.IsEcoMode ,true);
+                _healthBar.ShowHealthBar(GameFlowManager.Instance.IsEcoMode,
+                    buildingData.BuildingType != BuildingType.TOWER);
                 m_MAXStorage = buildingData.StorageCapacity;
             }
             else
-                _healthBar.ShowHealthBar(false,false);
+                _healthBar.ShowHealthBar(false, false);
         }
 
         public void TakeDamage(int damage, EntityData entityData, Entity killedBy)
@@ -51,7 +52,7 @@ namespace JumpeeIsland
 
         public void UpdateStorage(int value)
         {
-            _healthBar.UpdateStorageSlider(value*1f / m_MAXStorage);
+            _healthBar.UpdateStorageSlider(value * 1f / m_MAXStorage);
         }
 
         public void UpdatePriceText(int price)

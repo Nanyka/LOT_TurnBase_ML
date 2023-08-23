@@ -15,7 +15,6 @@ namespace JumpeeIsland
         [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private SkillComp m_SkillComp;
         [SerializeField] private EffectComp m_EffectComp;
-        [SerializeField] private AttackPath m_AttackPath;
         [SerializeField] private AnimateComp m_AnimateComp;
 
         private CreatureData m_CreatureData;
@@ -153,6 +152,11 @@ namespace JumpeeIsland
                 currentJump.jumpStep += m_EffectComp.GetJumpBoost();
 
             // Adjust by current level
+            currentJump.jumpStep = currentJump.jumpStep < m_CreatureData.CurrentLevel + 1
+                ? currentJump.jumpStep
+                : m_CreatureData.CurrentLevel + 1;
+            
+            // Adjust by amount of skills
             currentJump.jumpStep = currentJump.jumpStep < m_SkillComp.GetSkillAmount()
                 ? currentJump.jumpStep
                 : m_SkillComp.GetSkillAmount();
@@ -183,7 +187,8 @@ namespace JumpeeIsland
 
         private void ShowAttackRange(IEnumerable<Vector3> attackRange)
         {
-            if (m_AttackPath is not null) m_AttackPath.AttackAt(attackRange);
+            // if (m_AttackPath is not null) m_AttackPath.AttackAt(attackRange);
+            GameFlowManager.Instance.AskForShowingAttackPath(attackRange);
         }
 
         public override int GetAttackDamage()

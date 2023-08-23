@@ -27,8 +27,7 @@ namespace JumpeeIsland
 
         public async void GetScores()
         {
-            var scoresResponse =
-                await LeaderboardsService.Instance.GetScoresAsync(_leaderboardId);
+            var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(_leaderboardId);
             // Debug.Log(JsonConvert.SerializeObject(scoresResponse));
         }
 

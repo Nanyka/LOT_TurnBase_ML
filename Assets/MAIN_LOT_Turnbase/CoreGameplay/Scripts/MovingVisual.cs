@@ -10,8 +10,6 @@ namespace JumpeeIsland
         [SerializeField] protected SelectionCircle[] _movingPoints;
 
         private EnvironmentManager m_Environment;
-        private Camera _camera;
-        private int _layerMask = 1 << 8;
 
         private void Awake()
         {
@@ -23,8 +21,7 @@ namespace JumpeeIsland
             m_Environment.OnShowMovingPath.AddListener(MovingRange);
             m_Environment.OnHighlightUnit.AddListener(HighlightUnit);
             MainUI.Instance.OnClickIdleButton.AddListener(DisableMovingPath);
-
-            _camera = Camera.main;
+            MainUI.Instance.OnSelectDirection.AddListener(SelectDirection);
         }
 
         private void MovingRange(Vector3 middlePos)
@@ -54,21 +51,10 @@ namespace JumpeeIsland
 
         #region INTERACT SELECTION
 
-        public void Update()
+        private void SelectDirection(SelectionCircle selectionCircle)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
-                    return;
-                
-                var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
-                if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
-                    return;
-
-                if (!moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle)) return;
-                m_Environment.OnTouchSelection.Invoke(selectionCircle.GetDirection());
-                DisableMovingPath();
-            }
+            m_Environment.OnTouchSelection.Invoke(selectionCircle.GetDirection());
+            DisableMovingPath();
         }
 
         public void DisableMovingPath()

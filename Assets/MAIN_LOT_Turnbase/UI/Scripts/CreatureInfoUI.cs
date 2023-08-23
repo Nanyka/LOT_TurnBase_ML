@@ -33,7 +33,6 @@ namespace JumpeeIsland
         private void ShowUnitInfo(IShowInfo infoGetter)
         {
             MainUI.Instance.OnHideAllMenu.Invoke();
-            dontMoveButton.SetActive(false);
 
             var info = infoGetter.ShowInfo();
             _selectedEntity = info.entity;
@@ -46,10 +45,11 @@ namespace JumpeeIsland
                 hpSlider.value = creatureEntity.GetData().CurrentHp;
                 strengthSlider.value = creatureEntity.GetStats().Strengh;
                 defendSlider.value = creatureEntity.GetStats().Armor;
-                foreach (var skill in skills)
-                    skill.Deactivate();
+                
+                for (int i = 0; i < skills.Length; i++)
+                    skills[i].ShowSkill(i > creatureEntity.GetData().CurrentLevel, false);
                 if (info.jump > 0)
-                    skills[info.jump - 1].Active();
+                    skills[Mathf.Clamp(info.jump - 1,0,_selectedEntity.GetData().CurrentLevel)].Active();
 
                 infoMenu.SetActive(true);
                 dontMoveButton.SetActive(true);
@@ -81,7 +81,10 @@ namespace JumpeeIsland
                 return;
             
             if (_selectedEntity.TryGetComponent(out CreatureEntity creatureEntity))
+            {
                 MainUI.Instance.OnShowCreatureDetails.Invoke(creatureEntity);
+                MainUI.Instance.OnShowAnUI.Invoke();
+            }
         }
 
         public Entity GetSelectedEntity()

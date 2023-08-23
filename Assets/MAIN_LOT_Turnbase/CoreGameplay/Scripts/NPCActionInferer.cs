@@ -34,8 +34,8 @@ namespace JumpeeIsland
         public void AddActionToCache(DummyAction inputAction)
         {
             DummyAction dummyAction = new DummyAction(inputAction);
-            dummyAction.VoteAmount = 0;
-            dummyAction.Reward = 0;
+            // dummyAction.VoteAmount = 0;
+            // dummyAction.Reward = 0;
 
             // Check if any tuple store the same action for this agent, if not, save a new tuple in cache
             var checkDuplicateTuple = false;
@@ -44,14 +44,14 @@ namespace JumpeeIsland
                 if (action.CheckTupleExist(dummyAction.AgentIndex, dummyAction.Action))
                 {
                     checkDuplicateTuple = true;
-                    action.VoteAmount++;
+                    action.VoteAmount += dummyAction.VoteAmount;
                     break;
                 }
             }
 
             if (checkDuplicateTuple == false)
             {
-                dummyAction.VoteAmount++;
+                // dummyAction.VoteAmount++;
                 m_ActionCache.Add(dummyAction);
             }
         }

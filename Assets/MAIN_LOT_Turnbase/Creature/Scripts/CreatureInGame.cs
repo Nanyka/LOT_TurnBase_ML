@@ -10,7 +10,7 @@ namespace JumpeeIsland
     public class CreatureInGame : MonoBehaviour, IGetEntityInfo, IShowInfo, IRemoveEntity, ICreatureMove,
         IAttackResponse
     {
-        [Header("Creature Components")] 
+        [Header("Creature Components")]
         [SerializeField] protected Transform m_RotatePart;
         [SerializeField] protected CreatureEntity m_Entity;
 
@@ -124,11 +124,6 @@ namespace JumpeeIsland
         public EntityData GetEntityData()
         {
             return m_Entity.GetData();
-        }
-
-        public EnvironmentManager GetEnvironment()
-        {
-            return m_FactionController.GetEnvironment();
         }
 
         private int GetJumpStep()

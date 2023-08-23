@@ -46,6 +46,8 @@ namespace JumpeeIsland
             {
                 var enemy = _dummyNPCs[i];
                 enemy.InferMoving.AgentIndex = i;
+                enemy.InferMoving.JumpCount = 0;
+                enemy.InferMoving.VoteAmount = 0;
             }
         }
 

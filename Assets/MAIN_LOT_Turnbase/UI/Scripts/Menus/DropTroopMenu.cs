@@ -64,7 +64,7 @@ namespace JumpeeIsland
         private IEnumerator WaitToStartGame()
         {
             yield return new WaitForSeconds(1f);
-            MainUI.Instance.OnEnableInteract.Invoke();
+            // MainUI.Instance.OnEnableInteract.Invoke();
             GameFlowManager.Instance.OnKickOffEnv.Invoke();
         }
 

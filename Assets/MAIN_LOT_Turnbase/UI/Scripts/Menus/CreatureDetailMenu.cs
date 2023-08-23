@@ -15,6 +15,8 @@ namespace JumpeeIsland
         [SerializeField] private StatSlider defenseSlider;
         [SerializeField] private StatSlider hpSlider;
         [SerializeField] private CurrencyGroup upgradeCost;
+        [SerializeField] private CurrencyGroup upgradeButton;
+        [SerializeField] private TextMeshProUGUI nextLevelText;
         [SerializeField] private SkillIcon[] skills;
 
         private CreatureEntity _currentCreature;
@@ -37,13 +39,15 @@ namespace JumpeeIsland
             hpSlider.SetSlider(creatureStats.HealthPoint);
             for (int i = 0; i < skills.Length; i++)
                 skills[i].ShowSkill(i > creatureEntity.GetData().CurrentLevel);
+            upgradeButton.VisualCurrency("COIN",_currentCreature.GetUpgradeCost());
+            nextLevelText.text = $"Lv{_currentCreature.GetData().CurrentLevel + 1} Upgrade";
             
             creatureDetailMenu.SetActive(true);
         }
 
         public void ShowUpgradePanel()
         {
-            upgradeCost.VisualCurrency(_currentCreature.GetUpgradeCost().ToString());
+            upgradeCost.VisualCurrency("COIN",_currentCreature.GetUpgradeCost());
             confirmPanel.SetActive(true);
         }
 

@@ -9,7 +9,7 @@ namespace JumpeeIsland
         [SerializeField] private Image m_Icon;
         [SerializeField] private GameObject _lockIcon;
 
-        private Color32 _deactivateColor = new(57,57,57,255);
+        private Color32 _deactivateColor = new(57, 57, 57, 255);
 
         public void Active()
         {
@@ -28,7 +28,13 @@ namespace JumpeeIsland
 
         public void ShowSkill(bool isLocked)
         {
-            m_Icon.color = isLocked? _deactivateColor: Color.white;
+            m_Icon.color = isLocked ? _deactivateColor : Color.white;
+            _lockIcon.SetActive(isLocked);
+        }
+
+        public void ShowSkill(bool isLocked, bool isActive)
+        {
+            m_Icon.color = isActive ? Color.white : _deactivateColor;
             _lockIcon.SetActive(isLocked);
         }
     }

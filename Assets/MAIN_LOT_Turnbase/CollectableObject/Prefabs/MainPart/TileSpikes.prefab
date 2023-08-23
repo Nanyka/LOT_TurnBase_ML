@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 1309313219542101250}
   - component: {fileID: 3549916044783124698}
   - component: {fileID: 1906472596299649317}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: TileSpikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,8 +180,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d6e9ad51dd4155b7aa550e3699c480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isForBattleMode: 1
   _collectingVfx: {fileID: 2479184208617930814}
+  _isGlobalVfx: 0
+  _globalVfxType: 0
+  _isForBattleMode: 1
 --- !u!1 &6622543821659518466
 GameObject:
   m_ObjectHideFlags: 0

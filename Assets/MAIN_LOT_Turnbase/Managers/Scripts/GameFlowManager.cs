@@ -75,5 +75,10 @@ namespace JumpeeIsland
         {
             _globalVfx.PlayGlobalVfx(vfxType,atPos);
         }
+
+        public void AskForShowingAttackPath(IEnumerable<Vector3> highlightPos)
+        {
+            _globalVfx.ShowAttackPath(highlightPos);
+        }
     }
 }

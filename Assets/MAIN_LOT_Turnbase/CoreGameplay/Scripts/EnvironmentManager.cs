@@ -51,7 +51,6 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
             GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment);
-            
         }
 
         private void Init(long moveAmount)

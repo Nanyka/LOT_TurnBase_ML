@@ -35,6 +35,7 @@ namespace JumpeeIsland
         {
             m_Confirm = confirmFunction;
             _selectBossPanel.SetActive(true);
+            MainUI.Instance.OnShowAnUI.Invoke();
         }
 
         public void OnClickYes()

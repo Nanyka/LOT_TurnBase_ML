@@ -39,10 +39,12 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
-        [NonSerialized] public UnityEvent OnShowAnUI = new(); // send to TutorialController, invoke at CreatureInfoUI;
+        [NonSerialized] public UnityEvent OnShowAnUI = new(); // send to TutorialController, invoke at CreatureInfoUI, BossSelector;
 
         [NonSerialized] public UnityEvent<string, int, Vector3> OnShowCurrencyVfx = new(); // send to CollectCurrencyEffects; invoke at SavingSystemManager
 
+        [NonSerialized] public UnityEvent<SelectionCircle> OnSelectDirection = new(); // send to MovingVisual
+        
         public bool IsInteractable;
 
         [SerializeField] private GameObject[] _panels;
@@ -52,7 +54,7 @@ namespace JumpeeIsland
         protected CreatureMenu _creatureMenu;
         private CreatureInfoUI _creatureInfo;
         private Camera _mainCamera;
-        private int _layerMask = 1 << 9 | 1 << 7;
+        private int _layerMask = 1 << 9 | 1 << 8 | 1 << 7;
 
         protected virtual void Start()
         {
@@ -79,9 +81,14 @@ namespace JumpeeIsland
                     return;
 
                 var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(moveRay, out _, 100f, _layerMask))
+                if (Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
+                {
+                    if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
+                        OnSelectDirection.Invoke(selectionCircle);
+                        
                     return;
-
+                }
+                
                 OnHideAllMenu.Invoke();
             }
         }

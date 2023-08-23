@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 370622449714226996}
   - component: {fileID: 6727652185321378984}
   - component: {fileID: -2876123598534621272}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: PigEgg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,8 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d6e9ad51dd4155b7aa550e3699c480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isForBattleMode: 0
   _collectingVfx: {fileID: 4017397136309000693}
+  _isGlobalVfx: 0
+  _globalVfxType: 0
+  _isForBattleMode: 0
 --- !u!1 &6789492275924157980
 GameObject:
   m_ObjectHideFlags: 0

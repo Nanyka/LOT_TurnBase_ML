@@ -46,8 +46,10 @@ namespace JumpeeIsland
             InferMoving.Action = direction;
             InferMoving.CurrentPos = m_Transform.position;
             GetPositionByDirection(InferMoving.Action);
-            if (direction != 0)
-                InferMoving.VoteAmount += weight;
+            if (direction == 0)
+                InferMoving.VoteAmount = 1;
+            else
+                InferMoving.VoteAmount = weight;
             _currenInferer.AddActionToCache(InferMoving);
         }
 

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using AssetKits.ParticleImage;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -14,6 +16,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private ParticleSystem _jumpVfx;
         [SerializeField] private ParticleImage _fullscreenConfesti;
+        [FormerlySerializedAs("_attackPath")] [SerializeField] private JIAttackPath jiAttackPath;
 
         public void PlayGlobalVfx(GlobalVfxType type, Vector3 atPos)
         {
@@ -30,6 +33,11 @@ namespace JumpeeIsland
                     PlayConfetti();
                     break;
             }
+        }
+
+        public void ShowAttackPath(IEnumerable<Vector3> highlightPos)
+        {
+            jiAttackPath.AttackAt(highlightPos);
         }
 
         private void PlayJump(Vector3 jumpPos)

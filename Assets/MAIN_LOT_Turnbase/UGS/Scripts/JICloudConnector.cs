@@ -420,6 +420,11 @@ namespace JumpeeIsland
         public async Task<EnvironmentData> GetEnemyEnvironment()
         {
             var getPlayerRange = await _leaderboardManager.GetPlayerRange();
+            
+            foreach (var playerId in getPlayerRange)
+            {
+                Debug.Log($"PlayerId: {playerId.PlayerId}");
+            }
 
             getPlayerRange = getPlayerRange.FindAll(t =>
                     t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);

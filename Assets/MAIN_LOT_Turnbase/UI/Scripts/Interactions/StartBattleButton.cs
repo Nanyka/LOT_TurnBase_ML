@@ -15,16 +15,16 @@ namespace JumpeeIsland
         private void HideButton()
         {
             gameObject.SetActive(false);
-        }
-
-        public void OnClick()
-        {
+            
             MainUI.Instance.OnHideAllMenu.Invoke();
             MainUI.Instance.OnEnableInteract.Invoke();
 
             foreach (var button in _inGameButtons)
                 button.SetActive(true);
-            
+        }
+
+        public void OnClick()
+        {
             GameFlowManager.Instance.OnKickOffEnv.Invoke();
         }
     }
