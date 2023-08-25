@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class ResourceEntity : Entity
     {
-        [SerializeField] private ResourceStats[] m_ResourceStats;
+        [SerializeField] private List<ResourceStats> m_ResourceStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
@@ -142,6 +142,10 @@ namespace JumpeeIsland
         public override void RefreshEntity()
         {
             // Set entity stats
+            var inventory = SavingSystemManager.Instance.GetInventoryItemByName(m_ResourceData.EntityName);
+            m_ResourceStats.Clear();
+            foreach (var stats in inventory.statsAddress)
+                m_ResourceStats.Add(AddressableManager.Instance.GetAddressableSO(stats) as ResourceStats);
             m_CurrentStats = m_ResourceStats[m_ResourceData.CurrentLevel];
 
             // Initiate entity data if it's new

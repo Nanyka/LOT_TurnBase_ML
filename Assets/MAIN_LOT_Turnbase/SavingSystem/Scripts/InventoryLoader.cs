@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GleyLocalization;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 
@@ -55,6 +56,9 @@ namespace JumpeeIsland
         public List<string> skinAddress;
         public EntityData EntityData; // Just used in BattleMode to place creatures
         public List<string> skillsAddress;
+        public List<string> statsAddress;
+        public List<BuildingStats> buildingStats;
+        public List<CreatureStats> creatureStats;
     }
 
     public enum InventoryType

@@ -5,8 +5,9 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    [CreateAssetMenu(fileName = "BuildingStats", menuName = "JumpeeIsland/BuildingStats", order = 4)]
-    public class BuildingStats : ScriptableObject
+    // [CreateAssetMenu(fileName = "BuildingStats", menuName = "JumpeeIsland/BuildingStats", order = 4)]
+    [System.Serializable]
+    public class BuildingStats
     {
         public BuildingType BuildingType;
         public CurrencyType StoreCurrency;
@@ -19,5 +20,11 @@ namespace JumpeeIsland
         public float AttackRange;
         public int Shield;
         public int ExpReward;
+    }
+
+    [System.Serializable]
+    public class BuildingStatsCollection
+    {
+        public List<BuildingStats> statsCollection;
     }
 }

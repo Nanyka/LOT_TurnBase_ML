@@ -33,7 +33,10 @@ namespace JumpeeIsland
                     return;
 
                 if (moveHit.transform == transform)
+                {
                     _isSelectEntity = true;
+                    MainUI.Instance.IsInRelocating = _isSelectEntity;
+                }
             }
 
             if (Input.GetMouseButton(0))
@@ -51,6 +54,7 @@ namespace JumpeeIsland
             if (Input.GetMouseButtonUp(0))
             {
                 _isSelectEntity = false;
+                MainUI.Instance.IsInRelocating = _isSelectEntity;
                 var mTransform = transform;
                 m_Entity.UpdateTransform(mTransform.position, mTransform.eulerAngles);
             }

@@ -44,13 +44,14 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<string, int, Vector3> OnShowCurrencyVfx = new(); // send to CollectCurrencyEffects; invoke at SavingSystemManager
 
         [NonSerialized] public UnityEvent<SelectionCircle> OnSelectDirection = new(); // send to MovingVisual
-        
+
         public bool IsInteractable;
+        public bool IsInRelocating;
 
         [SerializeField] private GameObject[] _panels;
         [SerializeField] private GameObject[] _buttons;
 
-        protected BuyBuildingMenu _buyBuildingMenu;
+        private BuyBuildingMenu _buyBuildingMenu;
         protected CreatureMenu _creatureMenu;
         private CreatureInfoUI _creatureInfo;
         protected Camera _mainCamera;
@@ -74,10 +75,10 @@ namespace JumpeeIsland
 
         protected virtual void Update()
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 if (PointingChecker.IsPointerOverUIObject() || _buyBuildingMenu.IsInADeal() ||
-                    _creatureMenu.IsInADeal())
+                    _creatureMenu.IsInADeal() || IsInRelocating)
                     return;
 
                 var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);

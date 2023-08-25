@@ -9,7 +9,7 @@ namespace JumpeeIsland
 {
     public class BuildingEntity : Entity
     {
-        [SerializeField] private BuildingStats[] m_BuildingStats;
+        [SerializeField] private List<BuildingStats> m_BuildingStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
@@ -73,7 +73,7 @@ namespace JumpeeIsland
 
         public void BuildingUpdate()
         {
-            if (m_BuildingData.CurrentLevel + 1 >= m_BuildingStats.Length)
+            if (m_BuildingData.CurrentLevel + 1 >= m_BuildingStats.Count)
                 return;
 
             m_BuildingData.CurrentLevel++;
@@ -156,7 +156,7 @@ namespace JumpeeIsland
 
         public void DurationDeduct()
         {
-            m_BuildingData.TurnCount = Mathf.Clamp(m_BuildingData.TurnCount-1, 0, m_BuildingData.TurnCount-1);
+            m_BuildingData.TurnCount = Mathf.Clamp(m_BuildingData.TurnCount - 1, 0, m_BuildingData.TurnCount - 1);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -202,7 +202,7 @@ namespace JumpeeIsland
         {
             if (m_BuildingData.TurnCount > 0)
                 return;
-            
+
             Attack(unitInfo, attackResponser);
         }
 
@@ -293,6 +293,8 @@ namespace JumpeeIsland
         private void ResetEntity()
         {
             // Set entity stats
+            var inventory = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
+            m_BuildingStats = inventory.buildingStats;
             m_CurrentStats = m_BuildingStats[m_BuildingData.CurrentLevel];
 
             // Set default information to buildingData

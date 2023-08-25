@@ -34,7 +34,7 @@ namespace JumpeeIsland
                 .GetInventoryItemByName(creatureEntity.GetData().EntityName).spriteAddress);
             creatureName.text = creatureEntity.GetData().EntityName;
             var creatureStats = creatureEntity.GetStats();
-            strengthSlider.SetSlider(creatureStats.Strengh);
+            strengthSlider.SetSlider(creatureStats.Strength);
             defenseSlider.SetSlider(creatureStats.Armor);
             hpSlider.SetSlider(creatureStats.HealthPoint);
             for (int i = 0; i < skills.Length; i++)

@@ -43,7 +43,7 @@ namespace JumpeeIsland
                     SavingSystemManager.Instance.GetInventoryItemByName(creatureEntity.GetData().EntityName);
                 entityIcon.sprite = AddressableManager.Instance.GetAddressableSprite(creatureItem.spriteAddress);
                 hpSlider.value = creatureEntity.GetData().CurrentHp;
-                strengthSlider.value = creatureEntity.GetStats().Strengh;
+                strengthSlider.value = creatureEntity.GetStats().Strength;
                 defendSlider.value = creatureEntity.GetStats().Armor;
                 
                 for (int i = 0; i < skills.Length; i++)
