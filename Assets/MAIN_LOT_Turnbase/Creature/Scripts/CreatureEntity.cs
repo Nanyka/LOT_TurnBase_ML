@@ -121,6 +121,9 @@ namespace JumpeeIsland
 
         public override void TakeDamage(int damage, Entity fromEntity)
         {
+            if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.IsEcoMode)
+                return;
+                
             m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }

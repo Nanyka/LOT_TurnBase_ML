@@ -34,9 +34,6 @@ namespace JumpeeIsland
 
             for (int i = 0; i < m_Troops.Count; i++)
             {
-                if (m_Troops[i].EntityName.Equals("King"))
-                    continue;
-
                 _troopDropButtons[i].TurnOn(m_Troops[i], this);
                 _troopDropButtons[i].gameObject.SetActive(true);
             }

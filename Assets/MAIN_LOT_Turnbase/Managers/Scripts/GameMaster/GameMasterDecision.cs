@@ -15,6 +15,7 @@ namespace JumpeeIsland
         [SerializeField] private GameMasterCondition _mainCondition;
         [SerializeField] private string[] _objects;
         [SerializeField] private int _gapDuration;
+        [SerializeField] private int _maxSpawningAmount;
 
         private int currentGapCount;
 
@@ -41,6 +42,11 @@ namespace JumpeeIsland
         public EntityType GetEntityType()
         {
             return m_EntityType;
+        }
+
+        public int GetMaxSpawningAmount()
+        {
+            return _maxSpawningAmount;
         }
     }
 }

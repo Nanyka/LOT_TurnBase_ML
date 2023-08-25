@@ -10,8 +10,9 @@ namespace JumpeeIsland
     public class CreatureInGame : MonoBehaviour, IGetEntityInfo, IShowInfo, IRemoveEntity, ICreatureMove,
         IAttackResponse
     {
-        [Header("Creature Components")]
-        [SerializeField] protected Transform m_RotatePart;
+        [Header("Creature Components")] [SerializeField]
+        protected Transform m_RotatePart;
+
         [SerializeField] protected CreatureEntity m_Entity;
 
         protected IFactionController m_FactionController;
@@ -44,7 +45,7 @@ namespace JumpeeIsland
         public void MoveDirection(int moveDirection)
         {
             if (_isUsed) return; // Avoid double moving
-            
+
 
             _movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
@@ -168,6 +169,9 @@ namespace JumpeeIsland
 
         public void Remove(EnvironmentData environmentData)
         {
+            if (m_Entity.GetData().EntityName.Equals("King"))
+                return;
+
             if (m_FactionController.GetFaction() == FactionType.Player)
                 environmentData.PlayerData.Remove((CreatureData)m_Entity.GetData());
             if (m_FactionController.GetFaction() == FactionType.Enemy)

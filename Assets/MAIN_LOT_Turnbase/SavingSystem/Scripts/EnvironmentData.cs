@@ -68,12 +68,6 @@ namespace JumpeeIsland
                 building.FactionType = FactionType.Enemy;
 
             EnemyData.Clear();
-            // foreach (var creatureData in PlayerData)
-            // {
-            //     creatureData.FactionType = FactionType.Enemy;
-            //     EnemyData.Add(creatureData);
-            // }
-
             PlayerData.Clear();
         }
         
@@ -208,14 +202,14 @@ namespace JumpeeIsland
 
         public void RemoveZeroHpPlayerCreatures()
         {
-            PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0);
+            PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0 || t.EntityName.Equals("King"));
         }
 
         public void AbstractInBattleCreatures(List<CreatureData> inbattleCreatures)
         {
             foreach (var creature in inbattleCreatures)
             {
-                if (PlayerData.Contains(creature))
+                if (PlayerData.Contains(creature) && creature.EntityName.Equals("King") == false)
                     PlayerData.Remove(creature);
             }
         }

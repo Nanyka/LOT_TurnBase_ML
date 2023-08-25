@@ -59,16 +59,26 @@ namespace JumpeeIsland
                     var gameList = currentTier.spawnGameDecision.GetObjectsToSpawn();
                     if (gameList != null && gameList.Any())
                     {
-                        var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
-                        if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                        switch (currentTier.spawnGameDecision.GetEntityType())
                         {
-                            switch (currentTier.spawnGameDecision.GetEntityType())
+                            case EntityType.ENEMY:
                             {
-                                case EntityType.ENEMY:
-                                    SavingSystemManager.Instance.OnSpawnMovableEntity(
-                                        gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
-                                    break;
+                                var creatureAmount = SavingSystemManager.Instance.GetEnvironmentData().EnemyData
+                                    .Count(t => t.CreatureType == CreatureType.MOVER);
+                                var spawningAmount = Random.Range(0,
+                                    currentTier.spawnGameDecision.GetMaxSpawningAmount() - creatureAmount);
+                                for (int i = 0; i < spawningAmount; i++)
+                                {
+                                    var availableTile = GameFlowManager.Instance.GetEnvManager()
+                                        .GetRandomAvailableTile();
+                                    if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                                    {
+                                        SavingSystemManager.Instance.OnSpawnMovableEntity(
+                                            gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
+                                    }
+                                }
                             }
+                                break;
                         }
                     }
                 }
@@ -82,16 +92,26 @@ namespace JumpeeIsland
                     var gameList = currentTier.spawnTreeDecision.GetObjectsToSpawn();
                     if (gameList != null && gameList.Any())
                     {
-                        var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
-                        if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                        switch (currentTier.spawnTreeDecision.GetEntityType())
                         {
-                            switch (currentTier.spawnTreeDecision.GetEntityType())
+                            case EntityType.RESOURCE:
                             {
-                                case EntityType.RESOURCE:
-                                    SavingSystemManager.Instance.OnSpawnResource(
-                                        gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
-                                    break;
+                                var treeAmount = SavingSystemManager.Instance.GetEnvironmentData().ResourceData
+                                    .Count(t => t.CollectedCurrency == CurrencyType.WOOD);
+                                var spawningAmount = Random.Range(0,
+                                    currentTier.spawnGameDecision.GetMaxSpawningAmount() - treeAmount);
+                                for (int i = 0; i < spawningAmount; i++)
+                                {
+                                    var availableTile = GameFlowManager.Instance.GetEnvManager()
+                                        .GetRandomAvailableTile();
+                                    if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                                    {
+                                        SavingSystemManager.Instance.OnSpawnResource(
+                                            gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
+                                    }
+                                }
                             }
+                                break;
                         }
                     }
                 }
