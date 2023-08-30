@@ -15,7 +15,6 @@ namespace JumpeeIsland
         private void Show()
         {
             var currencies = SavingSystemManager.Instance.GetCurrencies();
-            string currenciesText = "";
 
             foreach (var currency in currencies)
             {

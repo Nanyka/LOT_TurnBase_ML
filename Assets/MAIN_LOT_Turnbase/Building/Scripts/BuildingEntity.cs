@@ -9,7 +9,6 @@ namespace JumpeeIsland
 {
     public class BuildingEntity : Entity
     {
-        [SerializeField] private List<BuildingStats> m_BuildingStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
@@ -20,6 +19,7 @@ namespace JumpeeIsland
         [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
 
         private BuildingData m_BuildingData { get; set; }
+        private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
 
         public void Init(BuildingData buildingData)
@@ -176,7 +176,9 @@ namespace JumpeeIsland
                 // Storage currency require player's envData that is retrieved from SavingSystemManager.Instance.GetEnvDataForSave() in BattleMode
                 SavingSystemManager.Instance.StoreCurrencyByEnvData(m_BuildingData.StorageCurrency.ToString(),
                     seizedAmount, SavingSystemManager.Instance.GetEnvDataForSave());
-                // SavingSystemManager.Instance.IncrementLocalCurrency(m_BuildingData.StorageCurrency.ToString(), seizedAmount);
+
+                MainUI.Instance.OnShowCurrencyVfx.Invoke(m_BuildingData.StorageCurrency.ToString(), seizedAmount,
+                    fromEntity.GetData().Position);
             }
 
             m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);

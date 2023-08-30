@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 6329133142135403996}
   - component: {fileID: 4171252776145318713}
   - component: {fileID: 4123322022964983800}
-  - component: {fileID: 6105367046324210439}
   - component: {fileID: 418207618415105855}
   - component: {fileID: 2139280082619884275}
   m_Layer: 9
@@ -91,10 +90,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 7765034802513230632}
-  m_BuildingStats:
-  - {fileID: 11400000, guid: 49144cb29101c4cb1ba8e940d1c289aa, type: 2}
-  - {fileID: 11400000, guid: 5da5145d4542c43ebb429303e19b6609, type: 2}
-  - {fileID: 11400000, guid: ad9ee6f4c55f848f4a5abb92d634f7c4, type: 2}
   m_SkinComp: {fileID: 3013237499186709174}
   m_HealthComp: {fileID: 6329133142135403996}
   m_AttackComp: {fileID: 4171252776145318713}
@@ -145,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed420d7d5404042af8a87f17a06945b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SkillSOs: []
 --- !u!114 &6329133142135403996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,19 +180,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _remainTempJumpBoost: 0
   _magnitudeJumpBoost: 0
---- !u!114 &6105367046324210439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3136725998028430087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a72912c8d724780921af989e1884ca1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackPoints: []
 --- !u!114 &418207618415105855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 0}
+  m_RotatePart: {fileID: 0}
 --- !u!114 &2139280082619884275
 MonoBehaviour:
   m_ObjectHideFlags: 0

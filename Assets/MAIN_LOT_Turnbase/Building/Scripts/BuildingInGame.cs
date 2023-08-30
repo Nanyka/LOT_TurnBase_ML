@@ -79,11 +79,6 @@ namespace JumpeeIsland
                 SavingSystemManager.Instance.GrantCurrency(CurrencyType.GOLD.ToString(),
                     m_Entity.CalculateSellingPrice());
 
-            // Add exp for entity who killed this resource
-            // if (killedByEntity != m_Entity)
-            //     killedByEntity.CollectExp(m_Entity.GetExpReward());
-
-            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             StartCoroutine(DestroyVisual());
         }
 
@@ -92,6 +87,7 @@ namespace JumpeeIsland
             // VFX
             yield return new WaitForSeconds(1f);
             Debug.Log("Remove building");
+            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             _buildingController.RemoveBuilding(this);
             gameObject.SetActive(false);
         }

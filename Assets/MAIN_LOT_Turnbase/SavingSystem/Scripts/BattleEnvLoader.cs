@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -26,6 +27,9 @@ namespace JumpeeIsland
             // Customize battle env from enemy env and player env
             _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
             
+            // Update currency UI
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
+
             ExecuteEnvData();
             MainUI.Instance.OnShowDropTroopMenu.Invoke(GetSpawnList());
         }

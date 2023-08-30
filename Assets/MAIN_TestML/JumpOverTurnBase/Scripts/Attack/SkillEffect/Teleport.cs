@@ -19,7 +19,6 @@ public class Teleport : SkillEffect
         {
             var lowHealthEnemy = enemies.Aggregate((l, r) => l.CurrentHp <= r.CurrentHp ? l : r);
             selectedEnemyPos = lowHealthEnemy.Position;
-            Debug.Log($"Select to tele: {selectedEnemyPos}");
         }
         else
         {

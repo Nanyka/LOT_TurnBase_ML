@@ -286,6 +286,8 @@ namespace JumpeeIsland
             }
 
             // Retrieve entity data
+            if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.IsEcoMode == false)
+                m_CreatureData.CurrentHp = m_CurrentStat.HealthPoint;
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
             m_EffectComp.Init(this);

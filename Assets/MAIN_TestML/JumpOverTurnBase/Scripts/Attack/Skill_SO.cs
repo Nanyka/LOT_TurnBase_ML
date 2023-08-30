@@ -96,6 +96,9 @@ public class Skill_SO : ScriptableObject
             case RangeType.TShapeFront:
                 _skillRange = new TShapeFront();
                 break;
+            case RangeType.PerpendicularWipe:
+                _skillRange = new PerpendicularWipe();
+                break;
         }
     }
     

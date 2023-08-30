@@ -10,5 +10,6 @@ public enum RangeType
     AccurateAttackByHp,
     AccurateAttackByDistance,
     Circle,
-    TShapeFront
+    TShapeFront,
+    PerpendicularWipe,
 }
