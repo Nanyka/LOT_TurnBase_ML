@@ -15,6 +15,25 @@ namespace JumpeeIsland
         public int TurnCount;
         public CurrencyType StorageCurrency;
 
+        public BuildingData() { }
+        
+        public BuildingData(BuildingData buildingData)
+        {
+            EntityName = buildingData.EntityName;
+            SkinAddress = buildingData.SkinAddress;
+            Position = buildingData.Position;
+            Rotation = buildingData.Rotation;
+            FactionType = buildingData.FactionType;
+            BuildingType = buildingData.BuildingType;
+            CurrentDamage = buildingData.CurrentDamage;
+            CurrentShield = buildingData.CurrentShield;
+            CurrentExp = buildingData.CurrentExp;
+            CurrentStorage = buildingData.CurrentStorage;
+            StorageCapacity = buildingData.StorageCapacity;
+            TurnCount = buildingData.TurnCount;
+            StorageCurrency = buildingData.StorageCurrency;
+        }
+
         public int GetStoreSpace(CurrencyType currencyType, ref List<BuildingData> buildingDatas)
         {
             if (currencyType == StorageCurrency)

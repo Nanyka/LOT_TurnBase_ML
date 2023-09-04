@@ -28,7 +28,7 @@ namespace JumpeeIsland
                 
                 building.DurationDeduct(m_Environment.GetCurrFaction());
 
-                if (GameFlowManager.Instance.IsEcoMode)
+                if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                     return;
                 building.AskForAttack();
             }

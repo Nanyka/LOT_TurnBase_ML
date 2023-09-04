@@ -156,7 +156,7 @@ namespace JumpeeIsland
             m_CollectableData.SkinAddress = m_CurrentStat.SkinAddress;
 
             // Retrieve entity data
-            if (GameFlowManager.Instance.IsEcoMode || m_CurrentStat.CollectableType != CollectableType.TRAP)
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY || m_CurrentStat.CollectableType != CollectableType.TRAP)
                 m_SkinComp.Init(m_CollectableData.SkinAddress);
 
             m_CollectComp.Init(OnUnitDie);

@@ -84,7 +84,7 @@ namespace JumpeeIsland
                 return;
 
             // Just use MOVE currency in EcoMode
-            if (GameFlowManager.Instance.IsEcoMode)
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
                 if (_step <= _minStep && _currFaction == FactionType.Player)
                 {
@@ -118,7 +118,7 @@ namespace JumpeeIsland
 
         private void WaitToAddMove()
         {
-            if (GameFlowManager.Instance.IsEcoMode)
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
                 Debug.Log($"Grant one move");
                 _step++;

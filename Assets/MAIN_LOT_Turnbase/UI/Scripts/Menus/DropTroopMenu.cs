@@ -51,11 +51,17 @@ namespace JumpeeIsland
         // Just use this in BattleMode
         public void CheckEmptyMenu()
         {
-            if (_troopDropButtons.Count(t => t.CheckActive()) > 0)
-                return;
+            if (_troopDropButtons.Count(t => t.CheckActive()) == 0)
+            {
+                HideCreatureMenu();
+                StartCoroutine(WaitToStartGame());
+            }
 
-            HideCreatureMenu();
-            StartCoroutine(WaitToStartGame());
+            if (SavingSystemManager.Instance.GetEnvironmentData().PlayerData.Count >= GameFlowManager.Instance.GetQuest().maxTroop)
+            {
+                HideCreatureMenu();
+                StartCoroutine(WaitToStartGame());
+            }
         }
 
         private IEnumerator WaitToStartGame()

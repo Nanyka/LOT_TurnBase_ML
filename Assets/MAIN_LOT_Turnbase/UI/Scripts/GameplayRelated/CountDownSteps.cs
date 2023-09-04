@@ -16,8 +16,11 @@ namespace JumpeeIsland
 
         private void Init()
         {
+            if (GameFlowManager.Instance.GameMode == GameMode.BOSS)
+                _maxSteps = GameFlowManager.Instance.GetQuest().maxMovingTurn;
+                
             GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(StartCountDown);
-            CountDown();
+            // CountDown();
             _clock.SetActive(true);
         }
 
@@ -25,7 +28,6 @@ namespace JumpeeIsland
         {
             if (GameFlowManager.Instance.GetEnvManager().GetCurrFaction() == FactionType.Player)
                 CountDown();
-
         }
 
         private void CountDown()

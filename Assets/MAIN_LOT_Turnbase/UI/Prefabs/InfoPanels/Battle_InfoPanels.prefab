@@ -51,6 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dcdb1622976427c8acc780fdc2907e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontMoveButton: {fileID: 0}
+  infoMenu: {fileID: 0}
+  entityIcon: {fileID: 0}
   hpSlider: {fileID: 0}
   strengthSlider: {fileID: 0}
   defendSlider: {fileID: 0}
@@ -153,7 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983e05a929084ca3871e02e4284fdff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currenciesText: {fileID: 0}
   _currencyButtons:
   - {fileID: 8367785832243433693}
   - {fileID: 4349307965562594652}
@@ -818,6 +820,7 @@ MonoBehaviour:
   m_Icon: {fileID: 4732015811309769356}
   m_Balance: {fileID: 2178941940248457311}
   m_Currency: WOOD
+  m_badge: {fileID: 0}
 --- !u!1 &2407278028340042877
 GameObject:
   m_ObjectHideFlags: 0
@@ -6420,6 +6423,7 @@ MonoBehaviour:
   m_Icon: {fileID: 3146652294435639571}
   m_Balance: {fileID: 7713218037375271882}
   m_Currency: MOVE
+  m_badge: {fileID: 0}
 --- !u!1 &3009412246871771951
 GameObject:
   m_ObjectHideFlags: 0
@@ -6556,6 +6560,7 @@ MonoBehaviour:
   m_Icon: {fileID: 5113496917137275295}
   m_Balance: {fileID: 1572856250795803359}
   m_Currency: COIN
+  m_badge: {fileID: 0}
 --- !u!1 &3010094321212686396
 GameObject:
   m_ObjectHideFlags: 0
@@ -7213,6 +7218,7 @@ MonoBehaviour:
   m_Icon: {fileID: 2797046444317235884}
   m_Balance: {fileID: 1497474379500557825}
   m_Currency: FOOD
+  m_badge: {fileID: 0}
 --- !u!1 &5460439454173301286
 GameObject:
   m_ObjectHideFlags: 0
@@ -7349,6 +7355,7 @@ MonoBehaviour:
   m_Icon: {fileID: 8901374369947420795}
   m_Balance: {fileID: 1044907417538842763}
   m_Currency: GEM
+  m_badge: {fileID: 0}
 --- !u!1 &5803945916416985032
 GameObject:
   m_ObjectHideFlags: 0
@@ -7562,6 +7569,7 @@ MonoBehaviour:
   m_Icon: {fileID: 4957907993859718912}
   m_Balance: {fileID: 41534393494254199}
   m_Currency: POP
+  m_badge: {fileID: 0}
 --- !u!1 &6851900978471246344
 GameObject:
   m_ObjectHideFlags: 0
@@ -7841,7 +7849,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983e05a929084ca3871e02e4284fdff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currenciesText: {fileID: 1789029222578822443}
   _currencyButtons: []
 --- !u!1 &7971606335881290273
 GameObject:

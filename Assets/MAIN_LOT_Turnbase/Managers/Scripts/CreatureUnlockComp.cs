@@ -23,14 +23,14 @@ namespace JumpeeIsland
             await SavingSystemManager.Instance.RefreshEconomy();
 
             // Show Unlock new character panel in Monster Mode
-            if (GameFlowManager.Instance.IsEcoMode == false)
+            if (GameFlowManager.Instance.GameMode == GameMode.BOSS)
                 StartCoroutine(WaitToEndGame());
         }
 
         private IEnumerator WaitToEndGame()
         {
-            yield return new WaitForSeconds(1.5f);
-            GameFlowManager.Instance.OnGameOver.Invoke();
+            yield return new WaitForSeconds(2f);
+            GameFlowManager.Instance.OnKilledBoss.Invoke();
         }
 
         #endregion

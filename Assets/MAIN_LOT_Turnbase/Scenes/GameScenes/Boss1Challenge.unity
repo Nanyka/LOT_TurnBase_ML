@@ -169,6 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &15649497
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1181,6 +1183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &398134003
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1248,6 +1252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &431023241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1943,6 +1949,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &797134926
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2807,6 +2815,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5310615920106310316, guid: ab69e7126a1154183ad56a8a70059821, type: 3}
+      propertyPath: GameMode
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3022,6 +3034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1076733147
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3089,6 +3103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1081970031
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3258,6 +3274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1170721502
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3381,6 +3399,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1215121406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3677,6 +3697,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1281662974
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3900,6 +3922,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1398980517
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3967,6 +3991,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1424380584
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4243,55 +4269,6 @@ MonoBehaviour:
     ResourceData: []
     BuildingData: []
     PlayerData: []
-    EnemyData: []
-    CollectableData: []
-  _monsterEnv:
-    timestamp: 0
-    lastTimestamp: 0
-    moveTimestamp: 0
-    mapSize: 0
-    ResourceData: []
-    BuildingData: []
-    PlayerData:
-    - EntityName: Boss1
-      SkinAddress: /Creatures/Creature1_lv0
-      Position: {x: -1, y: 0, z: 0}
-      Rotation: {x: 0, y: 180, z: 0}
-      FactionType: 2
-      CurrentHp: 3
-      CurrentLevel: 2
-      CreatureType: 4
-      CurrentShield: 0
-      CurrentExp: 0
-      TurnCount: 0
-      CurrentDamage: 1
-      EffectCaches: []
-    - EntityName: FirePig
-      SkinAddress: 
-      Position: {x: 3, y: 0, z: -2}
-      Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 2
-      CurrentHp: 2
-      CurrentLevel: 0
-      CreatureType: 1
-      CurrentShield: 0
-      CurrentExp: 0
-      TurnCount: 0
-      CurrentDamage: 1
-      EffectCaches: []
-    - EntityName: FirePig
-      SkinAddress: 
-      Position: {x: -5, y: 0, z: -2}
-      Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 2
-      CurrentHp: 2
-      CurrentLevel: 0
-      CreatureType: 1
-      CurrentShield: 0
-      CurrentExp: 0
-      TurnCount: 0
-      CurrentDamage: 1
-      EffectCaches: []
     EnemyData: []
     CollectableData: []
 --- !u!1 &1506642398
@@ -4774,6 +4751,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1649388956
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5036,6 +5015,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1726277737
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5778,6 +5759,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &2022691994
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5877,6 +5860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &2039614496
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6279,6 +6264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &78218463967379832
 Transform:
   m_ObjectHideFlags: 0
@@ -6505,6 +6492,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &222870497246817581
 GameObject:
   m_ObjectHideFlags: 0
@@ -6630,6 +6619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &305331391914754481
 GameObject:
   m_ObjectHideFlags: 0
@@ -17056,6 +17047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &393150154716687133
 Transform:
   m_ObjectHideFlags: 0
@@ -17144,6 +17137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &461387429491205311
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17660,6 +17655,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &890511526743961308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17672,6 +17669,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!33 &908334484632837663
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -17789,6 +17788,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &995874410933400279
 GameObject:
   m_ObjectHideFlags: 0
@@ -18012,6 +18013,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!23 &1100132443876559861
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18751,6 +18754,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &1370694101730621935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18763,6 +18768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &1380842624954601141
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19576,6 +19583,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &1648913263938153910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19588,6 +19597,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &1664002829442231254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19891,6 +19902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &1809937239974604327
 GameObject:
   m_ObjectHideFlags: 0
@@ -20040,6 +20053,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &1981000416728599114
 GameObject:
   m_ObjectHideFlags: 0
@@ -20091,6 +20106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!23 &2034380635093936379
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20173,6 +20190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &2048541508755476611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20324,6 +20343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &2123422196615855807
 GameObject:
   m_ObjectHideFlags: 0
@@ -21187,6 +21208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &2600978418895472151
 Transform:
   m_ObjectHideFlags: 0
@@ -21235,6 +21258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &2607964834712531391
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22663,6 +22688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &3389546554179751300
 GameObject:
   m_ObjectHideFlags: 0
@@ -23143,6 +23170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &3693524084789256259
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24662,6 +24691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &4610838281491702841
 Transform:
   m_ObjectHideFlags: 0
@@ -25135,6 +25166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &4990800191066316236
 Transform:
   m_ObjectHideFlags: 0
@@ -25175,6 +25208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!33 &5045109397728681545
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -25213,6 +25248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &5072022371099078042
 GameObject:
   m_ObjectHideFlags: 0
@@ -25290,6 +25327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!114 &5121837892312424329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25302,6 +25341,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &5122007784053787458
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25388,6 +25429,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &5217648903132447747
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25540,6 +25583,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &5335107713585139867
 GameObject:
   m_ObjectHideFlags: 0
@@ -25655,6 +25700,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &5400787848861320009
 Transform:
   m_ObjectHideFlags: 0
@@ -25816,6 +25863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &5534879843806866265
 Transform:
   m_ObjectHideFlags: 0
@@ -25852,6 +25901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &5586864420029725005
 GameObject:
   m_ObjectHideFlags: 0
@@ -26145,6 +26196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!33 &5805010360044742184
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -26293,6 +26346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &5866362279197932580
 GameObject:
   m_ObjectHideFlags: 0
@@ -31514,6 +31569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &6077537707398633637
 Transform:
   m_ObjectHideFlags: 0
@@ -31794,6 +31851,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &6273440531486238290
 Transform:
   m_ObjectHideFlags: 0
@@ -31923,6 +31982,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &6401146007082781599
 GameObject:
   m_ObjectHideFlags: 0
@@ -32012,6 +32073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &6504918165035865067
 GameObject:
   m_ObjectHideFlags: 0
@@ -64447,6 +64510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &7439640890249904154
 GameObject:
   m_ObjectHideFlags: 0
@@ -64600,6 +64665,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!65 &7537434742351595546
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -64726,6 +64793,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &7646561621266074926
 Transform:
   m_ObjectHideFlags: 0
@@ -65114,6 +65183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &7903142059502147031
 Transform:
   m_ObjectHideFlags: 0
@@ -65394,6 +65465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!1 &8101401271060009146
 GameObject:
   m_ObjectHideFlags: 0
@@ -65553,6 +65626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &8223557636818362458
 Transform:
   m_ObjectHideFlags: 0
@@ -65890,6 +65965,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &8446701370292460103
 Transform:
   m_ObjectHideFlags: 0
@@ -66157,8 +66234,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BossIndex: 1
-  _winPanel: {fileID: 7322449676889885589}
+  _killedPossPanel: {fileID: 0}
+  _winStagePanel: {fileID: 0}
   _losePanel: {fileID: 305331392022235259}
+  _rewardItems: []
 --- !u!114 &8560029064445878729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66365,6 +66444,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!4 &8680786827730892084
 Transform:
   m_ObjectHideFlags: 0
@@ -66741,6 +66822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!222 &8815483951768557205
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -66865,6 +66948,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc6cd9895814ba38835b0256a052e07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRenderer: {fileID: 0}
+  _disableMaterial: {fileID: 0}
 --- !u!33 &8942573099505079351
 MeshFilter:
   m_ObjectHideFlags: 0

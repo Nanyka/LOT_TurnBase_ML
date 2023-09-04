@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    [System.Serializable]
+    [Serializable]
     public class EnvironmentData
     {
         public long timestamp;
@@ -18,6 +18,33 @@ namespace JumpeeIsland
         public List<CreatureData> EnemyData;
         public List<CollectableData> CollectableData;
 
+        public EnvironmentData() { }
+        
+        public EnvironmentData(EnvironmentData cloneParent)
+        {
+            ResourceData = new();
+            foreach (var data in cloneParent.ResourceData)
+                ResourceData.Add(new ResourceData(data));
+            
+            BuildingData = new();
+            foreach (var data in cloneParent.BuildingData)
+                BuildingData.Add(new BuildingData(data));
+            
+            PlayerData = new();
+            foreach (var data in cloneParent.PlayerData)
+                PlayerData.Add(new CreatureData(data));
+            
+            EnemyData = new();
+            foreach (var data in cloneParent.EnemyData)
+                EnemyData.Add(new CreatureData(data));
+        }
+        
+        // Shallow copy method
+        public EnvironmentData DeepCopy()
+        {
+            return new EnvironmentData(this);
+        }
+        
         public void AddBuildingData(BuildingData data)
         {
             BuildingData.Add(data);
@@ -88,29 +115,6 @@ namespace JumpeeIsland
             foreach (var creatureData in playerData)
                 PlayerData.Add(creatureData);
         }
-
-        // public void PrepareForBattleSave(List<CreatureData> playerData, bool isFinishPlacing)
-        // {
-        //     // If finish placing creatures, PlayerData will be empty
-        //     // if (isFinishPlacing)
-        //     //     if (playerData.Count == 0)
-        //     //     {
-        //     //         PlayerData = PlayerData.FindAll(t => t.EntityName.Equals("King"));
-        //     //         return;
-        //     //     }
-        //
-        //     // If playerData is empty mean player still not place any creature on environment
-        //     if (playerData.Count == 0)
-        //         return;
-        //
-        //     // var kingData = PlayerData.Find(t => t.EntityName.Equals("King"));
-        //     PlayerData = new List<CreatureData>(playerData);
-        //     // if (kingData != null)
-        //     // {
-        //     //     PlayerData.Add(kingData);
-        //     // }
-        //
-        // }
 
         public void StoreRewardAtBuildings(string currencyId, int amount)
         {

@@ -26,7 +26,7 @@ namespace JumpeeIsland
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_isForBattleMode && GameFlowManager.Instance.IsEcoMode)
+            if (_isForBattleMode && GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 return;
             
             if (other.TryGetComponent(out CreatureEntity creatureEntity))

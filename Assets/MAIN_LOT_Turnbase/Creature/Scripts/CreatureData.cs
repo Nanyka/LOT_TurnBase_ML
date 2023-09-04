@@ -12,7 +12,25 @@ namespace JumpeeIsland
         public int CurrentExp;
         public int TurnCount;
         public int CurrentDamage;
-        public List<EffectCache> EffectCaches = new();
+        public List<EffectCache> EffectCaches;
+
+        public CreatureData() { }
+        
+        public CreatureData(CreatureData creatureData)
+        {
+            EntityName = creatureData.EntityName;
+            SkinAddress = creatureData.SkinAddress;
+            Position = creatureData.Position;
+            Rotation = creatureData.Rotation;
+            FactionType = creatureData.FactionType;
+            CreatureType = creatureData.CreatureType;
+            CurrentShield = creatureData.CurrentShield;
+            CurrentExp = creatureData.CurrentExp;
+            TurnCount = creatureData.TurnCount;
+            CurrentDamage = creatureData.CurrentDamage;
+            foreach (var effectCache in creatureData.EffectCaches)
+                EffectCaches.Add(new EffectCache(effectCache));
+        }
 
         // Just used for BattleMode
         public JIInventoryItem GetInventoryItem()
@@ -30,6 +48,12 @@ namespace JumpeeIsland
         public EffectCache(SkillEffectType effectType)
         {
             EffectType = effectType;
+        }
+
+        public EffectCache(EffectCache effectCache)
+        {
+            EffectType = effectCache.EffectType;
+            EffectRemain = effectCache.EffectRemain;
         }
     }
 }

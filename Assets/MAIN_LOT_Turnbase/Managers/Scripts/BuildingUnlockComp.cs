@@ -13,7 +13,7 @@ namespace JumpeeIsland
             if (m_BuildingEntity.GetBuildingType() != BuildingType.MAINHALL)
                 return;
             
-            if (!GameFlowManager.Instance.IsEcoMode) return;
+            if (GameFlowManager.Instance.GameMode != GameMode.ECONOMY) return;
             
             var upcomingTier = SavingSystemManager.Instance.GetUpcomingTier();
 

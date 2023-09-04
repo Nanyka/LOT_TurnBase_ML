@@ -24,7 +24,7 @@ namespace JumpeeIsland
             if (entityData is BuildingData)
             {
                 var buildingData = (BuildingData)entityData;
-                _healthBar.ShowHealthBar(GameFlowManager.Instance.IsEcoMode,
+                _healthBar.ShowHealthBar(GameFlowManager.Instance.GameMode == GameMode.ECONOMY,
                     buildingData.BuildingType != BuildingType.TOWER);
                 m_MAXStorage = buildingData.StorageCapacity;
             }

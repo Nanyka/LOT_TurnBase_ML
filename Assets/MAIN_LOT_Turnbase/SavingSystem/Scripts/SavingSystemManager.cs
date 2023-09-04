@@ -14,7 +14,8 @@ namespace JumpeeIsland
         PlayerEnvData,
         Currencies,
         Commands,
-        GameState
+        GameState,
+        QuestData
     }
 
     [RequireComponent(typeof(EnvironmentLoader))]
@@ -38,6 +39,9 @@ namespace JumpeeIsland
         
         // invoke at CreatureDetailMenu
         [NonSerialized] public UnityEvent<string> OnCreatureUpgrade = new();
+        
+        // invoke at 
+        [NonSerialized] public UnityEvent OnSaveQuestData = new();
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
@@ -48,6 +52,7 @@ namespace JumpeeIsland
 
         private GameStateData m_GameStateData = new();
         private GameProcessData m_GameProcess = new();
+        private QuestData m_QuestData = new();
         private string _gamePath;
         private bool encrypt = true;
         private bool _isLastSessionDisconnect;
@@ -63,6 +68,7 @@ namespace JumpeeIsland
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
             OnRefreshBalances.AddListener(RefreshBalances);
+            OnSaveQuestData.AddListener(SaveQuestData);
         }
 
         private void OnDisable()
@@ -172,6 +178,42 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region QUEST
+
+        private void SaveQuestData()
+        {
+            var gameStatePath = GetSavingPath(SavingPath.QuestData);
+            SaveManager.Instance.Save(m_QuestData, gameStatePath, QuestDataWasSaved, encrypt);
+        }
+        
+        private void QuestDataWasSaved(SaveResult result, string message)
+        {
+            if (result == SaveResult.Error)
+                Debug.LogError($"Error saving quest data:\n{result}\n{message}");
+        }
+        
+        private async Task LoadQuestData()
+        {
+            var gameStatePath = GetSavingPath(SavingPath.QuestData);
+            SaveManager.Instance.Load<QuestData>(gameStatePath, QuestDataWasLoaded, encrypt);
+        }
+
+        private void QuestDataWasLoaded(QuestData questData, SaveResult result, string message)
+        {
+            if (result == SaveResult.EmptyData || result == SaveResult.Error)
+                Debug.LogError("No State data File Found -> Creating new data...");
+
+            if (result == SaveResult.Success)
+                m_QuestData = questData;
+        }
+
+        public QuestData GetQuestData()
+        {
+            return m_QuestData;
+        }
+
+        #endregion
+        
         #region ENVIRONMENT
 
         private void SavePlayerEnv()

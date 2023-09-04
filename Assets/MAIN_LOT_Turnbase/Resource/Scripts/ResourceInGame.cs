@@ -36,7 +36,7 @@ namespace JumpeeIsland
 
         private void DestroyResource(Entity killedByEntity)
         {
-            if (GameFlowManager.Instance.IsEcoMode)
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
                 // just contribute resource when it is killed by player faction
                 if (killedByEntity.GetFaction() == FactionType.Player)

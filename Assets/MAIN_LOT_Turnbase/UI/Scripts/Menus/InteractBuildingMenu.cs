@@ -25,7 +25,7 @@ namespace JumpeeIsland
                 {
                     try
                     {
-                        if (!GameFlowManager.Instance.IsEcoMode) return;
+                        if (GameFlowManager.Instance.GameMode != GameMode.ECONOMY) return;
 
                         var upcomingTier = SavingSystemManager.Instance.GetUpcomingTier();
 

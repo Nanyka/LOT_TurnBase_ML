@@ -7,6 +7,14 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
+    public enum GameMode
+    {
+        NONE,
+        ECONOMY,
+        BOSS,
+        BATTLE
+    }
+    
     public class GameFlowManager : Singleton<GameFlowManager>
     {
         // [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
@@ -16,13 +24,14 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
         [NonSerialized] public UnityEvent<EntityData> OnSelectEntity = new(); // send to TutorialController; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent OnKickOffEnv = new(); // send to EnvironmentManager; invoke at CreatureMenu in BATTLE MODE, at this script in ECO MODE
-        [NonSerialized] public UnityEvent OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, UnlockComp, PlayerFactionController
+        [NonSerialized] public UnityEvent OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, PlayerFactionController
+        [NonSerialized] public UnityEvent OnKilledBoss = new(); // send to GameResultPanel; invoke at CreatureUnlockComp
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
         
-        public bool IsEcoMode = true;
-        [FormerlySerializedAs("_isGameStarted")] [SerializeField] public bool _isGameRunning; // { get; private set; }
+        [FormerlySerializedAs("IsEcoMode")] public GameMode GameMode = GameMode.NONE;
+        [SerializeField] public bool _isGameRunning;
         
-        private EnvironmentManager _environmentManager;
+        protected EnvironmentManager _environmentManager;
         private TutorialController _tutorialController;
         private GlobalVfx _globalVfx;
         
@@ -39,14 +48,14 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.StartUpLoadData();
         }
 
-        private void ConfirmGameStarted()
+        protected virtual void ConfirmGameStarted()
         {
             _isGameRunning = true;
         }
 
         private void RecordStartedState(long arg0)
         {
-            if (IsEcoMode)
+            if (GameMode == GameMode.ECONOMY)
             {
                 OnKickOffEnv.Invoke();
                 _isGameRunning = true;
@@ -65,7 +74,7 @@ namespace JumpeeIsland
 
         public void LoadCurrentTutorial(string currentTutorial)
         {
-            if (IsEcoMode == false)
+            if (GameMode != GameMode.ECONOMY)
                 return;
             
             _tutorialController.Init(currentTutorial);
@@ -79,6 +88,12 @@ namespace JumpeeIsland
         public void AskForShowingAttackPath(IEnumerable<Vector3> highlightPos)
         {
             _globalVfx.ShowAttackPath(highlightPos);
+        }
+
+        // Just use for QuestFlowManager in BossMode
+        public virtual Quest GetQuest()
+        {
+            return null;
         }
     }
 }

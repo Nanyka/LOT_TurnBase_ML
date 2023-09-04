@@ -143,6 +143,7 @@ namespace JumpeeIsland
         {
             try
             {
+                Debug.Log($"Try get map of {enemyId}");
                 var enemyEnv = await CloudCodeService.Instance.CallEndpointAsync<EnvironmentData>(
                     "JumpeeIsland_GetMapById",
                     new Dictionary<string, object>{{"enemyId",enemyId}});

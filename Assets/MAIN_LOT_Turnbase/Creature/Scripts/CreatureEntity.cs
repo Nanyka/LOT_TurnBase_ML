@@ -121,7 +121,7 @@ namespace JumpeeIsland
 
         public override void TakeDamage(int damage, Entity fromEntity)
         {
-            if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.IsEcoMode)
+            if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 return;
                 
             m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
@@ -286,7 +286,7 @@ namespace JumpeeIsland
             }
 
             // Retrieve entity data
-            if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.IsEcoMode == false)
+            if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode != GameMode.ECONOMY)
                 m_CreatureData.CurrentHp = m_CurrentStat.HealthPoint;
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
