@@ -9,7 +9,6 @@ namespace JumpeeIsland
     public class CreatureEntity : Entity, IStatsProvider<CreatureStats>
     {
         [SerializeField] private Transform m_RotatePart;
-        [SerializeField] private List<CreatureStats> m_CreatureStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
@@ -17,6 +16,7 @@ namespace JumpeeIsland
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
 
+        private List<CreatureStats> m_CreatureStats;
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
         private IGetEntityInfo m_Info;

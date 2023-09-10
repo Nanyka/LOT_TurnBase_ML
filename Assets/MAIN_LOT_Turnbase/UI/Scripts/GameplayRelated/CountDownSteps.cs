@@ -1,13 +1,15 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class CountDownSteps : MonoBehaviour
     {
-        [SerializeField] private int _maxSteps;
         [SerializeField] private GameObject _clock;
         [SerializeField] private TextMeshProUGUI _clockText;
+        
+        private int _remainSteps;
         
         private void Start()
         {
@@ -16,11 +18,11 @@ namespace JumpeeIsland
 
         private void Init()
         {
-            if (GameFlowManager.Instance.GameMode == GameMode.BOSS)
-                _maxSteps = GameFlowManager.Instance.GetQuest().maxMovingTurn;
-                
             GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(StartCountDown);
-            // CountDown();
+            
+            if (GameFlowManager.Instance.GameMode == GameMode.BOSS)
+                _remainSteps = GameFlowManager.Instance.GetQuest().maxMovingTurn;
+            UpdateRemainStepUI();
             _clock.SetActive(true);
         }
 
@@ -32,16 +34,21 @@ namespace JumpeeIsland
 
         private void CountDown()
         {
-            _maxSteps--;
+            _remainSteps--;
             UpdateRemainStepUI();
 
-            if (_maxSteps <= 0)
-                GameFlowManager.Instance.OnGameOver.Invoke();
+            if (_remainSteps <= 0)
+                GameFlowManager.Instance.OnGameOver.Invoke(0);
         }
 
         private void UpdateRemainStepUI()
         {
-            _clockText.text = _maxSteps.ToString();
+            _clockText.text = _remainSteps.ToString();
+        }
+
+        public int GetRemainSteps()
+        {
+            return _remainSteps;
         }
     }
 }

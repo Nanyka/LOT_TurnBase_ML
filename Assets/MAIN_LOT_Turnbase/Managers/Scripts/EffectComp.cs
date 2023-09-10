@@ -47,7 +47,7 @@ namespace JumpeeIsland
 
         public bool CheckSkipTurn()
         {
-            return GetEffectCache(SkillEffectType.Frozen).EffectRemain > 0;
+            return GetEffectCache(SkillEffectType.Frozen)?.EffectRemain > 0;
         }
 
         #region STRENGTH BOOST
@@ -123,6 +123,9 @@ namespace JumpeeIsland
 
         private EffectCache GetEffectCache(SkillEffectType effectType)
         {
+            if (m_CreatureData.EffectCaches == null)
+                return null;
+                
             EffectCache effectCache =
                 m_CreatureData.EffectCaches.Find(t => t.EffectType == effectType);
 

@@ -116,17 +116,18 @@ namespace JumpeeIsland
         {
             MarkAsUsedThisTurn();
             InferMoving = selectedAction;
+            CreatureStartMove(m_Transform.position, InferMoving.Action);
 
-            if (_isJumpable == false)
-            {
-                // Change agent direction before the agent jump to the new position
-                if (selectedAction.TargetPos != m_Transform.position)
-                    m_RotatePart.forward = selectedAction.TargetPos - m_Transform.position;
-
-                StartCoroutine(MoveOverTime());
-            }
-            else
-                CreatureStartMove(m_Transform.position, InferMoving.Action);
+            // if (_isJumpable == false)
+            // {
+            //     // Change agent direction before the agent jump to the new position
+            //     if (selectedAction.TargetPos != m_Transform.position)
+            //         m_RotatePart.forward = selectedAction.TargetPos - m_Transform.position;
+            //
+            //     StartCoroutine(MoveOverTime());
+            // }
+            // else
+            //     CreatureStartMove(m_Transform.position, InferMoving.Action);
         }
 
         public override void CreatureEndMove()

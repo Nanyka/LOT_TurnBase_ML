@@ -55,6 +55,7 @@ namespace JumpeeIsland
             {
                 HideCreatureMenu();
                 StartCoroutine(WaitToStartGame());
+                return;
             }
 
             if (SavingSystemManager.Instance.GetEnvironmentData().PlayerData.Count >= GameFlowManager.Instance.GetQuest().maxTroop)
@@ -84,7 +85,7 @@ namespace JumpeeIsland
         public void SelectLocation(Vector3 position)
         {
             if (GameFlowManager.Instance.GetEnvManager().FreeToMove(position))
-                _settlePoint.position = position;
+                _settlePoint.position = position + Vector3.up*0.5f;
         }
 
         public void EndDeal(IConfirmFunction confirmFunction)

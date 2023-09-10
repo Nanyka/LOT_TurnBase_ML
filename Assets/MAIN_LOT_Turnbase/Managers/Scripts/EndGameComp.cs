@@ -12,7 +12,7 @@ namespace JumpeeIsland
 
         private void EndGame(Entity arg0)
         {
-            GameFlowManager.Instance.OnGameOver.Invoke();
+            GameFlowManager.Instance.OnGameOver.Invoke(2000);
         }
     }
 }

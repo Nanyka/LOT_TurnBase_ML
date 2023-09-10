@@ -136,12 +136,14 @@ namespace JumpeeIsland
             switch (m_CurrentStat.SpawnedEntityType)
             {
                 case EntityType.BUILDING:
-                    SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position,
-                        true);
+                    SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position, true);
                     break;
                 case EntityType.ENEMY:
-                    SavingSystemManager.Instance.OnSpawnMovableEntity(m_CurrentStat.EntityName,
-                        m_CollectableData.Position);
+                    SavingSystemManager.Instance.OnSpawnMovableEntity(m_CurrentStat.EntityName, m_CollectableData.Position);
+                    break;
+                
+                case EntityType.RESOURCE:
+                    SavingSystemManager.Instance.OnSpawnResource(m_CurrentStat.EntityName, m_CollectableData.Position);
                     break;
             }
         }

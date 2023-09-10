@@ -9,11 +9,26 @@ namespace JumpeeIsland
     {
         public string questAddress;
         public string bossMap;
+
+        [SerializeField] private MeshRenderer[] _stars;
+        
         private AsyncOperationHandle m_SceneHandle;
 
+        public void Init(QuestUnit questUnit)
+        {
+            if (questAddress.Equals(questUnit.QuestAddress))
+            {
+                if (_stars.Length == 0)
+                    return;
+                
+                for (int i = 0; i < questUnit.StarAmount; i++)
+                    _stars[i].material = AddressableManager.Instance.GetMaterial("/Materials/Yellow");
+            }
+        }
+        
         public void ClickYes()
         {
-            QuestMapSavingManager.Instance.OnSetQuestAddress.Invoke(questAddress);
+            QuestMapSavingManager.Instance.OnSetQuestSceneName.Invoke(questAddress);
             m_SceneHandle = Addressables.LoadSceneAsync(bossMap);
             m_SceneHandle.Completed += OnLoadScene;
         }

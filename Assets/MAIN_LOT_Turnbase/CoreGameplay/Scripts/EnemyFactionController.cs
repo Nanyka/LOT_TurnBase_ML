@@ -159,15 +159,6 @@ namespace JumpeeIsland
 
         private void EndTurn()
         {
-            // var attackAmount = 0;
-            // Attack nearby enemy
-            // foreach (var enemy in m_Enemies.Where(enemy => enemy.GetJumpStep() != 0))
-            // {
-            //     attackAmount++;
-            //     enemy.Attack();
-            // }
-
-            // call for the end-turn event
             StartCoroutine(WaitForChangeFaction(1f));
         }
 

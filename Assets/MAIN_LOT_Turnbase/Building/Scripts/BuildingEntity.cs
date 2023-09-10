@@ -17,6 +17,7 @@ namespace JumpeeIsland
         [SerializeField] private FireComp m_FireComp;
         [SerializeField] private AnimateComp m_AnimateComp;
         [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
+        
 
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;

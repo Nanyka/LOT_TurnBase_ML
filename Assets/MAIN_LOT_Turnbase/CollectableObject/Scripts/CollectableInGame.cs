@@ -37,11 +37,13 @@ namespace JumpeeIsland
         private void DestroyEntity(Entity killedByEntity)
         {
             // just contribute commands when it is killed by player faction or itself
-            if (killedByEntity.GetFaction() == FactionType.Player || m_Entity.CheckSelfCollect())
+            if (killedByEntity.GetFaction() == FactionType.Player || m_Entity.CheckSelfCollect() ||
+                GameFlowManager.Instance.GameMode == GameMode.BOSS)
                 m_Entity.ContributeCommands();
 
             // take damage if the entity come from the opposite faction. In this case, it just for battle mode when player invade the other island
-            if (killedByEntity.GetFaction() == FactionType.Player && m_Entity.GetCollectableType() == CollectableType.TRAP)
+            if (killedByEntity.GetFaction() == FactionType.Player &&
+                m_Entity.GetCollectableType() == CollectableType.TRAP)
             {
                 killedByEntity.TakeDamage(m_Entity.GetAttackDamage(), m_Entity);
             }

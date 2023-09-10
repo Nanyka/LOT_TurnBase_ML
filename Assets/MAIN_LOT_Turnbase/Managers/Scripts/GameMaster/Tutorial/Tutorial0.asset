@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial0
   m_EditorClassIdentifier: 
-  m_tutorialStepId: Tutorial0
   UsePassCondition: 0
   PassCondition:
     MapSize: 0
@@ -34,11 +33,12 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
     IsCheckBattle: 0
     BattleCount: 0
     IsCheckBossUnlock: 0
@@ -63,11 +63,12 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
     IsCheckBattle: 0
     BattleCount: 0
     IsCheckBossUnlock: 0
@@ -115,18 +116,20 @@ MonoBehaviour:
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
       IsCheckBattle: 0
       BattleCount: 0
       IsCheckBossUnlock: 0
       BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 1
-    Message: Welcome to JUMPEE ISLAND
+    Message: Welcome to JUMPEE ISLAND. You know why it is jumpee?\n It means jumping
+      is the secret power of this Island
   - Pointer: 1
     EntitySelection: 1
     EntityType: 3
@@ -169,11 +172,12 @@ MonoBehaviour:
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
       IsCheckBattle: 0
       BattleCount: 0
       IsCheckBossUnlock: 0

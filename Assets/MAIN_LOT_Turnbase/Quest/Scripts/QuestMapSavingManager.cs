@@ -7,19 +7,23 @@ namespace JumpeeIsland
     public class QuestMapSavingManager : Singleton<QuestMapSavingManager>
     {
         // invoke at QuestButton
-        [NonSerialized] public UnityEvent<string> OnSetQuestAddress = new();
+        [NonSerialized] public UnityEvent<string> OnSetQuestSceneName = new();
         
         // invoke at QuestButton
         [NonSerialized] public UnityEvent<IConfirmFunction> OnClickQuestButton = new();
+        
+        // invoke at QuestMapUIManager
+        [NonSerialized] public UnityEvent<QuestData> OnUpdateQuestState = new();
 
-        private QuestData m_QuestData = new();
+        private QuestData m_QuestData;
         private bool encrypt = true;
         private string _gamePath;
 
         private void Start()
         {
             _gamePath = Application.persistentDataPath;
-            OnSetQuestAddress.AddListener(SetQuestAddress);
+            OnSetQuestSceneName.AddListener(SetQuestAddress);
+            LoadQuestData();
         }
 
         private void SaveQuestData()
@@ -46,12 +50,15 @@ namespace JumpeeIsland
                 Debug.LogError("No State data File Found -> Creating new data...");
 
             if (result == SaveResult.Success)
+            {
                 m_QuestData = questData;
+                OnUpdateQuestState.Invoke(m_QuestData);
+            }
         }
 
-        public void SetQuestAddress(string questAddress)
+        private void SetQuestAddress(string questAddress)
         {
-            m_QuestData.QuestAddress = questAddress;
+            m_QuestData.CurrentQuestAddress = questAddress;
             SaveQuestData();
         }
         

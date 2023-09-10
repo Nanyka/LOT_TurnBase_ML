@@ -1,10 +1,4 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using Newtonsoft.Json;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -23,7 +17,7 @@ namespace JumpeeIsland
             _environmentData = GameFlowManager.Instance.GetQuest().environmentData.DeepCopy();
             
             // Customize battle env from enemy env and player env
-            _environmentData.PrepareForBossMode(_playerEnvCache.PlayerData);
+            // _environmentData.PrepareForBossMode(_playerEnvCache.PlayerData);
             
             ExecuteEnvData();
             MainUI.Instance.OnShowDropTroopMenu.Invoke(GetSpawnList());

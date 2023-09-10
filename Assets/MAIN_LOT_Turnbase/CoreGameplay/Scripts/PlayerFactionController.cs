@@ -184,13 +184,7 @@ namespace JumpeeIsland
             _creatures.Remove(unitMovement);
 
             if (_creatures.Count <= 0)
-                StartCoroutine(WaitForEndGame());
-        }
-
-        private IEnumerator WaitForEndGame()
-        {
-            yield return new WaitForSeconds(3f);
-            GameFlowManager.Instance.OnGameOver.Invoke();
+                GameFlowManager.Instance.OnGameOver.Invoke(3000);
         }
 
         public void ResetData()

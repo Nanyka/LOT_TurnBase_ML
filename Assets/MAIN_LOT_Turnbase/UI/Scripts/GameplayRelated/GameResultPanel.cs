@@ -31,7 +31,7 @@ namespace JumpeeIsland
                 SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
         }
 
-        private async void ShowGameOverPanel()
+        private async void ShowGameOverPanel(int delayInverval)
         {
             var enemyBuildingCount =
                 SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);

@@ -17,26 +17,79 @@ MonoBehaviour:
     lastTimestamp: 0
     moveTimestamp: 0
     mapSize: 0
-    ResourceData: []
-    BuildingData: []
-    PlayerData:
-    - EntityName: Boss0
-      SkinAddress: /Creatures/Creature0_lv0
+    ResourceData:
+    - EntityName: Obstacle1
+      SkinAddress: 
       Position: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 1
-      CurrentHp: 3
+      FactionType: 2
+      CurrentHp: 1
       CurrentLevel: 0
-      CreatureType: 4
-      CurrentShield: 0
-      CurrentExp: 0
-      TurnCount: 0
-      CurrentDamage: 0
-      EffectCaches: []
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 2
+    - EntityName: Obstacle1
+      SkinAddress: 
+      Position: {x: -1, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Obstacle1
+      SkinAddress: 
+      Position: {x: 1, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Obstacle1
+      SkinAddress: 
+      Position: {x: 0, y: 0, z: -1}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Obstacle1
+      SkinAddress: 
+      Position: {x: 0, y: 0, z: 1}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: 1, y: 0, z: 1}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    BuildingData: []
+    PlayerData: []
     EnemyData: []
     CollectableData: []
-  targetType: 0
-  targetPos: {x: -Infinity, y: -Infinity, z: -Infinity}
+  targetType: 1
+  targetPos: {x: 1, y: 0, z: 1}
   winCondition:
     MapSize: 0
     Currency: 0
@@ -45,8 +98,8 @@ MonoBehaviour:
     Storage: 0
     StorageCompare: 0
     StorageAmount: 0
-    Resource: 0
-    ResourceCompare: 0
+    Resource: 2
+    ResourceCompare: 2
     ResourceAmount: 0
     Collectable: 0
     CollectableCompare: 0
@@ -74,6 +127,16 @@ MonoBehaviour:
   - {x: -1, y: 0, z: -1}
   - {x: 0, y: 0, z: -1}
   - {x: 1, y: 0, z: -1}
+  - {x: -1, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 1, y: 0, z: 1}
+  - {x: -2, y: 0, z: 0}
+  - {x: 2, y: 0, z: 0}
+  - {x: 0, y: 0, z: -2}
+  - {x: 0, y: 0, z: 2}
   maxMovingTurn: 4
   maxTroop: 1
-  rewards: []
+  rewards:
+  - service: 
+    id: WOOD
+    amount: 1

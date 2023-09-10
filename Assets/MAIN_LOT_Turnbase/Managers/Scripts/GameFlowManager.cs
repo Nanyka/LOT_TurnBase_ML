@@ -24,7 +24,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
         [NonSerialized] public UnityEvent<EntityData> OnSelectEntity = new(); // send to TutorialController; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent OnKickOffEnv = new(); // send to EnvironmentManager; invoke at CreatureMenu in BATTLE MODE, at this script in ECO MODE
-        [NonSerialized] public UnityEvent OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, PlayerFactionController
+        [NonSerialized] public UnityEvent<int> OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, PlayerFactionController
         [NonSerialized] public UnityEvent OnKilledBoss = new(); // send to GameResultPanel; invoke at CreatureUnlockComp
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
         
@@ -35,7 +35,7 @@ namespace JumpeeIsland
         private TutorialController _tutorialController;
         private GlobalVfx _globalVfx;
         
-        private void Start()
+        protected virtual void Start()
         {
             _environmentManager = FindObjectOfType<EnvironmentManager>();
             _tutorialController = FindObjectOfType<TutorialController>();
@@ -62,7 +62,7 @@ namespace JumpeeIsland
             }
         }
 
-        private void GameOverState()
+        private void GameOverState(int delayInvterval)
         {
             _isGameRunning = false;
         }
@@ -72,11 +72,8 @@ namespace JumpeeIsland
             return _environmentManager;
         }
 
-        public void LoadCurrentTutorial(string currentTutorial)
+        public void LoadTutorialManager(string currentTutorial)
         {
-            if (GameMode != GameMode.ECONOMY)
-                return;
-            
             _tutorialController.Init(currentTutorial);
         }
 
@@ -92,6 +89,11 @@ namespace JumpeeIsland
 
         // Just use for QuestFlowManager in BossMode
         public virtual Quest GetQuest()
+        {
+            return null;
+        }
+        
+        public virtual QuestData GetQuestData()
         {
             return null;
         }

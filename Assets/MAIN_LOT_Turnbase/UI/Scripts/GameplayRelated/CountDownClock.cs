@@ -32,7 +32,7 @@ namespace JumpeeIsland
             if (_gameDuration <= 0)
             {
                 CancelInvoke();
-                GameFlowManager.Instance.OnGameOver.Invoke();
+                GameFlowManager.Instance.OnGameOver.Invoke(0);
             }
         }
 

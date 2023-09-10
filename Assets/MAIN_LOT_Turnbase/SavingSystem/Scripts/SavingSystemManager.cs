@@ -30,16 +30,16 @@ namespace JumpeeIsland
 
         // send to EnvironmentLoader, invoke at ResourceInGame, BuildingInGame, CreatureInGame;
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new();
-        
+
         // invoke at InventoryLoader
         [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnSetUpBuildingMenus = new();
 
         // invoke at JICloudCodeManager
         [NonSerialized] public UnityEvent OnRefreshBalances = new();
-        
+
         // invoke at CreatureDetailMenu
         [NonSerialized] public UnityEvent<string> OnCreatureUpgrade = new();
-        
+
         // invoke at 
         [NonSerialized] public UnityEvent OnSaveQuestData = new();
 
@@ -52,7 +52,7 @@ namespace JumpeeIsland
 
         private GameStateData m_GameStateData = new();
         private GameProcessData m_GameProcess = new();
-        private QuestData m_QuestData = new();
+        private QuestData m_QuestData;
         private string _gamePath;
         private bool encrypt = true;
         private bool _isLastSessionDisconnect;
@@ -180,18 +180,49 @@ namespace JumpeeIsland
 
         #region QUEST
 
+        private void ResetQuestData()
+        {
+            m_QuestData = new QuestData();
+            m_QuestData.QuestChains = new List<QuestChain>();
+            SaveQuestData();
+        }
+
         private void SaveQuestData()
         {
             var gameStatePath = GetSavingPath(SavingPath.QuestData);
             SaveManager.Instance.Save(m_QuestData, gameStatePath, QuestDataWasSaved, encrypt);
         }
-        
+
+        public void SaveQuestData(int bossIndex, string questAddress, int starAmount)
+        {
+            if (m_QuestData.QuestChains.Count <= bossIndex)
+                m_QuestData.QuestChains.Add(new QuestChain());
+
+            var questChain = m_QuestData.QuestChains[bossIndex];
+
+            if (questChain.QuestUnits == null)
+                questChain.QuestUnits = new List<QuestUnit>();
+            var quest = questChain.QuestUnits.Find(t => t.QuestAddress.Equals(questAddress));
+            if (quest == null)
+            {
+                quest = new QuestUnit(questAddress);
+                questChain.QuestUnits.Add(quest);
+            }
+
+            quest.StarAmount = starAmount;
+            
+            Debug.Log($"Save quest data: {m_QuestData.QuestChains.Count}");
+
+            var gameStatePath = GetSavingPath(SavingPath.QuestData);
+            SaveManager.Instance.Save(m_QuestData, gameStatePath, QuestDataWasSaved, encrypt);
+        }
+
         private void QuestDataWasSaved(SaveResult result, string message)
         {
             if (result == SaveResult.Error)
                 Debug.LogError($"Error saving quest data:\n{result}\n{message}");
         }
-        
+
         private async Task LoadQuestData()
         {
             var gameStatePath = GetSavingPath(SavingPath.QuestData);
@@ -212,8 +243,13 @@ namespace JumpeeIsland
             return m_QuestData;
         }
 
+        public void SetQuestData(QuestData questData)
+        {
+            m_QuestData = questData;
+        }
+
         #endregion
-        
+
         #region ENVIRONMENT
 
         private void SavePlayerEnv()
@@ -271,6 +307,8 @@ namespace JumpeeIsland
                 m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
                 ResetBasicInventory();
             }
+
+            ResetQuestData();
         }
 
         public void OnSpawnResource(string resourceId, Vector3 position)
@@ -313,11 +351,11 @@ namespace JumpeeIsland
                 MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
                 return;
             }
-            
+
             if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
 
             Debug.Log("How can you get this line even when reaching the max amount of construction");
-            
+
             // ...and get the building in place
             var newBuilding = new BuildingData
             {
@@ -356,7 +394,7 @@ namespace JumpeeIsland
                 MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
                 return;
             }
-            
+
             if (isWaitForPurchase)
             {
                 if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
@@ -410,7 +448,7 @@ namespace JumpeeIsland
         {
             return m_CloudConnector.GetNumericByConfig(CommandName.JI_MAX_MOVE.ToString());
         }
-        
+
         public int GetTownhouseSpace()
         {
             return m_CloudConnector.GetNumericByConfig(NumericConfigName.JI_TOWNHOUSE_SPACE.ToString());
@@ -540,7 +578,7 @@ namespace JumpeeIsland
         {
             return m_EnvLoader.GetCurrentTier();
         }
-        
+
         public MainHallTier GetUpcomingTier()
         {
             return m_EnvLoader.GetUpcomingTier();
@@ -580,12 +618,12 @@ namespace JumpeeIsland
         {
             return await m_CloudConnector.OnGrantInventory(inventoryId);
         }
-        
+
         public async void GrantInventory(string inventoryId, int level)
         {
             await m_CloudConnector.OnGrantInventory(inventoryId, level);
         }
-        
+
         public async void UpgradeInventory(string inventoryId)
         {
             await m_CloudConnector.OnUpdateInventory(inventoryId, 0);
@@ -700,7 +738,7 @@ namespace JumpeeIsland
         #endregion
 
         #region LEADERBOARD
-        
+
         public async Task<EnvironmentData> GetEnemyEnv()
         {
             return await m_CloudConnector.GetEnemyEnvironment();
@@ -723,10 +761,11 @@ namespace JumpeeIsland
         private async Task LoadGameProcess()
         {
             m_GameProcess = await m_CloudConnector.OnLoadGameProcess();
-            // m_CloudConnector.PlayerRecordScore(m_GameProcess.CalculateExp());
-            GameFlowManager.Instance.LoadCurrentTutorial(m_GameProcess == null
-                ? "/Tutorials/Tutorial0"
-                : m_GameProcess.currentTutorial);
+
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
+                GameFlowManager.Instance.LoadTutorialManager(m_GameProcess == null
+                    ? "/Tutorials/Tutorial0"
+                    : m_GameProcess.currentTutorial);
         }
 
         public async void SaveCurrentTutorial(string tutorial)
@@ -741,7 +780,7 @@ namespace JumpeeIsland
                 m_GameProcess.winStack = 0;
             else
                 m_GameProcess.winStack++;
-            
+
             switch (starAmount)
             {
                 case 1:
@@ -757,11 +796,11 @@ namespace JumpeeIsland
 
             m_GameProcess.battleCount++;
             m_GameProcess.score = Mathf.Clamp(m_GameProcess.score + score, 0, m_GameProcess.score + score);
-            
+
             m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
-        
+
         public async void SaveBossBattle()
         {
             m_GameProcess.battleCount++;
@@ -780,7 +819,7 @@ namespace JumpeeIsland
 
         public void SendBossQuestEvent(int bossId)
         {
-            m_CloudConnector.SendBossQuestEvent(GetScore(),bossId);
+            m_CloudConnector.SendBossQuestEvent(GetScore(), bossId);
         }
 
         public void SendTutorialTrackEvent(string stepId)
@@ -791,7 +830,7 @@ namespace JumpeeIsland
         #endregion
 
         #region GET & SET
-        
+
         private string GetSavingPath(SavingPath tailPath)
         {
             var envPath = _gamePath + "/" + tailPath;
@@ -837,10 +876,10 @@ namespace JumpeeIsland
                             IncrementLocalCurrency(reward.id, reward.amount);
                         else
                             m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
-                        
+
                         // show currency vfx
-                        MainUI.Instance.OnShowCurrencyVfx.Invoke(reward.id, reward.amount,fromPos);
-                        
+                        MainUI.Instance.OnShowCurrencyVfx.Invoke(reward.id, reward.amount, fromPos);
+
                         break;
                     }
                 }

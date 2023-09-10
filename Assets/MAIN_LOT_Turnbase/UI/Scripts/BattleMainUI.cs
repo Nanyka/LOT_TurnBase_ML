@@ -20,7 +20,7 @@ namespace JumpeeIsland
             IsInteractable = true;
         }
 
-        private void DisableInteractable()
+        private void DisableInteractable(int delayInterval)
         {
             IsInteractable = false;
         }

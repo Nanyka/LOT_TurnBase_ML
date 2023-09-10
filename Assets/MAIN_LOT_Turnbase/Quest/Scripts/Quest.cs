@@ -11,7 +11,8 @@ namespace JumpeeIsland
         // Limit tile
         // Limit turn to move
         // Limit amount of troops
-        // Vary in goal of the quest
+        // Various goals of the quest
+        // Provide tutorial if needed
 
         public EnvironmentData environmentData;
         public EntityType targetType;
@@ -20,6 +21,8 @@ namespace JumpeeIsland
         public List<Vector3> enableTiles;
         public int maxMovingTurn;
         public int maxTroop;
+        public List<int> excellentRank = new(2);
         public List<JIRemoteConfigManager.Reward> rewards;
+        public string tutorialForQuest;
     }
 }
