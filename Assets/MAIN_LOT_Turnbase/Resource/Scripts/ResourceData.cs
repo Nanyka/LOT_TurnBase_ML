@@ -23,6 +23,7 @@ namespace JumpeeIsland
             Level = resourceData.Level;
             ResourceType = resourceData.ResourceType;
             CollectedCurrency = resourceData.CollectedCurrency;
+            CurrentHp = resourceData.CurrentHp;
         }
     }
 }

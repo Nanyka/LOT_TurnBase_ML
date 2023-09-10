@@ -211,8 +211,6 @@ namespace JumpeeIsland
 
             quest.StarAmount = starAmount;
             
-            Debug.Log($"Save quest data: {m_QuestData.QuestChains.Count}");
-
             var gameStatePath = GetSavingPath(SavingPath.QuestData);
             SaveManager.Instance.Save(m_QuestData, gameStatePath, QuestDataWasSaved, encrypt);
         }
