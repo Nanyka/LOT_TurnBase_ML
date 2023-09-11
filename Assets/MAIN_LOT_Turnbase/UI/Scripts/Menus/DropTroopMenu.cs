@@ -58,10 +58,14 @@ namespace JumpeeIsland
                 return;
             }
 
-            if (SavingSystemManager.Instance.GetEnvironmentData().PlayerData.Count >= GameFlowManager.Instance.GetQuest().maxTroop)
+            if (GameFlowManager.Instance.GameMode == GameMode.BOSS)
             {
-                HideCreatureMenu();
-                StartCoroutine(WaitToStartGame());
+                if (SavingSystemManager.Instance.GetEnvironmentData().PlayerData.Count >=
+                    GameFlowManager.Instance.GetQuest().maxTroop)
+                {
+                    HideCreatureMenu();
+                    StartCoroutine(WaitToStartGame());
+                }
             }
         }
 
@@ -85,7 +89,7 @@ namespace JumpeeIsland
         public void SelectLocation(Vector3 position)
         {
             if (GameFlowManager.Instance.GetEnvManager().FreeToMove(position))
-                _settlePoint.position = position + Vector3.up*0.5f;
+                _settlePoint.position = position + Vector3.up * 0.5f;
         }
 
         public void EndDeal(IConfirmFunction confirmFunction)

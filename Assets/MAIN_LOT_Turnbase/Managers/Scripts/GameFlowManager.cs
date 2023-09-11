@@ -57,8 +57,8 @@ namespace JumpeeIsland
         {
             if (GameMode == GameMode.ECONOMY)
             {
-                OnKickOffEnv.Invoke();
                 _isGameRunning = true;
+                OnKickOffEnv.Invoke();
             }
         }
 

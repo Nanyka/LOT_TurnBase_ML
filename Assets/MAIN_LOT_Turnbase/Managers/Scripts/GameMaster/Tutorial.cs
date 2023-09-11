@@ -46,5 +46,10 @@ namespace JumpeeIsland
             
             return PassCondition.CheckPass();
         }
+
+        public int GetStepAmount()
+        {
+            return steps.Count;
+        }
     }
 }

@@ -28,7 +28,7 @@ MonoBehaviour:
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 2
+      CollectedCurrency: 0
     - EntityName: Obstacle1
       SkinAddress: 
       Position: {x: 1, y: 0, z: 0}
@@ -61,12 +61,12 @@ MonoBehaviour:
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 0
+      CollectedCurrency: 2
     BuildingData: []
     PlayerData: []
     EnemyData: []
     CollectableData:
-    - EntityName: TreeChest
+    - EntityName: StoneChest
       SkinAddress: 
       Position: {x: -1, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
       CurrentLevel: 0
       CollectableType: 1
       AccumulatedStep: 0
-    - EntityName: TreeChest
+    - EntityName: StoneChest
       SkinAddress: 
       Position: {x: 0, y: 0, z: -1}
       Rotation: {x: 0, y: 0, z: 0}
@@ -130,9 +130,11 @@ MonoBehaviour:
   - {x: 2, y: 0, z: 0}
   - {x: 0, y: 0, z: -2}
   - {x: 0, y: 0, z: 2}
-  maxMovingTurn: 5
+  maxMovingTurn: 10
   maxTroop: 1
+  excellentRank: 0300000005000000
   rewards:
   - service: 
     id: WOOD
     amount: 1
+  tutorialForQuest: /Tutorials/Boss0_3

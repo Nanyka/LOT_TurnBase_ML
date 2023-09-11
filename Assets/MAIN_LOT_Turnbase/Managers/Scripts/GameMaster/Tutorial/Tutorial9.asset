@@ -30,37 +30,7 @@ MonoBehaviour:
     Building: 0
     BuildingCompare: 0
     BuildingAmount: 0
-    Creature: 4
-    CreatureCompare: 2
-    CreatureAmount: 0
-    IsExpCondition: 0
-    playerExp: 0
-    IsUICondition: 0
-    UIElement: 
-    IsSelectEntity: 0
-    EntityName: 
-    IsCheckBattle: 0
-    BattleCount: 0
-    IsCheckBossUnlock: 0
-    BossUnlockAmount: 0
-  conditions:
-  - MapSize: 0
-    Currency: 0
-    CurrencyCompare: 0
-    CurrencyAmount: 4
-    Storage: 0
-    StorageCompare: 0
-    StorageAmount: 0
-    Resource: 0
-    ResourceCompare: 0
-    ResourceAmount: 1
-    Collectable: 0
-    CollectableCompare: 2
-    CollectableAmount: 1
-    Building: 0
-    BuildingCompare: 0
-    BuildingAmount: 0
-    Creature: 4
+    Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
     IsExpCondition: 0
@@ -69,21 +39,22 @@ MonoBehaviour:
     UIElement: 
     IsSelectEntity: 0
     EntityName: 
-    IsCheckBattle: 0
-    BattleCount: 0
+    IsCheckBattle: 1
+    BattleCount: 1
     IsCheckBossUnlock: 0
     BossUnlockAmount: 0
+  conditions: []
   steps:
   - Pointer: 1
-    EntitySelection: 1
-    EntityType: 4
+    EntitySelection: 0
+    EntityType: 0
     CurrencyFromResource: 0
     BuildingType: 0
-    CreatureType: 4
+    CreatureType: 0
     ArrowSign: 0
     MinJump: 0
-    ButtonSelection: 0
-    ButtonName: 
+    ButtonSelection: 1
+    ButtonName: GoToBattleButton
     CheckPosition: 0
     CheckEntity: 0
     Spawner: 0
@@ -113,20 +84,20 @@ MonoBehaviour:
       Building: 0
       BuildingCompare: 0
       BuildingAmount: 0
-      Creature: 4
-      CreatureCompare: 2
+      Creature: 0
+      CreatureCompare: 0
       CreatureAmount: 0
       IsExpCondition: 0
       playerExp: 0
       IsUICondition: 0
-      UIElement: 
+      UIElement: CreatureUpgradeConfirm
       IsSelectEntity: 0
       EntityName: 
-      IsCheckBattle: 0
-      BattleCount: 0
+      IsCheckBattle: 1
+      BattleCount: 1
       IsCheckBossUnlock: 0
       BossUnlockAmount: 0
-    IsEndTutorial: 0
+    IsEndTutorial: 1
     Conversation: 1
-    Message: Ahhh, our first enemy so far
-  nextTutorial: /Tutorials/Tutorial10
+    Message: Let see what challenges others give us
+  nextTutorial: 

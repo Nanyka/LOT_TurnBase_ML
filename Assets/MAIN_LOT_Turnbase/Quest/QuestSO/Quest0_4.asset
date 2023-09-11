@@ -28,7 +28,7 @@ MonoBehaviour:
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 2
+      CollectedCurrency: 0
     - EntityName: Obstacle1
       SkinAddress: 
       Position: {x: -1, y: 0, z: -1}
@@ -143,9 +143,11 @@ MonoBehaviour:
   - {x: 2, y: 0, z: 0}
   - {x: 0, y: 0, z: -2}
   - {x: 0, y: 0, z: 2}
-  maxMovingTurn: 2
+  maxMovingTurn: 10
   maxTroop: 1
+  excellentRank: 0500000008000000
   rewards:
   - service: 
     id: WOOD
     amount: 1
+  tutorialForQuest: /Tutorials/Boss0_4

@@ -18,7 +18,7 @@ namespace JumpeeIsland
         protected override void Start()
         {
             base.Start();
-            
+
             _gamePath = Application.persistentDataPath;
             LoadQuestData();
         }
@@ -28,11 +28,11 @@ namespace JumpeeIsland
             base.ConfirmGameStarted();
             if (_quest.targetPos.x.Equals(float.NegativeInfinity))
                 return;
-        
+
             var target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Enemy);
             if (_quest.targetType == EntityType.RESOURCE)
                 target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Neutral);
-        
+
             if (target != null)
                 target.AddComponent<EndGameComp>();
         }
@@ -44,9 +44,6 @@ namespace JumpeeIsland
 
         public override Quest GetQuest()
         {
-            if (_isTestPhase)
-                return _quest = _testQuest;
-            
             return _quest;
         }
 
@@ -64,7 +61,11 @@ namespace JumpeeIsland
             if (result == SaveResult.Success)
             {
                 SavingSystemManager.Instance.SetQuestData(questData);
-                _quest = AddressableManager.Instance.GetAddressableSO(questData.CurrentQuestAddress) as Quest;
+
+                if (_isTestPhase)
+                    _quest = _testQuest;
+                else
+                    _quest = AddressableManager.Instance.GetAddressableSO(questData.CurrentQuestAddress) as Quest;
                 if (_quest != null) LoadTutorialManager(_quest.tutorialForQuest);
             }
         }

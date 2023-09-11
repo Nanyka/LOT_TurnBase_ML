@@ -24,6 +24,7 @@ namespace JumpeeIsland
             Rotation = creatureData.Rotation;
             FactionType = creatureData.FactionType;
             CreatureType = creatureData.CreatureType;
+            CurrentHp = creatureData.CurrentHp;
             CurrentShield = creatureData.CurrentShield;
             CurrentExp = creatureData.CurrentExp;
             TurnCount = creatureData.TurnCount;
@@ -44,6 +45,8 @@ namespace JumpeeIsland
     {
         public SkillEffectType EffectType;
         public int EffectRemain;
+
+        public EffectCache() { }
 
         public EffectCache(SkillEffectType effectType)
         {

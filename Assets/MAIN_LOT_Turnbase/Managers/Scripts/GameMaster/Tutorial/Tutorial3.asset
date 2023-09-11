@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial3
   m_EditorClassIdentifier: 
-  UsePassCondition: 0
+  UsePassCondition: 1
   PassCondition:
     MapSize: 0
-    Currency: 2
+    Currency: 0
     CurrencyCompare: 0
-    CurrencyAmount: 1
-    Storage: 0
+    CurrencyAmount: 0
+    Storage: 2
     StorageCompare: 0
-    StorageAmount: 0
+    StorageAmount: 10
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 0
@@ -49,17 +49,17 @@ MonoBehaviour:
     CurrencyCompare: 0
     CurrencyAmount: 1
     Storage: 0
-    StorageCompare: 0
-    StorageAmount: 0
-    Resource: 2
+    StorageCompare: 1
+    StorageAmount: 3
+    Resource: 0
     ResourceCompare: 0
-    ResourceAmount: 0
+    ResourceAmount: 1
     Collectable: 0
-    CollectableCompare: 0
-    CollectableAmount: 2
+    CollectableCompare: 2
+    CollectableAmount: 1
     Building: 0
-    BuildingCompare: 0
-    BuildingAmount: 1
+    BuildingCompare: 2
+    BuildingAmount: 10
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
@@ -71,14 +71,14 @@ MonoBehaviour:
     EntityName: 
     IsCheckBattle: 0
     BattleCount: 0
-    IsCheckBossUnlock: 0
-    BossUnlockAmount: 0
+    IsCheckBossUnlock: 1
+    BossUnlockAmount: 1
   steps:
   - Pointer: 1
     EntitySelection: 1
-    EntityType: 1
-    CurrencyFromResource: 2
-    BuildingType: 0
+    EntityType: 2
+    CurrencyFromResource: 0
+    BuildingType: 3
     CreatureType: 0
     ArrowSign: 0
     MinJump: 0
@@ -99,19 +99,19 @@ MonoBehaviour:
     EndCondition:
       MapSize: 0
       Currency: 0
-      CurrencyCompare: 2
+      CurrencyCompare: 0
       CurrencyAmount: 0
       Storage: 0
       StorageCompare: 0
       StorageAmount: 0
       Resource: 0
-      ResourceCompare: 1
-      ResourceAmount: 2
+      ResourceCompare: 0
+      ResourceAmount: 0
       Collectable: 0
-      CollectableCompare: 0
+      CollectableCompare: 2
       CollectableAmount: 1
       Building: 0
-      BuildingCompare: 0
+      BuildingCompare: 2
       BuildingAmount: 1
       Creature: 0
       CreatureCompare: 0
@@ -119,27 +119,26 @@ MonoBehaviour:
       IsExpCondition: 0
       playerExp: 0
       IsUICondition: 0
-      UIElement: 
-      IsSelectEntity: 0
-      EntityName: 
+      UIElement: InteractBuildingMenu
+      IsSelectEntity: 1
+      EntityName: WoodStorage
       IsCheckBattle: 0
       BattleCount: 0
       IsCheckBossUnlock: 0
       BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 1
-    Message: There are many mission ahead. They mostly require to knock down a tree
-      or defeat something within a scared amount of step
+    Message: You know, we are now enough gold to upgrade this building
   - Pointer: 1
-    EntitySelection: 1
-    EntityType: 1
-    CurrencyFromResource: 2
+    EntitySelection: 0
+    EntityType: 0
+    CurrencyFromResource: 0
     BuildingType: 0
     CreatureType: 0
     ArrowSign: 0
     MinJump: 0
-    ButtonSelection: 0
-    ButtonName: 
+    ButtonSelection: 1
+    ButtonName: FastUpgrade
     CheckPosition: 0
     CheckEntity: 0
     Spawner: 0
@@ -155,27 +154,27 @@ MonoBehaviour:
     EndCondition:
       MapSize: 0
       Currency: 0
-      CurrencyCompare: 2
+      CurrencyCompare: 0
       CurrencyAmount: 0
       Storage: 0
       StorageCompare: 0
       StorageAmount: 0
-      Resource: 2
-      ResourceCompare: 2
+      Resource: 0
+      ResourceCompare: 0
       ResourceAmount: 0
       Collectable: 0
       CollectableCompare: 0
-      CollectableAmount: 1
+      CollectableAmount: 0
       Building: 0
       BuildingCompare: 0
-      BuildingAmount: 1
+      BuildingAmount: 0
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
       IsExpCondition: 0
       playerExp: 0
-      IsUICondition: 0
-      UIElement: 
+      IsUICondition: 1
+      UIElement: InteractBuildingConfirm
       IsSelectEntity: 0
       EntityName: 
       IsCheckBattle: 0
@@ -184,6 +183,60 @@ MonoBehaviour:
       BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 0
-    Message: There are many mission ahead. They mostly require to knock down a tree
-      or defeat something within a scared amount of step
-  nextTutorial: 
+    Message: 
+  - Pointer: 1
+    EntitySelection: 0
+    EntityType: 0
+    CurrencyFromResource: 0
+    BuildingType: 0
+    CreatureType: 0
+    ArrowSign: 0
+    MinJump: 0
+    ButtonSelection: 1
+    ButtonName: InteractBuildingYes
+    CheckPosition: 0
+    CheckEntity: 0
+    Spawner: 0
+    SpawnType: 0
+    IsDesignatedPos: 0
+    DesignatedPos: {x: 0, y: 0, z: 0}
+    SpawnResource: 
+    SpawnCollectable: 
+    SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
+    CheckEndCondition: 1
+    EndCondition:
+      MapSize: 0
+      Currency: 0
+      CurrencyCompare: 0
+      CurrencyAmount: 0
+      Storage: 2
+      StorageCompare: 0
+      StorageAmount: 10
+      Resource: 0
+      ResourceCompare: 0
+      ResourceAmount: 0
+      Collectable: 0
+      CollectableCompare: 0
+      CollectableAmount: 0
+      Building: 0
+      BuildingCompare: 0
+      BuildingAmount: 0
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
+      IsUICondition: 0
+      UIElement: 
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
+    IsEndTutorial: 1
+    Conversation: 0
+    Message: 
+  nextTutorial: /Tutorials/Tutorial4

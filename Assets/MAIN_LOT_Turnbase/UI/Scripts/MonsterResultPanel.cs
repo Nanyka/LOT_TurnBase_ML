@@ -24,6 +24,11 @@ namespace JumpeeIsland
 
         private async void ShowWinStagePanel(int delayInvterval)
         {
+            // just show Complete stage panel when it is not final boss stage
+            var quest = GameFlowManager.Instance.GetQuest();
+            if (quest.isFinalBoss)
+                return;
+            
             await WaitToShowWinStage(delayInvterval);
         }
 
@@ -68,6 +73,7 @@ namespace JumpeeIsland
 
         private void ShowKilledBossPanel()
         {
+            Debug.Log("Killed boss");
             var creatures = SavingSystemManager.Instance.GetEnvironmentData().EnemyData;
 
             int totalAmount = 0;
@@ -80,8 +86,8 @@ namespace JumpeeIsland
             else
             {
                 _killedPossPanel.SetActive(true);
-                if (SavingSystemManager.Instance.GetGameProcess().bossUnlock < m_BossIndex)
-                    SavingSystemManager.Instance.SaveBossUnlock(m_BossIndex);
+                if (SavingSystemManager.Instance.GetGameProcess().bossUnlock <= m_BossIndex)
+                    SavingSystemManager.Instance.SaveBossUnlock(m_BossIndex + 1);
             }
 
             SavingSystemManager.Instance.SaveBossBattle();

@@ -28,7 +28,6 @@ namespace JumpeeIsland
                 Debug.Log("Show the message announcing this stage still be locked");
             else
             {
-                Debug.Log($"Move to  boss: {_bossScene}");
                 if (_bossScene.IsNullOrEmpty())
                     return;
                 
