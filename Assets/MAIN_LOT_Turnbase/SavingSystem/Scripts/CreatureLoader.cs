@@ -44,6 +44,14 @@ namespace JumpeeIsland
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
                 return;
+            
+            // check if creature stand out of the map
+            if (GameFlowManager.Instance.GetEnvManager().FreeToMove(creatureData.Position) == false)
+            {
+                var availablePos = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
+                if (availablePos.x.Equals(float.NegativeInfinity) == false)
+                    creatureData.Position = availablePos;
+            }
 
             creatureData.FactionType = _factionController.GetFaction(); // assign Faction
             GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());

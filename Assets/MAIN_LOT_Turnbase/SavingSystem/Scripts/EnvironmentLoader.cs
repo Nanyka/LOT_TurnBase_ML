@@ -14,7 +14,7 @@ namespace JumpeeIsland
         [SerializeField] private BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
         [SerializeField] private CreatureLoader enemyLoader;
-        [FormerlySerializedAs("_collectableLoader")] [SerializeField] private CollectableObjectLoader collectableLoader;
+        [SerializeField] private CollectableObjectLoader collectableLoader;
         [SerializeField] protected EnvironmentData _environmentData;
 
         public virtual void Init()
@@ -46,7 +46,7 @@ namespace JumpeeIsland
             tileManager.Init(_environmentData.mapSize);
         }
 
-        public EnvironmentData GetData()
+        public virtual EnvironmentData GetData()
         {
             return _environmentData;
         }
@@ -54,6 +54,7 @@ namespace JumpeeIsland
         // Use a distinct function to get data for saving and override it in BattleEnvLoader
         public virtual EnvironmentData GetDataForSave()
         {
+            _environmentData.RemoveZeroHpPlayerCreatures();
             return _environmentData;
         }
 
@@ -114,6 +115,16 @@ namespace JumpeeIsland
         public void DeductCurrencyFromBuildings(string currencyId, int amount)
         {
             buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId,amount);
+        }
+
+        public MainHallTier GetCurrentTier()
+        {
+            return buildingLoader.GetCurrentTier();
+        }
+        
+        public MainHallTier GetUpcomingTier()
+        {
+            return buildingLoader.GetUpcomingTier();
         }
 
         #endregion

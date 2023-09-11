@@ -16,13 +16,22 @@ namespace JumpeeIsland
         {
             _camera = Camera.main;
             m_Environment = GameFlowManager.Instance.GetEnvManager();
-            m_Environment.OnChangeFaction.AddListener(DurationDeduct);
+            m_Environment.OnChangeFaction.AddListener(BuildingInTurn);
         }
 
-        private void DurationDeduct()
+        private void BuildingInTurn()
         {
             foreach (var building in m_buildings)
+            {
+                if (m_Environment.GetCurrFaction() != building.GetEntity().GetFaction())
+                    continue;
+                
                 building.DurationDeduct(m_Environment.GetCurrFaction());
+
+                if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
+                    return;
+                building.AskForAttack();
+            }
         }
 
         public void AddBuildingToList(BuildingInGame building)
@@ -59,10 +68,10 @@ namespace JumpeeIsland
             return m_buildings.Find(x => Vector3.Distance(x.transform.position, unitPos) < Mathf.Epsilon);
         }
 
-        private void HighlightSelectedUnit(BuildingInGame getUnitAtPos)
+        private void HighlightSelectedUnit(BuildingInGame buildingInGame)
         {
-            MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
-            MainUI.Instance.OnInteractBuildingMenu.Invoke(getUnitAtPos);
+            MainUI.Instance.OnShowInfo.Invoke(buildingInGame);
+            // MainUI.Instance.OnInteractBuildingMenu.Invoke(getUnitAtPos);
         }
 
         public void StoreRewardAtBuildings(string currencyId, int amount)

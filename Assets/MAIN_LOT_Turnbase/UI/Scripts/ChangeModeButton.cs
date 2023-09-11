@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,7 +16,9 @@ namespace JumpeeIsland
         {
             if (_isClicked) return;
 
-            MainUI.Instance.IsInteractable = false;
+            if (MainUI.Instance != null)
+                MainUI.Instance.IsInteractable = false;
+            
             _isClicked = true;
             m_SceneHandle = Addressables.LoadSceneAsync(m_ModeScene);
             m_SceneHandle.Completed += OnLoadScene;

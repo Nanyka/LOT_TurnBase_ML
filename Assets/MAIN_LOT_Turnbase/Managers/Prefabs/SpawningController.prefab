@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8655837040865003089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8454178886671710016}
+  - component: {fileID: 4582132542325470966}
+  - component: {fileID: 5175199526956131047}
+  - component: {fileID: 7425030248231783547}
+  - component: {fileID: 3159931353805568652}
+  - component: {fileID: 6512188340605537461}
+  - component: {fileID: 4497099572388413476}
+  m_Layer: 0
+  m_Name: SpawningController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8454178886671710016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655837040865003089}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4582132542325470966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655837040865003089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584c1d20e0f414adaa5759c96e60425c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _changeDesicion: []
+  _spawnTree: {fileID: 11400000, guid: ad91f494d16d3427ba7e4f2bb5c3c66d, type: 2}
+  _spawnGame: {fileID: 11400000, guid: 5bd44ce29a1ed44f1b11620208964de4, type: 2}
+  _spawnObstacle: {fileID: 0}
+  _spawnChess: {fileID: 0}
+  _spawnBoss: {fileID: 0}
+--- !u!114 &5175199526956131047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655837040865003089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ac63be36732455aa4f22c1140c67ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mCurrentGoal:
+  - GoalId: SPAWNTREE
+    Remove: 0
+    Weight: 1
+  - GoalId: SPAWNGAME
+    Remove: 0
+    Weight: 0
+--- !u!114 &7425030248231783547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655837040865003089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52de22d14e994b1bb91eb56eaffac37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Actions: []
+  CurrentAction: {fileID: 0}
+  CurrentGoal:
+    GoalId: 
+    Remove: 0
+    Weight: 0
+  finishDistance: 3
+  m_GoalManager: {fileID: 5175199526956131047}
+  m_Sensor: {fileID: 4582132542325470966}
+--- !u!114 &3159931353805568652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655837040865003089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd659d3dc95d4239997abc770b7c55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Spawn tree
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  PreConditions:
+  - key: NEEDTREE
+    value: 0
+  AfterEffects:
+  - key: SPAWNTREE
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
+  _resourceId: Tree1
+--- !u!114 &6512188340605537461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655837040865003089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1765e9ff2ec4ecd86bca3322b240918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Spawn game
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  PreConditions:
+  - key: NEEDGAME
+    value: 0
+  AfterEffects:
+  - key: SPAWNGAME
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
+  _resourceId: PigEgg
+--- !u!114 &4497099572388413476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655837040865003089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc26d35c3de2646da9d4dee12fd157d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisAgent: {fileID: 7425030248231783547}

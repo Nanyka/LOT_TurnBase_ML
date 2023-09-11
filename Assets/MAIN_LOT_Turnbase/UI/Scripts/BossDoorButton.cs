@@ -9,6 +9,7 @@ namespace JumpeeIsland
     public class BossDoorButton : MonoBehaviour, IPointerClickHandler, IConfirmFunction
     {
         [SerializeField] private string _bossScene;
+        [SerializeField] private int _bossIndex;
         [SerializeField] private GameObject _newIcon;
         [SerializeField] private GameObject _lockIcon;
         private BossSelector m_BossSelector;
@@ -27,10 +28,10 @@ namespace JumpeeIsland
                 Debug.Log("Show the message announcing this stage still be locked");
             else
             {
-                Debug.Log($"Move to  boss: {_bossScene}");
                 if (_bossScene.IsNullOrEmpty())
                     return;
                 
+                SavingSystemManager.Instance.SendBossQuestEvent(_bossIndex);
                 SceneManager.LoadScene(_bossScene);
             }
         }

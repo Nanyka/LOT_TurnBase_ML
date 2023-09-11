@@ -9,9 +9,10 @@ namespace JumpeeIsland
         protected override void Start()
         {
             _creatureMenu = GetComponent<CreatureMenu>();
-            
+            _mainCamera = Camera.main;
+
             OnEnableInteract.AddListener(EnableInteractable);
-            OnGameOver.AddListener(DisableInteractable);
+            GameFlowManager.Instance.OnGameOver.AddListener(DisableInteractable);
         }
 
         private void EnableInteractable()
@@ -19,11 +20,24 @@ namespace JumpeeIsland
             IsInteractable = true;
         }
 
-        private void DisableInteractable()
+        private void DisableInteractable(int delayInterval)
         {
             IsInteractable = false;
         }
 
-        protected override void Update() { }
+        protected override void Update()
+        {
+            if (Input.GetMouseButton(0))
+            {
+                var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
+                {
+                    if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
+                        OnSelectDirection.Invoke(selectionCircle);
+
+                    return;
+                }
+            }
+        }
     }
 }

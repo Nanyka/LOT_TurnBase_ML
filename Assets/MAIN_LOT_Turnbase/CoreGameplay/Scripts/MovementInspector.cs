@@ -17,6 +17,9 @@ namespace JumpeeIsland
         public (Vector3 returnPos, int jumpCount, int overEnemy) MovingPath(Vector3 curPos, int direction,
             int jumpCount, int overEnemy)
         {
+            if (_environment.CheckOutOfBoundary(curPos))
+                return (curPos, jumpCount, overEnemy);
+            
             var newPos = _environment.GetTilePosByGeoPos(curPos + DirectionTo(direction));
 
             if (newPos.x.CompareTo(float.NegativeInfinity) == 0 || _environment.CheckOutOfBoundary(newPos))
@@ -41,7 +44,7 @@ namespace JumpeeIsland
 
                 return (curPos, jumpCount, overEnemy);
             }
-
+            
             if (_environment.CheckHigherTile(curPos,newPos))
                 return (curPos, jumpCount, overEnemy);
 
@@ -112,6 +115,19 @@ namespace JumpeeIsland
             }
 
             return checkVector;
+        }
+
+        public int ChangeActionByDirection(Vector3 toward)
+        {
+            if (Vector3.Distance(toward, Vector3.left) < 0.1f)
+                return 1;
+            if (Vector3.Distance(toward, Vector3.right) < 0.1f)
+                return 2;
+            if (Vector3.Distance(toward, Vector3.back) < 0.1f)
+                return 3;
+            if (Vector3.Distance(toward, Vector3.forward) < 0.1f)
+                return 4;
+            return 0;
         }
 
         private bool CheckAvailableMove(Vector3 newPos)

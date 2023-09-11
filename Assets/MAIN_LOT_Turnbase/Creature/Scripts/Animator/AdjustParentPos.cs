@@ -29,11 +29,11 @@ namespace JumpeeIsland
         {
             // Get root motion values
             Vector3 rootMotion = animator.deltaPosition;
-            Quaternion rootRotation = animator.deltaRotation;
+            // Quaternion rootRotation = animator.deltaRotation;
 
             // Apply root motion to the parent game object
             _parentTransform.position += rootMotion;
-            _parentTransform.rotation *= rootRotation;
+            // _parentTransform.rotation *= rootRotation;
         }
         
         private Transform GetParent(Transform upperLevel)

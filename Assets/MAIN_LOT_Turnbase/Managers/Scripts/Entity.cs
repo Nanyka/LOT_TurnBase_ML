@@ -14,13 +14,15 @@ namespace JumpeeIsland
         
         #region ENTITY DATA
 
+        public abstract void Relocate(Vector3 position);
+        
         public abstract void UpdateTransform(Vector3 position, Vector3 rotation);
 
         public abstract EntityData GetData();
 
         public abstract FactionType GetFaction();
 
-        public abstract void CollectExp(int expAmount);
+        // public abstract void CollectExp(int expAmount);
 
         #endregion
         
@@ -36,7 +38,7 @@ namespace JumpeeIsland
         
         #region ATTACK
         
-        public abstract void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser);
+        public abstract void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser);
 
         public abstract int GetAttackDamage();
 
@@ -48,6 +50,12 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region SKIN
+
+        public abstract SkinComp GetSkin();
+
+        #endregion
+
         #region EFFECT
 
         public abstract EffectComp GetEffectComp();
@@ -56,7 +64,7 @@ namespace JumpeeIsland
 
         #region ANIMATE COMPONENT
 
-        public abstract void SetAnimation(AnimateType animateType ,bool isTurnOn);
+        public abstract void SetAnimation(AnimateType animateType, bool isTurnOn);
 
         #endregion
 

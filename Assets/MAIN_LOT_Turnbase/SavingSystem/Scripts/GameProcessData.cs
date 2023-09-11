@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.Serialization;
 
 namespace JumpeeIsland
@@ -13,6 +14,13 @@ namespace JumpeeIsland
         public int win1StarCount;
         public int win2StarCount;
         public int win3StarCount;
+        public int winStack;
         public int bossUnlock;
+        public int score;
+
+        public int CalculateExp()
+        {
+            return battleCount + win1StarCount + win2StarCount * 2 + win3StarCount * 4;
+        }
     }
 }

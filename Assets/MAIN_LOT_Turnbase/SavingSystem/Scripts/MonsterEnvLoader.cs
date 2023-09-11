@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class MonsterEnvLoader : BattleEnvLoader
     {
-        [SerializeField] private EnvironmentData _monsterEnv = new();
-        
         public override void Init()
         {
             SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
@@ -18,20 +14,13 @@ namespace JumpeeIsland
             _playerEnvCache = _environmentData;
             
             // Load MonsterEnv
-            _environmentData = _monsterEnv;
+            _environmentData = GameFlowManager.Instance.GetQuest().environmentData.DeepCopy();
             
             // Customize battle env from enemy env and player env
-            _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
-            
-            // Send creature data to Creature menu as JIInventoryItem
-            // foreach (var creatureData in _playerEnvCache.PlayerData)
-            // {
-            //     var inventoryItem = creatureData.GetInventoryItem();
-            //     inventoryItem.EntityData = creatureData;
-            //     _spawnList.Add(inventoryItem);
-            // }
+            // _environmentData.PrepareForBossMode(_playerEnvCache.PlayerData);
             
             ExecuteEnvData();
+            MainUI.Instance.OnShowDropTroopMenu.Invoke(GetSpawnList());
         }
     }
 }

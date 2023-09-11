@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
     public class CurrenciesInfo : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _currenciesText;
         [SerializeField] private List<CurrencyButton> _currencyButtons;
 
         private void Start()
@@ -17,7 +15,6 @@ namespace JumpeeIsland
         private void Show()
         {
             var currencies = SavingSystemManager.Instance.GetCurrencies();
-            string currenciesText = "";
 
             foreach (var currency in currencies)
             {
@@ -27,11 +24,7 @@ namespace JumpeeIsland
 
                 button.UpdateCurrency(currency.Balance.ToString(),
                     SavingSystemManager.Instance.GetCurrencySprite(currency.CurrencyId));
-
-                // currenciesText += $"{currency.CurrencyId}:{currency.Balance} |";
             }
-
-            // _currenciesText.text = $"{currenciesText}";
         }
     }
 }

@@ -19,7 +19,8 @@ namespace JumpeeIsland
         [SerializeField] private JICommandBatchSystem _commandBatchManager;
         [SerializeField] private JIRemoteConfigManager _remoteConfigManager;
         [SerializeField] private JILeaderboardManager _leaderboardManager;
-
+        [SerializeField] private JICustomEventSender _customEventSender;
+ 
         public async Task Init()
         {
             try
@@ -42,6 +43,10 @@ namespace JumpeeIsland
                 Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
 
                 await _economyManager.RefreshEconomyConfiguration();
+                if (this == null)
+                    return;
+
+                await _leaderboardManager.RefreshPlayerScore();
                 if (this == null)
                     return;
 
@@ -83,6 +88,11 @@ namespace JumpeeIsland
                 Debug.LogException(e);
                 return null;
             }
+        }
+
+        public async Task OnSaveEnvById(EnvironmentData envData, string playerId)
+        {
+            await _cloudCodeManager.SaveEnvById(envData, playerId);
         }
 
         #endregion
@@ -305,9 +315,24 @@ namespace JumpeeIsland
             return null;
         }
 
-        public async Task OnGrantInventory(string inventoryId)
+        public async Task<PlayersInventoryItem> OnGrantInventory(string inventoryId)
         {
-            await _economyManager.OnGrantInventory(inventoryId);
+            return await _economyManager.OnGrantInventory(inventoryId);
+        }
+        
+        public async Task OnGrantInventory(string inventoryId, int level)
+        {
+            await _economyManager.OnGrantInventory(inventoryId, level);
+        }
+
+        public async Task OnUpdateInventory(string inventoryId, int level)
+        {
+            await _economyManager.OnUpdatePlayerInventory(inventoryId, level);
+        }
+
+        public int GetInventoryLevel(string inventoryId)
+        {
+            return _economyManager.GetInventoryLevel(inventoryId);
         }
 
         #endregion
@@ -380,7 +405,12 @@ namespace JumpeeIsland
                 }
             }
 
-            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.GetPlayerScore(),battleConfig);
+            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.UpdatePlayerScore(),battleConfig);
+        }
+
+        public async Task<MainHallTier> GetMainHallTier(int curMainHallLevel)
+        {
+            return await _remoteConfigManager.GetMainHallTierConfigs(curMainHallLevel);
         }
 
         #endregion
@@ -395,13 +425,22 @@ namespace JumpeeIsland
                     t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
 
             var selectRandomPlayer = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
-            Debug.Log($"Get environment from player: {selectRandomPlayer}");
             return await _cloudCodeManager.CallLoadEnemyEnvironment(selectRandomPlayer);
+        }
+
+        public async Task<List<LeaderboardEntry>> GetPlayerRange()
+        {
+            return await _leaderboardManager.GetPlayerRange();
         }
 
         public void PlayerRecordScore(int playerScore)
         {
             _leaderboardManager.AddScore(playerScore);
+        }
+
+        public int GetPlayerScore()
+        {
+            return _leaderboardManager.GetPlayerScore();
         }
 
         #endregion
@@ -434,6 +473,20 @@ namespace JumpeeIsland
         public async Task<long> OnGrantMove()
         {
             return await _cloudCodeManager.CallGrantMove();
+        }
+
+        #endregion
+
+        #region CUSTOM EVENT SENDER
+
+        public void SendBossQuestEvent(int playerScore, int bossId)
+        {
+            _customEventSender.SendBossQuestEvent(playerScore, bossId);
+        }
+
+        public void SendTutorialTrackEvent(string stepId)
+        {
+            _customEventSender.SendTutorialTrackEvent(stepId);
         }
 
         #endregion

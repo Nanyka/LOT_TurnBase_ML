@@ -6,14 +6,12 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
-        // [SerializeField] private List<ParticleSystem> _attackVFX;
-
-        public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep,
-            EnvironmentManager mEnvironment)
+        public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep)
         {
             if (attackPoints == null)
                 return;
-
+            
+            var mEnvironment = GameFlowManager.Instance.GetEnvManager();
             foreach (var attackPoint in attackPoints)
             {
                 var attackFaction = mEnvironment.CheckFaction(attackPoint);
@@ -23,21 +21,15 @@ namespace JumpeeIsland
 
                 if (target.TryGetComponent(out Entity targetEntity))
                 {
-                    if (targetEntity.GetFaction() != mEntity.GetFaction())
-                        targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
-                    
-                    var skillEffect = mEntity.GetSkills().ElementAt(jumpStep-1).GetSkillEffect();
+                    var selectedSkill = mEntity.GetSkills().ElementAt(jumpStep - 1);
+                    var skillEffect = selectedSkill.GetSkillEffect();
                     if (skillEffect != null)
                         skillEffect.TakeEffectOn(mEntity, targetEntity);
+
+                    if (targetEntity.GetFaction() != mEntity.GetFaction())
+                        targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
                 }
             }
-
-            // AttackVFX(jumpStep);
         }
-
-        // private void AttackVFX(int vfxIndex)
-        // {
-        //     _attackVFX[vfxIndex - 1]?.Play();
-        // }
     }
 }

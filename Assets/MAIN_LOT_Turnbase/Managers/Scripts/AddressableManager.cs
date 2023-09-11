@@ -66,9 +66,7 @@ namespace JumpeeIsland
             // Reset spawnTransform
             foreach (Transform child in spawnTransform)
                 Destroy(child.gameObject);
-            
-            
-
+                 
             var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
             var skin = handle.WaitForCompletion();
             animateComp.SetAnimator(skin.GetComponent<Animator>());
@@ -91,6 +89,19 @@ namespace JumpeeIsland
             var encodedToken = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($":{bucketAccessToken}"));
 
             request.SetRequestHeader("Authorization", $"Basic {encodedToken}");
+        }
+        
+        public Material GetMaterial(string objectKey)
+        {
+            m_LogPrefab = objectKey;
+
+#if UNITY_STANDALONE_OSX
+            //Add private token to addressable web request header
+            Addressables.WebRequestOverride = AddPrivateToken;
+#endif
+
+            var handle = Addressables.LoadAssetAsync<Material>(m_LogPrefab);
+            return handle.WaitForCompletion();
         }
     }
 }

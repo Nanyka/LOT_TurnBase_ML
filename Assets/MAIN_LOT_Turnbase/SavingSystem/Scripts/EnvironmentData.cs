@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    [System.Serializable]
+    [Serializable]
     public class EnvironmentData
     {
         public long timestamp;
@@ -18,6 +18,38 @@ namespace JumpeeIsland
         public List<CreatureData> EnemyData;
         public List<CollectableData> CollectableData;
 
+        public EnvironmentData() { }
+        
+        public EnvironmentData(EnvironmentData cloneParent)
+        {
+            ResourceData = new();
+            foreach (var data in cloneParent.ResourceData)
+                ResourceData.Add(new ResourceData(data));
+            
+            BuildingData = new();
+            foreach (var data in cloneParent.BuildingData)
+                BuildingData.Add(new BuildingData(data));
+            
+            PlayerData = new();
+            foreach (var data in cloneParent.PlayerData)
+                PlayerData.Add(new CreatureData(data));
+            
+            EnemyData = new();
+            foreach (var data in cloneParent.EnemyData)
+                EnemyData.Add(new CreatureData(data));
+
+            CollectableData = new();
+            foreach (var data in cloneParent.CollectableData)
+                CollectableData.Add(new CollectableData(data));
+
+        }
+        
+        // Shallow copy method
+        public EnvironmentData DeepCopy()
+        {
+            return new EnvironmentData(this);
+        }
+        
         public void AddBuildingData(BuildingData data)
         {
             BuildingData.Add(data);
@@ -48,6 +80,18 @@ namespace JumpeeIsland
             return ResourceData.Any() || BuildingData.Any();
         }
 
+        public bool CheckFullCapacity()
+        {
+            var totalSpace = BuildingData.Count(t => t.BuildingType == BuildingType.TOWNHOUSE);
+            return (1 + totalSpace) * SavingSystemManager.Instance.GetTownhouseSpace() <= PlayerData.Count;
+        }
+
+        public int GetTownhouseSpace()
+        {
+            var totalSpace = BuildingData.Count(t => t.BuildingType == BuildingType.TOWNHOUSE);
+            return (1 + totalSpace) * SavingSystemManager.Instance.GetTownhouseSpace();
+        }
+
         #region BATTLE MODE
 
         public void PrepareForBattleMode(List<CreatureData> playerData)
@@ -56,38 +100,25 @@ namespace JumpeeIsland
                 building.FactionType = FactionType.Enemy;
 
             EnemyData.Clear();
-            foreach (var creatureData in PlayerData)
-            {
-                creatureData.FactionType = FactionType.Enemy;
-                EnemyData.Add(creatureData);
-            }
-
             PlayerData.Clear();
         }
+        
+        // public void PrepareForBossMode(List<CreatureData> playerData)
+        // {
+        //     EnemyData.Clear();
+        //     foreach (var creatureData in PlayerData)
+        //     {
+        //         creatureData.FactionType = FactionType.Enemy;
+        //         EnemyData.Add(creatureData);
+        //     }
+        //
+        //     PlayerData.Clear();
+        // }
 
-        public void PrepareForBattleSave(List<CreatureData> playerData, bool isFinishPlacing)
+        public void DepositRemainPlayerTroop(List<CreatureData> playerData)
         {
-            // If finish placing creatures, PlayerData will be empty
-            if (isFinishPlacing)
-                if (playerData.Count == 0)
-                {
-                    PlayerData = PlayerData.FindAll(t => t.EntityName.Equals("King"));
-                    return;
-                }
-
-            // If playerData is empty mean player still not place any creature on environment
-            if (playerData.Count == 0)
-                return;
-
-            var kingData = PlayerData.Find(t => t.EntityName.Equals("King"));
-            PlayerData = new List<CreatureData>(playerData);
-            if (kingData != null)
-            {
-                PlayerData.Add(kingData);
-            }
-
-            // TODO: Reset creature position
-            
+            foreach (var creatureData in playerData)
+                PlayerData.Add(creatureData);
         }
 
         public void StoreRewardAtBuildings(string currencyId, int amount)
@@ -129,19 +160,19 @@ namespace JumpeeIsland
 
         #region SCORE
 
-        public int CalculateScore()
-        {
-            int totalScore = 0;
-            foreach (var building in BuildingData)
-                totalScore += (building.CurrentHp + building.CurrentDamage + building.CurrentShield) *
-                              (1 + building.CurrentLevel);
-
-            foreach (var creature in PlayerData)
-                totalScore += (creature.CurrentHp + creature.CurrentDamage + creature.CurrentShield) *
-                              (1 + creature.CurrentLevel);
-
-            return totalScore;
-        }
+        // public int CalculateScore()
+        // {
+        //     int totalScore = 0;
+        //     foreach (var building in BuildingData)
+        //         totalScore += (building.CurrentHp + building.CurrentDamage + building.CurrentShield) *
+        //                       (1 + building.CurrentLevel);
+        //
+        //     foreach (var creature in PlayerData)
+        //         totalScore += (creature.CurrentHp + creature.CurrentDamage + creature.CurrentShield) *
+        //                       (1 + creature.CurrentLevel);
+        //
+        //     return totalScore;
+        // }
 
         #endregion
 
@@ -150,6 +181,11 @@ namespace JumpeeIsland
         public bool IsDemolishMainHall()
         {
             return BuildingData.Count(t => t.EntityName == "MainHall") == 0;
+        }
+
+        public int CountEnemyBuilding(FactionType enemyFaction)
+        {
+            return BuildingData.Count(t => t.FactionType == enemyFaction);
         }
 
         public void GatherCreature(string creatureName)
@@ -172,5 +208,19 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        public void RemoveZeroHpPlayerCreatures()
+        {
+            PlayerData = PlayerData.FindAll(t => t.CurrentHp > 0 || t.EntityName.Equals("King"));
+        }
+
+        public void AbstractInBattleCreatures(List<CreatureData> inbattleCreatures)
+        {
+            foreach (var creature in inbattleCreatures)
+            {
+                if (PlayerData.Contains(creature) && creature.EntityName.Equals("King") == false)
+                    PlayerData.Remove(creature);
+            }
+        }
     }
 }

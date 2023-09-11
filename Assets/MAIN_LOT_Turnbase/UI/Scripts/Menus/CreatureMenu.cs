@@ -7,14 +7,13 @@ namespace JumpeeIsland
     public class CreatureMenu : MonoBehaviour
     {
         [SerializeField] private GameObject _creatureMenu;
-        [SerializeField] private GameObject _confirmPanel;
+        [SerializeField] private SpawningConfirmMenu _confirmPanel;
         [SerializeField] protected List<CreatureBuyButton> _buyButtons;
         [SerializeField] private Transform _settlePoint;
 
         private int _layerMask = 1 << 6;
         private List<JIInventoryItem> m_Inventory;
         private Dictionary<string, int> m_Menu = new();
-        private CreatureBuyButton _selectedCreature;
         private IConfirmFunction _currentConfirm;
         private bool _isInADeal;
 
@@ -91,11 +90,11 @@ namespace JumpeeIsland
             _settlePoint.position = position;
         }
 
-        public void EndDeal(IConfirmFunction confirmFunction)
+        public void EndSelectionPhase(IConfirmFunction confirmFunction, JIInventoryItem selectCreature)
         {
             _isInADeal = false;
             _currentConfirm = confirmFunction;
-            _confirmPanel.SetActive(true);
+            _confirmPanel.ShowMenu(selectCreature);
         }
 
         public void OnMakeTheDeal()
@@ -106,7 +105,7 @@ namespace JumpeeIsland
         
         public void OnCancelTheDeal()
         {
-            _confirmPanel.SetActive(false);
+            _confirmPanel.HideMenu();
             CleanGhostCreature();
         }
 
@@ -114,6 +113,8 @@ namespace JumpeeIsland
         {
             foreach (Transform child in _settlePoint)
                 Destroy(child.gameObject);
+            
+            MainUI.Instance.OnHideAllMenu.Invoke();
         }
 
         public bool IsInADeal()

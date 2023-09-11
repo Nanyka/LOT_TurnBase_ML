@@ -33,13 +33,16 @@ namespace JumpeeIsland
 
         private DomainManager _domainManager;
         private MovementInspector _movementInspector;
+        private MovingVisual _movingVisual;
         private int _lastSessionSteps;
         private bool _isInRefurbish;
+        private bool _isRunOutOfStep;
 
         private void Awake()
         {
             _movementInspector = GetComponent<MovementInspector>();
             _domainManager = GetComponent<DomainManager>();
+            _movingVisual = GetComponent<MovingVisual>();
         }
 
         private void Start()
@@ -47,7 +50,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
-            GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment); // Just for BATTLE MODE
+            GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment);
         }
 
         private void Init(long moveAmount)
@@ -56,6 +59,16 @@ namespace JumpeeIsland
 
             // Start refurbish loop
             InvokeRepeating(nameof(WaitToAddMove), _refurbishPeriod, _refurbishPeriod);
+        }
+
+        public void UpdateRemainStep(int remainStep)
+        {
+            _step = remainStep;
+            if (_isRunOutOfStep)
+            {
+                OnChangeFaction.Invoke();
+                _isRunOutOfStep = false;
+            }
         }
 
         #region ENVIRONMENT IN GAME
@@ -67,13 +80,18 @@ namespace JumpeeIsland
 
         public void ChangeFaction()
         {
+            if (GameFlowManager.Instance._isGameRunning == false)
+                return;
+
             // Just use MOVE currency in EcoMode
-            if (GameFlowManager.Instance.IsEcoMode)
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
                 if (_step <= _minStep && _currFaction == FactionType.Player)
                 {
-                    Debug.Log("Show Run out of steps panel");
-                    MainUI.Instance.OnConversationUI.Invoke("Run out of steps",true);
+                    _movingVisual.DisableMovingPath();
+                    MainUI.Instance.OnConversationUI.Invoke("Run out of steps", true);
+                    MainUI.Instance.OnUpdateCurrencies.Invoke();
+                    _isRunOutOfStep = true;
                     return;
                 }
 
@@ -100,8 +118,12 @@ namespace JumpeeIsland
 
         private void WaitToAddMove()
         {
-            _step++;
-            MainUI.Instance.OnRemainStep.Invoke(_step);
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
+            {
+                Debug.Log($"Grant one move");
+                _step++;
+                MainUI.Instance.OnRemainStep.Invoke(_step);
+            }
         }
 
         private void SpendOneMove()
@@ -126,6 +148,16 @@ namespace JumpeeIsland
             if (tile == null)
                 return Vector3.negativeInfinity;
             return _domainManager.GetTileByGeoCoordinates(geoPos).GetPosition();
+        }
+
+        public List<Node> GetAStarPath(Vector3 startPos, Vector3 endPos)
+        {
+            return _domainManager.GetAStarPath(startPos, endPos);
+        }
+
+        public int GetActionByDirection(Vector3 direction)
+        {
+            return _movementInspector.ChangeActionByDirection(direction);
         }
 
         #endregion
@@ -179,7 +211,7 @@ namespace JumpeeIsland
         {
             return _domainManager.CheckEnemy(pos, myFaction);
         }
-        
+
         public bool CheckAlly(Vector3 pos, FactionType myFaction)
         {
             return _domainManager.CheckAlly(pos, myFaction);

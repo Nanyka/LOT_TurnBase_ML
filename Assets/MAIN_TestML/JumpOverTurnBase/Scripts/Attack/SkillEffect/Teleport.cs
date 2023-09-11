@@ -9,16 +9,27 @@ public class Teleport : SkillEffect
     {
         var envManager = GameFlowManager.Instance.GetEnvManager();
 
-        var currentEntity = attackEntity.GetFaction();
+        var currentFaction = attackEntity.GetFaction();
         var enemies = SavingSystemManager.Instance.GetEnvironmentData().PlayerData;
-        if (currentEntity == FactionType.Player)
+        if (currentFaction == FactionType.Player)
             enemies = SavingSystemManager.Instance.GetEnvironmentData().EnemyData;
 
-        if (enemies.Count == 0)
+        Vector3 selectedEnemyPos = Vector3.negativeInfinity;
+        if (enemies.Count > 0)
+        {
+            var lowHealthEnemy = enemies.Aggregate((l, r) => l.CurrentHp <= r.CurrentHp ? l : r);
+            selectedEnemyPos = lowHealthEnemy.Position;
+        }
+        else
+        {
+            var buildings = SavingSystemManager.Instance.GetEnvironmentData().BuildingData;
+            buildings = buildings.FindAll(t => t.FactionType != currentFaction);
+            selectedEnemyPos = buildings.Find(t => t.BuildingType == BuildingType.TOWER).Position;
+        }
+
+        if (selectedEnemyPos.x.CompareTo(float.NegativeInfinity) == 0)
             return;
         
-        var lowHealthEnemy = enemies.Aggregate((l, r) => l.CurrentHp < r.CurrentHp ? l : r);
-        var selectedEnemyPos = lowHealthEnemy.Position;
         var telePos = Vector3.negativeInfinity;
         int teleIndex = 0;
         for (int i = 1; i < 5; i++)
@@ -31,9 +42,7 @@ public class Teleport : SkillEffect
                 break;
         }
 
-        if (telePos != Vector3.negativeInfinity)
-        {
+        if (telePos.x.CompareTo(float.NegativeInfinity) != 0)
             attackEntity.UpdateTransform(telePos, JIGeneralUtils.AdverseRotateTo(teleIndex));
-        }
     }
 }

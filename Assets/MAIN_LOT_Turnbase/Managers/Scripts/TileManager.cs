@@ -8,30 +8,20 @@ namespace JumpeeIsland
 {
     public class TileManager : MonoBehaviour
     {
-        // [Serializable]
-        // public class ExpandPoint
-        // {
-        //     public int tileAmount;
-        //     public int score;
-        //
-        //     public bool CheckToExpand(int currentTileAmount, int currentScore)
-        //     {
-        //         return currentTileAmount < tileAmount && currentScore >= score;
-        //     }
-        // }
-
-        // [SerializeField] private ExpandPoint[] _expandPoints;
         [SerializeField] private ObjectPool _tilePool;
-        [FormerlySerializedAs("_totalTile")] [SerializeField] private int _mapIndex;
+
+        [FormerlySerializedAs("_totalTile")] 
+        [SerializeField] private int _mapIndex;
+
         [SerializeField] private MapContainer m_MapContainer;
-        
+
         private List<MovableTile> m_Tiles;
-        private List<TilePosition> _listTilePos = new();
+        // private List<TilePosition> _listTilePos = new();
 
         public void Init(int mapIndex)
         {
-            // SavingSystemManager.Instance.OnCheckExpandMap.AddListener(CheckExpand);
-
+            if (GameFlowManager.Instance.GameMode == GameMode.BOSS)
+                m_MapContainer.SetDisableTile();
             m_Tiles = m_MapContainer.GetTiles();
             SpawnTileMap(mapIndex);
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
@@ -42,12 +32,14 @@ namespace JumpeeIsland
             _mapIndex = mapIndex;
             foreach (var tile in m_Tiles)
             {
+                if (tile.IsDisable())
+                    continue;
                 GameFlowManager.Instance.OnUpdateTilePos.Invoke(tile);
             }
 
             foreach (var obstacle in m_MapContainer.GetObstacles())
             {
-                GameFlowManager.Instance.OnDomainRegister.Invoke(obstacle,FactionType.Neutral);
+                GameFlowManager.Instance.OnDomainRegister.Invoke(obstacle, FactionType.Neutral);
             }
         }
 
@@ -80,7 +72,7 @@ namespace JumpeeIsland
         public void Reset()
         {
             _tilePool.ResetPool();
-            _listTilePos = new();
+            // _listTilePos = new();
         }
 
         // public List<Transform> GetTiles()

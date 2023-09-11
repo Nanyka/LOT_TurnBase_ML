@@ -6,6 +6,7 @@ namespace JumpeeIsland
 {
     public class CountDownClock : MonoBehaviour
     {
+        [SerializeField] private GameObject _clock;
         [SerializeField] private int _gameDuration;
         [SerializeField] private TextMeshProUGUI _clockText;
 
@@ -16,6 +17,7 @@ namespace JumpeeIsland
 
         private void StartCountDown()
         {
+            _clock.SetActive(true);
             UpdateClockUI();
             // Start count down clock
             InvokeRepeating(nameof(UpdateClock), 1f, 1f);
@@ -30,7 +32,7 @@ namespace JumpeeIsland
             if (_gameDuration <= 0)
             {
                 CancelInvoke();
-                MainUI.Instance.OnGameOver.Invoke();
+                GameFlowManager.Instance.OnGameOver.Invoke(0);
             }
         }
 

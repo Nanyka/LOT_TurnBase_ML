@@ -40,6 +40,7 @@ namespace JumpeeIsland
 
         public Skill_SO GetSkillByIndex(int index)
         {
+            index = index < GetSkillAmount() ? index : (GetSkillAmount() - 1);
             return m_SkillSOs[index];
         }
 

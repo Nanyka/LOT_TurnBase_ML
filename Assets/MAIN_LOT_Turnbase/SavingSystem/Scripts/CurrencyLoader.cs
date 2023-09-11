@@ -103,8 +103,13 @@ namespace JumpeeIsland
         // Update local currencies to have it match with cloud data when the command is still not flushed up
         public void IncrementCurrency(string currencyId, int currencyAmount)
         {
-            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
+            var currency = m_Currencies.Find(t => t.CurrencyId == currencyId);
+            currency.Balance += currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
+            
+            // Update step from environmentManager
+            if (currencyId.Equals(m_MoveId) && currencyAmount>0)
+                GameFlowManager.Instance.GetEnvManager().UpdateRemainStep((int)currency.Balance);
 
             //Save currency
             SavingSystemManager.Instance.SaveLocalBalances(BalanceForSaving());

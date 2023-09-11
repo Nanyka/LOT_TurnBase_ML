@@ -20,7 +20,6 @@ namespace JumpeeIsland
         {
             var currentBoss = SavingSystemManager.Instance.GetGameProcess().bossUnlock + 1; // bossUnlock is cached in zero-based order
             
-            Debug.Log("Current boss: " + currentBoss);
             for (int i = 0; i < _doorButtons.Count; i++)
             {
                 if (i < currentBoss)
@@ -35,6 +34,7 @@ namespace JumpeeIsland
         {
             m_Confirm = confirmFunction;
             _selectBossPanel.SetActive(true);
+            MainUI.Instance.OnShowAnUI.Invoke();
         }
 
         public void OnClickYes()

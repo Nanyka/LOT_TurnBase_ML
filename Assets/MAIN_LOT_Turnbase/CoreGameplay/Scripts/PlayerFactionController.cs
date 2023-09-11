@@ -66,6 +66,7 @@ namespace JumpeeIsland
                 return;
             }
 
+            StopAllCoroutines();
             foreach (var creature in _creatures)
                 creature.NewTurnReset();
 
@@ -74,8 +75,11 @@ namespace JumpeeIsland
 
         public void KickOffNewTurn()
         {
-            _countMovedUnit = 0;
-            SelectUnit(_creatures[0].GetCurrentPosition());
+            _countMovedUnit = _creatures.Count(t => t.CheckUsedThisTurn());
+            if (_countMovedUnit == _creatures.Count)
+                EndTurn();
+            else
+                SelectUnit(_creatures[0].GetCurrentPosition());
         }
 
         // Show unit selection && Show moving path when unit is still available
@@ -133,21 +137,11 @@ namespace JumpeeIsland
         {
             if (_currentUnit == null || !_currentUnit.IsAvailable())
                 return;
-            _currentUnit.MarkAsUsedThisTurn();
-            WaitForCreature();
+            _currentUnit.SkipThisTurn();
         }
 
         private void EndTurn()
         {
-            // Attack nearby enemy
-            // foreach (var unit in _creatures)
-            // {
-            //     if (unit.GetJumpStep() == 0)
-            //         continue;
-            //
-            //     unit.Attack();
-            // }
-
             foreach (var unitMovement in _creatures)
                 unitMovement.SetDisableMaterial();
 
@@ -188,6 +182,9 @@ namespace JumpeeIsland
         {
             m_Environment.RemoveObject(unitMovement.gameObject, m_Faction);
             _creatures.Remove(unitMovement);
+
+            if (_creatures.Count <= 0)
+                GameFlowManager.Instance.OnGameOver.Invoke(3000);
         }
 
         public void ResetData()

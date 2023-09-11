@@ -85,8 +85,22 @@ namespace JumpeeIsland
             catch (CloudCodeException e)
             {
                 HandleCloudCodeException(e);
-                throw new CloudCodeResultUnavailableException(e,
-                    "Handled exception in CallResetDataEndpoint.");
+                throw new CloudCodeResultUnavailableException(e, "Handled exception in CallResetDataEndpoint.");
+            }
+        }
+
+        public async Task SaveEnvById(EnvironmentData envData, string playerId)
+        {
+            try
+            {
+                await CloudCodeService.Instance.CallEndpointAsync(
+                        "JumpeeIsland_SetEnvDataByPlayerId",
+                        new Dictionary<string, object>{{"EnvData",envData},{"PlayerId", playerId}});
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+                throw new CloudCodeResultUnavailableException(e, "Handled exception in SaveEnvById.");
             }
         }
 
@@ -129,6 +143,7 @@ namespace JumpeeIsland
         {
             try
             {
+                Debug.Log($"Try get map of {enemyId}");
                 var enemyEnv = await CloudCodeService.Instance.CallEndpointAsync<EnvironmentData>(
                     "JumpeeIsland_GetMapById",
                     new Dictionary<string, object>{{"enemyId",enemyId}});

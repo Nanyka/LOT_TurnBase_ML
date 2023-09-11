@@ -3,9 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
+    public enum GameMode
+    {
+        NONE,
+        ECONOMY,
+        BOSS,
+        BATTLE
+    }
+    
     public class GameFlowManager : Singleton<GameFlowManager>
     {
         // [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
@@ -15,30 +24,47 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
         [NonSerialized] public UnityEvent<EntityData> OnSelectEntity = new(); // send to TutorialController; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent OnKickOffEnv = new(); // send to EnvironmentManager; invoke at CreatureMenu in BATTLE MODE, at this script in ECO MODE
+        [NonSerialized] public UnityEvent<int> OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, PlayerFactionController
+        [NonSerialized] public UnityEvent OnKilledBoss = new(); // send to GameResultPanel; invoke at CreatureUnlockComp
+        [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
         
-        public bool IsEcoMode = true;
-        public bool _isGameStarted { get; private set; }
+        [FormerlySerializedAs("IsEcoMode")] public GameMode GameMode = GameMode.NONE;
+        [SerializeField] public bool _isGameRunning;
         
-        private EnvironmentManager _environmentManager;
+        protected EnvironmentManager _environmentManager;
         private TutorialController _tutorialController;
         private GlobalVfx _globalVfx;
         
-        private void Start()
+        protected virtual void Start()
         {
             _environmentManager = FindObjectOfType<EnvironmentManager>();
             _tutorialController = FindObjectOfType<TutorialController>();
             _globalVfx = GetComponent<GlobalVfx>();
             
             OnStartGame.AddListener(RecordStartedState);
+            OnKickOffEnv.AddListener(ConfirmGameStarted);
+            OnGameOver.AddListener(GameOverState);
             
             SavingSystemManager.Instance.StartUpLoadData();
         }
 
+        protected virtual void ConfirmGameStarted()
+        {
+            _isGameRunning = true;
+        }
+
         private void RecordStartedState(long arg0)
         {
-            _isGameStarted = true;
-            if (IsEcoMode)
+            if (GameMode == GameMode.ECONOMY)
+            {
+                _isGameRunning = true;
                 OnKickOffEnv.Invoke();
+            }
+        }
+
+        private void GameOverState(int delayInvterval)
+        {
+            _isGameRunning = false;
         }
 
         public EnvironmentManager GetEnvManager()
@@ -46,17 +72,30 @@ namespace JumpeeIsland
             return _environmentManager;
         }
 
-        public void LoadCurrentTutorial(string currentTutorial)
+        public void LoadTutorialManager(string currentTutorial)
         {
-            if (IsEcoMode == false)
-                return;
-            
             _tutorialController.Init(currentTutorial);
         }
 
         public void AskGlobalVfx(GlobalVfxType vfxType, Vector3 atPos)
         {
             _globalVfx.PlayGlobalVfx(vfxType,atPos);
+        }
+
+        public void AskForShowingAttackPath(IEnumerable<Vector3> highlightPos)
+        {
+            _globalVfx.ShowAttackPath(highlightPos);
+        }
+
+        // Just use for QuestFlowManager in BossMode
+        public virtual Quest GetQuest()
+        {
+            return null;
+        }
+        
+        public virtual QuestData GetQuestData()
+        {
+            return null;
         }
     }
 }

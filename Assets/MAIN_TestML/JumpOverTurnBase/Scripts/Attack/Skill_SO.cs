@@ -10,14 +10,18 @@ public class Skill_SO : ScriptableObject
     [Header("Skill variable")]
     [SerializeField] private string _animTrigger;
     [SerializeField] private int _duration;
+    [Tooltip("It might be strength multiplier or available range of attack")]
     [SerializeField] private int _magnitude;
     
     [Header("Skill range")]
     [SerializeField] private RangeType _rangeType;
+    [Tooltip("It might be range of attack for Creature or amount of targets for buildings")]
     [SerializeField] private int _numberOfSteps;
     
     [Header("Skill effect")]
     [SerializeField] private SkillEffectType _skillEffectType;
+    [SerializeField] private Material _effectMaterial;
+    [SerializeField] private bool _isGlobalTarget;
     private SkillEffect _skillEffect;
     
     [Header("ML property")]
@@ -80,8 +84,20 @@ public class Skill_SO : ScriptableObject
             case RangeType.FrontStrike:
                 _skillRange = new FrontStrike();
                 break;
-            case RangeType.AccurateAttack:
-                _skillRange = new AccurateAttack();
+            case RangeType.AccurateAttackByHp:
+                _skillRange = new AccurateAttackByHp();
+                break;
+            case RangeType.AccurateAttackByDistance:
+                _skillRange = new AccurateAttackByDistance(_magnitude);
+                break;
+            case RangeType.Circle:
+                _skillRange = new Circle();
+                break;
+            case RangeType.TShapeFront:
+                _skillRange = new TShapeFront();
+                break;
+            case RangeType.PerpendicularWipe:
+                _skillRange = new PerpendicularWipe();
                 break;
         }
     }
@@ -95,6 +111,9 @@ public class Skill_SO : ScriptableObject
                 break;
             case SkillEffectType.Teleport:
                 _skillEffect = new Teleport();
+                break;
+            case SkillEffectType.Frozen:
+                _skillEffect = new Frozen(_duration, _effectMaterial);
                 break;
         }
     }
@@ -114,5 +133,10 @@ public class Skill_SO : ScriptableObject
     public string GetAnimation()
     {
         return _animTrigger;
+    }
+
+    public bool CheckGlobalTarget()
+    {
+        return _isGlobalTarget;
     }
 }

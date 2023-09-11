@@ -33,36 +33,17 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
-  conditions:
-  - MapSize: 20
-    Currency: 0
-    CurrencyCompare: 0
-    CurrencyAmount: 0
-    Storage: 0
-    StorageCompare: 0
-    StorageAmount: 0
-    Resource: 0
-    ResourceCompare: 0
-    ResourceAmount: 0
-    Collectable: 0
-    CollectableCompare: 0
-    CollectableAmount: 0
-    Building: 0
-    BuildingCompare: 0
-    BuildingAmount: 0
-    Creature: 0
-    CreatureCompare: 0
-    CreatureAmount: 0
-    IsUICondition: 0
-    UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
+  conditions: []
   steps:
   - Pointer: 1
     EntitySelection: 1
@@ -106,14 +87,20 @@ MonoBehaviour:
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 1
-    Message: Welcome to JUMPEE ISLAND
+    Message: Welcome to JUMPEE ISLAND. You know why it is jumpee?\n It means jumping
+      is the secret power of this Island
   - Pointer: 1
     EntitySelection: 1
     EntityType: 3
@@ -156,11 +143,16 @@ MonoBehaviour:
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 

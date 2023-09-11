@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class AnimateComp : MonoBehaviour
     {
         [SerializeField] private Animator m_Animator;
-        
+
         private List<Vector3> tiles = new();
-        private Transform m_Transform;
+        [SerializeField] private Transform m_RotatePart;
         private ICreatureMove m_Creature;
         private Vector3 direction;
         private Vector3 destination; // Ending point of the jump (Point B)
@@ -25,10 +26,12 @@ namespace JumpeeIsland
         private static readonly int Attack = Animator.StringToHash("Attack");
         private static readonly int Die = Animator.StringToHash("Die");
         private static readonly int Jump = Animator.StringToHash("Jump");
+        private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
 
         private void Start()
         {
-            m_Transform = transform;
+            if (m_RotatePart == null)
+                m_RotatePart = transform;
         }
 
         private void Update()
@@ -55,7 +58,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.GetEnvManager().GetMovementInspector().MovingPath(currPos, moveDir, tiles);
             ResetMoves();
         }
-        
+
         private void ResetMoves()
         {
             moveIndex = 0;
@@ -71,8 +74,8 @@ namespace JumpeeIsland
             }
 
             destination = tiles[moveIndex];
-            direction = new Vector3(destination.x, m_Transform.position.y, destination.z);
-            m_Transform.LookAt(direction);
+            direction = new Vector3(destination.x, m_RotatePart.position.y, destination.z);
+            m_RotatePart.LookAt(direction);
 
             if (Mathf.Abs(destination.y - transform.position.y) < 0.1f)
             {
@@ -115,11 +118,20 @@ namespace JumpeeIsland
         {
             switch (animate)
             {
-                case AnimateType.Attack:
-                    m_Animator.SetTrigger(Attack);
-                    break;
                 case AnimateType.Die:
                     m_Animator.SetTrigger(Die);
+                    break;
+            }
+        }
+
+        public void SetAnimation(AnimateType animate, int jumpCount)
+        {
+            m_Animator.SetInteger(AttackIndex, jumpCount);
+
+            switch (animate)
+            {
+                case AnimateType.Attack:
+                    m_Animator.SetTrigger(Attack);
                     break;
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Economy.Model;
+using Unity.Services.Leaderboards.Models;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,27 +14,34 @@ namespace JumpeeIsland
         PlayerEnvData,
         Currencies,
         Commands,
-        GameState
+        GameState,
+        QuestData
     }
 
     [RequireComponent(typeof(EnvironmentLoader))]
     [RequireComponent(typeof(CurrencyLoader))]
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
-        // invoke at CreatureEntity, BuildingEntity, Creature
-        // [NonSerialized] public UnityEvent OnCheckExpandMap = new(); //TODO check expand map just invoke 1 time???
-
         // invoke at TileManager
         [NonSerialized] public UnityEvent OnSavePlayerEnvData = new();
 
         // invoke at EnvironmentManager
         [NonSerialized] public UnityEvent<CommandName> OnContributeCommand = new();
 
-        // send to EnvironmentLoader, invoke at ResourceInGame, BuildingIngame, CreatureInGame;
+        // send to EnvironmentLoader, invoke at ResourceInGame, BuildingInGame, CreatureInGame;
         [NonSerialized] public UnityEvent<IRemoveEntity> OnRemoveEntityData = new();
+
+        // invoke at InventoryLoader
+        [NonSerialized] public UnityEvent<List<JIInventoryItem>> OnSetUpBuildingMenus = new();
 
         // invoke at JICloudCodeManager
         [NonSerialized] public UnityEvent OnRefreshBalances = new();
+
+        // invoke at CreatureDetailMenu
+        [NonSerialized] public UnityEvent<string> OnCreatureUpgrade = new();
+
+        // invoke at 
+        [NonSerialized] public UnityEvent OnSaveQuestData = new();
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
@@ -44,6 +52,7 @@ namespace JumpeeIsland
 
         private GameStateData m_GameStateData = new();
         private GameProcessData m_GameProcess = new();
+        private QuestData m_QuestData;
         private string _gamePath;
         private bool encrypt = true;
         private bool _isLastSessionDisconnect;
@@ -59,10 +68,15 @@ namespace JumpeeIsland
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
             OnRefreshBalances.AddListener(RefreshBalances);
-            // GameFlowManager.Instance.OnLoadData.AddListener(StartUpLoadData);
+            OnSaveQuestData.AddListener(SaveQuestData);
         }
 
-        private async void OnDisable()
+        private void OnDisable()
+        {
+            SaveGameState();
+        }
+
+        private async void SaveGameState()
         {
             if (!CheckLoadingPhaseFinished()) return;
             if (m_EnvLoader.GetDataForSave().CheckStorable() == false)
@@ -164,6 +178,76 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region QUEST
+
+        private void ResetQuestData()
+        {
+            m_QuestData = new QuestData();
+            m_QuestData.QuestChains = new List<QuestChain>();
+            SaveQuestData();
+        }
+
+        private void SaveQuestData()
+        {
+            var gameStatePath = GetSavingPath(SavingPath.QuestData);
+            SaveManager.Instance.Save(m_QuestData, gameStatePath, QuestDataWasSaved, encrypt);
+        }
+
+        public void SaveQuestData(int bossIndex, string questAddress, int starAmount)
+        {
+            if (m_QuestData.QuestChains.Count <= bossIndex)
+                m_QuestData.QuestChains.Add(new QuestChain());
+
+            var questChain = m_QuestData.QuestChains[bossIndex];
+
+            if (questChain.QuestUnits == null)
+                questChain.QuestUnits = new List<QuestUnit>();
+            var quest = questChain.QuestUnits.Find(t => t.QuestAddress.Equals(questAddress));
+            if (quest == null)
+            {
+                quest = new QuestUnit(questAddress);
+                questChain.QuestUnits.Add(quest);
+            }
+
+            quest.StarAmount = starAmount;
+            
+            var gameStatePath = GetSavingPath(SavingPath.QuestData);
+            SaveManager.Instance.Save(m_QuestData, gameStatePath, QuestDataWasSaved, encrypt);
+        }
+
+        private void QuestDataWasSaved(SaveResult result, string message)
+        {
+            if (result == SaveResult.Error)
+                Debug.LogError($"Error saving quest data:\n{result}\n{message}");
+        }
+
+        private async Task LoadQuestData()
+        {
+            var gameStatePath = GetSavingPath(SavingPath.QuestData);
+            SaveManager.Instance.Load<QuestData>(gameStatePath, QuestDataWasLoaded, encrypt);
+        }
+
+        private void QuestDataWasLoaded(QuestData questData, SaveResult result, string message)
+        {
+            if (result == SaveResult.EmptyData || result == SaveResult.Error)
+                Debug.LogError("No State data File Found -> Creating new data...");
+
+            if (result == SaveResult.Success)
+                m_QuestData = questData;
+        }
+
+        public QuestData GetQuestData()
+        {
+            return m_QuestData;
+        }
+
+        public void SetQuestData(QuestData questData)
+        {
+            m_QuestData = questData;
+        }
+
+        #endregion
+
         #region ENVIRONMENT
 
         private void SavePlayerEnv()
@@ -204,10 +288,9 @@ namespace JumpeeIsland
 
             if (result == SaveResult.Success)
             {
-                data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
+                // data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
                 m_EnvLoader.SetData(data);
                 await m_CloudConnector.OnSaveEnvData(); // Update cloud data
-                m_CloudConnector.PlayerRecordScore(data.CalculateScore());
             }
         }
 
@@ -219,16 +302,12 @@ namespace JumpeeIsland
             {
                 m_EnvLoader.SetData(cloudEnvData);
                 SavePlayerEnv();
-                m_CloudConnector.PlayerRecordScore(cloudEnvData.CalculateScore());
                 m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
                 ResetBasicInventory();
             }
-        }
 
-        // public List<Transform> GetTiles()
-        // {
-        //     return m_EnvLoader.GetTiles();
-        // }
+            ResetQuestData();
+        }
 
         public void OnSpawnResource(string resourceId, Vector3 position)
         {
@@ -262,9 +341,18 @@ namespace JumpeeIsland
             m_EnvLoader.SpawnCollectable(collectableData);
         }
 
+        // Player pay some cost for constructing the building
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)
         {
+            if (GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
+            {
+                MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
+                return;
+            }
+
             if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
+
+            Debug.Log("How can you get this line even when reaching the max amount of construction");
 
             // ...and get the building in place
             var newBuilding = new BuildingData
@@ -276,6 +364,7 @@ namespace JumpeeIsland
             m_EnvLoader.PlaceABuilding(newBuilding);
         }
 
+        // Spawn from a reward, player pay nothing for it
         public async void OnPlaceABuilding(string buildingName, Vector3 position, bool isFromCollectable)
         {
             var inventoryItem = GetInventoryItemByName(buildingName);
@@ -298,6 +387,12 @@ namespace JumpeeIsland
 
         public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isWaitForPurchase)
         {
+            if (m_EnvLoader.GetData().CheckFullCapacity())
+            {
+                MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
+                return;
+            }
+
             if (isWaitForPurchase)
             {
                 if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
@@ -325,7 +420,7 @@ namespace JumpeeIsland
             m_EnvLoader.TrainACreature(creatureData);
         }
 
-        public void SpawnMovableEntity(string itemId, Vector3 position)
+        public void OnSpawnMovableEntity(string itemId, Vector3 position)
         {
             var item = GetInventoryItemByName(itemId);
 
@@ -338,6 +433,11 @@ namespace JumpeeIsland
             m_EnvLoader.SpawnAnEnemy(newEntity);
         }
 
+        public async void OnSaveEnvById(string playerId)
+        {
+            await m_CloudConnector.OnSaveEnvById(m_EnvLoader.GetData(), playerId);
+        }
+
         #endregion
 
         #region REMOTE CONFIG
@@ -345,6 +445,11 @@ namespace JumpeeIsland
         public int GetMaxMove()
         {
             return m_CloudConnector.GetNumericByConfig(CommandName.JI_MAX_MOVE.ToString());
+        }
+
+        public int GetTownhouseSpace()
+        {
+            return m_CloudConnector.GetNumericByConfig(NumericConfigName.JI_TOWNHOUSE_SPACE.ToString());
         }
 
         public async Task<JIRemoteConfigManager.BattleLoot> GetBattleLootByStar(int stars)
@@ -355,6 +460,11 @@ namespace JumpeeIsland
         public List<JIRemoteConfigManager.Reward> GetRewardByCommand(string commandId)
         {
             return m_CloudConnector.GetRewardByCommandId(commandId);
+        }
+
+        public async Task<MainHallTier> GetMainHallTier(int mainhallLevel)
+        {
+            return await m_CloudConnector.GetMainHallTier(mainhallLevel);
         }
 
         #endregion
@@ -462,6 +572,16 @@ namespace JumpeeIsland
             return m_CloudConnector.GetCurrencySprite(currencyId);
         }
 
+        public MainHallTier GetCurrentTier()
+        {
+            return m_EnvLoader.GetCurrentTier();
+        }
+
+        public MainHallTier GetUpcomingTier()
+        {
+            return m_EnvLoader.GetUpcomingTier();
+        }
+
         #endregion
 
         #region INVENTORY
@@ -492,9 +612,30 @@ namespace JumpeeIsland
             return m_CloudConnector.GetInventoryByNameOrId(entityName);
         }
 
-        public async void GrantInventory(string inventoryId)
+        public async Task<PlayersInventoryItem> GrantInventory(string inventoryId)
         {
-            await m_CloudConnector.OnGrantInventory(inventoryId);
+            return await m_CloudConnector.OnGrantInventory(inventoryId);
+        }
+
+        public async void GrantInventory(string inventoryId, int level)
+        {
+            await m_CloudConnector.OnGrantInventory(inventoryId, level);
+        }
+
+        public async void UpgradeInventory(string inventoryId)
+        {
+            await m_CloudConnector.OnUpdateInventory(inventoryId, 0);
+        }
+
+        public async void UpgradeInventory(string inventoryId, int level)
+        {
+            await m_CloudConnector.OnUpdateInventory(inventoryId, level);
+            OnCreatureUpgrade.Invoke(inventoryId);
+        }
+
+        public int GetInventoryLevel(string inventoryId)
+        {
+            return m_CloudConnector.GetInventoryLevel(inventoryId);
         }
 
         #endregion
@@ -523,7 +664,7 @@ namespace JumpeeIsland
             var purchaseHandler = await m_CloudConnector.OnMakeAPurchase(virtualPurchaseId);
             if (purchaseHandler == null)
             {
-                Debug.Log($"Show \"Lack of {virtualPurchaseId}\" panel");
+                MainUI.Instance.OnConversationUI.Invoke($"\"Lack of resource for {virtualPurchaseId}\"", false);
                 return false;
             }
 
@@ -601,9 +742,14 @@ namespace JumpeeIsland
             return await m_CloudConnector.GetEnemyEnvironment();
         }
 
-        public int CalculateEnvScore()
+        public async Task<List<LeaderboardEntry>> GetPlayerRange()
         {
-            return m_EnvLoader.GetData().CalculateScore();
+            return await m_CloudConnector.GetPlayerRange();
+        }
+
+        private int GetScore()
+        {
+            return m_CloudConnector.GetPlayerScore();
         }
 
         #endregion
@@ -613,9 +759,11 @@ namespace JumpeeIsland
         private async Task LoadGameProcess()
         {
             m_GameProcess = await m_CloudConnector.OnLoadGameProcess();
-            GameFlowManager.Instance.LoadCurrentTutorial(m_GameProcess == null
-                ? "/Tutorials/Tutorial0"
-                : m_GameProcess.currentTutorial);
+
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
+                GameFlowManager.Instance.LoadTutorialManager(m_GameProcess == null
+                    ? "/Tutorials/Tutorial0"
+                    : m_GameProcess.currentTutorial);
         }
 
         public async void SaveCurrentTutorial(string tutorial)
@@ -624,8 +772,13 @@ namespace JumpeeIsland
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
-        public async void SaveBattleResult(int starAmount)
+        public async void SaveBattleResult(int starAmount, int score)
         {
+            if (starAmount == 0)
+                m_GameProcess.winStack = 0;
+            else
+                m_GameProcess.winStack++;
+
             switch (starAmount)
             {
                 case 1:
@@ -640,7 +793,15 @@ namespace JumpeeIsland
             }
 
             m_GameProcess.battleCount++;
+            m_GameProcess.score = Mathf.Clamp(m_GameProcess.score + score, 0, m_GameProcess.score + score);
 
+            m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
+
+        public async void SaveBossBattle()
+        {
+            m_GameProcess.battleCount++;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
@@ -648,6 +809,20 @@ namespace JumpeeIsland
         {
             m_GameProcess.bossUnlock = bossIndex;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
+
+        #endregion
+
+        #region CUSTOM EVENTS SENDER
+
+        public void SendBossQuestEvent(int bossId)
+        {
+            m_CloudConnector.SendBossQuestEvent(GetScore(), bossId);
+        }
+
+        public void SendTutorialTrackEvent(string stepId)
+        {
+            m_CloudConnector.SendTutorialTrackEvent(stepId);
         }
 
         #endregion
@@ -699,6 +874,10 @@ namespace JumpeeIsland
                             IncrementLocalCurrency(reward.id, reward.amount);
                         else
                             m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
+
+                        // show currency vfx
+                        MainUI.Instance.OnShowCurrencyVfx.Invoke(reward.id, reward.amount, fromPos);
+
                         break;
                     }
                 }

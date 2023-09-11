@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class ResourceEntity : Entity
     {
-        [SerializeField] private ResourceStats[] m_ResourceStats;
+        [SerializeField] private List<ResourceStats> m_ResourceStats;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
@@ -28,6 +28,11 @@ namespace JumpeeIsland
         }
 
         #region RESOURCE DATA
+
+        public override void Relocate(Vector3 position)
+        {
+            m_Transform.position = position;
+        }
 
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
@@ -54,16 +59,6 @@ namespace JumpeeIsland
             return m_ResourceData.FactionType;
         }
 
-        public virtual int GetExpReward()
-        {
-            return m_CurrentStats.ExpReward;
-        }
-
-        public override void CollectExp(int expAmount)
-        {
-            throw new System.NotImplementedException();
-        }
-
         #endregion
 
         #region HEALTH DATA
@@ -88,7 +83,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo, IAttackResponse attackResponser)
+        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }
@@ -109,8 +104,17 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region SKIN
+
+        public override SkinComp GetSkin()
+        {
+            return m_SkinComp;
+        }
+
+        #endregion
+
         #region EFFECT
-        
+
         public override EffectComp GetEffectComp()
         {
             throw new System.NotImplementedException();
@@ -132,12 +136,16 @@ namespace JumpeeIsland
         public override void ContributeCommands()
         {
             foreach (var command in m_CurrentStats.Commands)
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(),m_ResourceData.Position);
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_ResourceData.Position);
         }
 
         public override void RefreshEntity()
         {
             // Set entity stats
+            var inventory = SavingSystemManager.Instance.GetInventoryItemByName(m_ResourceData.EntityName);
+            m_ResourceStats.Clear();
+            foreach (var stats in inventory.statsAddress)
+                m_ResourceStats.Add(AddressableManager.Instance.GetAddressableSO(stats) as ResourceStats);
             m_CurrentStats = m_ResourceStats[m_ResourceData.CurrentLevel];
 
             // Initiate entity data if it's new
@@ -148,7 +156,7 @@ namespace JumpeeIsland
                 m_ResourceData.CurrentHp = m_CurrentStats.MaxHp;
                 m_ResourceData.CollectedCurrency = m_CurrentStats.CollectedCurrency;
             }
-            
+
             // Retrieve entity data
             m_SkinComp.Init(m_ResourceData.SkinAddress);
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_ResourceData);

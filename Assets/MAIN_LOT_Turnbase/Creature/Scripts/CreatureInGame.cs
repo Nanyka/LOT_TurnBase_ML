@@ -7,11 +7,11 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class CreatureInGame : MonoBehaviour, IGetCreatureInfo, IShowInfo, IRemoveEntity, ICreatureMove,
+    public class CreatureInGame : MonoBehaviour, IGetEntityInfo, IShowInfo, IRemoveEntity, ICreatureMove,
         IAttackResponse
     {
-        [FormerlySerializedAs("_rotatePart")] [Header("Creature Components")] [SerializeField]
-        protected Transform _tranformPart;
+        [Header("Creature Components")] [SerializeField]
+        protected Transform m_RotatePart;
 
         [SerializeField] protected CreatureEntity m_Entity;
 
@@ -19,14 +19,13 @@ namespace JumpeeIsland
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
         private int _currentPower;
-        private bool _isUsed;
+        [SerializeField] private bool _isUsed;
 
         public virtual void Init(CreatureData creatureData, IFactionController playerFaction)
         {
             m_Entity.Init(creatureData);
-            _tranformPart.eulerAngles = creatureData.Rotation;
+            m_RotatePart.eulerAngles = creatureData.Rotation;
             m_Transform.position = creatureData.Position;
-
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
             MarkAsUsedThisTurn();
@@ -47,6 +46,7 @@ namespace JumpeeIsland
         {
             if (_isUsed) return; // Avoid double moving
 
+
             _movement = m_FactionController.GetMovementInspector()
                 .MovingPath(m_Transform.position, moveDirection, 0, 0);
 
@@ -63,16 +63,24 @@ namespace JumpeeIsland
 
         public virtual void CreatureEndMove()
         {
-            m_Entity.UpdateTransform(_movement.targetPos, _tranformPart.eulerAngles);
-            if (GetJumpStep() > 0)
+            m_Entity.UpdateTransform(_movement.targetPos, m_RotatePart.eulerAngles);
+            if (GetJumpStep() > 0 && m_Entity.CheckEntityDie() == false)
                 Attack();
             else
                 m_FactionController.WaitForCreature();
         }
 
+        public void SkipThisTurn()
+        {
+            Debug.Log("TODO: Show SKIP TURN visual");
+            MarkAsUsedThisTurn();
+            m_FactionController.WaitForCreature();
+        }
+
         public void NewTurnReset()
         {
-            _isUsed = false;
+            m_Entity.GetEffectComp().EffectCountDown();
+            _isUsed = m_Entity.GetEffectComp().CheckSkipTurn();
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
             m_Entity.SetActiveMaterial();
@@ -100,7 +108,7 @@ namespace JumpeeIsland
             return m_Transform.position;
         }
 
-        public (Entity,int) ShowInfo()
+        public (Entity, int) ShowInfo()
         {
             // var data = (CreatureData)m_Entity.GetData();
             // return
@@ -111,17 +119,12 @@ namespace JumpeeIsland
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _tranformPart.forward, _movement.jumpCount, m_FactionController.GetFaction());
+            return (m_Transform.position, m_RotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
         }
 
         public EntityData GetEntityData()
         {
             return m_Entity.GetData();
-        }
-
-        public EnvironmentManager GetEnvironment()
-        {
-            return m_FactionController.GetEnvironment();
         }
 
         private int GetJumpStep()
@@ -139,14 +142,14 @@ namespace JumpeeIsland
             m_Entity.SetDisableMaterial();
         }
 
-        public void MarkAsUsedThisTurn()
+        protected void MarkAsUsedThisTurn()
         {
             _isUsed = true;
         }
 
         protected void UnitDie(Entity killedByEntity)
         {
-            if (GameFlowManager.Instance.IsEcoMode)
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
                 // just contribute resource when it is killed by player faction
                 if (killedByEntity.GetFaction() == FactionType.Player)
@@ -160,12 +163,15 @@ namespace JumpeeIsland
 
         private IEnumerator DieVisual()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
             gameObject.SetActive(false);
         }
 
         public void Remove(EnvironmentData environmentData)
         {
+            if (m_Entity.GetData().EntityName.Equals("King"))
+                return;
+
             if (m_FactionController.GetFaction() == FactionType.Player)
                 environmentData.PlayerData.Remove((CreatureData)m_Entity.GetData());
             if (m_FactionController.GetFaction() == FactionType.Enemy)

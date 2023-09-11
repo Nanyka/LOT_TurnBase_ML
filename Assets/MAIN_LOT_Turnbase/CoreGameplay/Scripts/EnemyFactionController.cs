@@ -16,18 +16,20 @@ namespace JumpeeIsland
         private List<NPCInGame> _dummyNPCs = new();
         private int _skillCount;
         private int _responseCounter;
+        private Camera _camera;
+        private int _layerMask = 1 << 7;
 
         public void AddCreatureToFaction(CreatureInGame creatureInGame)
         {
-            m_Enemies.Add((NPCInGame) creatureInGame);
+            m_Enemies.Add((NPCInGame)creatureInGame);
         }
 
         public void Init()
         {
             m_Environment = GameFlowManager.Instance.GetEnvManager();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
-
             m_NpcActionInferer = GetComponent<NPCActionInferer>();
+            _camera = Camera.main;
 
             InitiateNpcList();
         }
@@ -37,17 +39,36 @@ namespace JumpeeIsland
             // SetTempIndex();
             m_NpcActionInferer.Init();
         }
-        
+
         private void SetTempIndex()
         {
             for (int i = 0; i < _dummyNPCs.Count; i++)
             {
                 var enemy = _dummyNPCs[i];
                 enemy.InferMoving.AgentIndex = i;
+                enemy.InferMoving.JumpCount = 0;
+                enemy.InferMoving.VoteAmount = 0;
             }
         }
 
         #region ONE TURN PIPELINE
+
+        public void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
+                    return;
+
+                var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
+                if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
+                    return;
+
+                var getUnitAtPos = m_Enemies.Find(x => Vector3.Distance(x.transform.position, moveHit.transform.position) < 0.1f);
+                if (getUnitAtPos != null)
+                    MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
+            }
+        }
 
         // Change unit colour from environmentManager when changing faction
 
@@ -71,7 +92,7 @@ namespace JumpeeIsland
             foreach (var enemy in m_Enemies)
                 if (enemy.CheckUsedThisTurn() == false)
                     _dummyNPCs.Add(enemy);
-            
+
             if (_dummyNPCs.Count > 0)
             {
                 _skillCount = 0;
@@ -138,22 +159,13 @@ namespace JumpeeIsland
 
         private void EndTurn()
         {
-            // var attackAmount = 0;
-            // Attack nearby enemy
-            // foreach (var enemy in m_Enemies.Where(enemy => enemy.GetJumpStep() != 0))
-            // {
-            //     attackAmount++;
-            //     enemy.Attack();
-            // }
-
-            // call for the end-turn event
             StartCoroutine(WaitForChangeFaction(1f));
         }
 
         private IEnumerator WaitForChangeFaction(float seconds)
         {
             yield return new WaitForSeconds(seconds);
-            
+
             // Set all npc to default color to show it disable state
             foreach (var enemy in m_Enemies)
                 enemy.SetDisableMaterial();
@@ -190,7 +202,7 @@ namespace JumpeeIsland
         {
             Debug.Log("Require some visual stuff here");
             m_Environment.RemoveObject(creatureInGame.gameObject, m_Faction);
-            m_Enemies.Remove((NPCInGame) creatureInGame);
+            m_Enemies.Remove((NPCInGame)creatureInGame);
             SetTempIndex();
         }
 

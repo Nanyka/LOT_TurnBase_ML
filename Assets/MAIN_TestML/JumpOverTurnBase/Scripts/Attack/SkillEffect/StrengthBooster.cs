@@ -18,13 +18,14 @@ public class StrengthBooster : SkillEffect
         {
             if (sufferEntity.GetType() == typeof(CreatureEntity))
             {
-                if (sufferEntity.GetEffectComp().StrengthBoost())
-                {
-                    Debug.Log($"Boost strength of {attackEntity.name} during {_duration} steps.");
-                    var suffererData = (CreatureData)sufferEntity.GetData();
-                    suffererData.CurrentDamage *= _magnitude;
-                    suffererData.StregthBoostRemain = _duration;
-                }
+                sufferEntity.GetEffectComp().AdjustStrength(_magnitude,_duration);
+                // if (sufferEntity.GetEffectComp().CheckStrengthBoostState() == false)
+                // {
+                //     Debug.Log($"Boost strength of {attackEntity.name} during {_duration} steps.");
+                //     var suffererData = (CreatureData)sufferEntity.GetData();
+                //     suffererData.CurrentDamage *= _magnitude;
+                //     suffererData.StregthBoostRemain = _duration;
+                // }
             }
         }
     }

@@ -11,12 +11,29 @@ namespace JumpeeIsland
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
         private List<MovableTile> _tileAreas = new();
         private List<Vector3> _potentialPos = new(4);
+        private readonly AStar _aStarGrid = new();
 
         #region INIT SET UP
+
+        private void Start()
+        {
+            GameFlowManager.Instance.OnStartGame.AddListener(InitiateAStar);
+        }
 
         public void UpdateTileArea(MovableTile tilePos)
         {
             _tileAreas.Add(tilePos);
+        }
+
+        private void InitiateAStar(long arg0)
+        {
+            _aStarGrid.InitializeGrid(_tileAreas);
+        }
+
+        public List<Node> GetAStarPath(Vector3 starPos, Vector3 endPos)
+        {
+            _aStarGrid.UpdateObstacle();
+            return _aStarGrid.FindPath(starPos, endPos);
         }
 
         // Get tile that allow player take jump
@@ -132,9 +149,9 @@ namespace JumpeeIsland
             return Math.Abs(GetTileByGeoCoordinates(tile1).GetPosition().y - GetTileByGeoCoordinates(tile2).GetPosition().y) < 0.1f;
         }
         
-        public bool CheckHigherTile(Vector3 curTile, Vector3 checkTile)
+        public bool CheckHigherTile(Vector3 curPos, Vector3 checkPos)
         {
-            return GetTileByGeoCoordinates(curTile).GetPosition().y < GetTileByGeoCoordinates(checkTile).GetPosition().y;
+            return GetTileByGeoCoordinates(curPos).GetPosition().y < GetTileByGeoCoordinates(checkPos).GetPosition().y;
         }
 
         #endregion
@@ -178,10 +195,6 @@ namespace JumpeeIsland
 
         public MovableTile GetTileByGeoCoordinates(Vector3 coordinates)
         {
-            // var tile = _tileAreas.Find(t => t.CheckGeoCoordinates(coordinates));
-            // if (tile == null)
-            //     Debug.Log($"Coordinates to get null tile: {coordinates}");
-            
             return _tileAreas.Find(t => t.CheckGeoCoordinates(coordinates));
         }
 

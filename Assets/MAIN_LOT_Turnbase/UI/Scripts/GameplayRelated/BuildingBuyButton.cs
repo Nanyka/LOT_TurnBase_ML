@@ -11,14 +11,13 @@ namespace JumpeeIsland
     public class BuildingBuyButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction
     {
         [SerializeField] private GameObject m_Container;
-        // [SerializeField] private TextMeshProUGUI m_ItemName;
         [SerializeField] private Image m_ItemIcon;
+        [SerializeField] private TextMeshProUGUI m_Price;
         
-
         private AsyncOperationHandle m_UCDObjectLoadingHandle;
         private BuyBuildingMenu _mBuyBuildingMenu;
-        private JIInventoryItem m_BuidlingItem;
-        private Vector3 _buildingPosition;
+        protected JIInventoryItem m_BuidlingItem;
+        protected Vector3 _buildingPosition;
         private int _layerMask = 1 << 6;
         private Camera _camera;
 
@@ -30,11 +29,14 @@ namespace JumpeeIsland
         public void TurnOn(JIInventoryItem buildingItem, BuyBuildingMenu buyBuildingMenu)
         {
             m_BuidlingItem = buildingItem;
-            // m_ItemName.text = m_BuidlingItem.inventoryName;
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(m_BuidlingItem.spriteAddress);
             if (_mBuyBuildingMenu == null)
                 _mBuyBuildingMenu = buyBuildingMenu;
 
+            var costs = SavingSystemManager.Instance.GetPurchaseCost(buildingItem.virtualPurchaseId);
+            if (costs.Count > 0)
+                m_Price.text = costs[0].amount.ToString();
+            
             m_Container.SetActive(true);
         }
 
@@ -64,10 +66,10 @@ namespace JumpeeIsland
                 return;
 
             _buildingPosition = collidedTile.transform.position;
-            _mBuyBuildingMenu.EndDeal(this);
+            _mBuyBuildingMenu.EndSelectionPhase(this);
         }
 
-        public void ClickYes()
+        public virtual void ClickYes()
         {
             SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition);
         }
