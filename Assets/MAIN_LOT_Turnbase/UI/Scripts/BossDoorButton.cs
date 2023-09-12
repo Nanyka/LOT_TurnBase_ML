@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 using WebSocketSharp;
 
 namespace JumpeeIsland
@@ -32,7 +32,8 @@ namespace JumpeeIsland
                     return;
                 
                 SavingSystemManager.Instance.SendBossQuestEvent(_bossIndex);
-                SceneManager.LoadScene(_bossScene);
+                Addressables.LoadSceneAsync(_bossScene);
+                // SceneManager.LoadScene(_bossScene);
             }
         }
 
