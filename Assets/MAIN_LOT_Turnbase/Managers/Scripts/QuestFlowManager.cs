@@ -11,7 +11,7 @@ namespace JumpeeIsland
 
         [SerializeField] private Quest _testQuest;
 
-        private Quest _quest;
+        [SerializeField] private Quest _quest;
         private bool _encrypt = true;
         private string _gamePath;
 
@@ -29,10 +29,24 @@ namespace JumpeeIsland
             if (_quest.targetPos.x.Equals(float.NegativeInfinity))
                 return;
 
-            var target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Enemy);
-            if (_quest.targetType == EntityType.RESOURCE)
-                target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Neutral);
+            GameObject target = null;
 
+            switch (_quest.targetType)
+            {
+                case EntityType.ENEMY:
+                    target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Enemy);
+                    break;
+                case EntityType.RESOURCE:
+                    target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Neutral);
+                    break;
+                case EntityType.COLLECTABLE:
+                {
+                    var collectableController = FindObjectOfType<CollectableController>();
+                    target = collectableController.GetCollectableByPos(_quest.targetPos).gameObject;
+                }
+                    break;
+            }
+            
             if (target != null)
                 target.AddComponent<EndGameComp>();
         }

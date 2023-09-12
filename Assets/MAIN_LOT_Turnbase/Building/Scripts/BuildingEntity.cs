@@ -18,7 +18,6 @@ namespace JumpeeIsland
         [SerializeField] private AnimateComp m_AnimateComp;
         [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
         
-
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -306,6 +305,9 @@ namespace JumpeeIsland
             m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
             m_BuildingData.CurrentDamage = m_CurrentStats.AttackDamage;
             m_BuildingData.CurrentShield = m_CurrentStats.Shield;
+            m_BuildingData.CurrentHp = m_BuildingData.CurrentHp < m_CurrentStats.MaxHp
+                ? m_BuildingData.CurrentHp
+                : m_CurrentStats.MaxHp;
 
             // Set initiate data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);

@@ -284,6 +284,10 @@ namespace JumpeeIsland
                 m_CreatureData.CurrentHp = m_CurrentStat.HealthPoint;
                 m_CreatureData.CurrentDamage = m_CurrentStat.Strength;
             }
+            else
+                m_CreatureData.CurrentHp = m_CreatureData.CurrentHp < m_CurrentStat.HealthPoint
+                    ? m_CreatureData.CurrentHp
+                    : m_CurrentStat.HealthPoint;
 
             // Retrieve entity data
             if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode != GameMode.ECONOMY)

@@ -24,7 +24,7 @@ namespace JumpeeIsland
             {
                 isDisable = true;
                 var materials = _tileRenderer.materials;
-                materials[1] = _disableMaterial;
+                materials[^1] = _disableMaterial;
                 _tileRenderer.materials = materials;
             }
         }

@@ -14,7 +14,9 @@ namespace JumpeeIsland
         {
             var enablePos = GameFlowManager.Instance.GetQuest().enableTiles;
             foreach (var tile in m_MovableTiles)
+            {
                 tile.SetDisable(enablePos);
+            }
         }
         
         public List<MovableTile> GetTiles()
