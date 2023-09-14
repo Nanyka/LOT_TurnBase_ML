@@ -16,8 +16,12 @@ namespace JumpeeIsland
 
         public bool isFinalBoss;
         public EnvironmentData environmentData;
+        [Tooltip("Destroy this target and win the stage")]
         public EntityType targetType;
         public Vector3 targetPos = Vector3.negativeInfinity;
+        [Tooltip("The protected object that will turn to fail if it is defeated")]
+        public EntityType protectedType;
+        public Vector3 protectedPos = Vector3.negativeInfinity;
         public GameMasterCondition winCondition;
         public List<Vector3> enableTiles;
         public int maxMovingTurn;

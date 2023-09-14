@@ -29,6 +29,7 @@ namespace JumpeeIsland
             if (_quest.targetPos.x.Equals(float.NegativeInfinity))
                 return;
 
+            // Integrate EndGameComp into targetObject
             GameObject target = null;
 
             switch (_quest.targetType)
@@ -47,6 +48,29 @@ namespace JumpeeIsland
                     break;
             }
             
+            Debug.Log(target);
+            if (target != null)
+                target.AddComponent<EndGameComp>();
+            // Integrate EndGameComp into protectedObject 
+            target = null;
+
+            switch (_quest.protectedType)
+            {
+                case EntityType.ENEMY:
+                    target = _environmentManager.GetObjectByPosition(_quest.protectedPos, FactionType.Enemy);
+                    break;
+                case EntityType.RESOURCE:
+                    target = _environmentManager.GetObjectByPosition(_quest.protectedPos, FactionType.Neutral);
+                    break;
+                case EntityType.COLLECTABLE:
+                {
+                    var collectableController = FindObjectOfType<CollectableController>();
+                    target = collectableController.GetCollectableByPos(_quest.protectedPos).gameObject;
+                }
+                    break;
+            }
+            
+            Debug.Log(target);
             if (target != null)
                 target.AddComponent<EndGameComp>();
         }

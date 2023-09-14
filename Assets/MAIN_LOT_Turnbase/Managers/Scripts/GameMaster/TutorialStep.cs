@@ -41,6 +41,7 @@ namespace JumpeeIsland
         [VerticalGroup("CheckEndCondition/Row1")] public GameMasterCondition EndCondition;
         [VerticalGroup("CheckEndCondition/Row2")] public bool IsEndTutorial;
         public bool Conversation;
-        [ShowIf("@Conversation == true")] public string Message;
+        [ShowIf("@Conversation == true")] [TextArea] public string Message;
+        [ShowIf("@Conversation == true")] public string MessageImage;
     }
 }

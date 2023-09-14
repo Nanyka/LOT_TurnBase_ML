@@ -36,6 +36,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<Vector3, bool> OnSwitchButtonPointer = new(); // send to ButtonPointer, invoke at TutorialController
 
         [NonSerialized] public UnityEvent<string, bool> OnConversationUI = new(); // send to ConversationDialog, invoke at TutorialController
+        
+        [NonSerialized] public UnityEvent<string, string, bool> OnImageTutorial = new(); // send to ConversationDialog, invoke at TutorialController
 
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
