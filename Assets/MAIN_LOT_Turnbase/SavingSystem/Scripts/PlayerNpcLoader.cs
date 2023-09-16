@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,46 +6,38 @@ namespace JumpeeIsland
 {
     [RequireComponent(typeof(IFactionController))]
     [RequireComponent(typeof(ObjectPool))]
-    public class CreatureLoader : MonoBehaviour, ILoadData
+    public class PlayerNpcLoader : MonoBehaviour
     {
-        protected IFactionController _factionController;
+        private IFactionController _factionController;
         private ObjectPool _creaturePool;
-        protected List<CreatureData> _creatureDatas;
+        private List<CreatureData> _creatureDatas;
 
-        public void StartUpLoadData<T>(T data)
+        public void Init(List<CreatureData> npcData)
         {
-            _creatureDatas = (List<CreatureData>)Convert.ChangeType(data, typeof(List<CreatureData>));
-        }
-
-        protected void Start()
-        {
-            GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
             _factionController = GetComponent<IFactionController>();
             _creaturePool = GetComponent<ObjectPool>();
-            
-            Debug.Log(_creaturePool);
-        }
 
-        protected virtual void Init()
-        {
+            _creatureDatas = npcData;
+
             foreach (var creatureData in _creatureDatas)
-                TrainANewCreature(creatureData);
+                if (creatureData.EntityName.Equals("King") == false)
+                    TrainANewCreature(creatureData);
 
             _factionController.Init();
         }
 
-        public virtual void PlaceNewObject<T>(T data)
+        public void PlaceNewObject<T>(T data)
         {
             var creatureData = (CreatureData)Convert.ChangeType(data, typeof(CreatureData));
             TrainANewCreature(creatureData);
         }
 
-        protected void TrainANewCreature(CreatureData creatureData)
+        private void TrainANewCreature(CreatureData creatureData)
         {
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
                 return;
-            
+
             // check if creature stand out of the map
             if (GameFlowManager.Instance.GetEnvManager().FreeToMove(creatureData.Position) == false)
             {
@@ -63,13 +54,6 @@ namespace JumpeeIsland
                 creatureInGame.gameObject.SetActive(true);
                 creatureInGame.Init(creatureData, _factionController);
             }
-        }
-
-        public void Reset()
-        {
-            _creaturePool.ResetPool();
-            _creatureDatas = new();
-            _factionController.ResetData();
         }
     }
 }

@@ -9,18 +9,18 @@ namespace JumpeeIsland
     {
         public List<DummyAction> m_ActionCache = new();
 
-        private EnemyFactionController _enemiesController;
+        private NpcFactionController _npcsController;
         [SerializeField] private List<Skill_SO> m_SkillSOs = new();
 
         public void Init()
         {
-            _enemiesController = GetComponent<EnemyFactionController>();
+            _npcsController = GetComponent<NpcFactionController>();
             // GatherSkillFromJumpers();
         }
 
         public void GatherSkillFromJumpers()
         {
-            foreach (var enemy in _enemiesController.GetEnemies())
+            foreach (var enemy in _npcsController.GetEnemies())
             {
                 foreach (var skill in enemy.GetEntity().GetSkills())
                 {
@@ -76,8 +76,8 @@ namespace JumpeeIsland
                         continue;
 
                     foreach (var attackPoint in attackPoints)
-                        if (_enemiesController.GetEnvironment()
-                            .CheckEnemy(attackPoint, _enemiesController.GetFaction()))
+                        if (_npcsController.GetEnvironment()
+                            .CheckEnemy(attackPoint, _npcsController.GetFaction()))
                             action.Reward++;
                 }
             }
@@ -88,7 +88,7 @@ namespace JumpeeIsland
                 orderedAction = m_ActionCache.OrderByDescending(x => x.Action > 0).ThenByDescending(x => x.VoteAmount).ElementAt(0);
 
             // Get top tuple
-            _enemiesController.GetEnemies()[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
+            _npcsController.GetEnemies()[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
 
             // StartCoroutine(WaitBeforeAction(orderedAction)); // --TESTING--
         }
@@ -98,7 +98,7 @@ namespace JumpeeIsland
         {
             yield return new WaitUntil(() => Input.anyKey);
             Debug.Log("Wait for testing");
-            _enemiesController.GetEnemies()[action.AgentIndex].ConductSelectedAction(action);
+            _npcsController.GetEnemies()[action.AgentIndex].ConductSelectedAction(action);
         }
 
         #region GET

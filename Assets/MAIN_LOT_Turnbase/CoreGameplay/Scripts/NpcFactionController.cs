@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,54 +7,47 @@ using UnityEngine;
 namespace JumpeeIsland
 {
     [RequireComponent(typeof(NPCActionInferer))]
-    public class EnemyFactionController : MonoBehaviour, IFactionController
+    public class NpcFactionController : MonoBehaviour, IFactionController
     {
         [SerializeField] protected FactionType m_Faction = FactionType.Enemy;
 
-        private List<NPCInGame> m_Enemies = new();
-        private EnvironmentManager m_Environment;
-        private NPCActionInferer m_NpcActionInferer;
+        protected List<NPCInGame> m_NpcUnits = new();
+        protected EnvironmentManager m_Environment;
+        protected NPCActionInferer m_NpcActionInferer;
         private List<NPCInGame> _dummyNPCs = new();
         private int _skillCount;
         private int _responseCounter;
-        private Camera _camera;
+        protected Camera _camera;
         private int _layerMask = 1 << 7;
 
         public void AddCreatureToFaction(CreatureInGame creatureInGame)
         {
-            m_Enemies.Add((NPCInGame)creatureInGame);
+            m_NpcUnits.Add((NPCInGame)creatureInGame);
         }
 
-        public void Init()
+        public virtual void Init()
         {
             m_Environment = GameFlowManager.Instance.GetEnvManager();
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
             m_NpcActionInferer = GetComponent<NPCActionInferer>();
-            _camera = Camera.main;
-
-            InitiateNpcList();
-        }
-
-        private void InitiateNpcList()
-        {
-            // SetTempIndex();
             m_NpcActionInferer.Init();
+            _camera = Camera.main;
         }
 
         private void SetTempIndex()
         {
             for (int i = 0; i < _dummyNPCs.Count; i++)
             {
-                var enemy = _dummyNPCs[i];
-                enemy.InferMoving.AgentIndex = i;
-                enemy.InferMoving.JumpCount = 0;
-                enemy.InferMoving.VoteAmount = 0;
+                var npcUnit = _dummyNPCs[i];
+                npcUnit.InferMoving.AgentIndex = i;
+                npcUnit.InferMoving.JumpCount = 0;
+                npcUnit.InferMoving.VoteAmount = 0;
             }
         }
 
         #region ONE TURN PIPELINE
 
-        public void Update()
+        public virtual void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -64,7 +58,7 @@ namespace JumpeeIsland
                 if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
                     return;
 
-                var getUnitAtPos = m_Enemies.Find(x => Vector3.Distance(x.transform.position, moveHit.transform.position) < 0.1f);
+                var getUnitAtPos = m_NpcUnits.Find(x => Vector3.Distance(x.transform.position, moveHit.transform.position) < 0.1f);
                 if (getUnitAtPos != null)
                     MainUI.Instance.OnShowInfo.Invoke(getUnitAtPos);
             }
@@ -72,14 +66,14 @@ namespace JumpeeIsland
 
         // Change unit colour from environmentManager when changing faction
 
-        private void ToMyTurn()
+        public virtual void ToMyTurn()
         {
             if (m_Environment.GetCurrFaction() != m_Faction)
                 return;
 
             // reset all agent's moving state
-            foreach (var enemy in m_Enemies)
-                enemy.NewTurnReset();
+            foreach (var npcUnit in m_NpcUnits)
+                npcUnit.NewTurnReset();
 
             KickOffNewTurn();
         }
@@ -89,9 +83,9 @@ namespace JumpeeIsland
         {
             // Just select jumpers who still not move this turn
             _dummyNPCs.Clear();
-            foreach (var enemy in m_Enemies)
-                if (enemy.CheckUsedThisTurn() == false)
-                    _dummyNPCs.Add(enemy);
+            foreach (var npcUnit in m_NpcUnits)
+                if (npcUnit.CheckUsedThisTurn() == false)
+                    _dummyNPCs.Add(npcUnit);
 
             if (_dummyNPCs.Count > 0)
             {
@@ -167,8 +161,8 @@ namespace JumpeeIsland
             yield return new WaitForSeconds(seconds);
 
             // Set all npc to default color to show it disable state
-            foreach (var enemy in m_Enemies)
-                enemy.SetDisableMaterial();
+            foreach (var npcUnit in m_NpcUnits)
+                npcUnit.SetDisableMaterial();
 
             m_Environment.ChangeFaction();
             // m_Environment.OnChangeFaction.Invoke();
@@ -202,13 +196,13 @@ namespace JumpeeIsland
         {
             Debug.Log("Require some visual stuff here");
             m_Environment.RemoveObject(creatureInGame.gameObject, m_Faction);
-            m_Enemies.Remove((NPCInGame)creatureInGame);
+            m_NpcUnits.Remove((NPCInGame)creatureInGame);
             SetTempIndex();
         }
 
         public void ResetData()
         {
-            m_Enemies = new List<NPCInGame>();
+            m_NpcUnits = new List<NPCInGame>();
             _dummyNPCs = new List<NPCInGame>();
         }
 

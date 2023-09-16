@@ -27,6 +27,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<int> OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, PlayerFactionController
         [NonSerialized] public UnityEvent OnKilledBoss = new(); // send to GameResultPanel; invoke at CreatureUnlockComp
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
+        [NonSerialized] public UnityEvent<bool> OnChangAutomationMode = new(); // sent to PlayerFactionController; invoke at 
         
         [FormerlySerializedAs("IsEcoMode")] public GameMode GameMode = GameMode.NONE;
         [SerializeField] public bool _isGameRunning;
