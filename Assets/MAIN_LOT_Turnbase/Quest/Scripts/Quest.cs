@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,18 +17,20 @@ namespace JumpeeIsland
 
         public bool isFinalBoss;
         public EnvironmentData environmentData;
-        [Tooltip("Destroy this target and win the stage")]
-        public EntityType targetType;
-        public Vector3 targetPos = Vector3.negativeInfinity;
-        [Tooltip("The protected object that will turn to fail if it is defeated")]
-        public EntityType protectedType;
-        public Vector3 protectedPos = Vector3.negativeInfinity;
         public GameMasterCondition winCondition;
         public List<Vector3> enableTiles;
+        public List<EndGameUnit> EndGameUnits;
         public int maxMovingTurn;
         public int maxTroop;
         public List<int> excellentRank = new(2);
         public List<JIRemoteConfigManager.Reward> rewards;
         public string tutorialForQuest;
+    }
+
+    [Serializable]
+    public class EndGameUnit
+    {
+        public EntityType targetType;
+        public Vector3 targetPos;
     }
 }

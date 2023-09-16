@@ -85,8 +85,7 @@ namespace JumpeeIsland
         {
             return CheckMapSize() && CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
                    CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckBattleCount() &&
-                   CheckBossUnlock() &&
-                   CheckEntityCondition() && CheckPlayerExp();
+                   CheckBossUnlock() && CheckEntityCondition() && CheckPlayerExp();
         }
 
         private bool CheckMapSize()
@@ -173,9 +172,13 @@ namespace JumpeeIsland
 
             int totalAmount = 0;
             foreach (var collectable in collectables)
+            {
+                Debug.Log($"{collectable.EntityName}: {collectable.CollectableType}");
+
                 if (collectable.CollectableType == Collectable)
                     totalAmount++;
-
+            }
+            
             switch (CollectableCompare)
             {
                 case CompareType.Higher:

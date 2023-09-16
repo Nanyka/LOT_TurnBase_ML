@@ -26,51 +26,31 @@ namespace JumpeeIsland
         protected override void ConfirmGameStarted()
         {
             base.ConfirmGameStarted();
-            if (_quest.targetPos.x.Equals(float.NegativeInfinity))
-                return;
 
-            // Integrate EndGameComp into targetObject
+            foreach (var endGameUnit in _quest.EndGameUnits)
+                AddEndComp(endGameUnit);
+        }
+
+        private void AddEndComp(EndGameUnit unit)
+        {
             GameObject target = null;
 
-            switch (_quest.targetType)
+            switch (unit.targetType)
             {
                 case EntityType.ENEMY:
-                    target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Enemy);
+                    target = _environmentManager.GetObjectByPosition(unit.targetPos, FactionType.Enemy);
                     break;
                 case EntityType.RESOURCE:
-                    target = _environmentManager.GetObjectByPosition(_quest.targetPos, FactionType.Neutral);
+                    target = _environmentManager.GetObjectByPosition(unit.targetPos, FactionType.Neutral);
                     break;
                 case EntityType.COLLECTABLE:
                 {
                     var collectableController = FindObjectOfType<CollectableController>();
-                    target = collectableController.GetCollectableByPos(_quest.targetPos).gameObject;
+                    target = collectableController.GetCollectableByPos(unit.targetPos).gameObject;
                 }
                     break;
             }
-            
-            Debug.Log(target);
-            if (target != null)
-                target.AddComponent<EndGameComp>();
-            // Integrate EndGameComp into protectedObject 
-            target = null;
 
-            switch (_quest.protectedType)
-            {
-                case EntityType.ENEMY:
-                    target = _environmentManager.GetObjectByPosition(_quest.protectedPos, FactionType.Enemy);
-                    break;
-                case EntityType.RESOURCE:
-                    target = _environmentManager.GetObjectByPosition(_quest.protectedPos, FactionType.Neutral);
-                    break;
-                case EntityType.COLLECTABLE:
-                {
-                    var collectableController = FindObjectOfType<CollectableController>();
-                    target = collectableController.GetCollectableByPos(_quest.protectedPos).gameObject;
-                }
-                    break;
-            }
-            
-            Debug.Log(target);
             if (target != null)
                 target.AddComponent<EndGameComp>();
         }
