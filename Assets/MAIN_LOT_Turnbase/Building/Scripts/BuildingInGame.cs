@@ -94,8 +94,7 @@ namespace JumpeeIsland
 
         public void Remove(EnvironmentData environmentData)
         {
-            // Building will not be deleted from player data, unless player sell it out
-            // environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
+            environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
         }
 
         private void SellBuilding(EnvironmentData environmentData)

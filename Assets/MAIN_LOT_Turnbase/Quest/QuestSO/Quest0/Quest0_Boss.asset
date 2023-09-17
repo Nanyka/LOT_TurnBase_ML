@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Quest0_Boss
   m_EditorClassIdentifier: 
   isFinalBoss: 1
+  questMessage: 
   environmentData:
     timestamp: 0
     lastTimestamp: 0
@@ -142,8 +143,6 @@ MonoBehaviour:
       CurrentLevel: 0
       CollectableType: 1
       AccumulatedStep: 0
-  targetType: 0
-  targetPos: {x: 0, y: 0, z: 0}
   winCondition:
     MapSize: 0
     Currency: 0
@@ -191,9 +190,10 @@ MonoBehaviour:
   - {x: -1, y: 0, z: 1}
   - {x: 0, y: 0, z: 1}
   - {x: 1, y: 0, z: 1}
+  EndGameUnits: []
   maxMovingTurn: 20
   maxTroop: 1
-  excellentRank: 050000000a000000
+  excellentRank: 0a00000005000000
   rewards:
   - service: 
     id: WOOD

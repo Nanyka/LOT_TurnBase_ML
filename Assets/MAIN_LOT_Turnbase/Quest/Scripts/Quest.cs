@@ -16,6 +16,7 @@ namespace JumpeeIsland
         // Provide tutorial if needed
 
         public bool isFinalBoss;
+        public string questMessage;
         public EnvironmentData environmentData;
         public GameMasterCondition winCondition;
         public List<Vector3> enableTiles;

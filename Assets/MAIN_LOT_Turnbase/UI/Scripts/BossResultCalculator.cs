@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class MonsterResultPanel : MonoBehaviour
+    public class BossResultCalculator : MonoBehaviour
     {
         [SerializeField] private int m_BossIndex;
         [SerializeField] private GameObject _killedPossPanel;
@@ -14,12 +15,47 @@ namespace JumpeeIsland
         [SerializeField] private List<StarHolder> _starHolders;
         [SerializeField] private List<BattleRewardItem> _rewardItems;
 
+        private CountDownSteps _countDownSteps;
+
         private int _starCount;
 
         private void Start()
         {
             GameFlowManager.Instance.OnGameOver.AddListener(ShowWinStagePanel);
             GameFlowManager.Instance.OnKilledBoss.AddListener(ShowKilledBossPanel);
+            GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(CalculateWinStars);
+
+            _countDownSteps = GetComponent<CountDownSteps>();
+
+            InitStarGuide();
+        }
+
+        private void InitStarGuide()
+        {
+            var quest = GameFlowManager.Instance.GetQuest();
+            MainUI.Instance.OnStarGuide.Invoke(0, $"Complete in {quest.maxMovingTurn} steps",false);
+            MainUI.Instance.OnStarGuide.Invoke(1, $"Complete in {quest.excellentRank[0]} steps",false);
+            MainUI.Instance.OnStarGuide.Invoke(2, $"Complete in {quest.excellentRank[1]} steps",false);
+        }
+
+        private void CalculateWinStars()
+        {
+            if (GameFlowManager.Instance.GetEnvManager().GetCurrFaction() == FactionType.Enemy)
+                UpdateStarGuide();
+        }
+
+        private void UpdateStarGuide()
+        {
+            var quest = GameFlowManager.Instance.GetQuest();
+            if (quest.isFinalBoss == false)
+            {
+                MainUI.Instance.OnStarGuide.Invoke(0, $"Complete in {quest.maxMovingTurn} steps",
+                    (quest.maxMovingTurn - _countDownSteps.GetRemainSteps()) >= quest.maxMovingTurn);
+                MainUI.Instance.OnStarGuide.Invoke(1, $"Complete in {quest.excellentRank[0]} steps",
+                    (quest.maxMovingTurn - _countDownSteps.GetRemainSteps()) > quest.excellentRank[0]);
+                MainUI.Instance.OnStarGuide.Invoke(2, $"Complete in {quest.excellentRank[1]} steps",
+                    (quest.maxMovingTurn - _countDownSteps.GetRemainSteps()) > quest.excellentRank[1]);
+            }
         }
 
         private async void ShowWinStagePanel(int delayInvterval)
@@ -28,7 +64,7 @@ namespace JumpeeIsland
             var quest = GameFlowManager.Instance.GetQuest();
             if (quest.isFinalBoss)
                 return;
-            
+
             await WaitToShowWinStage(delayInvterval);
         }
 

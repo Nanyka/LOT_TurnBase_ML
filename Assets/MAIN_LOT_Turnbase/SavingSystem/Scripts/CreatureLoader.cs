@@ -23,8 +23,6 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
             _factionController = GetComponent<IFactionController>();
             _creaturePool = GetComponent<ObjectPool>();
-            
-            Debug.Log(_creaturePool);
         }
 
         protected virtual void Init()

@@ -8,11 +8,13 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class GameResultPanel : MonoBehaviour
+    public class GameResultCalculator : MonoBehaviour
     {
-        [SerializeField] private GameObject _gameoverPanel;
+        [SerializeField] private GameObject _winPanel;
+        [SerializeField] private GameObject _losePanel;
         [SerializeField] private GameObject _stackHolder;
-        [SerializeField] private TextMeshProUGUI _scoreText;
+        [SerializeField] private TextMeshProUGUI _winScoreText;
+        [SerializeField] private TextMeshProUGUI _loseScoreText;
         [SerializeField] private TextMeshProUGUI _stackText;
         [SerializeField] private List<StarHolder> _starHolders;
         [SerializeField] private List<BattleRewardItem> _rewardItemUI;
@@ -23,18 +25,41 @@ namespace JumpeeIsland
         {
             MainUI.Instance.OnEnableInteract.AddListener(BattleStatsCache);
             GameFlowManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
+            GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(CalculateWinStars);
+            
+            UpdateStarGuide();
+        }
+
+        private void CalculateWinStars()
+        {
+            if (GameFlowManager.Instance.GetEnvManager().GetCurrFaction() == FactionType.Enemy)
+                UpdateStarGuide();
+        }
+
+        private void UpdateStarGuide()
+        {
+            // Main hall demolished condition
+            var mainHallDemolished = SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall();
+            MainUI.Instance.OnStarGuide.Invoke(0, "Destroy MAIN HALL", mainHallDemolished);
+
+            // Win rate condition
+            var enemyBuildingCount = SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
+            if (enemyBuildingCount == 0)
+                GameFlowManager.Instance.OnGameOver.Invoke(2);
+
+            var winRate = (_startGameEnemyCount - enemyBuildingCount) * 1f / _startGameEnemyCount;
+            MainUI.Instance.OnStarGuide.Invoke(1, $"Destroy 50% buildings", winRate > 0.5f);
+            MainUI.Instance.OnStarGuide.Invoke(2, $"Destroy ALL buildings", Math.Abs(winRate - 1f) < Mathf.Epsilon);
         }
 
         private void BattleStatsCache()
         {
-            _startGameEnemyCount =
-                SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
+            _startGameEnemyCount = SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
         }
 
         private async void ShowGameOverPanel(int delayInverval)
         {
-            var enemyBuildingCount =
-                SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
+            var enemyBuildingCount = SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
             int winStar = 0;
             int score = 0;
 
@@ -42,7 +67,7 @@ namespace JumpeeIsland
             if (SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall())
                 winStar++;
 
-            var winRate = (enemyBuildingCount - _startGameEnemyCount) * 1f / _startGameEnemyCount;
+            var winRate = (_startGameEnemyCount - enemyBuildingCount) * 1f / _startGameEnemyCount;
 
             // +1star for devastating 50% enemy's tribe
             if (winRate > 0.5f)
@@ -52,8 +77,7 @@ namespace JumpeeIsland
             if (Math.Abs(winRate - 1f) < Mathf.Epsilon)
                 winStar++;
 
-            Debug.Log(
-                $"Win rate: {winRate}, Demolishing mainHall: {SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall()}, star count: {winStar}");
+            Debug.Log($"Win rate: {winRate}, Demolishing mainHall: {SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall()}, star count: {winStar}");
 
             if (winStar > 0)
             {
@@ -123,16 +147,16 @@ namespace JumpeeIsland
                     _stackHolder.SetActive(false);
 
                 score = Mathf.RoundToInt(Random.Range(0, gameProcess.winStack > 0 ? 1 : 0 + winStar) * 10);
-                _gameoverPanel.SetActive(true);
+                _winPanel.SetActive(true);
+                _winScoreText.text = score.ToString();
             }
             else
             {
                 score = -1 * Mathf.RoundToInt(Random.Range(winRate, 1f) * 10);
                 _stackHolder.SetActive(false);
-                _gameoverPanel.SetActive(true);
+                _losePanel.SetActive(true);
+                _loseScoreText.text = score.ToString();
             }
-
-            _scoreText.text = score.ToString();
 
             // Save battle statistic & Record score
             SavingSystemManager.Instance.SaveBattleResult(winStar, score);

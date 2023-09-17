@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8123338e5e904732872613fb8fd1ab7, type: 3}
   m_Name: Quest0_1
   m_EditorClassIdentifier: 
+  isFinalBoss: 0
+  questMessage: 
   environmentData:
     timestamp: 0
     lastTimestamp: 0
@@ -77,8 +79,6 @@ MonoBehaviour:
     PlayerData: []
     EnemyData: []
     CollectableData: []
-  targetType: 1
-  targetPos: {x: 0, y: 0, z: 0}
   winCondition:
     MapSize: 0
     Currency: 0
@@ -119,9 +119,10 @@ MonoBehaviour:
   - {x: -1, y: 0, z: 1}
   - {x: 0, y: 0, z: 1}
   - {x: 1, y: 0, z: 1}
+  EndGameUnits: []
   maxMovingTurn: 5
   maxTroop: 1
-  excellentRank: 0200000003000000
+  excellentRank: 0300000002000000
   rewards:
   - service: 
     id: WOOD

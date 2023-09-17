@@ -153,7 +153,7 @@ namespace JumpeeIsland
 
         private void EndTurn()
         {
-            StartCoroutine(WaitForChangeFaction(1f));
+            StartCoroutine(WaitForChangeFaction(0.5f));
         }
 
         private IEnumerator WaitForChangeFaction(float seconds)

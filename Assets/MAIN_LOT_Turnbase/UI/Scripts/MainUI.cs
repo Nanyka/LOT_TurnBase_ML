@@ -47,6 +47,8 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent<SelectionCircle> OnSelectDirection = new(); // send to MovingVisual
 
+        [NonSerialized] public UnityEvent<int, string, bool> OnStarGuide = new(); // send to QuestInfoButton ;invoke at GameResultCalculator  
+
         public bool IsInteractable;
         public bool IsInRelocating;
 

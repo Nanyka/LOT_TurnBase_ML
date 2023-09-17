@@ -173,8 +173,6 @@ namespace JumpeeIsland
             int totalAmount = 0;
             foreach (var collectable in collectables)
             {
-                Debug.Log($"{collectable.EntityName}: {collectable.CollectableType}");
-
                 if (collectable.CollectableType == Collectable)
                     totalAmount++;
             }
