@@ -26,8 +26,6 @@ namespace JumpeeIsland
             MainUI.Instance.OnEnableInteract.AddListener(BattleStatsCache);
             GameFlowManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
             GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(CalculateWinStars);
-            
-            UpdateStarGuide();
         }
 
         private void CalculateWinStars()
@@ -55,10 +53,12 @@ namespace JumpeeIsland
         private void BattleStatsCache()
         {
             _startGameEnemyCount = SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
+            UpdateStarGuide();
         }
 
         private async void ShowGameOverPanel(int delayInverval)
         {
+            Debug.Log("Show game over panel");
             var enemyBuildingCount = SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
             int winStar = 0;
             int score = 0;

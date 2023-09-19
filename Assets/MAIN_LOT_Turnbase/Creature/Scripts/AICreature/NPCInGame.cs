@@ -20,7 +20,6 @@ namespace JumpeeIsland
 
         private BehaviorParameters m_BehaviorParameters;
         private Agent m_Agent;
-        private int _currentDirection;
 
         public virtual void Awake()
         {

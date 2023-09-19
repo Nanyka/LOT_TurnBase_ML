@@ -19,8 +19,8 @@ namespace JumpeeIsland
         private List<CreatureStats> m_CreatureStats;
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
-        private IGetEntityInfo m_Info;
         private IEnumerable<Vector3> attackRange;
+        private int _currentJumpStep;
         private bool _isDie;
 
         public void Init(CreatureData creatureData)
@@ -141,20 +141,20 @@ namespace JumpeeIsland
             m_AnimateComp.SetAnimation(AnimateType.Die);
         }
 
+        public void TurnHealthSlider(bool isOn)
+        {
+            m_HealthComp.TurnHealthSlider(isOn);
+        }
+
         #endregion
 
         #region ATTACK
 
-        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse)
-        {
-            m_Info = unitInfo;
-            Attack(attackResponse);
-        }
+        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse) { }
 
-        // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
-        private void Attack(IAttackResponse attackResponser)
+        public void AttackSetup(IGetEntityInfo unitInfo)
         {
-            var currentJump = m_Info.GetCurrentState();
+            var currentJump = unitInfo.GetCurrentState();
 
             // Check jumping boost
             if (m_EffectComp.UseJumpBoost())
@@ -170,28 +170,16 @@ namespace JumpeeIsland
                 ? currentJump.jumpStep
                 : m_SkillComp.GetSkillAmount();
 
-            // If the skill include some global effect (Teleport), execute it before take any damage on enemy
-            var selectedSkill = m_SkillComp.GetSkills().ElementAt(currentJump.jumpStep - 1);
-            var skillEffect = selectedSkill.GetSkillEffect();
-            if (selectedSkill.CheckGlobalTarget())
-            {
-                if (skillEffect != null)
-                {
-                    skillEffect.TakeEffectOn(this, null);
-                    currentJump.midPos = m_Transform.position;
-                    currentJump.direction = m_RotatePart.forward;
-                }
-            }
-
-            // must use rotatePart to assign direction
+            _currentJumpStep = currentJump.jumpStep;
+            
             attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
-            var attackPoints = attackRange as Vector3[] ?? attackRange.ToArray();
-            m_AttackComp.Attack(attackPoints, this, currentJump.jumpStep);
-
-            // Attack visual parts
-            m_AnimateComp.SetAnimation(AnimateType.Attack, currentJump.jumpStep);
-            ShowAttackRange(attackPoints);
-            attackResponser.AttackResponse();
+            ShowAttackRange(attackRange);
+        }
+        
+        // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
+        public void Attack(int attackPathIndex)
+        {
+            m_AttackComp.Attack(attackRange.ElementAt(attackPathIndex), this, _currentJumpStep);
         }
 
         private void ShowAttackRange(IEnumerable<Vector3> attackRange)
@@ -213,11 +201,6 @@ namespace JumpeeIsland
         {
             m_AnimateComp.MoveToTarget(currPos, direction, creature);
         }
-
-        // public void ConductCreatureMove(Vector3 currPos, int direction, ICreatureMove creature)
-        // {
-        //     m_AnimateComp.MoveToTarget(currPos, direction, creature);
-        // }
 
         #endregion
 

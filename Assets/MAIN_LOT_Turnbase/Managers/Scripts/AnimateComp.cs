@@ -82,7 +82,15 @@ namespace JumpeeIsland
                 if (Mathf.Abs(Vector3.Distance(destination, transform.position)) < 1.5f)
                     m_Animator.SetBool(Walk, true);
                 else
-                    m_Animator.SetTrigger(Jump);
+                {
+                    if (moveIndex >= tiles.Count - 1)
+                    {
+                        m_Animator.SetInteger(AttackIndex, tiles.Count);
+                        m_Animator.SetTrigger(Attack);
+                    }
+                    else
+                        m_Animator.SetTrigger(Jump);
+                }
             }
             else if (destination.y > transform.position.y)
             {

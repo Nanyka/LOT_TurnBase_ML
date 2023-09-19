@@ -92,7 +92,7 @@ namespace JumpeeIsland
             return jumpingPoints;
         }
 
-        private Vector3 DirectionTo(int direction)
+        public Vector3 DirectionTo(int direction)
         {
             var checkVector = Vector3.zero;
 

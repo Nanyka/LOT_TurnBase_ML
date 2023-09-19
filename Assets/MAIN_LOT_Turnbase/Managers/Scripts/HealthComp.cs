@@ -59,5 +59,10 @@ namespace JumpeeIsland
         {
             _healthBar.UpdatePrice(price);
         }
+
+        public void TurnHealthSlider(bool isOn)
+        {
+            _healthBar.TurnHealthSlider(isOn);
+        }
     }
 }

@@ -36,5 +36,10 @@ namespace JumpeeIsland
         {
             _priceText.text = value.ToString();
         }
+
+        public void TurnHealthSlider(bool isOn)
+        {
+            _healthSlider.gameObject.SetActive(isOn);
+        }
     }
 }
