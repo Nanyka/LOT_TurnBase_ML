@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Quest1_1
   m_EditorClassIdentifier: 
   isFinalBoss: 0
+  questMessage: 
   environmentData:
     timestamp: 0
     lastTimestamp: 0
@@ -88,7 +89,7 @@ MonoBehaviour:
       CurrentShield: 0
       CurrentExp: 0
       TurnCount: 0
-      CurrentDamage: 0
+      CurrentDamage: 1
       EffectCaches: []
     CollectableData:
     - EntityName: PigTarget
@@ -117,7 +118,7 @@ MonoBehaviour:
     Building: 0
     BuildingCompare: 0
     BuildingAmount: 0
-    Creature: 4
+    Creature: 0
     CreatureCompare: 2
     CreatureAmount: 0
     IsExpCondition: 0
@@ -153,6 +154,7 @@ MonoBehaviour:
   - {x: -6, y: 0, z: -4}
   - {x: 0, y: 0, z: -1}
   - {x: -2, y: 0, z: -3}
+  EndGameUnits: []
   maxMovingTurn: 20
   maxTroop: 2
   excellentRank: 0e00000011000000

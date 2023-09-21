@@ -211,7 +211,7 @@ namespace JumpeeIsland
         private void Attack(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             var currenState = unitInfo.GetCurrentState();
-            var attackRange = m_SkillComp.AttackPoints(currenState.midPos, currenState.direction, currenState.jumpStep);
+            var attackRange = m_SkillComp.AttackPath(currenState.midPos, currenState.direction, currenState.jumpStep);
 
             m_AttackComp.Attack(attackRange, this, currenState.jumpStep);
 

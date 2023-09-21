@@ -34,20 +34,6 @@ namespace JumpeeIsland
         {
             // TODO attack is handled by animation
             m_Creature.Attack(posIndex);
-            
-            // var attackRange = m_Creature.GetAttackRange();
-            // if (posIndex >= attackRange.Count())
-            //     return;
-            //
-            // var hitPoint = attackRange.ElementAt(posIndex);
-            //
-            // var environment = GameFlowManager.Instance.GetEnvManager();
-            // if (environment.CheckEnemy(hitPoint, m_Creature.GetFaction()) ||
-            //     environment.CheckAlly(hitPoint, FactionType.Neutral))
-            // {
-            //     m_HitContainer.position = hitPoint;
-            //     m_HitVfx.Play();
-            // }
         }
 
         public void ExecuteJumpEffect()
@@ -59,6 +45,11 @@ namespace JumpeeIsland
         {
             // m_AttackContainer.position = m_Creature.GetData().Position;
             m_AttackVfx[index].Play();
+        }
+
+        public void ExecutePreAttackEffect()
+        {
+            m_Creature.PreAttackEffect();
         }
     }
 }

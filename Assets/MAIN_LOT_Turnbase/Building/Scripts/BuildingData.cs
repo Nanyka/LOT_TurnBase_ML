@@ -25,6 +25,7 @@ namespace JumpeeIsland
             Rotation = buildingData.Rotation;
             FactionType = buildingData.FactionType;
             BuildingType = buildingData.BuildingType;
+            CurrentHp = buildingData.CurrentHp;
             CurrentDamage = buildingData.CurrentDamage;
             CurrentShield = buildingData.CurrentShield;
             CurrentExp = buildingData.CurrentExp;

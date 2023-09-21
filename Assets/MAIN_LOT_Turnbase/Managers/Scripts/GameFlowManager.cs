@@ -24,7 +24,7 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
         [NonSerialized] public UnityEvent<EntityData> OnSelectEntity = new(); // send to TutorialController; invoke at PlayerFactionController
         [NonSerialized] public UnityEvent OnKickOffEnv = new(); // send to EnvironmentManager; invoke at CreatureMenu in BATTLE MODE, at this script in ECO MODE
-        [NonSerialized] public UnityEvent<int> OnGameOver = new(); // send to GameResultPanel, BattleMainUI; invoke at CountDownClock, CountDownStep, PlayerFactionController
+        [NonSerialized] public UnityEvent<int> OnGameOver = new(); // send to GameResultPanel, BattleMainUI, this; invoke at CountDownClock, CountDownStep, PlayerFactionController
         [NonSerialized] public UnityEvent OnKilledBoss = new(); // send to GameResultPanel; invoke at CreatureUnlockComp
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
         [NonSerialized] public UnityEvent<bool> OnChangAutomationMode = new(); // sent to PlayerFactionController; invoke at 

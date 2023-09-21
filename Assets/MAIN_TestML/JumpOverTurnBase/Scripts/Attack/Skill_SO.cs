@@ -22,6 +22,7 @@ public class Skill_SO : ScriptableObject
     [SerializeField] private SkillEffectType _skillEffectType;
     [SerializeField] private Material _effectMaterial;
     [SerializeField] private bool _isGlobalTarget;
+    [SerializeField] private bool _isPreAttack;
     private SkillEffect _skillEffect;
     
     [Header("ML property")]
@@ -138,5 +139,10 @@ public class Skill_SO : ScriptableObject
     public bool CheckGlobalTarget()
     {
         return _isGlobalTarget;
+    }
+
+    public bool CheckPreAttack()
+    {
+        return _isPreAttack;
     }
 }

@@ -20,7 +20,7 @@ namespace JumpeeIsland
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
         private IEnumerable<Vector3> attackRange;
-        private int _currentJumpStep;
+        private (Vector3 atPos, Vector3 direction, int jumpStep) _currentJumpStep;
         private bool _isDie;
 
         public void Init(CreatureData creatureData)
@@ -123,7 +123,7 @@ namespace JumpeeIsland
         {
             if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 return;
-                
+
             m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
@@ -150,7 +150,9 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse) { }
+        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse)
+        {
+        }
 
         public void AttackSetup(IGetEntityInfo unitInfo)
         {
@@ -170,16 +172,37 @@ namespace JumpeeIsland
                 ? currentJump.jumpStep
                 : m_SkillComp.GetSkillAmount();
 
-            _currentJumpStep = currentJump.jumpStep;
-            
-            attackRange = m_SkillComp.AttackPoints(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
-            ShowAttackRange(attackRange);
+            _currentJumpStep =
+                new ValueTuple<Vector3, Vector3, int>(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
+
+            attackRange = m_SkillComp.AttackPath(_currentJumpStep.atPos, _currentJumpStep.direction,
+                _currentJumpStep.jumpStep);
+
+            var currentSkill = m_SkillComp.GetSkillByIndex(_currentJumpStep.jumpStep - 1);
+            if (currentSkill.CheckPreAttack() == false)
+                ShowAttackRange(attackRange);
         }
-        
+
         // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
         public void Attack(int attackPathIndex)
         {
-            m_AttackComp.Attack(attackRange.ElementAt(attackPathIndex), this, _currentJumpStep);
+            m_AttackComp.Attack(attackRange.ElementAt(attackPathIndex), this, _currentJumpStep.jumpStep);
+        }
+
+        public void PreAttackEffect()
+        {
+            var currentSkill = m_SkillComp.GetSkillByIndex(_currentJumpStep.jumpStep - 1);
+            if (currentSkill.CheckPreAttack())
+            {
+                var skillEffect = currentSkill.GetSkillEffect();
+                if (skillEffect != null)
+                    skillEffect.TakeEffectOn(this, null);
+            }
+
+            // Update attack path after execute the effect
+            attackRange = m_SkillComp.AttackPath(m_Transform.position, _currentJumpStep.direction,
+                _currentJumpStep.jumpStep);
+            ShowAttackRange(attackRange);
         }
 
         private void ShowAttackRange(IEnumerable<Vector3> attackRange)
@@ -242,7 +265,7 @@ namespace JumpeeIsland
         {
             if (m_CurrentStat.Commands == null || m_CreatureStats.Count == 0)
                 return;
-            
+
             foreach (var command in m_CurrentStat.Commands)
                 SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CreatureData.Position);
         }

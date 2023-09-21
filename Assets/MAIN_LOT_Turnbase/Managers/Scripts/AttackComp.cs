@@ -25,10 +25,14 @@ namespace JumpeeIsland
                 if (target.TryGetComponent(out Entity targetEntity))
                 {
                     var selectedSkill = mEntity.GetSkills().ElementAt(jumpStep - 1);
-                    var skillEffect = selectedSkill.GetSkillEffect();
-                    if (skillEffect != null)
-                        skillEffect.TakeEffectOn(mEntity, targetEntity);
 
+                    if (selectedSkill.CheckPreAttack() == false)
+                    {
+                        var skillEffect = selectedSkill.GetSkillEffect();
+                        if (skillEffect != null)
+                            skillEffect.TakeEffectOn(mEntity, targetEntity);
+                    }
+                    
                     if (targetEntity.GetFaction() != mEntity.GetFaction())
                         targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
                 }
@@ -54,6 +58,7 @@ namespace JumpeeIsland
                 {
                     m_HitContainer.position = attackPoint;
                     m_HitVfx.Play();
+                    Debug.Log($"Take damage on {targetEntity.name} an amount: {mEntity.GetAttackDamage()}");
                     targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
                 }
             }

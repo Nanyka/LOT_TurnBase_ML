@@ -25,6 +25,7 @@ namespace JumpeeIsland
             FactionType = creatureData.FactionType;
             CreatureType = creatureData.CreatureType;
             CurrentHp = creatureData.CurrentHp;
+            CurrentLevel = creatureData.CurrentLevel;
             CurrentShield = creatureData.CurrentShield;
             CurrentExp = creatureData.CurrentExp;
             TurnCount = creatureData.TurnCount;

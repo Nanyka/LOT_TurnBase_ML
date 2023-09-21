@@ -16,8 +16,8 @@ namespace JumpeeIsland
         [SerializeField] private List<BattleRewardItem> _rewardItems;
 
         private CountDownSteps _countDownSteps;
-
         private int _starCount;
+        private bool _isEndGame;
 
         private void Start()
         {
@@ -60,6 +60,9 @@ namespace JumpeeIsland
 
         private async void ShowWinStagePanel(int delayInvterval)
         {
+            if (_isEndGame) return;
+            _isEndGame = true;
+
             // just show Complete stage panel when it is not final boss stage
             var quest = GameFlowManager.Instance.GetQuest();
             if (quest.isFinalBoss)

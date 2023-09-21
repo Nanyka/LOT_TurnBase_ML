@@ -56,7 +56,7 @@ namespace JumpeeIsland
             // StartCoroutine(MoveOverTime(_movement.targetPos));
         }
 
-        public void CreatureStartMove(Vector3 currentPos, int direction)
+        public virtual void CreatureStartMove(Vector3 currentPos, int direction)
         {
             MainUI.Instance.OnShowInfo.Invoke(this);
             m_Entity.ConductCreatureMove(currentPos, direction, this);
