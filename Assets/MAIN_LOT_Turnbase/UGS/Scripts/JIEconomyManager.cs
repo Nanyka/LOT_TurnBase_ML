@@ -42,8 +42,11 @@ namespace JumpeeIsland
 
         public string GetSpriteAddress(string currencyId)
         {
-            return currencyDefinitions.Find(t => t.Id.Equals(currencyId)).CustomDataDeserializable
-                .GetAs<CurrencyCustomData>().spriteAddress;
+            var currencyData = currencyDefinitions.Find(t => t.Id.Equals(currencyId));
+            if (currencyData == null)
+                return null;
+            
+            return currencyData.CustomDataDeserializable.GetAs<CurrencyCustomData>().spriteAddress;
         }
 
         public async Task<List<PlayerBalance>> RefreshCurrencyBalances()

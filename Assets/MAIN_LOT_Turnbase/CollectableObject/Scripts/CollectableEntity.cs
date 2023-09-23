@@ -54,6 +54,8 @@ namespace JumpeeIsland
             return m_CollectableData.FactionType;
         }
 
+        public override void GainGoldValue() { }
+
         public bool CheckSelfCollect()
         {
             return m_CurrentStat.IsSelfCollect;

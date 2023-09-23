@@ -60,6 +60,7 @@ namespace JumpeeIsland
                     m_HitVfx.Play();
                     Debug.Log($"Take damage on {targetEntity.name} an amount: {mEntity.GetAttackDamage()}");
                     targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
+                    mEntity.GainGoldValue();
                 }
             }
         }

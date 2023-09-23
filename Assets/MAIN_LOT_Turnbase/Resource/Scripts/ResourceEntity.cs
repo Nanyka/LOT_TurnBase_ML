@@ -59,6 +59,8 @@ namespace JumpeeIsland
             return m_ResourceData.FactionType;
         }
 
+        public override void GainGoldValue() { }
+
         #endregion
 
         #region HEALTH DATA

@@ -22,7 +22,7 @@ namespace JumpeeIsland
 
         public abstract FactionType GetFaction();
 
-        // public abstract void CollectExp(int expAmount);
+        public abstract void GainGoldValue();
 
         #endregion
         

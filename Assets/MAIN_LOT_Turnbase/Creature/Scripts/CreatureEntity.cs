@@ -86,14 +86,24 @@ namespace JumpeeIsland
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
         }
 
-        public bool CheckEntityDie()
-        {
-            return _isDie;
-        }
-
         public bool CheckMaxLevel()
         {
             return m_CreatureData.CurrentLevel >= m_CreatureStats.Count() - 1;
+        }
+        
+        public override int GetAttackDamage()
+        {
+            return m_CreatureData.CurrentDamage;
+        }
+
+        public override void GainGoldValue()
+        {
+            // Accumulate Exp as the amount of collected gold at the end of Battle
+            if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+            {
+                m_CreatureData.CurrentExp += GetAttackDamage();
+                m_HealthComp.UpdatePriceText(m_CreatureData.CurrentExp);
+            }
         }
 
         #endregion
@@ -211,11 +221,6 @@ namespace JumpeeIsland
             GameFlowManager.Instance.AskForShowingAttackPath(attackRange);
         }
 
-        public override int GetAttackDamage()
-        {
-            return m_CreatureData.CurrentDamage;
-        }
-
         #endregion
 
         #region MOVE
@@ -285,6 +290,7 @@ namespace JumpeeIsland
                 inventoryItem.skinAddress[
                     Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventoryItem.skinAddress.Count - 1)];
             m_CreatureData.CreatureType = m_CurrentStat.CreatureType;
+            m_CreatureData.CurrentExp = 0;
             if (m_CreatureData.CurrentHp <= 0)
             {
                 m_CreatureData.CurrentHp = m_CurrentStat.HealthPoint;

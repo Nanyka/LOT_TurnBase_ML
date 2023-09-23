@@ -14526,7 +14526,7 @@ Transform:
   m_Children:
   - {fileID: 5121614693150466284}
   - {fileID: 1098903246346947286}
-  - {fileID: 5981194135269849869}
+  - {fileID: 8401913072428513818}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14652,8 +14652,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 6024829749437263407}
   m_RotatePart: {fileID: 5121614693150466284}
-  m_UnitStats:
-  - {fileID: 11400000, guid: dc99744dff0564c65af4ca79342af4e0, type: 2}
   m_SkinComp: {fileID: 3100976775438255294}
   m_HealthComp: {fileID: 2461322209178629957}
   m_AttackComp: {fileID: 3318205415804774964}
@@ -14688,7 +14686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d2ef52d0914d41ba4570437b257075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBar: {fileID: 345473499233386904}
+  entityUI: {fileID: 4027402475343689683}
 --- !u!114 &3318205415804774964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14701,6 +14699,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HitContainer: {fileID: 0}
+  m_HitVfx: {fileID: 0}
 --- !u!114 &3224619648339758090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62918,9 +62918,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
---- !u!114 &345473499233386904 stripped
+--- !u!114 &4027402475343689683 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6606978653053188119, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7538989989522001500, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
   m_PrefabInstance: {fileID: 6880350439234926991}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -62929,8 +62929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58913ee4f6c4c89b628cf0ac85e8fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &5981194135269849869 stripped
+--- !u!224 &8401913072428513818 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 899191763252822658, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3162227506753504149, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
   m_PrefabInstance: {fileID: 6880350439234926991}
   m_PrefabAsset: {fileID: 0}

@@ -66,6 +66,8 @@ namespace JumpeeIsland
             return m_BuildingData.FactionType;
         }
 
+        public override void GainGoldValue() { }
+
         public BuildingType GetBuildingType()
         {
             return m_BuildingData.BuildingType;
