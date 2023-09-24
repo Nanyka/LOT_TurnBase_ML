@@ -7,10 +7,10 @@ namespace JumpeeIsland
 {
     public class AnimateComp : MonoBehaviour
     {
-        [SerializeField] private Animator m_Animator;
-
-        private List<Vector3> tiles = new();
         [SerializeField] private Transform m_RotatePart;
+        
+        private Animator m_Animator;
+        private List<Vector3> tiles = new();
         private ICreatureMove m_Creature;
         private Vector3 direction;
         private Vector3 destination; // Ending point of the jump (Point B)

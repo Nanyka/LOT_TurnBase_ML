@@ -19,7 +19,7 @@ namespace JumpeeIsland
         private List<CreatureStats> m_CreatureStats;
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
-        private IEnumerable<Vector3> attackRange;
+        private IEnumerable<Vector3> _attackRange;
         private (Vector3 atPos, Vector3 direction, int jumpStep) _currentJumpStep;
         private bool _isDie;
 
@@ -90,7 +90,7 @@ namespace JumpeeIsland
         {
             return m_CreatureData.CurrentLevel >= m_CreatureStats.Count() - 1;
         }
-        
+
         public override int GetAttackDamage()
         {
             return m_CreatureData.CurrentDamage;
@@ -160,6 +160,67 @@ namespace JumpeeIsland
 
         #region ATTACK
 
+        public void RotateTowardTarget(Transform visualPart)
+        {
+            // TODO rotate toward target that is set in an priority: enemy --> game --> resource
+
+            var envData = SavingSystemManager.Instance.GetEnvironmentData();
+            var movementInspector = GameFlowManager.Instance.GetEnvManager().GetMovementInspector();
+            var detectList = new List<(Vector3 direction, int hitAmount, int priority)>(4);
+
+            for (int i = 1; i < 5; i++)
+            {
+                (Vector3 direction, int hitAmount, int priority) tuple = (
+                    movementInspector.DirectionTo(i, m_RotatePart.forward), 0, 0);
+                _attackRange = m_SkillComp.AttackPath(_currentJumpStep.atPos, tuple.direction,
+                    _currentJumpStep.jumpStep);
+
+                foreach (var attackPoint in _attackRange)
+                {
+                    if (envData.CheckEnemy(attackPoint))
+                    {
+                        tuple.hitAmount++;
+                        tuple.priority += 3;
+                    }
+                    else if (envData.CheckResource(attackPoint))
+                    {
+                        tuple.hitAmount++;
+                        tuple.priority += 1;
+                    }
+                    else
+                    {
+                        if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY == false)
+                        {
+                            if (envData.CheckBuilding(attackPoint))
+                            {
+                                tuple.hitAmount++;
+                                tuple.priority += 2;
+                            }
+                        }
+                    }
+                }
+
+                detectList.Add(tuple);
+            }
+
+            if (detectList.Sum(t => t.hitAmount) > 0)
+            {
+                var orderedAction = detectList.OrderByDescending(x => x.hitAmount)
+                    .ThenByDescending(x => x.priority)
+                    .ElementAt(0);
+
+                m_RotatePart.forward = orderedAction.direction;
+                _currentJumpStep.direction = orderedAction.direction;
+            }
+            
+            _attackRange = m_SkillComp.AttackPath(_currentJumpStep.atPos, _currentJumpStep.direction,
+                _currentJumpStep.jumpStep);
+
+            var currentSkill = m_SkillComp.GetSkillByIndex(_currentJumpStep.jumpStep - 1);
+            if (currentSkill.CheckPreAttack() == false)
+                ShowAttackRange(_attackRange);
+        }
+
         public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse)
         {
         }
@@ -185,18 +246,18 @@ namespace JumpeeIsland
             _currentJumpStep =
                 new ValueTuple<Vector3, Vector3, int>(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
 
-            attackRange = m_SkillComp.AttackPath(_currentJumpStep.atPos, _currentJumpStep.direction,
-                _currentJumpStep.jumpStep);
-
-            var currentSkill = m_SkillComp.GetSkillByIndex(_currentJumpStep.jumpStep - 1);
-            if (currentSkill.CheckPreAttack() == false)
-                ShowAttackRange(attackRange);
+            // _attackRange = m_SkillComp.AttackPath(_currentJumpStep.atPos, _currentJumpStep.direction,
+            //     _currentJumpStep.jumpStep);
+            //
+            // var currentSkill = m_SkillComp.GetSkillByIndex(_currentJumpStep.jumpStep - 1);
+            // if (currentSkill.CheckPreAttack() == false)
+            //     ShowAttackRange(_attackRange);
         }
 
         // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
         public void Attack(int attackPathIndex)
         {
-            m_AttackComp.Attack(attackRange.ElementAt(attackPathIndex), this, _currentJumpStep.jumpStep);
+            m_AttackComp.Attack(_attackRange.ElementAt(attackPathIndex), this, _currentJumpStep.jumpStep);
         }
 
         public void PreAttackEffect()
@@ -210,9 +271,9 @@ namespace JumpeeIsland
             }
 
             // Update attack path after execute the effect
-            attackRange = m_SkillComp.AttackPath(m_Transform.position, _currentJumpStep.direction,
+            _attackRange = m_SkillComp.AttackPath(m_Transform.position, _currentJumpStep.direction,
                 _currentJumpStep.jumpStep);
-            ShowAttackRange(attackRange);
+            ShowAttackRange(_attackRange);
         }
 
         private void ShowAttackRange(IEnumerable<Vector3> attackRange)
@@ -321,7 +382,7 @@ namespace JumpeeIsland
 
         public IEnumerable<Vector3> GetAttackRange()
         {
-            return attackRange;
+            return _attackRange;
         }
     }
 }

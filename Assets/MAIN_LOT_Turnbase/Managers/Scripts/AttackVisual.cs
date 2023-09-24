@@ -8,7 +8,6 @@ namespace JumpeeIsland
 {
     public class AttackVisual : MonoBehaviour
     {
-        [SerializeField] private Transform m_AttackContainer;
         [SerializeField] private ParticleSystem[] m_AttackVfx;
 
         private CreatureEntity m_Creature;
@@ -50,6 +49,11 @@ namespace JumpeeIsland
         public void ExecutePreAttackEffect()
         {
             m_Creature.PreAttackEffect();
+        }
+
+        public void RotateTowardTarget()
+        {
+            m_Creature.RotateTowardTarget(transform);
         }
     }
 }

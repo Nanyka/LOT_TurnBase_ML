@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -60,8 +61,10 @@ namespace JumpeeIsland
             UpdateStarGuide();
         }
 
-        private async void ShowGameOverPanel(int delayInverval)
+        private async void ShowGameOverPanel(int delayInterval)
         {
+            await Task.Delay(delayInterval);
+            
             Debug.Log("Show game over panel");
             var enemyBuildingCount = SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
             int winStar = 0;
@@ -106,11 +109,6 @@ namespace JumpeeIsland
                     }
                 }
 
-                foreach (var item in rewardDictionary)
-                {
-                    Debug.Log($"{item.Key}:{item.Value}");
-                }
-                
                 // Add collected lot from CollectedLoot
                 var collectedLoot = m_CollectedLoot.GetCollectedLoot();
                 foreach (var item in collectedLoot)

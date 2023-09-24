@@ -92,6 +92,21 @@ namespace JumpeeIsland
             return (1 + totalSpace) * SavingSystemManager.Instance.GetTownhouseSpace();
         }
 
+        public bool CheckEnemy(Vector3 atPos)
+        {
+            return EnemyData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
+        }
+        
+        public bool CheckBuilding(Vector3 atPos)
+        {
+            return BuildingData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
+        }
+        
+        public bool CheckResource(Vector3 atPos)
+        {
+            return ResourceData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
+        }
+
         #region BATTLE MODE
 
         public void PrepareForBattleMode(List<CreatureData> playerData)
@@ -102,18 +117,6 @@ namespace JumpeeIsland
             EnemyData.Clear();
             PlayerData.Clear();
         }
-        
-        // public void PrepareForBossMode(List<CreatureData> playerData)
-        // {
-        //     EnemyData.Clear();
-        //     foreach (var creatureData in PlayerData)
-        //     {
-        //         creatureData.FactionType = FactionType.Enemy;
-        //         EnemyData.Add(creatureData);
-        //     }
-        //
-        //     PlayerData.Clear();
-        // }
 
         public void DepositRemainPlayerTroop(List<CreatureData> playerData)
         {

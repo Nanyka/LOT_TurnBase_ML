@@ -15,7 +15,6 @@ public class PerpendicularWipe : SkillRange
         range.Clear();
         
         Vector2 currPos2D = new Vector2(currentPos.x, currentPos.z);
-        direction *= -1f;
         Vector2 dir2D = new Vector2(Mathf.RoundToInt(direction.x), Mathf.RoundToInt(direction.z));
         Vector2 target = currPos2D + dir2D * step;
         if (Mathf.Abs(dir2D.x - dir2D.y) < Mathf.Epsilon)
