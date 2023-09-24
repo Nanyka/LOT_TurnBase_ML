@@ -176,8 +176,8 @@ namespace JumpeeIsland
                 m_BuildingData.CurrentStorage -= seizedAmount;
 
                 // Storage currency require player's envData that is retrieved from SavingSystemManager.Instance.GetEnvDataForSave() in BattleMode
-                SavingSystemManager.Instance.StoreCurrencyByEnvData(m_BuildingData.StorageCurrency.ToString(),
-                    seizedAmount, SavingSystemManager.Instance.GetEnvDataForSave());
+                // SavingSystemManager.Instance.StoreCurrencyByEnvData(m_BuildingData.StorageCurrency.ToString(),
+                //     seizedAmount, SavingSystemManager.Instance.GetEnvDataForSave());
 
                 MainUI.Instance.OnShowCurrencyVfx.Invoke(m_BuildingData.StorageCurrency.ToString(), seizedAmount,
                     fromEntity.GetData().Position);

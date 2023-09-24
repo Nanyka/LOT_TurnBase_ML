@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AssetKits.ParticleImage;
 using PrimeTween;
 using TMPro;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
-    public class CollectLootVfx : MonoBehaviour
+    public class CollectedLoot : MonoBehaviour
     {
         [SerializeField] private ParticleImage foodCollect;
         [SerializeField] private ParticleImage woodCollect;
@@ -22,9 +24,7 @@ namespace JumpeeIsland
         [SerializeField] private RectTransform targetTextContainer;
         [SerializeField] private TweenSettings<float> textAppearSettings;
 
-        private int totalFood;
-        private int totalWood;
-        private int totalCoin;
+        private Dictionary<string, int> m_CollectedResource = new();
 
         private void Start()
         {
@@ -35,28 +35,26 @@ namespace JumpeeIsland
         {
             if (amount <= 0)
                 return;
-            
+
+            m_CollectedResource.TryAdd(currencyId, 0);
+            m_CollectedResource[currencyId] += amount;
+            collectedAmount.text = m_CollectedResource[currencyId].ToString();
+
             if (currencyId.Equals("FOOD"))
             {
                 foodCollect.SetBurst(0, 0, amount);
-                totalFood += amount;
-                collectedAmount.text = totalFood.ToString();
                 foodCollect.Play();
             }
 
             if (currencyId.Equals("WOOD"))
             {
                 foodCollect.SetBurst(0, 0, amount);
-                totalWood += amount;
-                collectedAmount.text = totalWood.ToString();
                 woodCollect.Play();
             }
 
             if (currencyId.Equals("COIN"))
             {
                 foodCollect.SetBurst(0, 0, amount);
-                totalCoin += amount;
-                collectedAmount.text = totalCoin.ToString();
                 coinCollect.Play();
             }
 
@@ -71,6 +69,11 @@ namespace JumpeeIsland
         public void OnCollectLoot()
         {
             Tween.PunchLocalScale(_bagTransform, _shakeSettings);
+        }
+
+        public Dictionary<string, int> GetCollectedLoot()
+        {
+            return m_CollectedResource;
         }
     }
 }

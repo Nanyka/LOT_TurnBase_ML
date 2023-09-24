@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 869d2c1c0c26b4474a4ede729a593e6a, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 551d8caa095b14c09adbeabacb27f2ee, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: f6f0ac656356a41feaa1172ee012d668, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -3377,6 +3377,10 @@ MonoBehaviour:
     prefCollector: {fileID: 1762648196}
     amount: 0
     expandable: 1
+  - prefab: {fileID: 549935610231604737, guid: 43254d55484614ebfa084f794f720cd8, type: 3}
+    prefCollector: {fileID: 1762648196}
+    amount: 0
+    expandable: 1
   pooledItems: []
 --- !u!114 &1029899314
 MonoBehaviour:
@@ -4809,7 +4813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 200, y: 200}
+  m_AnchoredPosition: {x: 200, y: 150}
   m_SizeDelta: {x: 175, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999470540

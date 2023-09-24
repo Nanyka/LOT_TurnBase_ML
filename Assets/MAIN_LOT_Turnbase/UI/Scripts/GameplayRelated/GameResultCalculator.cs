@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
+    [RequireComponent(typeof(CollectedLoot))]
     public class GameResultCalculator : MonoBehaviour
     {
         [SerializeField] private GameObject _winPanel;
@@ -19,6 +20,7 @@ namespace JumpeeIsland
         [SerializeField] private List<StarHolder> _starHolders;
         [SerializeField] private List<BattleRewardItem> _rewardItemUI;
 
+        private CollectedLoot m_CollectedLoot;
         private int _startGameEnemyCount;
 
         private void Start()
@@ -26,6 +28,8 @@ namespace JumpeeIsland
             MainUI.Instance.OnEnableInteract.AddListener(BattleStatsCache);
             GameFlowManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
             GameFlowManager.Instance.GetEnvManager().OnChangeFaction.AddListener(CalculateWinStars);
+
+            m_CollectedLoot = GetComponent<CollectedLoot>();
         }
 
         private void CalculateWinStars()
@@ -102,6 +106,19 @@ namespace JumpeeIsland
                     }
                 }
 
+                foreach (var item in rewardDictionary)
+                {
+                    Debug.Log($"{item.Key}:{item.Value}");
+                }
+                
+                // Add collected lot from CollectedLoot
+                var collectedLoot = m_CollectedLoot.GetCollectedLoot();
+                foreach (var item in collectedLoot)
+                {
+                    rewardDictionary.TryAdd(item.Key, 0);
+                    rewardDictionary[item.Key] += item.Value;
+                }
+
                 int currentRewardItemUI = 0;
                 foreach (var rewardItem in rewardDictionary)
                 {
@@ -119,6 +136,7 @@ namespace JumpeeIsland
                         SavingSystemManager.Instance.GetEnvDataForSave());
                 }
 
+                // TODO: can not receive troop reward
                 // 10% player have a chance to gather a creature
                 if (battleLoot.CreatureLoot.Count > 0 && Random.Range(0, 100) < 100)
                 {
@@ -130,7 +148,7 @@ namespace JumpeeIsland
                     rewardItemUI.ShowReward(creatureData.spriteAddress, "1", true);
                     rewardItemUI.gameObject.SetActive(true);
 
-                    SavingSystemManager.Instance.GetEnvironmentData().GatherCreature(creatureLoot);
+                    SavingSystemManager.Instance.GetEnvDataForSave().GatherCreature(creatureLoot);
                 }
 
                 for (int i = 0; i < winStar; i++)

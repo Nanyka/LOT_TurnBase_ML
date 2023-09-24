@@ -190,13 +190,12 @@ namespace JumpeeIsland
 
         public void GatherCreature(string creatureName)
         {
-            var creatureStats =
-                (UnitStats)AddressableManager.Instance.GetAddressableSO($"/Stats/Creature/{creatureName}_lv0");
+            var creatureLevel = SavingSystemManager.Instance.GetInventoryLevel(creatureName);
+            var creatureStats = (UnitStats)AddressableManager.Instance.GetAddressableSO($"/Stats/Creature/{creatureName}_lv{creatureLevel}");
 
             var newCreature = new CreatureData()
             {
                 EntityName = creatureName,
-                // Position = GetFreeLocation(),
                 CurrentLevel = 0,
                 FactionType = FactionType.Player,
                 CreatureType = CreatureType.PLAYER,
