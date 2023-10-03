@@ -752,6 +752,16 @@ namespace JumpeeIsland
             return m_CloudConnector.GetPlayerScore();
         }
 
+        public void GainExp(int amount)
+        {
+            m_CloudConnector.PlayerRecordExp(amount);
+        }
+
+        public int GetPlayerExp()
+        {
+            return m_CloudConnector.GetPlayerExp();
+        }
+
         #endregion
 
         #region GAME PROCESS
@@ -810,6 +820,11 @@ namespace JumpeeIsland
             m_GameProcess.bossUnlock = bossIndex;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
+
+        // public void GainExp(int expAmount)
+        // {
+        //     m_GameProcess.experience += expAmount;
+        // }
 
         #endregion
 

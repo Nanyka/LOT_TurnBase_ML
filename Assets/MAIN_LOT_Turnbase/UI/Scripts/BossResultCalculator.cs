@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -33,9 +32,9 @@ namespace JumpeeIsland
         private void InitStarGuide()
         {
             var quest = GameFlowManager.Instance.GetQuest();
-            MainUI.Instance.OnStarGuide.Invoke(0, $"Complete in {quest.maxMovingTurn} steps",false);
-            MainUI.Instance.OnStarGuide.Invoke(1, $"Complete in {quest.excellentRank[0]} steps",false);
-            MainUI.Instance.OnStarGuide.Invoke(2, $"Complete in {quest.excellentRank[1]} steps",false);
+            MainUI.Instance.OnStarGuide.Invoke(0, $"Complete in {quest.maxMovingTurn} steps", false);
+            MainUI.Instance.OnStarGuide.Invoke(1, $"Complete in {quest.excellentRank[0]} steps", false);
+            MainUI.Instance.OnStarGuide.Invoke(2, $"Complete in {quest.excellentRank[1]} steps", false);
         }
 
         private void CalculateWinStars()
@@ -90,14 +89,33 @@ namespace JumpeeIsland
                 for (int i = 0; i < _starCount; i++)
                     _starHolders[i].EnableStar();
 
-                // Calculate reward
-                int rewardIndex = 0;
-                foreach (var reward in quest.rewards)
+                // Calculate reward when collect 3 stars
+                if (_starCount == 3)
                 {
-                    var iconAddress = SavingSystemManager.Instance.GetCurrencySprite(reward.id);
-                    _rewardItems[rewardIndex].ShowReward(iconAddress, reward.amount.ToString(), false);
-                    SavingSystemManager.Instance.StoreCurrencyByEnvData(reward.id, reward.amount,
-                        SavingSystemManager.Instance.GetEnvDataForSave());
+                    int rewardIndex = 0;
+                    foreach (var reward in quest.rewards)
+                    {
+                        if (reward.service.Equals("Creature"))
+                        {
+                            var creatureData = SavingSystemManager.Instance.GetInventoryItemByName(reward.id);
+                            var rewardItemUI = _rewardItems[rewardIndex];
+                            rewardItemUI.ShowReward(creatureData.spriteAddress, reward.amount.ToString(), true);
+                            rewardItemUI.gameObject.SetActive(true);
+
+                            for (int i = 0; i < reward.amount; i++)
+                                SavingSystemManager.Instance.GetEnvDataForSave().GatherCreature(reward.id);
+                        }
+                        else
+                        {
+                            var iconAddress = SavingSystemManager.Instance.GetCurrencySprite(reward.id);
+                            _rewardItems[rewardIndex].ShowReward(iconAddress, reward.amount.ToString(), false);
+                            _rewardItems[rewardIndex].gameObject.SetActive(true);
+                            SavingSystemManager.Instance.StoreCurrencyByEnvData(reward.id, reward.amount,
+                                SavingSystemManager.Instance.GetEnvDataForSave());
+                        }
+
+                        rewardIndex++;
+                    }
                 }
 
                 // Save stage completion

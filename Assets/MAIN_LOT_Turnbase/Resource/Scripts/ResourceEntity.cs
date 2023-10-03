@@ -71,12 +71,12 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
-        public override int GetCurrentHealth()
+        public virtual int GetCurrentHealth()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void DieIndividualProcess(Entity killedByEntity)
+        public virtual void DieIndividualProcess(Entity killedByEntity)
         {
             // TODO add animation or effect here
         }
@@ -85,7 +85,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
+        public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }
@@ -126,7 +126,7 @@ namespace JumpeeIsland
 
         #region ANIMATION
 
-        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
+        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new System.NotImplementedException();
         }
@@ -135,13 +135,13 @@ namespace JumpeeIsland
 
         #region GENERAL
 
-        public override void ContributeCommands()
+        public virtual void ContributeCommands()
         {
             foreach (var command in m_CurrentStats.Commands)
                 SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_ResourceData.Position);
         }
 
-        public override void RefreshEntity()
+        public virtual void RefreshEntity()
         {
             // Set entity stats
             var inventory = SavingSystemManager.Instance.GetInventoryItemByName(m_ResourceData.EntityName);

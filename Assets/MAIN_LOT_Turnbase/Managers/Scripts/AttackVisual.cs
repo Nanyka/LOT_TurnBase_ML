@@ -1,20 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class AttackVisual : MonoBehaviour
     {
+        [SerializeField] private bool _isRangeAttack;
+
+        [ShowIf("@_isRangeAttack == true")] [SerializeField]
+        private FireComp m_FireComp;
+
+        [SerializeField] private bool _isSelfSetPath;
         [SerializeField] private ParticleSystem[] m_AttackVfx;
+        [SerializeField] private AttackCollider[] m_AttackColliders;
 
         private CreatureEntity m_Creature;
+        private bool _originalRangeAttack;
 
         private void Start()
         {
             m_Creature = GetParent(transform);
+            _originalRangeAttack = _isRangeAttack;
+
+            foreach (var attackCollider in m_AttackColliders)
+                attackCollider.Init(this);
         }
 
         private CreatureEntity GetParent(Transform upperLevel)
@@ -29,10 +38,25 @@ namespace JumpeeIsland
             return GetParent(upperLevel);
         }
 
+        // Use to set _isRangeAttack by animation
+        public void SetRangeAttack(int isRange)
+        {
+            _isRangeAttack = isRange > 0;
+        }
+
         public void ExecuteHitEffect(int posIndex)
         {
-            // TODO attack is handled by animation
             m_Creature.Attack(posIndex);
+        }
+
+        public void ExecuteHitEffect(Vector3 atPos)
+        {
+            m_Creature.Attack(atPos);
+        }
+
+        public void ExecuteHitEffect(Vector3 atPos, int skillIndex)
+        {
+            m_Creature.Attack(atPos, skillIndex);
         }
 
         public void ExecuteJumpEffect()
@@ -40,10 +64,23 @@ namespace JumpeeIsland
             GameFlowManager.Instance.AskGlobalVfx(GlobalVfxType.JUMP, transform.position);
         }
 
+        // There are some kind of attack:
+        // 1- Based on attack path calculated from skill
+        // 2- Use FireComp to execute accurate attacks and cast damage on target using AttackCollider
+        //    In _isSelfSetPath case, attack path is created by fireComp, so, not require to us RotateTowardTarget()
+        // 3- Execute attackVfx and take damage on objects collided with the particle system via AttackCollider
         public void ExecuteAttackEffect(int index)
         {
-            // m_AttackContainer.position = m_Creature.GetData().Position;
-            m_AttackVfx[index].Play();
+            if (_isRangeAttack)
+            {
+                if (_isSelfSetPath)
+                    m_FireComp.PlayCurveFX(m_Creature.CalculateAttackRange(index), this);
+                else
+                    m_FireComp.PlayCurveFX(m_Creature.GetAttackRange(), this);
+
+            }
+            else
+                m_AttackVfx[index].Play();
         }
 
         public void ExecutePreAttackEffect()
@@ -53,7 +90,30 @@ namespace JumpeeIsland
 
         public void RotateTowardTarget()
         {
-            m_Creature.RotateTowardTarget(transform);
+            if (_isRangeAttack)
+                m_Creature.RotateTowardTarget();
+            else
+                m_Creature.RotateTowardTarget(transform);
         }
+
+        public void RotateTowardTarget(Vector3 target)
+        {
+            m_Creature.RotateTowardTarget(target);
+        }
+
+        public void EndAnimation()
+        {
+            _isRangeAttack = _originalRangeAttack;
+            m_Creature.GetAnimateComp().EndMove();
+        }
+
+        #region UTILITIES
+
+        public FactionType GetFaction()
+        {
+            return m_Creature.GetFaction();
+        }
+
+        #endregion
     }
 }

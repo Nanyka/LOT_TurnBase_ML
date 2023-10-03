@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -10,6 +11,8 @@ namespace JumpeeIsland
         [SerializeField] private float _angle;
         [SerializeField] private int _reloadDuration;
         [SerializeField] private bool _isInPlaceFire;
+        // [SerializeField] private bool _isSelfDecideTarget;
+        // [ShowIf("@_isSelfDecideTarget == true")] [SerializeField] private int skillIndex;
 
         private Vector3 _velocity;
 
@@ -26,7 +29,7 @@ namespace JumpeeIsland
                 _bulletFX.Play();
             }
         }
-
+        
         public void PlayCurveFX(IEnumerable<Vector3> targetPos)
         {
             if (_bulletFX != null)
@@ -37,6 +40,29 @@ namespace JumpeeIsland
                 {
                     foreach (var target in targetPos)
                     {
+                        var position = _bulletFX.transform.position;
+                        _velocity = CalcBallisticVelocityVector(position, target, _angle);
+                        _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
+                        _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
+                        var main = _bulletFX.main;
+                        main.startSpeed = _velocity.magnitude;
+                        _bulletFX.Play();
+                    }
+                }
+            }
+        }
+
+        public void PlayCurveFX(IEnumerable<Vector3> targetPos, AttackVisual attackVisual)
+        {
+            if (_bulletFX != null)
+            {
+                if (_isInPlaceFire)
+                    PlayerPointFX();
+                else
+                {
+                    foreach (var target in targetPos)
+                    {
+                        attackVisual.RotateTowardTarget(target);
                         var position = _bulletFX.transform.position;
                         _velocity = CalcBallisticVelocityVector(position, target, _angle);
                         _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));

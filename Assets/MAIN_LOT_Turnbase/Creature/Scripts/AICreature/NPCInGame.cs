@@ -116,8 +116,8 @@ namespace JumpeeIsland
             InferMoving = selectedAction;
             CreatureStartMove(m_Transform.position, InferMoving.Action);
         }
-        
-        public override void CreatureStartMove(Vector3 currentPos, int direction)
+
+        protected override void CreatureStartMove(Vector3 currentPos, int direction)
         {
             MainUI.Instance.OnShowInfo.Invoke(this);
             m_Entity.ConductCreatureMove(currentPos, direction, this);

@@ -11,7 +11,9 @@ namespace JumpeeIsland
     public class PlayerFactionController : MonoBehaviour, IFactionController
     {
         public bool _isAutomation;
-        [SerializeField] [ShowIf("@_isAutomation == true")] private PlayerNpcController m_PlayerNpcController;
+
+        [SerializeField] [ShowIf("@_isAutomation == true")]
+        private PlayerNpcController m_PlayerNpcController;
 
         private FactionType m_Faction = FactionType.Player;
         private List<CreatureInGame> _creatures = new();
@@ -157,7 +159,8 @@ namespace JumpeeIsland
             if (_isAutomation)
                 m_PlayerNpcController.ToMyTurn();
             else
-                StartCoroutine(WaitForChangeFaction());
+                m_Environment.ChangeFaction();
+                // StartCoroutine(WaitForChangeFaction());
         }
 
         private IEnumerator WaitForChangeFaction()

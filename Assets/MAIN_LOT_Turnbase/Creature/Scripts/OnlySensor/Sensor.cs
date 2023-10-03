@@ -10,7 +10,8 @@ namespace JumpeeIsland
         DEFENSE,
         SUPPORT,
         FINDOPPORTUNITY,
-        PICKUP
+        PICKUP,
+        STEPASIDE
     }
     
     [CreateAssetMenu(fileName = "Sensor", menuName = "JumpeeIsland/Sensor", order = 8)]
@@ -54,6 +55,9 @@ namespace JumpeeIsland
                     break;
                 case SensorType.PICKUP:
                     SensorExecute = new PikupSensor();
+                    break;
+                case SensorType.STEPASIDE:
+                    SensorExecute = new StepAside();
                     break;
             }
         }

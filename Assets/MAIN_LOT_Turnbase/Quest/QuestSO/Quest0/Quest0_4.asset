@@ -78,7 +78,7 @@ MonoBehaviour:
       CurrentShield: 0
       CurrentExp: 0
       TurnCount: 0
-      CurrentDamage: 0
+      CurrentDamage: 1
       EffectCaches: []
     CollectableData:
     - EntityName: StoneChest
@@ -148,9 +148,12 @@ MonoBehaviour:
     targetPos: {x: 0, y: 0, z: 0}
   maxMovingTurn: 10
   maxTroop: 1
-  excellentRank: 0800000005000000
+  excellentRank: 0600000005000000
   rewards:
   - service: 
-    id: WOOD
+    id: FOOD
+    amount: 1
+  - service: Creature
+    id: Creature0
     amount: 1
   tutorialForQuest: /Tutorials/Boss0_4

@@ -16,8 +16,8 @@ MonoBehaviour:
   _getThroughCondition:
     MapSize: 0
     Currency: 1
-    CurrencyCompare: 0
-    CurrencyAmount: 10
+    CurrencyCompare: 1
+    CurrencyAmount: 5
     Storage: 0
     StorageCompare: 1
     StorageAmount: 3
@@ -73,8 +73,9 @@ MonoBehaviour:
     BattleCount: 0
     IsCheckBossUnlock: 0
     BossUnlockAmount: 0
-  _objects:
-  - FirePig
-  - Pig
-  _gapDuration: 3
+  _spawnDecisions:
+  - ObjectName: FirePig
+    Proportion: 50
+  - ObjectName: Pig
+    Proportion: 50
   _maxSpawningAmount: 7

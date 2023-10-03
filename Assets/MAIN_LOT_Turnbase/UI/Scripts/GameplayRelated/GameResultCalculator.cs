@@ -134,7 +134,6 @@ namespace JumpeeIsland
                         SavingSystemManager.Instance.GetEnvDataForSave());
                 }
 
-                // TODO: can not receive troop reward
                 // 10% player have a chance to gather a creature
                 if (battleLoot.CreatureLoot.Count > 0 && Random.Range(0, 100) < 100)
                 {

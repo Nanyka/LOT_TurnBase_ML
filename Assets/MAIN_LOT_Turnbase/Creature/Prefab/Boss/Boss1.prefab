@@ -33969,7 +33969,7 @@ GameObject:
   - component: {fileID: 935929486893718955}
   - component: {fileID: 7685358287014474119}
   - component: {fileID: 8081009781559897514}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: Boss1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34106,6 +34106,7 @@ MonoBehaviour:
   m_SkillComp: {fileID: 1670896166245438440}
   m_EffectComp: {fileID: 935929486893718955}
   m_AnimateComp: {fileID: 7685358287014474119}
+  _killAccumulation: 0
 --- !u!114 &7200372622406747792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34119,6 +34120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 7147004885822148437}
+  _appearVfx: {fileID: 0}
   _factionRenderers: []
   _activeMaterial: {fileID: 2100000, guid: 5d84c2ba2c1d4408ca682be990685e67, type: 2}
   _disableMaterial: {fileID: 2100000, guid: 5d84c2ba2c1d4408ca682be990685e67, type: 2}
@@ -34147,8 +34149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HitContainer: {fileID: 7537663959855884440}
-  m_HitVfx: {fileID: 8728886506747882490}
 --- !u!114 &1670896166245438440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34188,7 +34188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Animator: {fileID: 0}
   m_RotatePart: {fileID: 3973109056894181792}
 --- !u!114 &8081009781559897514
 MonoBehaviour:

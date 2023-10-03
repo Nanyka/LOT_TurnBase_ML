@@ -16,7 +16,7 @@ MonoBehaviour:
   _getThroughCondition:
     MapSize: 0
     Currency: 1
-    CurrencyCompare: 0
+    CurrencyCompare: 1
     CurrencyAmount: 5
     Storage: 0
     StorageCompare: 1
@@ -73,7 +73,7 @@ MonoBehaviour:
     BattleCount: 0
     IsCheckBossUnlock: 0
     BossUnlockAmount: 0
-  _objects:
-  - Pig
-  _gapDuration: 2
+  _spawnDecisions:
+  - ObjectName: Pig
+    Proportion: 100
   _maxSpawningAmount: 4

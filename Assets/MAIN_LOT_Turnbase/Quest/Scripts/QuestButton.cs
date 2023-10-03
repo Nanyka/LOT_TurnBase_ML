@@ -23,6 +23,9 @@ namespace JumpeeIsland
                 
                 for (int i = 0; i < questUnit.StarAmount; i++)
                     _stars[i].material = AddressableManager.Instance.GetMaterial("/Materials/Yellow");
+
+                if (questUnit.StarAmount == 3)
+                    GetComponent<Collider>().enabled = false;
             }
         }
         

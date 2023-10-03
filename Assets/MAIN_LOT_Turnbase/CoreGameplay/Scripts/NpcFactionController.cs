@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -151,14 +152,20 @@ namespace JumpeeIsland
 
         #region END TURN
 
-        private void EndTurn()
+        private async void EndTurn()
         {
-            StartCoroutine(WaitForChangeFaction(0.5f));
+            // Set all npc to default color to show it disable state
+            // foreach (var npcUnit in m_NpcUnits)
+            //     npcUnit.SetDisableMaterial();
+            //
+            // m_Environment.ChangeFaction();
+
+            await WaitForChangeFaction(100);
         }
 
-        private IEnumerator WaitForChangeFaction(float seconds)
+        private async Task WaitForChangeFaction(int miliseconds)
         {
-            yield return new WaitForSeconds(seconds);
+            await Task.Delay(miliseconds);
 
             // Set all npc to default color to show it disable state
             foreach (var npcUnit in m_NpcUnits)

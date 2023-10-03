@@ -46,7 +46,7 @@ namespace JumpeeIsland
                 if (this == null)
                     return;
 
-                await _leaderboardManager.RefreshPlayerScore();
+                await _leaderboardManager.RefreshBoards();
                 if (this == null)
                     return;
 
@@ -441,6 +441,16 @@ namespace JumpeeIsland
         public int GetPlayerScore()
         {
             return _leaderboardManager.GetPlayerScore();
+        }
+        
+        public void PlayerRecordExp(int playerExp)
+        {
+            _leaderboardManager.AddExp(playerExp);
+        }
+
+        public int GetPlayerExp()
+        {
+            return _leaderboardManager.GetPlayerExp();
         }
 
         #endregion

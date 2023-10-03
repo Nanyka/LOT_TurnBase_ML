@@ -6,9 +6,6 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
-        [SerializeField] private Transform m_HitContainer;
-        [SerializeField] private ParticleSystem m_HitVfx;
-        
         public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep)
         {
             if (attackPoints == null)
@@ -56,8 +53,6 @@ namespace JumpeeIsland
 
                 if (targetEntity.GetFaction() != mEntity.GetFaction())
                 {
-                    m_HitContainer.position = attackPoint;
-                    m_HitVfx.Play();
                     // Debug.Log($"Take damage on {targetEntity.name} an amount: {mEntity.GetAttackDamage()}");
                     targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
                     mEntity.GainGoldValue();

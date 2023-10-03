@@ -54,6 +54,11 @@ namespace JumpeeIsland
             return 0;
         }
 
+        public int GetStoreSpace()
+        {
+            return StorageCapacity - CurrentStorage;
+        }
+
         public void StoreCurrency(int amount)
         {
             CurrentStorage += amount;

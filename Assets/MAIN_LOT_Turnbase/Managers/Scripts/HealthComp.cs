@@ -42,7 +42,7 @@ namespace JumpeeIsland
                 entityUI.UpdatePrice(creatureData.CurrentExp);
             }
             else
-                entityUI.ShowBars(GameFlowManager.Instance.GameMode == GameMode.ECONOMY, true, false);
+                entityUI.ShowBars(false, true, false);
         }
 
         public void TakeDamage(int damage, EntityData entityData, Entity killedBy)
@@ -54,7 +54,12 @@ namespace JumpeeIsland
             entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
 
             if (entityData.CurrentHp <= 0)
+            {
+                if (killedBy.TryGetComponent(out CreatureEntity creatureEntity))
+                    creatureEntity.AccumulateKills();
+
                 Die(killedBy);
+            }
         }
 
         private void Die(Entity killedByFaction)

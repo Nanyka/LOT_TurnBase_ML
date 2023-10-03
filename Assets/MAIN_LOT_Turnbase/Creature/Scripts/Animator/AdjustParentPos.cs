@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -5,7 +6,7 @@ namespace JumpeeIsland
     public class AdjustParentPos : StateMachineBehaviour
     {
         [SerializeField] private Transform _parentTransform;
-        
+
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -17,17 +18,10 @@ namespace JumpeeIsland
         {
             // Get root motion values
             Vector3 rootMotion = animator.deltaPosition;
-            // Quaternion rootRotation = animator.deltaRotation;
         
             // Apply root motion to the parent game object
             _parentTransform.position += rootMotion;
-            // _parentTransform.rotation *= rootRotation;
         }
-
-        // public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        // {
-        //     _parentTransform.position = animator.rootPosition;
-        // }
 
         private Transform GetParent(Transform upperLevel)
         {

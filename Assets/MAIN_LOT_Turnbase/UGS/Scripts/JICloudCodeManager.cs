@@ -193,6 +193,8 @@ namespace JumpeeIsland
                 HandleCloudCodeException(e);
                 throw new CloudCodeResultUnavailableException(e,
                     "Handled exception in CallGetGameProcess.");
+                
+                //TODO: Fail to load, reload scene here
             }
         }
 

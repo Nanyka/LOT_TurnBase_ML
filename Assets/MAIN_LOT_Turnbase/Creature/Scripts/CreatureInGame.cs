@@ -56,7 +56,7 @@ namespace JumpeeIsland
             // StartCoroutine(MoveOverTime(_movement.targetPos));
         }
 
-        public virtual void CreatureStartMove(Vector3 currentPos, int direction)
+        protected virtual void CreatureStartMove(Vector3 currentPos, int direction)
         {
             MainUI.Instance.OnShowInfo.Invoke(this);
             m_Entity.ConductCreatureMove(currentPos, direction, this);
@@ -71,7 +71,15 @@ namespace JumpeeIsland
         {
             m_Entity.UpdateTransform(_movement.targetPos, m_RotatePart.eulerAngles);
             m_Entity.TurnHealthSlider(true);
-            m_FactionController.WaitForCreature();
+            
+            // When double kills or more, take extra attack
+            if (m_Entity.GetKillAccumulation() > 1)
+            {
+                m_Entity.GetAnimateComp().TriggerAttackAnim(m_Entity.GetKillAccumulation());
+                m_Entity.ResetKillAccumulation();
+            }
+            else
+                m_FactionController.WaitForCreature();
         }
 
         public void SkipThisTurn()
@@ -83,11 +91,12 @@ namespace JumpeeIsland
 
         public void NewTurnReset()
         {
-            m_Entity.GetEffectComp().EffectCountDown();
+            // m_Entity.GetEffectComp().EffectCountDown();
             _isUsed = m_Entity.GetEffectComp().CheckSkipTurn();
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
-            m_Entity.SetActiveMaterial();
+            // m_Entity.SetActiveMaterial();
+            m_Entity.RefreshCreature();
         }
 
         private void Attack()
@@ -157,6 +166,10 @@ namespace JumpeeIsland
                 if (killedByEntity.GetFaction() == FactionType.Player)
                     m_Entity.ContributeCommands();
             }
+            
+            // Contribute Exp
+            if (killedByEntity.GetFaction() == FactionType.Player)
+                SavingSystemManager.Instance.GainExp(m_Entity.GetStats().ExpReward);
 
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this); // remove its domain
             m_FactionController.RemoveAgent(this);

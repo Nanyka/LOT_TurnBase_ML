@@ -67,7 +67,7 @@ namespace JumpeeIsland
         [VerticalGroup("Creature/Row2")] public int CreatureAmount;
 
         public bool IsExpCondition;
-        [ShowIf("@IsExpCondition == true")] public int playerExp;
+        [ShowIf("@IsExpCondition == true")] public long playerExp;
 
         public bool IsUICondition;
         [ShowIf("@IsUICondition == true")] public string UIElement;
@@ -281,7 +281,7 @@ namespace JumpeeIsland
             if (IsExpCondition == false)
                 return true;
 
-            return SavingSystemManager.Instance.GetGameProcess().CalculateExp() > playerExp;
+            return SavingSystemManager.Instance.GetPlayerExp() > playerExp;
         }
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
@@ -13,25 +15,31 @@ namespace JumpeeIsland
         [SerializeField] private GameMasterCondition _getThroughCondition;
         [Tooltip("If it false, don't make this decision")]
         [SerializeField] private GameMasterCondition _mainCondition;
-        [SerializeField] private string[] _objects;
-        [SerializeField] private int _gapDuration;
+        [SerializeField] private List<SpawnObjectDecision> _spawnDecisions;
+        // [SerializeField] private int _gapDuration;
         [SerializeField] private int _maxSpawningAmount;
 
-        private int currentGapCount;
-
-        public IEnumerable<string> GetObjectsToSpawn()
+        public string GetObjectToSpawn()
         {
-            if (currentGapCount > 0)
-            {
-                currentGapCount--;
-                return null;
-            }
-            
             if (_mainCondition.CheckPass() == false)
                 return null;
-            
-            currentGapCount = _gapDuration;
-            return _objects;
+
+            var adjustProportion = new List<int>(_spawnDecisions.Count);
+            var cacheIncrement = 0;
+            foreach (var t in _spawnDecisions)
+            {
+                adjustProportion.Add(cacheIncrement + t.Proportion);
+                cacheIncrement += t.Proportion;
+            }
+
+            var randomNumber = Random.Range(0, _spawnDecisions.Sum(t => t.Proportion));
+            for (int j = 0; j < _spawnDecisions.Count; j++)
+            {
+                if (randomNumber < adjustProportion[j])
+                    return _spawnDecisions[j].ObjectName;
+            }
+
+            return _spawnDecisions.OrderByDescending(t => t.Proportion).FirstOrDefault()?.ObjectName;
         }
 
         public bool CheckGetThrough()
@@ -48,5 +56,12 @@ namespace JumpeeIsland
         {
             return _maxSpawningAmount;
         }
+    }
+
+    [Serializable]
+    public class SpawnObjectDecision
+    {
+        public string ObjectName;
+        public int Proportion;
     }
 }

@@ -21,6 +21,7 @@ namespace JumpeeIsland
         private CreatureStats m_CurrentStat;
         private IEnumerable<Vector3> _attackRange;
         private (Vector3 atPos, Vector3 direction, int jumpStep) _currentJumpStep;
+        [SerializeField] private int _killAccumulation;
         private bool _isDie;
 
         public void Init(CreatureData creatureData)
@@ -53,6 +54,11 @@ namespace JumpeeIsland
             m_CreatureData.Position = position;
             m_CreatureData.Rotation = rotation;
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
+        }
+
+        public Transform GetRotatePart()
+        {
+            return m_RotatePart;
         }
 
         public override EntityData GetData()
@@ -105,6 +111,26 @@ namespace JumpeeIsland
                 m_HealthComp.UpdatePriceText(m_CreatureData.CurrentExp);
             }
         }
+        
+        public CreatureStats GetStats()
+        {
+            return m_CurrentStat;
+        }
+
+        public void AccumulateKills()
+        {
+            _killAccumulation++;
+        }
+
+        public int GetKillAccumulation()
+        {
+            return _killAccumulation;
+        }
+
+        public void ResetKillAccumulation()
+        {
+            _killAccumulation = 0;
+        }
 
         #endregion
 
@@ -138,12 +164,12 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
-        public override int GetCurrentHealth()
+        public virtual int GetCurrentHealth()
         {
             return m_CreatureData.CurrentHp;
         }
 
-        public override void DieIndividualProcess(Entity killedByEntity)
+        protected virtual void DieIndividualProcess(Entity killedByEntity)
         {
             _isDie = true;
 
@@ -160,6 +186,30 @@ namespace JumpeeIsland
 
         #region ATTACK
 
+        public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse) { }
+
+        public void AttackSetup(IGetEntityInfo unitInfo)
+        {
+            var currentJump = unitInfo.GetCurrentState();
+
+            // Check jumping boost
+            if (m_EffectComp.UseJumpBoost())
+                currentJump.jumpStep += m_EffectComp.GetJumpBoost();
+
+            // Adjust by current level
+            currentJump.jumpStep = currentJump.jumpStep < m_CreatureData.CurrentLevel + 1
+                ? currentJump.jumpStep
+                : m_CreatureData.CurrentLevel + 1;
+
+            // Adjust by amount of skills
+            currentJump.jumpStep = currentJump.jumpStep < m_SkillComp.GetSkillAmount()
+                ? currentJump.jumpStep
+                : m_SkillComp.GetSkillAmount();
+
+            _currentJumpStep =
+                new ValueTuple<Vector3, Vector3, int>(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
+        }
+        
         public void RotateTowardTarget(Transform visualPart)
         {
             // TODO rotate toward target that is set in an priority: enemy --> game --> resource
@@ -177,7 +227,7 @@ namespace JumpeeIsland
 
                 foreach (var attackPoint in _attackRange)
                 {
-                    if (envData.CheckEnemy(attackPoint))
+                    if (envData.CheckEnemy(attackPoint, GetFaction()))
                     {
                         tuple.hitAmount++;
                         tuple.priority += 3;
@@ -189,7 +239,7 @@ namespace JumpeeIsland
                     }
                     else
                     {
-                        if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY == false)
+                        if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY == false || GetFaction() == FactionType.Enemy)
                         {
                             if (envData.CheckBuilding(attackPoint))
                             {
@@ -221,43 +271,33 @@ namespace JumpeeIsland
                 ShowAttackRange(_attackRange);
         }
 
-        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse)
+        public void RotateTowardTarget()
         {
+            _attackRange = m_SkillComp.AttackPath(_currentJumpStep.atPos, _currentJumpStep.direction,
+                _currentJumpStep.jumpStep);
+            var target = _attackRange.ElementAt(0);
+            m_RotatePart.LookAt(new Vector3(target.x, m_RotatePart.position.y, target.z));
         }
-
-        public void AttackSetup(IGetEntityInfo unitInfo)
+        
+        public void RotateTowardTarget(Vector3 target)
         {
-            var currentJump = unitInfo.GetCurrentState();
-
-            // Check jumping boost
-            if (m_EffectComp.UseJumpBoost())
-                currentJump.jumpStep += m_EffectComp.GetJumpBoost();
-
-            // Adjust by current level
-            currentJump.jumpStep = currentJump.jumpStep < m_CreatureData.CurrentLevel + 1
-                ? currentJump.jumpStep
-                : m_CreatureData.CurrentLevel + 1;
-
-            // Adjust by amount of skills
-            currentJump.jumpStep = currentJump.jumpStep < m_SkillComp.GetSkillAmount()
-                ? currentJump.jumpStep
-                : m_SkillComp.GetSkillAmount();
-
-            _currentJumpStep =
-                new ValueTuple<Vector3, Vector3, int>(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
-
-            // _attackRange = m_SkillComp.AttackPath(_currentJumpStep.atPos, _currentJumpStep.direction,
-            //     _currentJumpStep.jumpStep);
-            //
-            // var currentSkill = m_SkillComp.GetSkillByIndex(_currentJumpStep.jumpStep - 1);
-            // if (currentSkill.CheckPreAttack() == false)
-            //     ShowAttackRange(_attackRange);
+            m_RotatePart.LookAt(new Vector3(target.x, m_RotatePart.position.y, target.z));
         }
 
         // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
         public void Attack(int attackPathIndex)
         {
             m_AttackComp.Attack(_attackRange.ElementAt(attackPathIndex), this, _currentJumpStep.jumpStep);
+        }
+
+        public void Attack(Vector3 attackAt)
+        {
+            m_AttackComp.Attack(attackAt,this, _currentJumpStep.jumpStep); // 2 is first 3 levels (zero-based order) that use 3 first skill of data
+        }
+        
+        public void Attack(Vector3 attackAt, int skillIndex)
+        {
+            m_AttackComp.Attack(attackAt,this, skillIndex);
         }
 
         public void PreAttackEffect()
@@ -282,13 +322,28 @@ namespace JumpeeIsland
             GameFlowManager.Instance.AskForShowingAttackPath(attackRange);
         }
 
+        public IEnumerable<Vector3> GetAttackRange()
+        {
+            return _attackRange;
+        }
+
+        public IEnumerable<Vector3> CalculateAttackRange(int skillIndex)
+        {
+            return m_SkillComp.AttackPath(m_Transform.position, m_Transform.forward, skillIndex);
+        }
+
         #endregion
 
-        #region MOVE
+        #region ANIMATION
 
         public void ConductCreatureMove(Vector3 currPos, int direction, ICreatureMove creature)
         {
             m_AnimateComp.MoveToTarget(currPos, direction, creature);
+        }
+
+        public AnimateComp GetAnimateComp()
+        {
+            return m_AnimateComp;
         }
 
         #endregion
@@ -298,6 +353,11 @@ namespace JumpeeIsland
         public override IEnumerable<Skill_SO> GetSkills()
         {
             return m_SkillComp.GetSkills();
+        }
+
+        public SkillComp GetSkillComp()
+        {
+            return m_SkillComp;
         }
 
         #endregion
@@ -318,7 +378,7 @@ namespace JumpeeIsland
 
         #region ANIMATE COMPONENT
 
-        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
+        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             m_AnimateComp.SetAnimation(animateType);
         }
@@ -327,7 +387,7 @@ namespace JumpeeIsland
 
         #region GENERAL
 
-        public override void ContributeCommands()
+        public virtual void ContributeCommands()
         {
             if (m_CurrentStat.Commands == null || m_CreatureStats.Count == 0)
                 return;
@@ -336,7 +396,7 @@ namespace JumpeeIsland
                 SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CreatureData.Position);
         }
 
-        public override void RefreshEntity()
+        protected virtual void RefreshEntity()
         {
             // Set stats based on currentLevel
             var creatureLevel = SavingSystemManager.Instance.GetInventoryLevel(m_CreatureData.EntityName);
@@ -373,16 +433,13 @@ namespace JumpeeIsland
             _isDie = false;
         }
 
+        public void RefreshCreature()
+        {
+            m_EffectComp.EffectCountDown();
+            SetActiveMaterial();
+            _killAccumulation = 0;
+        }
+
         #endregion
-
-        public CreatureStats GetStats()
-        {
-            return m_CurrentStat;
-        }
-
-        public IEnumerable<Vector3> GetAttackRange()
-        {
-            return _attackRange;
-        }
     }
 }

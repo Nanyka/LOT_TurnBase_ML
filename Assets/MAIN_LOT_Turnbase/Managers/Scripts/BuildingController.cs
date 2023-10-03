@@ -138,7 +138,7 @@ namespace JumpeeIsland
                 var deductedAmount = building.GetCurrentStorage(currency);
                 deductedAmount = deductedAmount > amount ? amount : deductedAmount;
                 building.DeductCurrency(deductedAmount);
-                SavingSystemManager.Instance.DeductCurrency(currencyId, deductedAmount);
+                // SavingSystemManager.Instance.DeductCurrency(currencyId, deductedAmount);
                 amount -= deductedAmount;
             }
         }

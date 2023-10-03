@@ -16,16 +16,18 @@ namespace JumpeeIsland
             var enemyInventory = SavingSystemManager.Instance.GetInventoryItemByName(creatureName);
             if (enemyInventory.skillsAddress == null)
                 return;
-            
+
             foreach (var skillAddress in enemyInventory.skillsAddress)
                 m_SkillSOs.Add((Skill_SO)AddressableManager.Instance.GetAddressableSO(skillAddress));
         }
 
         public IEnumerable<Vector3> AttackPath(Vector3 targetPos, Vector3 direction, int jumpStep)
         {
-            if (m_SkillSOs.Count() < jumpStep || m_SkillSOs[jumpStep - 1] == null)
+            if (m_SkillSOs.Count == 0)
                 return null;
-            return m_SkillSOs[jumpStep - 1].CalculateSkillRange(targetPos, direction);
+            
+            return m_SkillSOs[m_SkillSOs.Count < jumpStep ? m_SkillSOs.Count - 1 : jumpStep - 1]
+                .CalculateSkillRange(targetPos, direction);
         }
 
         public float GetSkillMagnitude(int jumpStep)

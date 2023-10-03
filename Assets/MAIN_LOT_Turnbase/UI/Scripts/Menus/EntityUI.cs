@@ -14,8 +14,13 @@ namespace JumpeeIsland
         [SerializeField] private Slider _storageSlider;
         [SerializeField] private RotationConstraint _rotationConstraint;
 
+        private bool _priceTagState;
+
         public void ShowBars(bool showPrice, bool showHealth, bool showStorage)
         {
+            // remember priceTag state to used it when on/off bars as entity moving
+            _priceTagState = showPrice;
+            
             if (showPrice)
                 _priceTag.gameObject.SetActive(true);
 
@@ -67,7 +72,8 @@ namespace JumpeeIsland
         public void TurnHealthSlider(bool isOn)
         {
             _healthSlider.gameObject.SetActive(isOn);
-            _priceTag.gameObject.SetActive(isOn);
+            if (_priceTagState)
+                _priceTag.gameObject.SetActive(isOn);
         }
     }
 }

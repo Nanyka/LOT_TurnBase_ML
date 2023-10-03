@@ -18,22 +18,24 @@ namespace JumpeeIsland
         public List<CreatureData> EnemyData;
         public List<CollectableData> CollectableData;
 
-        public EnvironmentData() { }
-        
+        public EnvironmentData()
+        {
+        }
+
         public EnvironmentData(EnvironmentData cloneParent)
         {
             ResourceData = new();
             foreach (var data in cloneParent.ResourceData)
                 ResourceData.Add(new ResourceData(data));
-            
+
             BuildingData = new();
             foreach (var data in cloneParent.BuildingData)
                 BuildingData.Add(new BuildingData(data));
-            
+
             PlayerData = new();
             foreach (var data in cloneParent.PlayerData)
                 PlayerData.Add(new CreatureData(data));
-            
+
             EnemyData = new();
             foreach (var data in cloneParent.EnemyData)
                 EnemyData.Add(new CreatureData(data));
@@ -41,15 +43,14 @@ namespace JumpeeIsland
             CollectableData = new();
             foreach (var data in cloneParent.CollectableData)
                 CollectableData.Add(new CollectableData(data));
-
         }
-        
+
         // Shallow copy method
         public EnvironmentData DeepCopy()
         {
             return new EnvironmentData(this);
         }
-        
+
         public void AddBuildingData(BuildingData data)
         {
             BuildingData.Add(data);
@@ -96,12 +97,20 @@ namespace JumpeeIsland
         {
             return EnemyData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
         }
-        
+
+        public bool CheckEnemy(Vector3 atPos, FactionType fromFaction)
+        {
+            if (fromFaction == FactionType.Player)
+                return EnemyData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
+            
+            return PlayerData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
+        }
+
         public bool CheckBuilding(Vector3 atPos)
         {
             return BuildingData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
         }
-        
+
         public bool CheckResource(Vector3 atPos)
         {
             return ResourceData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
@@ -194,7 +203,9 @@ namespace JumpeeIsland
         public void GatherCreature(string creatureName)
         {
             var creatureLevel = SavingSystemManager.Instance.GetInventoryLevel(creatureName);
-            var creatureStats = (UnitStats)AddressableManager.Instance.GetAddressableSO($"/Stats/Creature/{creatureName}_lv{creatureLevel}");
+            var creatureStats =
+                (UnitStats)AddressableManager.Instance.GetAddressableSO(
+                    $"/Stats/Creature/{creatureName}_lv{creatureLevel}");
 
             var newCreature = new CreatureData()
             {
