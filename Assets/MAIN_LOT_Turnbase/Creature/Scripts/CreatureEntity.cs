@@ -206,8 +206,8 @@ namespace JumpeeIsland
                 ? currentJump.jumpStep
                 : m_SkillComp.GetSkillAmount();
 
-            _currentJumpStep =
-                new ValueTuple<Vector3, Vector3, int>(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
+            _currentJumpStep = new ValueTuple<Vector3, Vector3, int>(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
+            Debug.Log($"{name} current jump step: {_currentJumpStep.jumpStep}");
         }
         
         public void RotateTowardTarget(Transform visualPart)

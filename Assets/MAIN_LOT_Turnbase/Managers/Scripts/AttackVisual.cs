@@ -20,6 +20,9 @@ namespace JumpeeIsland
         private void Start()
         {
             m_Creature = GetParent(transform);
+            if (m_Creature == null)
+                return;
+
             _originalRangeAttack = _isRangeAttack;
 
             foreach (var attackCollider in m_AttackColliders)
@@ -77,7 +80,6 @@ namespace JumpeeIsland
                     m_FireComp.PlayCurveFX(m_Creature.CalculateAttackRange(index), this);
                 else
                     m_FireComp.PlayCurveFX(m_Creature.GetAttackRange(), this);
-
             }
             else
                 m_AttackVfx[index].Play();

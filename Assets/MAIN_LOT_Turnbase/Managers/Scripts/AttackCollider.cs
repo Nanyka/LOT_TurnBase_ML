@@ -5,7 +5,7 @@ namespace JumpeeIsland
 {
     public class AttackCollider : MonoBehaviour
     {
-        [SerializeField] private int skillIndex;
+        [SerializeField] private int skillIndex = -1; // if it is -1, use current jump step as skill index
 
         private AttackVisual _attackVisual;
         private ParticleSystem m_AttackVfx;
@@ -24,7 +24,7 @@ namespace JumpeeIsland
 
         private void OnParticleCollision(GameObject other)
         {
-            if (skillIndex > 0)
+            if (skillIndex >= 0)
                 _attackVisual.ExecuteHitEffect(other.transform.position, skillIndex);
             else
                 _attackVisual.ExecuteHitEffect(other.transform.position);

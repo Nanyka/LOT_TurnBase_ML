@@ -38,6 +38,7 @@ namespace JumpeeIsland
 
         public void Attack(Vector3 attackPoint, Entity mEntity, int jumpStep)
         {
+            Debug.Log($"{name} attack with {jumpStep} jump steps");
             var mEnvironment = GameFlowManager.Instance.GetEnvManager();
             var attackFaction = mEnvironment.CheckFaction(attackPoint);
             var target = mEnvironment.GetObjectByPosition(attackPoint, attackFaction);

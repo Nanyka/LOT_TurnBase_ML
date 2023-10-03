@@ -1048,6 +1048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isRangeAttack: 0
   m_FireComp: {fileID: 0}
+  _isSelfSetPath: 0
   m_AttackVfx:
   - {fileID: 1850165019837519157}
   m_AttackColliders:
@@ -1220,6 +1221,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4243224552952525820}
     m_Modifications:
+    - target: {fileID: 5068415006655720549, guid: bc4094df74b6d47cc83697d0ba424e15, type: 3}
+      propertyPath: skillIndex
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 7246804785424392990, guid: bc4094df74b6d47cc83697d0ba424e15, type: 3}
       propertyPath: m_Name
       value: GasLeak (1)

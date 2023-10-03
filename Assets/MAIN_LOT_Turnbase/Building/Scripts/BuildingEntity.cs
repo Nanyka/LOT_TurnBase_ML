@@ -173,19 +173,19 @@ namespace JumpeeIsland
             {
                 if (fromEntity.GetFaction() == FactionType.Enemy)
                 {
-                    var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp * 1f, 0f, 1f);
-                    var seizedAmount = Mathf.RoundToInt(damageUpperHealth * m_BuildingData.CurrentStorage);
-                    DeductCurrency(seizedAmount);
+                    var seizedAmount = EnemyRopeCurrency(damage);
+                    Debug.Log($"Enemy seizes {seizedAmount} {m_BuildingData.StorageCurrency}");
                 }
+
+                if (m_BuildingData.BuildingType != BuildingType.MAINHALL)
+                    m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
             }
             else if(GameFlowManager.Instance.GameMode == GameMode.BATTLE)
             {
                 // If player's creatures attack enemy building, they also seize loot from this storage
                 if (fromEntity.GetFaction() == FactionType.Player && m_BuildingData.FactionType == FactionType.Enemy)
                 {
-                    var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp * 1f, 0f, 1f);
-                    var seizedAmount = Mathf.RoundToInt(damageUpperHealth * m_BuildingData.CurrentStorage);
-                    DeductCurrency(seizedAmount);
+                    var seizedAmount = EnemyRopeCurrency(damage);
 
                     MainUI.Instance.OnShowCurrencyVfx.Invoke(m_BuildingData.StorageCurrency.ToString(), seizedAmount,
                         fromEntity.GetData().Position);
@@ -195,6 +195,21 @@ namespace JumpeeIsland
             }
             
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
+        }
+
+        private int EnemyRopeCurrency(int damage)
+        {
+            int seizedAmount = 0;
+            if (m_BuildingData.CurrentStorage > m_BuildingData.CurrentHp)
+            {
+                var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp * 1f, 0f, 1f);
+                seizedAmount = Mathf.RoundToInt(damageUpperHealth * m_BuildingData.CurrentStorage);
+            }
+            else
+                seizedAmount = m_BuildingData.CurrentStorage > damage ? damage : m_BuildingData.CurrentStorage;
+            
+            DeductCurrency(seizedAmount);
+            return seizedAmount;
         }
 
         public virtual int GetCurrentHealth()
