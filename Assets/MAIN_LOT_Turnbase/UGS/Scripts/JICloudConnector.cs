@@ -20,6 +20,7 @@ namespace JumpeeIsland
         [SerializeField] private JIRemoteConfigManager _remoteConfigManager;
         [SerializeField] private JILeaderboardManager _leaderboardManager;
         [SerializeField] private JICustomEventSender _customEventSender;
+        [SerializeField] private JICloudSaveManager _cloudSaveManager;
  
         public async Task Init()
         {
@@ -50,6 +51,10 @@ namespace JumpeeIsland
                 if (this == null)
                     return;
 
+                await _cloudSaveManager.Init();
+                if (this == null)
+                    return;
+
                 await FetchUpdatedServicesData();
                 if (this == null) return;
 
@@ -65,7 +70,7 @@ namespace JumpeeIsland
         {
             await Task.WhenAll(
                 OnLoadInventory(),
-                _remoteConfigManager.FetchConfigs()
+                _remoteConfigManager.FetchCommandConfigs()
             );
         }
 

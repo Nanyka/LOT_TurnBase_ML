@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Unity.Services.RemoteConfig;
 using Unity.Services.Samples.CommandBatching;
@@ -9,13 +10,26 @@ namespace JumpeeIsland
 {
     public class JIRemoteConfigManager : MonoBehaviour
     {
+        public static JIRemoteConfigManager instance { get; private set; }
         public Dictionary<string, List<Reward>> commandRewards = new(5);
         public Dictionary<string, int> numericConfig = new();
         private Dictionary<string, BattleLoot> BattleLoots = new();
 
+        void Awake()
+        {
+            if (instance != null && instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                instance = this;
+            }
+        }
+
         #region STATIC CONFIG
 
-        public async Task FetchConfigs()
+        public async Task FetchCommandConfigs()
         {
             try
             {
@@ -229,6 +243,167 @@ namespace JumpeeIsland
         private struct MainHallTierAppAttribute { }
 
         #endregion
+
+        #region MAILBOX
+
+        private SampleAudience m_CurrentAudience = SampleAudience.Default;
+        private List<string> m_OrderedMessageIds;
+
+        public async Task FetchMailboxConfigs()
+        {
+            try
+            {
+                var userAttribute = new MailboxUserAttributes() { audience = m_CurrentAudience.ToString() };
+
+                await RemoteConfigService.Instance.FetchConfigsAsync(userAttribute, new MailboxAppAttributes());
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return;
+
+                CacheConfigValues();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+        
+        void CacheConfigValues()
+        {
+            var json = RemoteConfigService.Instance.appConfig.GetJson("MESSAGES_ALL", "");
+            
+            Debug.Log(json);
+
+            if (string.IsNullOrEmpty(json))
+            {
+                Debug.LogError("Remote config key \"MESSAGES_ALL\" cannot be found.");
+                return;
+            }
+
+            var messageIds = JsonUtility.FromJson<MessageIds>(json);
+            m_OrderedMessageIds = messageIds.messageList;
+        }
+
+        public void UpdateAudienceType(SampleAudience newAudience)
+        {
+            m_CurrentAudience = newAudience;
+        }
+
+        public List<InboxMessage> GetNextMessages(int numberOfMessages, string lastMessageId = "")
+        {
+            if (m_OrderedMessageIds is null)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(lastMessageId))
+            {
+                return GetNextMessagesFromStartLocation(0, numberOfMessages);
+            }
+
+            for (var i = 0; i < m_OrderedMessageIds.Count; i++)
+            {
+                if (string.Equals(m_OrderedMessageIds[i], lastMessageId) && i + 1 < m_OrderedMessageIds.Count)
+                {
+                    return GetNextMessagesFromStartLocation(i + 1, numberOfMessages);
+                }
+            }
+
+            return null;
+        }
+
+        List<InboxMessage> GetNextMessagesFromStartLocation(int startLocation, int numberOfMessages)
+        {
+            var newMessages = new List<InboxMessage>();
+
+            for (var i = startLocation; i < m_OrderedMessageIds.Count; i++)
+            {
+                if (numberOfMessages > 0)
+                {
+                    var message = FetchMessage(m_OrderedMessageIds[i]);
+
+                    // Some message values will be blank if the player does not fall into a targeted audience.
+                    // We want to filter those messages out when downloading a specific number of messages.
+                    if (MessageIsValid(message))
+                    {
+                        newMessages.Add(message);
+                        numberOfMessages--;
+                    }
+                }
+
+                if (numberOfMessages == 0)
+                {
+                    break;
+                }
+            }
+
+            return newMessages;
+        }
+
+        InboxMessage FetchMessage(string messageId)
+        {
+            var json = RemoteConfigService.Instance.appConfig.GetJson(messageId, "");
+            Debug.Log($"Get message {messageId} with info: {json}");
+            
+            if (string.IsNullOrEmpty(json))
+            {
+                Debug.LogError($"Remote config key {messageId} cannot be found.");
+                return new InboxMessage();
+            }
+
+            var message = JsonUtility.FromJson<MessageInfo>(json);
+
+            return message == null
+                ? new InboxMessage()
+                : new InboxMessage(messageId, message);
+        }
+
+        bool MessageIsValid(InboxMessage inboxMessage)
+        {
+            var message = inboxMessage.messageInfo;
+            
+            if (string.IsNullOrEmpty(inboxMessage.messageId) || message == null ||
+                string.IsNullOrEmpty(message.title) || string.IsNullOrEmpty(message.content) ||
+                string.IsNullOrEmpty(message.expiration) || !TimeSpan.TryParse(message.expiration,
+                    new CultureInfo("en-US"), out var timespan))
+            {
+                return false;
+            }
+
+            return true;
+        }
+    
+        public enum SampleAudience
+        {
+            Default,
+            AllSpenders,
+            UnengagedPlayers,
+            FrenchSpeakers,
+            NewPlayers
+        }
+        
+        struct MailboxUserAttributes
+        {
+            public string audience;
+        }
+        
+        struct MailboxAppAttributes { }
+        
+        [Serializable]
+        public struct MessageIds
+        {
+            public List<string> messageList;
+        }
+
+        #endregion
+
+        void OnDestroy()
+        {
+            if (instance == this)
+            {
+                instance = null;
+            }
+        }
     }
     
     public enum NumericConfigName
@@ -236,7 +411,7 @@ namespace JumpeeIsland
         JI_COLLECT_CREATURE_RATE,
         JI_TOWNHOUSE_SPACE
     }
-    
+        
     [Serializable]
     public class MainHallTier
     {

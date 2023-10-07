@@ -10,9 +10,11 @@ namespace JumpeeIsland
 {
     public class JIEconomyManager : MonoBehaviour
     {
+        public static JIEconomyManager instance { get; private set; }
+
         // Dictionary of all Virtual Purchase transactions ids to lists of costs & rewards.
-        private Dictionary<string, (List<JIItemAndAmountSpec> costs, List<JIItemAndAmountSpec> rewards)>
-            virtualPurchaseTransactions { get; set; }
+        public Dictionary<string, (List<JIItemAndAmountSpec> costs, List<JIItemAndAmountSpec> rewards)>
+            virtualPurchaseTransactions { get; private set; } = new();
 
         private List<CurrencyDefinition> currencyDefinitions { get; set; }
         private List<InventoryItemDefinition> inventoryItemDefinitions { get; set; }
@@ -21,6 +23,18 @@ namespace JumpeeIsland
         private int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
         private List<VirtualPurchaseDefinition> m_VirtualPurchaseDefinitions;
 
+        void Awake()
+        {
+            if (instance != null && instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                instance = this;
+            }
+        }
+        
         public async Task RefreshEconomyConfiguration()
         {
             // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
@@ -67,9 +81,32 @@ namespace JumpeeIsland
                 Debug.Log("Problem getting Economy currency balances:");
                 Debug.LogException(e);
             }
+            
+            return null;
+        }
+        
+        public async Task InGameRefreshCurrencyBalances()
+        {
+            GetBalancesResult balanceResult = null;
+
+            try
+            {
+                balanceResult = await GetEconomyBalances();
+            }
+            catch (EconomyRateLimitedException e)
+            {
+                balanceResult = await JIUtils.RetryEconomyFunction(GetEconomyBalances, e.RetryAfter);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Problem getting Economy currency balances:");
+                Debug.LogException(e);
+            }
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
-            return null;
+            if (this == null) return;
+
+            // TODO: Update local currency
         }
 
         static Task<GetBalancesResult> GetEconomyBalances()
@@ -333,6 +370,14 @@ namespace JumpeeIsland
         }
 
         #endregion
+        
+        void OnDestroy()
+        {
+            if (instance == this)
+            {
+                instance = null;
+            }
+        }
     }
 
     public class InventoryInstanceData
