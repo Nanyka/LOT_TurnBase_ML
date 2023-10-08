@@ -27,49 +27,15 @@ namespace JumpeeIsland
                 await FetchUpdatedInboxData();
                 if (this == null) return;
 
-                sceneView.SetInteractable(true);
-                sceneView.RefreshView();
+                
+                // sceneView.SetInteractable(true);
+                // sceneView.RefreshView();
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
             }
         }
-
-        // async Task InitializeUnityServices()
-        // {
-        //     var options = new InitializationOptions();
-        //     options.SetEnvironmentName("dev");
-        //     await UnityServices.InitializeAsync(options);
-        //     if (this == null) return;
-        //
-        //     Debug.Log("Services Initialized.");
-        //
-        //     if (!AuthenticationService.Instance.IsSignedIn)
-        //     {
-        //         Debug.Log("Signing in...");
-        //         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        //         if (this == null) return;
-        //     }
-        //
-        //     Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
-        //
-        //     await EconomyManager.instance.RefreshEconomyConfiguration();
-        // }
-
-        // async Task FetchUpdatedServicesData()
-        // {
-        //     // This method must execute before AddressableManager.instance.PreloadAllEconomySprites()
-        //     EconomyManager.instance.InitializeEconomyLookups();
-        //
-        //     await Task.WhenAll(
-        //         EconomyManager.instance.RefreshCurrencyBalances(),
-        //         AddressablesManager.instance.PreloadAllEconomySprites()
-        //     );
-        //     if (this == null) return;
-        //
-        //     await FetchUpdatedInboxData();
-        // }
 
         async Task FetchUpdatedInboxData()
         {

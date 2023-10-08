@@ -34,6 +34,7 @@ namespace JumpeeIsland
         public void SetLocalBalances(LocalBalancesData localBalancesData)
         {
             m_LocalBalances = localBalancesData;
+            
         }
 
         // Update cloud currency based on local currency
@@ -48,7 +49,7 @@ namespace JumpeeIsland
                 var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
                 if (localBalance.Balance != currency.Balance)
                 {
-                    // currency.Balance = localBalance.Balance;
+                    currency.Balance = localBalance.Balance;
                     SavingSystemManager.Instance.OnSetCloudCurrency(localBalance.CurrencyId, localBalance.Balance);
                 }
             }

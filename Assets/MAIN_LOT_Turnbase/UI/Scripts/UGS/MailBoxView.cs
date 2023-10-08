@@ -12,6 +12,8 @@ namespace JumpeeIsland
 {
     public class MailBoxView : MonoBehaviour
     {
+        public GameObject MailBoxContainer;
+        
         [FormerlySerializedAs("sceneManager")] [Space]
         public MailBoxPanelManager mailboxManager;
 
@@ -48,13 +50,15 @@ namespace JumpeeIsland
         public TMP_Dropdown audienceDropdown;
         public Button resetInboxButton;
 
-        bool m_IsSceneInteractable;
-        bool m_IsFetchingNewMessages;
+        private bool m_IsSceneInteractable;
+        private bool m_IsFetchingNewMessages;
         List<Button> m_SceneButtons;
         List<MessageListItemView> m_MessageListItems = new List<MessageListItemView>();
 
-        void Awake()
+        public void Init()
         {
+            MailBoxContainer.SetActive(true);
+            
             m_SceneButtons = new List<Button>
             {
                 deleteAllReadButton,
@@ -64,12 +68,13 @@ namespace JumpeeIsland
                 inventoryButton,
                 resetInboxButton
             };
-
-            SetInteractable(false);
+            
+            SetInteractable(true);
 
             messageFullAlert.color = inboxFullTextColor;
 
             InitializeMessageListItemViews();
+            RefreshView();
         }
 
         public void SetInteractable(bool isInteractable)
@@ -112,7 +117,6 @@ namespace JumpeeIsland
         {
             ClearOpenMessageViewContainer();
 
-            Debug.Log($"Count inbox messages: {mailboxManager.GetCloudSaveManager().inboxMessages.Count}");
             if (messageListEmptyPopup != null && mailboxManager.GetCloudSaveManager().inboxMessages.Count == 0)
             {
                 messageListEmptyPopup.Show();

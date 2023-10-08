@@ -109,15 +109,16 @@ namespace JumpeeIsland
 
         private InboxMessage CreateATestMail()
         {
-            var testBattleMessage = new BattleMessage();
+            var testBattleMessage = new InboxMessage();
             testBattleMessage.messageId = "TEST_BATTLE_MESSAGE";
             testBattleMessage.messageInfo = new MessageInfo();
             testBattleMessage.messageInfo.title = "TestMessage";
             testBattleMessage.messageInfo.content = "I create this message to test adding a new message";
-            testBattleMessage.messageInfo.attachment = "MESSAGE_005_GIFT";
             testBattleMessage.messageInfo.expiration = "0.00:03:00.00";
-            testBattleMessage.environmentData = new EnvironmentData();
-            testBattleMessage.environmentData.mapSize = 12345;
+            testBattleMessage.battleData = new MessageBattleData();
+            testBattleMessage.battleData.battleRecord = new BattleRecord();
+            testBattleMessage.battleData.battleRecord.IsRecorded = true;
+            testBattleMessage.battleData.battleRecord.TestInt = 12345;
 
             var expirationPeriod = TimeSpan.Parse(testBattleMessage.messageInfo.expiration);
             var hasUnclaimedAttachment = !string.IsNullOrEmpty(testBattleMessage.messageInfo.attachment);
@@ -198,8 +199,6 @@ namespace JumpeeIsland
             
             foreach (var inboxMessage in newMessages)
             {
-                // Debug.Log($"[TODO] Message {inboxMessage.messageId} with content:\n{inboxMessage.messageInfo.content}");
-                
                 var expirationPeriod = TimeSpan.Parse(inboxMessage.messageInfo.expiration);
                 var hasUnclaimedAttachment = !string.IsNullOrEmpty(inboxMessage.messageInfo.attachment);
             

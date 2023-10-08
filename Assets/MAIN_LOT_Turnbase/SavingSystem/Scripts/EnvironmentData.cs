@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using UnityEngine;
 
@@ -18,9 +19,7 @@ namespace JumpeeIsland
         public List<CreatureData> EnemyData;
         public List<CollectableData> CollectableData;
 
-        public EnvironmentData()
-        {
-        }
+        public EnvironmentData() { }
 
         public EnvironmentData(EnvironmentData cloneParent)
         {

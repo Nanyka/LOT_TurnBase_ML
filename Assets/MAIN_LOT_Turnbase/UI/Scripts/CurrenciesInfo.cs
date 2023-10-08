@@ -9,10 +9,10 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            MainUI.Instance.OnUpdateCurrencies.AddListener(Show);
+            MainUI.Instance.OnUpdateCurrencies.AddListener(ShowCurrencies);
         }
 
-        private void Show()
+        private void ShowCurrencies()
         {
             var currencies = SavingSystemManager.Instance.GetCurrencies();
 

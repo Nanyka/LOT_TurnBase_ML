@@ -14,12 +14,16 @@ namespace JumpeeIsland
 
         // MessageMetadata is all the player-specific instance data for a given message, stored in Cloud Save.
         public MessageMetadata metadata;
+        
+        // MessageBattleData is about the battle when other player invade your land
+        public MessageBattleData battleData;
 
-        public InboxMessage(string messageId = "", MessageInfo messageInfo = null, MessageMetadata metadata = null)
+        public InboxMessage(string messageId = "", MessageInfo messageInfo = null, MessageMetadata metadata = null, MessageBattleData battleData = null)
         {
             this.messageId = messageId;
             this.messageInfo = messageInfo;
             this.metadata = metadata;
+            this.battleData = battleData;
         }
     }
 
@@ -48,6 +52,12 @@ namespace JumpeeIsland
             this.hasUnclaimedAttachment = hasUnclaimedAttachment;
             isRead = false;
         }
+    }
+
+    [Serializable]
+    public class MessageBattleData
+    {
+        public BattleRecord battleRecord;
     }
 
     public class ItemAndAmountSpec

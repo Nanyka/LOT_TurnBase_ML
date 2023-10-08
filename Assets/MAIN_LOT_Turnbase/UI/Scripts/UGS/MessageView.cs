@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.Services.Samples;
-using Unity.Services.Samples.InGameMailbox;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace JumpeeIsland
@@ -14,6 +13,7 @@ namespace JumpeeIsland
         public RewardDisplayView rewardDisplayView;
         public Button claimAttachmentButton;
         public Color rewardItemViewClaimedColor;
+        public GameObject watchRecordButton;
 
         InboxMessage m_Message;
         string m_Title;
@@ -34,6 +34,8 @@ namespace JumpeeIsland
             if (message != null && message.messageInfo != null)
             {
                 GetRewardDetails(message.messageInfo.attachment);
+                if (m_Message.battleData != null)
+                    watchRecordButton.SetActive(m_Message.battleData.battleRecord.IsRecorded);
             }
 
             UpdateView();
@@ -43,7 +45,8 @@ namespace JumpeeIsland
         {
             m_RewardDetails.Clear();
 
-            if (JIEconomyManager.instance.virtualPurchaseTransactions.TryGetValue(virtualPurchaseId, out var virtualPurchase))
+            if (JIEconomyManager.instance.virtualPurchaseTransactions.TryGetValue(virtualPurchaseId,
+                    out var virtualPurchase))
             {
                 foreach (var reward in virtualPurchase.rewards)
                 {
@@ -118,13 +121,20 @@ namespace JumpeeIsland
         public async void OnClaimReward()
         {
             foreach (var rewardDetail in m_RewardDetails)
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(rewardDetail.id, (int)rewardDetail.quantity);
+
+            m_Message.metadata.hasUnclaimedAttachment = false;
+            m_HasUnclaimedAttachment = m_Message?.metadata?.hasUnclaimedAttachment ?? false;
+            UpdateView();
+
+            await JICloudSaveManager.instance.SavePlayerInboxInCloudSave();
+        }
+
+        public void OnWatchRecord()
+        {
+            if (m_Message.battleData.battleRecord.IsRecorded)
             {
-                Debug.Log($"TODO: Add to local currency {rewardDetail.id}: {rewardDetail.quantity}");
-                m_Message.metadata.hasUnclaimedAttachment = false;
-                m_HasUnclaimedAttachment = m_Message?.metadata?.hasUnclaimedAttachment ?? false;
-                UpdateView();
-                
-                await JICloudSaveManager.instance.SavePlayerInboxInCloudSave();
+                SavingSystemManager.Instance.SaveMetadata("BattleRecord");
             }
         }
     }
