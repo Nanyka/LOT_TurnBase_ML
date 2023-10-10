@@ -45,7 +45,7 @@ namespace JumpeeIsland
 
         public void MoveDirection(int moveDirection)
         {
-            if (_isUsed) return; // Avoid double moving
+            if (_isUsed && GameFlowManager.Instance.GameMode != GameMode.REPLAY) return; // Avoid double moving
 
             _currentDirection = moveDirection;
             _movement = m_FactionController.GetMovementInspector()

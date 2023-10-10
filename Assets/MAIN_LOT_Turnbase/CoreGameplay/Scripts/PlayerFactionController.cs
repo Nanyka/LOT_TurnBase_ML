@@ -35,7 +35,7 @@ namespace JumpeeIsland
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
             m_Environment.OnTouchSelection.AddListener(MoveToward);
             MainUI.Instance.OnClickIdleButton.AddListener(SetCurrentUnitIdle);
-            GameFlowManager.Instance.OnChangAutomationMode.AddListener(ChangeAutomation);
+            GameFlowManager.Instance.OnChangeAutomationMode.AddListener(ChangeAutomation);
 
             _camera = Camera.main;
         }

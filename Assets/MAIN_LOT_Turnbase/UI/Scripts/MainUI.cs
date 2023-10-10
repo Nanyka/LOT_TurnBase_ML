@@ -71,7 +71,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(EnableInteract);
         }
 
-        private void EnableInteract(long arg0)
+        protected void EnableInteract(long arg0)
         {
             OnEnableInteract.Invoke();
             IsInteractable = true;

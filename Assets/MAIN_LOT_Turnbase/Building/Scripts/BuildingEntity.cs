@@ -193,6 +193,8 @@ namespace JumpeeIsland
 
                 m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
             }
+            else
+                m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
             
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
@@ -217,7 +219,7 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public virtual void DieIndividualProcess(Entity killedByEntity)
+        protected virtual void DieIndividualProcess(Entity killedByEntity)
         {
             // TODO die visualization
         }

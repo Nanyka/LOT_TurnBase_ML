@@ -12,19 +12,19 @@ namespace JumpeeIsland
     [RequireComponent(typeof(CollectedLoot))]
     public class GameResultCalculator : MonoBehaviour
     {
-        [SerializeField] private GameObject _winPanel;
-        [SerializeField] private GameObject _losePanel;
-        [SerializeField] private GameObject _stackHolder;
-        [SerializeField] private TextMeshProUGUI _winScoreText;
-        [SerializeField] private TextMeshProUGUI _loseScoreText;
-        [SerializeField] private TextMeshProUGUI _stackText;
-        [SerializeField] private List<StarHolder> _starHolders;
-        [SerializeField] private List<BattleRewardItem> _rewardItemUI;
+        [SerializeField] protected GameObject _winPanel;
+        [SerializeField] protected GameObject _losePanel;
+        [SerializeField] protected GameObject _stackHolder;
+        [SerializeField] protected TextMeshProUGUI _winScoreText;
+        [SerializeField] protected TextMeshProUGUI _loseScoreText;
+        [SerializeField] protected TextMeshProUGUI _stackText;
+        [SerializeField] protected List<StarHolder> _starHolders;
+        [SerializeField] protected List<BattleRewardItem> _rewardItemUI;
 
         private CollectedLoot m_CollectedLoot;
         private int _startGameEnemyCount;
 
-        private void Start()
+        protected virtual void Start()
         {
             MainUI.Instance.OnEnableInteract.AddListener(BattleStatsCache);
             GameFlowManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
@@ -61,7 +61,7 @@ namespace JumpeeIsland
             UpdateStarGuide();
         }
 
-        private async void ShowGameOverPanel(int delayInterval)
+        protected virtual async void ShowGameOverPanel(int delayInterval)
         {
             await Task.Delay(delayInterval);
             

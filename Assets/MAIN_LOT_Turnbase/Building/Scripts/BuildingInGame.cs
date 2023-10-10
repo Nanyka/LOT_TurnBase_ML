@@ -67,11 +67,6 @@ namespace JumpeeIsland
             SellBuilding(SavingSystemManager.Instance.GetEnvironmentData());
         }
 
-        public Entity GetEntity()
-        {
-            return m_Entity;
-        }
-
         private void DestroyBuilding(Entity killedByEntity)
         {
             // just contribute resource when it is killed by player faction as selling out this building
@@ -102,6 +97,7 @@ namespace JumpeeIsland
             environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
         }
 
+        // TODO: Ask building for attacking in REPLAY mode
         public void AskForAttack()
         {
             if (m_Entity.GetBuildingType() == BuildingType.TOWER)
@@ -119,5 +115,19 @@ namespace JumpeeIsland
         {
             // Debug.Log("Building finished an attack");
         }
+
+        #region GET
+        
+        public Entity GetEntity()
+        {
+            return m_Entity;
+        }
+
+        public Vector3 GetPosition()
+        {
+            return m_Entity.GetData().Position;
+        }
+
+        #endregion
     }
 }

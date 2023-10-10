@@ -1,9 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
-using Unity.Services.Core.Environments;
-using Unity.Services.Samples.InGameMailbox;
 using UnityEngine;
 
 namespace JumpeeIsland

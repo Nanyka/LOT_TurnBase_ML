@@ -292,6 +292,7 @@ namespace JumpeeIsland
 
         public void Attack(Vector3 attackAt)
         {
+            Debug.Log($"{name} attack at {attackAt} with {_currentJumpStep.jumpStep} jumps");
             m_AttackComp.Attack(attackAt,this, _currentJumpStep.jumpStep); // 2 is first 3 levels (zero-based order) that use 3 first skill of data
         }
         

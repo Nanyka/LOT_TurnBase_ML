@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bef40bf9ead4a699271907218a67330, type: 3}
+  m_Name: BattleRecord
+  m_EditorClassIdentifier: 
+  BattleRecord:
+    isRecorded: 1
+    score: 12
+    winStar: 2
+    winStack: 3
+    winRate: 0.8
+    rewards:
+    - currencyId: FOOD
+      amount: 5
+    environmentData:
+      timestamp: 0
+      lastTimestamp: 0
+      moveTimestamp: 0
+      mapSize: 0
+      ResourceData: []
+      BuildingData:
+      - EntityName: ArcherTower
+        SkinAddress: /Buildings/ArcherTower_lv0
+        Position: {x: -3, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0}
+        FactionType: 0
+        CurrentHp: 3
+        CurrentLevel: 0
+        BuildingType: 5
+        CurrentDamage: 1
+        CurrentShield: 0
+        CurrentExp: 0
+        CurrentStorage: 0
+        StorageCapacity: 0
+        TurnCount: 0
+        StorageCurrency: 0
+      PlayerData: []
+      EnemyData:
+      - EntityName: King
+        SkinAddress: /Creatures/King_lv0
+        Position: {x: 0, y: 0, z: 0}
+        Rotation: {x: -0, y: 270, z: 0}
+        FactionType: 1
+        CurrentHp: 6
+        CurrentLevel: 0
+        CreatureType: 2
+        CurrentShield: 0
+        CurrentExp: 0
+        TurnCount: 0
+        CurrentDamage: 1
+        EffectCaches: []
+      - EntityName: King
+        SkinAddress: /Creatures/King_lv0
+        Position: {x: 1, y: 0, z: -3}
+        Rotation: {x: -0, y: 270, z: 0}
+        FactionType: 1
+        CurrentHp: 6
+        CurrentLevel: 0
+        CreatureType: 2
+        CurrentShield: 0
+        CurrentExp: 0
+        TurnCount: 0
+        CurrentDamage: 1
+        EffectCaches: []
+      CollectableData: []
+    Actions:
+    - AtPos: {x: 0, y: 0, z: 0}
+      Action: 1
+      AtSecond: 1
+      EntityType: 4

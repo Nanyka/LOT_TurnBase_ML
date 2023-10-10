@@ -35,7 +35,7 @@ namespace JumpeeIsland
             {
                 GetRewardDetails(message.messageInfo.attachment);
                 if (m_Message.battleData != null)
-                    watchRecordButton.SetActive(m_Message.battleData.battleRecord.IsRecorded);
+                    watchRecordButton.SetActive(m_Message.battleData.battleRecord.isRecorded);
             }
 
             UpdateView();
@@ -132,7 +132,7 @@ namespace JumpeeIsland
 
         public void OnWatchRecord()
         {
-            if (m_Message.battleData.battleRecord.IsRecorded)
+            if (m_Message.battleData.battleRecord.isRecorded)
             {
                 SavingSystemManager.Instance.SaveMetadata("BattleRecord");
             }

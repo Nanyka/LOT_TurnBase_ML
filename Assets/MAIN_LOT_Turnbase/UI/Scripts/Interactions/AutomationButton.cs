@@ -31,7 +31,7 @@ namespace JumpeeIsland
         public void OnClickAutomation()
         {
             _isAutomation = !_isAutomation;
-            GameFlowManager.Instance.OnChangAutomationMode.Invoke(_isAutomation);
+            GameFlowManager.Instance.OnChangeAutomationMode.Invoke(_isAutomation);
             _stateText.text = _isAutomation?"ON": "OFF";
             _buttonImage.color = _isAutomation ? _onColor : _offColor;
         }

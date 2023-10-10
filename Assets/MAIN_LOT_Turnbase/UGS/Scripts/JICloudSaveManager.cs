@@ -117,8 +117,7 @@ namespace JumpeeIsland
             testBattleMessage.messageInfo.expiration = "0.00:03:00.00";
             testBattleMessage.battleData = new MessageBattleData();
             testBattleMessage.battleData.battleRecord = new BattleRecord();
-            testBattleMessage.battleData.battleRecord.IsRecorded = true;
-            testBattleMessage.battleData.battleRecord.TestInt = 12345;
+            testBattleMessage.battleData.battleRecord.isRecorded = true;
 
             var expirationPeriod = TimeSpan.Parse(testBattleMessage.messageInfo.expiration);
             var hasUnclaimedAttachment = !string.IsNullOrEmpty(testBattleMessage.messageInfo.attachment);

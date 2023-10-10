@@ -46,7 +46,7 @@ namespace JumpeeIsland
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
 
-        private EnvironmentLoader m_EnvLoader;
+        protected EnvironmentLoader m_EnvLoader;
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
@@ -71,7 +71,7 @@ namespace JumpeeIsland
             OnSaveQuestData.AddListener(SaveQuestData);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             SaveGameState();
         }
@@ -95,7 +95,7 @@ namespace JumpeeIsland
             }
         }
 
-        public async void StartUpLoadData()
+        public virtual async void StartUpLoadData()
         {
             // Authenticate on UGS and get envData
             await m_CloudConnector.Init();
@@ -144,7 +144,7 @@ namespace JumpeeIsland
             SaveManager.Instance.Save(_mRuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
 
-        private async Task LoadPreviousMetadata()
+        protected async Task LoadPreviousMetadata()
         {
             var gameStatePath = GetSavingPath(SavingPath.GameState);
             SaveManager.Instance.Load<RuntimeMetadata>(gameStatePath, MetadataWasLoaded, encrypt);
@@ -164,7 +164,7 @@ namespace JumpeeIsland
             var gameStatePath = GetSavingPath(SavingPath.GameState);
             SaveManager.Instance.Save(_mRuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
-        
+
         public void SaveMetadata(string recordInfo)
         {
             Debug.Log("Save data for recordMode");
@@ -260,6 +260,9 @@ namespace JumpeeIsland
 
         private void SavePlayerEnv()
         {
+            if (GameFlowManager.Instance.GameMode == GameMode.REPLAY)
+                return;
+
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
             SaveManager.Instance.Save(m_EnvLoader.GetData(), envPath, DataWasSaved, encrypt);
         }

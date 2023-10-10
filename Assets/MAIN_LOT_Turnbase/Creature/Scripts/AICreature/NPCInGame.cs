@@ -116,6 +116,15 @@ namespace JumpeeIsland
             InferMoving = selectedAction;
             CreatureStartMove(m_Transform.position, InferMoving.Action);
         }
+        
+        // Use in battleReplayMode
+        public void ConductSelectedAction(int action, int jump)
+        {
+            MarkAsUsedThisTurn();
+            InferMoving.Action = action;
+            InferMoving.JumpCount = jump;
+            CreatureStartMove(m_Transform.position, InferMoving.Action);
+        }
 
         protected override void CreatureStartMove(Vector3 currentPos, int direction)
         {

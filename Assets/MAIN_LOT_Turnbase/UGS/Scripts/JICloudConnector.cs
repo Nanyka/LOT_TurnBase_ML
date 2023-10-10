@@ -51,9 +51,12 @@ namespace JumpeeIsland
                 if (this == null)
                     return;
 
-                await _cloudSaveManager.Init();
-                if (this == null)
-                    return;
+                if (_cloudSaveManager != null)
+                {
+                    await _cloudSaveManager.Init();
+                    if (this == null)
+                        return;
+                }
 
                 await FetchUpdatedServicesData();
                 if (this == null) return;

@@ -12,7 +12,8 @@ namespace JumpeeIsland
         NONE,
         ECONOMY,
         BOSS,
-        BATTLE
+        BATTLE,
+        REPLAY
     }
     
     public class GameFlowManager : Singleton<GameFlowManager>
@@ -27,18 +28,19 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<int> OnGameOver = new(); // send to GameResultPanel, BattleMainUI, this; invoke at CountDownClock, CountDownStep, PlayerFactionController
         [NonSerialized] public UnityEvent OnKilledBoss = new(); // send to GameResultPanel; invoke at CreatureUnlockComp
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
-        [NonSerialized] public UnityEvent<bool> OnChangAutomationMode = new(); // sent to PlayerFactionController; invoke at 
+        [NonSerialized] public UnityEvent<bool> OnChangeAutomationMode = new(); // sent to PlayerFactionController; invoke at 
         
         [FormerlySerializedAs("IsEcoMode")] public GameMode GameMode = GameMode.NONE;
         [SerializeField] public bool _isGameRunning;
         
         protected EnvironmentManager _environmentManager;
-        private TutorialController _tutorialController;
-        private GameSpawner _gameSpawner;
-        private GlobalVfx _globalVfx;
-        
-        protected virtual void Start()
+        protected TutorialController _tutorialController;
+        protected GameSpawner _gameSpawner;
+        protected GlobalVfx _globalVfx;
+
+        protected override void Awake()
         {
+            base.Awake();
             _environmentManager = FindObjectOfType<EnvironmentManager>();
             _tutorialController = FindObjectOfType<TutorialController>();
             _gameSpawner = FindObjectOfType<GameSpawner>();
@@ -47,6 +49,18 @@ namespace JumpeeIsland
             OnStartGame.AddListener(RecordStartedState);
             OnKickOffEnv.AddListener(ConfirmGameStarted);
             OnGameOver.AddListener(GameOverState);
+        }
+
+        protected virtual void Start()
+        {
+            // _environmentManager = FindObjectOfType<EnvironmentManager>();
+            // _tutorialController = FindObjectOfType<TutorialController>();
+            // _gameSpawner = FindObjectOfType<GameSpawner>();
+            // _globalVfx = GetComponent<GlobalVfx>();
+            //
+            // OnStartGame.AddListener(RecordStartedState);
+            // OnKickOffEnv.AddListener(ConfirmGameStarted);
+            // OnGameOver.AddListener(GameOverState);
             
             SavingSystemManager.Instance.StartUpLoadData();
         }
@@ -56,7 +70,7 @@ namespace JumpeeIsland
             _isGameRunning = true;
         }
 
-        private void RecordStartedState(long arg0)
+        protected virtual void RecordStartedState(long arg0)
         {
             if (GameMode == GameMode.ECONOMY)
             {
@@ -65,7 +79,7 @@ namespace JumpeeIsland
             }
         }
 
-        private void GameOverState(int delayInvterval)
+        protected void GameOverState(int delayInvterval)
         {
             _isGameRunning = false;
         }
