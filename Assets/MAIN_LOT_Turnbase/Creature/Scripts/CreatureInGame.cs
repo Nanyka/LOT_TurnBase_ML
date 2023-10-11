@@ -45,6 +45,20 @@ namespace JumpeeIsland
 
         public void MoveDirection(int moveDirection)
         {
+            // Record creature action in BATTLE mode
+            if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+            {
+                var recordAction = new RecordAction
+                {
+                    Action = moveDirection,
+                    // AtSecond = CountDownClock.GetBattleTime(),
+                    AtPos = GetCurrentPosition(),
+                    EntityType = EntityType.ENEMY
+                };
+            
+                SavingSystemManager.Instance.OnRecordAction.Invoke(recordAction);
+            }
+            
             if (_isUsed && GameFlowManager.Instance.GameMode != GameMode.REPLAY) return; // Avoid double moving
 
             _currentDirection = moveDirection;
@@ -53,7 +67,8 @@ namespace JumpeeIsland
 
             MarkAsUsedThisTurn();
             CreatureStartMove(m_Transform.position, moveDirection);
-            // StartCoroutine(MoveOverTime(_movement.targetPos));
+            
+            
         }
 
         protected virtual void CreatureStartMove(Vector3 currentPos, int direction)

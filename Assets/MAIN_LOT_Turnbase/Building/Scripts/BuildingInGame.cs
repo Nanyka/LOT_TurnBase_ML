@@ -97,11 +97,24 @@ namespace JumpeeIsland
             environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
         }
 
-        // TODO: Ask building for attacking in REPLAY mode
         public void AskForAttack()
         {
             if (m_Entity.GetBuildingType() == BuildingType.TOWER)
             {
+                // Record building action in BATTLE mode
+                if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+                {
+                    var recordAction = new RecordAction
+                    {
+                        Action = 0,
+                        // AtSecond = CountDownClock.GetBattleTime(),
+                        AtPos = GetPosition(),
+                        EntityType = EntityType.BUILDING
+                    };
+            
+                    SavingSystemManager.Instance.OnRecordAction.Invoke(recordAction);
+                }
+                
                 m_Entity.AttackSetup(this, this);
             }
         }

@@ -38,10 +38,13 @@ namespace JumpeeIsland
 
         public async Task Init()
         {
-            await Task.WhenAll(
-                MailboxPanel.Init(),
-                FetchPlayerInbox()
-            );
+            if (MailboxPanel != null)
+            {
+                await Task.WhenAll(
+                    MailboxPanel.Init(),
+                    FetchPlayerInbox()
+                );
+            }
         }
 
         public async Task FetchPlayerInbox()

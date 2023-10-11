@@ -7,7 +7,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private TestBattleRecord m_BattleRecord;
 
-        private EnemyReplayController _enemyReplay;
+        private FactionReplayController _factionReplay;
         private BuildingReplayController _buildingReplay;
 
         private int actionIndex;
@@ -16,7 +16,11 @@ namespace JumpeeIsland
         {
             base.Awake();
 
-            _enemyReplay = FindObjectOfType<EnemyReplayController>();
+            var factions = FindObjectsOfType<FactionReplayController>();
+            foreach (var faction in factions)
+                if (faction.Faction == FactionType.Player)
+                    _factionReplay = faction;
+            
             _buildingReplay = FindObjectOfType<BuildingReplayController>();
         }
 
@@ -38,17 +42,20 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.Invoke(0);
             Debug.Log("Completed loading process");
 
-            Invoke(nameof(Replay), 1f);
+            if (m_BattleRecord.BattleRecord.Actions.Count > 0)
+                Invoke(nameof(Replay), 1f);
+            else
+                GameFlowManager.Instance.OnGameOver.Invoke(3000);
         }
 
         private async void Replay()
         {
-            await WaitForTheNextAction(
-                Mathf.RoundToInt(m_BattleRecord.BattleRecord.Actions[actionIndex].AtSecond * 1000));
+            await WaitForTheNextAction(2000);
         }
 
         private async Task WaitForTheNextAction(int waitPeriod)
         {
+            Debug.Log($"Delay millisecond: {waitPeriod}");
             await Task.Delay(waitPeriod);
             if (actionIndex < m_BattleRecord.BattleRecord.Actions.Count)
             {
@@ -57,18 +64,18 @@ namespace JumpeeIsland
                 switch (currentAction.EntityType)
                 {
                     case EntityType.ENEMY:
-                        _enemyReplay.MoveCreature(m_BattleRecord.BattleRecord.Actions[actionIndex]);
+                        _factionReplay.MoveCreature(m_BattleRecord.BattleRecord.Actions[actionIndex]);
                         break;
                     case EntityType.BUILDING:
                         _buildingReplay.BuildingFire(m_BattleRecord.BattleRecord.Actions[actionIndex]);
                         break;
                 }
 
-                if (actionIndex + 1 == m_BattleRecord.BattleRecord.Actions.Count)
-                    waitPeriod = Mathf.RoundToInt(m_BattleRecord.BattleRecord.Actions[actionIndex].AtSecond * 1000);
-                else
-                    waitPeriod = Mathf.RoundToInt((m_BattleRecord.BattleRecord.Actions[actionIndex + 1].AtSecond -
-                                                   m_BattleRecord.BattleRecord.Actions[actionIndex].AtSecond) * 1000);
+                // if (actionIndex + 1 == m_BattleRecord.BattleRecord.Actions.Count)
+                //     waitPeriod = Mathf.RoundToInt(m_BattleRecord.BattleRecord.Actions[actionIndex].AtSecond * 1000);
+                // else
+                //     waitPeriod = Mathf.RoundToInt((m_BattleRecord.BattleRecord.Actions[actionIndex + 1].AtSecond -
+                //                                    m_BattleRecord.BattleRecord.Actions[actionIndex].AtSecond) * 1000);
 
                 actionIndex++;
                 await WaitForTheNextAction(waitPeriod);

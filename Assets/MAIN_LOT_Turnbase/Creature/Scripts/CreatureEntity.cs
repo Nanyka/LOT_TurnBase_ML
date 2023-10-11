@@ -207,7 +207,6 @@ namespace JumpeeIsland
                 : m_SkillComp.GetSkillAmount();
 
             _currentJumpStep = new ValueTuple<Vector3, Vector3, int>(currentJump.midPos, currentJump.direction, currentJump.jumpStep);
-            Debug.Log($"{name} current jump step: {_currentJumpStep.jumpStep}");
         }
         
         public void RotateTowardTarget(Transform visualPart)
@@ -292,7 +291,7 @@ namespace JumpeeIsland
 
         public void Attack(Vector3 attackAt)
         {
-            Debug.Log($"{name} attack at {attackAt} with {_currentJumpStep.jumpStep} jumps");
+            // Debug.Log($"{name} attack at {attackAt} with {_currentJumpStep.jumpStep} jumps");
             m_AttackComp.Attack(attackAt,this, _currentJumpStep.jumpStep); // 2 is first 3 levels (zero-based order) that use 3 first skill of data
         }
         

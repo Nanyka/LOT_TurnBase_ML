@@ -34,8 +34,6 @@ namespace JumpeeIsland
                 {
                     if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
                         OnSelectDirection.Invoke(selectionCircle);
-
-                    return;
                 }
             }
         }

@@ -29,7 +29,7 @@ namespace JumpeeIsland
     {
         public Vector3 AtPos;
         public int Action;
-        public float AtSecond;
+        // public float AtSecond;
         public EntityType EntityType;
     }
 

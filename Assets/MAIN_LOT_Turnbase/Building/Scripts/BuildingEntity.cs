@@ -209,8 +209,14 @@ namespace JumpeeIsland
             }
             else
                 seizedAmount = m_BuildingData.CurrentStorage > damage ? damage : m_BuildingData.CurrentStorage;
+
+            m_BuildingData.CurrentStorage -= seizedAmount;
             
-            DeductCurrency(seizedAmount);
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
+                DeductCurrency(seizedAmount);
+            else if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+                MainUI.Instance.OnUpdateCurrencies.Invoke();
+            
             return seizedAmount;
         }
 

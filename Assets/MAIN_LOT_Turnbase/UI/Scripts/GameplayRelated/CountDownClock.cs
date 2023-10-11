@@ -7,8 +7,10 @@ namespace JumpeeIsland
     public class CountDownClock : MonoBehaviour
     {
         [SerializeField] private GameObject _clock;
-        [SerializeField] private int _gameDuration;
         [SerializeField] private TextMeshProUGUI _clockText;
+
+        private static readonly int _battleDuration = 120;
+        private static int _countDown;
 
         private void Start()
         {
@@ -20,16 +22,17 @@ namespace JumpeeIsland
             _clock.SetActive(true);
             UpdateClockUI();
             // Start count down clock
+            _countDown = _battleDuration;
             InvokeRepeating(nameof(UpdateClock), 1f, 1f);
 
         }
 
         private void UpdateClock()
         {
-            _gameDuration--;
+            _countDown--;
             UpdateClockUI();
 
-            if (_gameDuration <= 0)
+            if (_countDown <= 0)
             {
                 CancelInvoke();
                 GameFlowManager.Instance.OnGameOver.Invoke(0);
@@ -38,7 +41,12 @@ namespace JumpeeIsland
 
         private void UpdateClockUI()
         {
-            _clockText.text = _gameDuration.ToString();
+            _clockText.text = _countDown.ToString();
+        }
+
+        public static int GetBattleTime()
+        {
+            return _battleDuration - _countDown;
         }
     }
 }

@@ -40,8 +40,11 @@ namespace JumpeeIsland
         // invoke at CreatureDetailMenu
         [NonSerialized] public UnityEvent<string> OnCreatureUpgrade = new();
 
-        // invoke at 
+        // invoke at ???
         [NonSerialized] public UnityEvent OnSaveQuestData = new();
+        
+        // invoke at CreatureInGame, BuildingInGame
+        [NonSerialized] public UnityEvent<RecordAction> OnRecordAction = new();
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;

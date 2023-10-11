@@ -15,7 +15,7 @@ namespace JumpeeIsland
         BATTLE,
         REPLAY
     }
-    
+
     public class GameFlowManager : Singleton<GameFlowManager>
     {
         // [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
@@ -70,7 +70,7 @@ namespace JumpeeIsland
             _isGameRunning = true;
         }
 
-        protected virtual void RecordStartedState(long arg0)
+        private void RecordStartedState(long arg0)
         {
             if (GameMode == GameMode.ECONOMY)
             {
@@ -79,7 +79,7 @@ namespace JumpeeIsland
             }
         }
 
-        protected void GameOverState(int delayInvterval)
+        private void GameOverState(int delayInterval)
         {
             _isGameRunning = false;
         }
