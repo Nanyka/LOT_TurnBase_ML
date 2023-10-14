@@ -42,7 +42,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.Invoke(0);
             Debug.Log("Completed loading process");
 
-            if (m_BattleRecord.BattleRecord.Actions.Count > 0)
+            if (m_BattleRecord.BattleRecord.actions.Count > 0)
                 Invoke(nameof(Replay), 1f);
             else
                 GameFlowManager.Instance.OnGameOver.Invoke(3000);
@@ -57,17 +57,17 @@ namespace JumpeeIsland
         {
             Debug.Log($"Delay millisecond: {waitPeriod}");
             await Task.Delay(waitPeriod);
-            if (actionIndex < m_BattleRecord.BattleRecord.Actions.Count)
+            if (actionIndex < m_BattleRecord.BattleRecord.actions.Count)
             {
-                var currentAction = m_BattleRecord.BattleRecord.Actions[actionIndex];
+                var currentAction = m_BattleRecord.BattleRecord.actions[actionIndex];
 
                 switch (currentAction.EntityType)
                 {
                     case EntityType.ENEMY:
-                        _factionReplay.MoveCreature(m_BattleRecord.BattleRecord.Actions[actionIndex]);
+                        _factionReplay.MoveCreature(m_BattleRecord.BattleRecord.actions[actionIndex]);
                         break;
                     case EntityType.BUILDING:
-                        _buildingReplay.BuildingFire(m_BattleRecord.BattleRecord.Actions[actionIndex]);
+                        _buildingReplay.BuildingFire(m_BattleRecord.BattleRecord.actions[actionIndex]);
                         break;
                 }
 

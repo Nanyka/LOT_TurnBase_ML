@@ -6,6 +6,5 @@ namespace JumpeeIsland
     public class TestBattleRecord : ScriptableObject
     {
         public BattleRecord BattleRecord;
-        
     }
 }

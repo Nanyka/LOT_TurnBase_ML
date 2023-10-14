@@ -21,7 +21,9 @@ namespace JumpeeIsland
         [SerializeField] private JILeaderboardManager _leaderboardManager;
         [SerializeField] private JICustomEventSender _customEventSender;
         [SerializeField] private JICloudSaveManager _cloudSaveManager;
- 
+
+        private string _enemyPlayerId;
+        
         public async Task Init()
         {
             try
@@ -432,8 +434,8 @@ namespace JumpeeIsland
             getPlayerRange = getPlayerRange.FindAll(t =>
                     t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
 
-            var selectRandomPlayer = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
-            return await _cloudCodeManager.CallLoadEnemyEnvironment(selectRandomPlayer);
+            _enemyPlayerId = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
+            return await _cloudCodeManager.CallLoadEnemyEnvironment(_enemyPlayerId);
         }
 
         public async Task<List<LeaderboardEntry>> GetPlayerRange()
@@ -505,6 +507,15 @@ namespace JumpeeIsland
         public void SendTutorialTrackEvent(string stepId)
         {
             _customEventSender.SendTutorialTrackEvent(stepId);
+        }
+
+        #endregion
+
+        #region CLOUDSAVE
+
+        public void AddBattleEmail(BattleRecord battleRecord)
+        {
+            _cloudSaveManager.AddTestMail(battleRecord);
         }
 
         #endregion

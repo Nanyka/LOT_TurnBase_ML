@@ -85,11 +85,11 @@ namespace JumpeeIsland
 
         #region TESTING
         
-        public async void AddTestMail()
+        public async void AddTestMail(BattleRecord battleRecord)
         {
             try
             {
-                inboxMessages.Add(CreateATestMail());
+                inboxMessages.Add(CreateATestMail(battleRecord));
 
                 var inboxBattleRecords = new InboxState
                 {
@@ -97,6 +97,7 @@ namespace JumpeeIsland
                 };
                 var inboxBattleRecordsJson = JsonUtility.ToJson(inboxBattleRecords);
 
+                //TODO: check how to save the mail on a specific playerID
                 var dataToSave = new Dictionary<string, object>
                 {
                     { k_InboxStateKey, inboxBattleRecordsJson }
@@ -110,7 +111,7 @@ namespace JumpeeIsland
             }
         }
 
-        private InboxMessage CreateATestMail()
+        private InboxMessage CreateATestMail(BattleRecord battleRecord)
         {
             var testBattleMessage = new InboxMessage();
             testBattleMessage.messageId = "TEST_BATTLE_MESSAGE";
@@ -119,8 +120,7 @@ namespace JumpeeIsland
             testBattleMessage.messageInfo.content = "I create this message to test adding a new message";
             testBattleMessage.messageInfo.expiration = "0.00:03:00.00";
             testBattleMessage.battleData = new MessageBattleData();
-            testBattleMessage.battleData.battleRecord = new BattleRecord();
-            testBattleMessage.battleData.battleRecord.isRecorded = true;
+            testBattleMessage.battleData.battleRecord = battleRecord;
 
             var expirationPeriod = TimeSpan.Parse(testBattleMessage.messageInfo.expiration);
             var hasUnclaimedAttachment = !string.IsNullOrEmpty(testBattleMessage.messageInfo.attachment);

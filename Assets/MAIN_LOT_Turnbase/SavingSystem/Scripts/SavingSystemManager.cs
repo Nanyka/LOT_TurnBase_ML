@@ -858,7 +858,7 @@ namespace JumpeeIsland
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
-        public async void SaveBattleResult(int starAmount, int score)
+        public async void SaveBattleResult(int starAmount, int score, float winRate)
         {
             if (starAmount == 0)
                 m_GameProcess.winStack = 0;
@@ -881,6 +881,16 @@ namespace JumpeeIsland
             m_GameProcess.battleCount++;
             m_GameProcess.score = Mathf.Clamp(m_GameProcess.score + score, 0, m_GameProcess.score + score);
 
+            var battleRecord = GetComponent<BattleRecorder>().GetBattleRecord();
+            battleRecord.winStar = starAmount;
+            battleRecord.winStack = m_GameProcess.winStack;
+            battleRecord.winRate = winRate;
+            battleRecord.score = score;
+            battleRecord.isRecorded = true;
+
+            //TODO send an email to enemy
+            m_CloudConnector.AddBattleEmail(battleRecord);
+            
             m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }

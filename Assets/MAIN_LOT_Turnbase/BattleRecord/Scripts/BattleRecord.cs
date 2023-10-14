@@ -16,7 +16,7 @@ namespace JumpeeIsland
         public float winRate;
         public List<CurrencyUnit> rewards;
         public EnvironmentData environmentData;
-        public List<RecordAction> Actions;
+        public List<RecordAction> actions = new();
 
         public BattleRecord()
         {

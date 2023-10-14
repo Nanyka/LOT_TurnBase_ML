@@ -5,7 +5,8 @@ namespace JumpeeIsland
 {
     public class BattleRecorder : MonoBehaviour
     {
-        [SerializeField] private TestBattleRecord m_BattleRecord;
+        // [SerializeField] private TestBattleRecord m_BattleRecord;
+        private BattleRecord m_BattleRecord = new();
 
         private void Start()
         {
@@ -15,13 +16,17 @@ namespace JumpeeIsland
 
         private void RecordEnvironment()
         {
-            m_BattleRecord.BattleRecord.environmentData =
-                new EnvironmentData(SavingSystemManager.Instance.GetEnvironmentData());
+            m_BattleRecord.environmentData = new EnvironmentData(SavingSystemManager.Instance.GetEnvironmentData());
         }
 
         private void RecordBattleAction(RecordAction action)
         {
-            m_BattleRecord.BattleRecord.Actions.Add(action);
+            m_BattleRecord.actions.Add(action);
+        }
+
+        public BattleRecord GetBattleRecord()
+        {
+            return m_BattleRecord;
         }
     }
 }

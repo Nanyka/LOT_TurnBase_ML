@@ -63,6 +63,8 @@ namespace JumpeeIsland
 
         protected virtual async void ShowGameOverPanel(int delayInterval)
         {
+            //TODO: calculate first, show UI after
+            
             await Task.Delay(delayInterval);
             
             Debug.Log("Show game over panel");
@@ -174,7 +176,7 @@ namespace JumpeeIsland
             }
 
             // Save battle statistic & Record score
-            SavingSystemManager.Instance.SaveBattleResult(winStar, score);
+            SavingSystemManager.Instance.SaveBattleResult(winStar, score, winRate);
         }
     }
 }
