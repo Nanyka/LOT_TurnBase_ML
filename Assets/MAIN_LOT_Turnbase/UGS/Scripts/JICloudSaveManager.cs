@@ -106,6 +106,8 @@ namespace JumpeeIsland
                     inboxMessages.Add(CreateATestMail(battleRecord,
                         inboxMessages.Count(t => t.mailType == MailType.BATTLE)));
 
+                Debug.Log($"Inbox email: {inboxMessages.Count}");
+
                 var inboxBattleRecords = new InboxState
                 {
                     messages = inboxMessages

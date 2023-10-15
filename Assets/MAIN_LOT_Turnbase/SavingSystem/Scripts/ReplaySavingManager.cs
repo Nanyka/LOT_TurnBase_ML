@@ -49,7 +49,7 @@ namespace JumpeeIsland
 
         private async void Replay()
         {
-            await WaitForTheNextAction(2000);
+            await WaitForTheNextAction(3000);
         }
 
         private async Task WaitForTheNextAction(int waitPeriod)
