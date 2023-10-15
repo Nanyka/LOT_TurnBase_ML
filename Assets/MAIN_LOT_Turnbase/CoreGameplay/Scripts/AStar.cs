@@ -116,7 +116,6 @@ namespace JumpeeIsland
 
         private List<Node> GetNeighbors(Node node)
         {
-            Debug.Log($"Neighbor node: {node}");
             List<Node> neighbors = new List<Node>();
 
             // Define the possible neighbor positions (assuming 4-directional movement)
