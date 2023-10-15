@@ -79,7 +79,8 @@ GameObject:
   - component: {fileID: 8624498452039744269}
   - component: {fileID: 7683256573301960137}
   - component: {fileID: 5299442247132173717}
-  m_Layer: 0
+  - component: {fileID: 8831474850301441296}
+  m_Layer: 11
   m_Name: Tree1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 7544168857196311008}
+  _appearVfx: {fileID: 0}
   _factionRenderers: []
   _activeMaterial: {fileID: 0}
   _disableMaterial: {fileID: 0}
@@ -190,8 +192,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Animator: {fileID: 0}
   m_RotatePart: {fileID: 0}
+  tiles: []
+  destination: {x: 0, y: 0, z: 0}
+  isMoving: 0
+  moveIndex: 0
+--- !u!135 &8831474850301441296
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7958129648120321236}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8622443213498383354
 GameObject:
   m_ObjectHideFlags: 0

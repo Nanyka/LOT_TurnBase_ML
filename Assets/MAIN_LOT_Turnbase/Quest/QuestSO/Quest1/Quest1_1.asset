@@ -24,72 +24,105 @@ MonoBehaviour:
       SkinAddress: 
       Position: {x: -4, y: 0, z: -1}
       Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 0
+      FactionType: 2
       CurrentHp: 0
       CurrentLevel: 0
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 0
+      CollectedCurrency: 2
     - EntityName: Tree1
       SkinAddress: 
       Position: {x: -4, y: 0, z: -2}
       Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 0
+      FactionType: 2
       CurrentHp: 0
       CurrentLevel: 0
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 0
+      CollectedCurrency: 2
     - EntityName: Tree1
       SkinAddress: 
       Position: {x: -4, y: 0, z: -3}
       Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 0
+      FactionType: 2
       CurrentHp: 0
       CurrentLevel: 0
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 0
+      CollectedCurrency: 2
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: -6, y: 0, z: -1}
+      Position: {x: -4, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 0
+      FactionType: 2
       CurrentHp: 0
       CurrentLevel: 0
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 0
+      CollectedCurrency: 2
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: -6, y: 0, z: -3}
+      Position: {x: -4, y: 0, z: -4}
       Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 0
+      FactionType: 2
       CurrentHp: 0
       CurrentLevel: 0
       AccumulatedStep: 0
       Level: 0
       ResourceType: 0
-      CollectedCurrency: 0
+      CollectedCurrency: 2
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -5, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 2
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -5, y: 0, z: -2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 2
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -5, y: 0, z: -4}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 2
     BuildingData: []
     PlayerData: []
     EnemyData:
     - EntityName: FirePig
       SkinAddress: 
-      Position: {x: -5, y: 0, z: -2}
+      Position: {x: -3, y: 0, z: -2}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
-      CurrentHp: 1
+      CurrentHp: 2
       CurrentLevel: 0
       CreatureType: 1
       CurrentShield: 0
       CurrentExp: 0
       TurnCount: 0
-      CurrentDamage: 1
+      CurrentDamage: 0
       EffectCaches: []
     CollectableData:
     - EntityName: PigTarget
@@ -154,12 +187,16 @@ MonoBehaviour:
   - {x: -6, y: 0, z: -4}
   - {x: 0, y: 0, z: -1}
   - {x: -2, y: 0, z: -3}
-  EndGameUnits: []
+  EndGameUnits:
+  - targetType: 4
+    targetPos: {x: -3, y: 0, z: -2}
+  - targetType: 5
+    targetPos: {x: -3, y: 0, z: 0}
   maxMovingTurn: 20
   maxTroop: 2
   excellentRank: 0e00000011000000
   rewards:
   - service: 
-    id: WOOD
+    id: FOOD
     amount: 1
-  tutorialForQuest: 
+  tutorialForQuest: /Tutorials/Boss1_1

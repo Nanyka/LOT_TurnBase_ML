@@ -39,8 +39,13 @@ namespace JumpeeIsland
 
         public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
         {
-            Node startNode = NodeFromVector3(startPos);
+            Node startNode = new Node(startPos,true);
             Node targetNode = NodeFromVector3(targetPos);
+
+            if (targetNode == null)
+                return null;
+            
+            // Debug.Log($"Start node: {startPos} ,Target node: {targetNode.position}");
 
             List<Node> openSet = new List<Node>();
             HashSet<Node> closedSet = new HashSet<Node>();
@@ -52,7 +57,8 @@ namespace JumpeeIsland
                 Node currentNode = openSet[0];
                 for (int i = 1; i < openSet.Count; i++)
                 {
-                    if (openSet[i].fCost < currentNode.fCost || (openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost))
+                    if (openSet[i].fCost < currentNode.fCost ||
+                        (openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost))
                     {
                         currentNode = openSet[i];
                     }
@@ -110,6 +116,7 @@ namespace JumpeeIsland
 
         private List<Node> GetNeighbors(Node node)
         {
+            Debug.Log($"Neighbor node: {node}");
             List<Node> neighbors = new List<Node>();
 
             // Define the possible neighbor positions (assuming 4-directional movement)
@@ -145,7 +152,8 @@ namespace JumpeeIsland
         private Node NodeFromVector3(Vector3 vector3Position)
         {
             // Round the Vector3 position to the nearest integer coordinates
-            Vector3 roundedPosition = new Vector3(Mathf.RoundToInt(vector3Position.x), 0, Mathf.RoundToInt(vector3Position.z));
+            Vector3 roundedPosition =
+                new Vector3(Mathf.RoundToInt(vector3Position.x), 0, Mathf.RoundToInt(vector3Position.z));
 
             // Check if the node exists in the grid
             if (grid.ContainsKey(roundedPosition))

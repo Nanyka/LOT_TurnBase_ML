@@ -22,7 +22,7 @@ MonoBehaviour:
     ResourceData:
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: -1, y: 0, z: -2}
+      Position: {x: -1, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -33,7 +33,7 @@ MonoBehaviour:
       CollectedCurrency: 0
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: 1, y: 0, z: 2}
+      Position: {x: -2, y: 0, z: 1}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
       CollectedCurrency: 0
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: 1, y: 0, z: 3}
+      Position: {x: -1, y: 0, z: 2}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -69,15 +69,15 @@ MonoBehaviour:
       StorageCapacity: 0
       TurnCount: 0
       StorageCurrency: 0
-    - EntityName: IceTower
+    - EntityName: ArcherTower
       SkinAddress: 
-      Position: {x: 0, y: 0, z: 2}
+      Position: {x: -2, y: 0, z: 2}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
-      CurrentHp: 2
+      CurrentHp: 1
       CurrentLevel: 0
       BuildingType: 5
-      CurrentDamage: 0
+      CurrentDamage: 1
       CurrentShield: 0
       CurrentExp: 0
       CurrentStorage: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
       StorageCurrency: 0
     - EntityName: IceTower
       SkinAddress: 
-      Position: {x: -2, y: 0, z: 2}
+      Position: {x: 1, y: 0, z: 2}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
       CurrentHp: 2
@@ -103,19 +103,6 @@ MonoBehaviour:
     EnemyData:
     - EntityName: FirePig
       SkinAddress: 
-      Position: {x: 2, y: 0, z: 3}
-      Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 1
-      CurrentHp: 1
-      CurrentLevel: 0
-      CreatureType: 1
-      CurrentShield: 0
-      CurrentExp: 0
-      TurnCount: 0
-      CurrentDamage: 0
-      EffectCaches: []
-    - EntityName: FirePig
-      SkinAddress: 
       Position: {x: -3, y: 0, z: 3}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
@@ -130,7 +117,7 @@ MonoBehaviour:
     CollectableData:
     - EntityName: PigTarget
       SkinAddress: 
-      Position: {x: -1, y: 0, z: 0}
+      Position: {x: 2, y: 0, z: 3}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -139,7 +126,7 @@ MonoBehaviour:
       AccumulatedStep: 0
     - EntityName: TileSpikes
       SkinAddress: 
-      Position: {x: 0, y: 0, z: 0}
+      Position: {x: 1, y: 0, z: 1}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -148,7 +135,16 @@ MonoBehaviour:
       AccumulatedStep: 0
     - EntityName: TileSpikes
       SkinAddress: 
-      Position: {x: -2, y: 0, z: 0}
+      Position: {x: 2, y: 0, z: 2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 0
+      CurrentLevel: 0
+      CollectableType: 1
+      AccumulatedStep: 0
+    - EntityName: TileSpikes
+      SkinAddress: 
+      Position: {x: 1, y: 0, z: 3}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 0
@@ -209,10 +205,8 @@ MonoBehaviour:
   EndGameUnits:
   - targetType: 4
     targetPos: {x: -3, y: 0, z: 3}
-  - targetType: 4
-    targetPos: {x: 2, y: 0, z: 3}
   - targetType: 5
-    targetPos: {x: -1, y: 0, z: 0}
+    targetPos: {x: 2, y: 0, z: 3}
   maxMovingTurn: 20
   maxTroop: 2
   excellentRank: 110000000e000000

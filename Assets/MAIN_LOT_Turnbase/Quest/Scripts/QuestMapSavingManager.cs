@@ -12,10 +12,10 @@ namespace JumpeeIsland
         // invoke at QuestButton
         [NonSerialized] public UnityEvent<IConfirmFunction> OnClickQuestButton = new();
         
-        // invoke at QuestMapUIManager
+        // send to QuestMapUIManager
         [NonSerialized] public UnityEvent<QuestData> OnUpdateQuestState = new();
 
-        private QuestData m_QuestData;
+        [SerializeField] private QuestData m_QuestData;
         private bool encrypt = true;
         private string _gamePath;
 

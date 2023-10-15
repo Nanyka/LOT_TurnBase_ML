@@ -22,7 +22,29 @@ MonoBehaviour:
     ResourceData:
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: -1, y: 0, z: 0}
+      Position: {x: -1, y: 0, z: -2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: 1, y: 0, z: 2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: 1, y: 0, z: 3}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -34,43 +56,13 @@ MonoBehaviour:
     BuildingData:
     - EntityName: ArcherTower
       SkinAddress: 
-      Position: {x: -3, y: 0, z: 3}
+      Position: {x: 0, y: 0, z: 1}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
       CurrentHp: 1
       CurrentLevel: 0
       BuildingType: 5
       CurrentDamage: 1
-      CurrentShield: 0
-      CurrentExp: 0
-      CurrentStorage: 0
-      StorageCapacity: 0
-      TurnCount: 0
-      StorageCurrency: 0
-    - EntityName: ArcherTower
-      SkinAddress: 
-      Position: {x: 1, y: 0, z: 3}
-      Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 1
-      CurrentHp: 1
-      CurrentLevel: 0
-      BuildingType: 5
-      CurrentDamage: 1
-      CurrentShield: 0
-      CurrentExp: 0
-      CurrentStorage: 0
-      StorageCapacity: 0
-      TurnCount: 0
-      StorageCurrency: 0
-    - EntityName: IceTower
-      SkinAddress: 
-      Position: {x: -2, y: 0, z: 2}
-      Rotation: {x: 0, y: 0, z: 0}
-      FactionType: 1
-      CurrentHp: 2
-      CurrentLevel: 0
-      BuildingType: 5
-      CurrentDamage: 0
       CurrentShield: 0
       CurrentExp: 0
       CurrentStorage: 0
@@ -92,11 +84,39 @@ MonoBehaviour:
       StorageCapacity: 0
       TurnCount: 0
       StorageCurrency: 0
+    - EntityName: IceTower
+      SkinAddress: 
+      Position: {x: -2, y: 0, z: 2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 1
+      CurrentHp: 2
+      CurrentLevel: 0
+      BuildingType: 5
+      CurrentDamage: 0
+      CurrentShield: 0
+      CurrentExp: 0
+      CurrentStorage: 0
+      StorageCapacity: 0
+      TurnCount: 0
+      StorageCurrency: 0
     PlayerData: []
     EnemyData:
     - EntityName: FirePig
       SkinAddress: 
-      Position: {x: 1, y: 0, z: 1}
+      Position: {x: 2, y: 0, z: 3}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 1
+      CurrentHp: 1
+      CurrentLevel: 0
+      CreatureType: 1
+      CurrentShield: 0
+      CurrentExp: 0
+      TurnCount: 0
+      CurrentDamage: 0
+      EffectCaches: []
+    - EntityName: FirePig
+      SkinAddress: 
+      Position: {x: -3, y: 0, z: 3}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
       CurrentHp: 1
@@ -110,12 +130,30 @@ MonoBehaviour:
     CollectableData:
     - EntityName: PigTarget
       SkinAddress: 
-      Position: {x: -1, y: 0, z: 2}
+      Position: {x: -1, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
       CurrentLevel: 0
       CollectableType: 3
+      AccumulatedStep: 0
+    - EntityName: TileSpikes
+      SkinAddress: 
+      Position: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      CollectableType: 1
+      AccumulatedStep: 0
+    - EntityName: TileSpikes
+      SkinAddress: 
+      Position: {x: -2, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 0
+      CurrentLevel: 0
+      CollectableType: 1
       AccumulatedStep: 0
   winCondition:
     MapSize: 0
@@ -170,9 +208,11 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   EndGameUnits:
   - targetType: 4
-    targetPos: {x: 1, y: 0, z: 1}
+    targetPos: {x: -3, y: 0, z: 3}
+  - targetType: 4
+    targetPos: {x: 2, y: 0, z: 3}
   - targetType: 5
-    targetPos: {x: -1, y: 0, z: 2}
+    targetPos: {x: -1, y: 0, z: 0}
   maxMovingTurn: 20
   maxTroop: 2
   excellentRank: 110000000e000000

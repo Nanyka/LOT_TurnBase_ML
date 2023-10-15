@@ -22,7 +22,7 @@ MonoBehaviour:
     ResourceData:
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: 1, y: 0, z: -3}
+      Position: {x: -5, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -33,7 +33,7 @@ MonoBehaviour:
       CollectedCurrency: 0
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: 2, y: 0, z: -4}
+      Position: {x: -4, y: 0, z: -3}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
       CollectedCurrency: 0
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: 3, y: 0, z: -3}
+      Position: {x: -3, y: 0, z: -1}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -55,7 +55,18 @@ MonoBehaviour:
       CollectedCurrency: 0
     - EntityName: Tree1
       SkinAddress: 
-      Position: {x: 2, y: 0, z: -2}
+      Position: {x: -4, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -3, y: 0, z: -3}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
@@ -67,7 +78,22 @@ MonoBehaviour:
     BuildingData:
     - EntityName: ArcherTower
       SkinAddress: 
-      Position: {x: 0, y: 0, z: -2}
+      Position: {x: -6, y: 0, z: -2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 1
+      CurrentHp: 1
+      CurrentLevel: 0
+      BuildingType: 5
+      CurrentDamage: 1
+      CurrentShield: 0
+      CurrentExp: 0
+      CurrentStorage: 0
+      StorageCapacity: 0
+      TurnCount: 0
+      StorageCurrency: 0
+    - EntityName: ArcherTower
+      SkinAddress: 
+      Position: {x: -4, y: 0, z: -2}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
       CurrentHp: 1
@@ -84,7 +110,7 @@ MonoBehaviour:
     EnemyData:
     - EntityName: FirePig
       SkinAddress: 
-      Position: {x: 3, y: 0, z: -1}
+      Position: {x: -5, y: 0, z: -2}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 1
       CurrentHp: 1
@@ -98,25 +124,25 @@ MonoBehaviour:
     CollectableData:
     - EntityName: PigTarget
       SkinAddress: 
-      Position: {x: 2, y: 0, z: -3}
+      Position: {x: -3, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
       CurrentLevel: 0
       CollectableType: 3
       AccumulatedStep: 0
-    - EntityName: TileSpikes
+    - EntityName: TreeChest
       SkinAddress: 
-      Position: {x: 0, y: 0, z: -3}
+      Position: {x: -4, y: 0, z: -4}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 1
       CurrentLevel: 0
       CollectableType: 1
       AccumulatedStep: 0
-    - EntityName: TileSpikes
+    - EntityName: TreeChest
       SkinAddress: 
-      Position: {x: 4, y: 0, z: -3}
+      Position: {x: -6, y: 0, z: -1}
       Rotation: {x: 0, y: 0, z: 0}
       FactionType: 2
       CurrentHp: 0
@@ -154,33 +180,33 @@ MonoBehaviour:
     IsCheckBossUnlock: 0
     BossUnlockAmount: 0
   enableTiles:
-  - {x: 3, y: 0, z: 0}
-  - {x: 4, y: 0, z: 0}
-  - {x: 2, y: 0, z: -1}
-  - {x: 3, y: 0, z: -1}
-  - {x: 4, y: 0, z: -1}
-  - {x: -1, y: 0, z: -2}
-  - {x: 0, y: 0, z: -2}
-  - {x: 1, y: 0, z: -2}
-  - {x: 2, y: 0, z: -2}
-  - {x: 3, y: 0, z: -2}
-  - {x: 4, y: 0, z: -2}
-  - {x: -1, y: 0, z: -3}
-  - {x: 0, y: 0, z: -3}
-  - {x: 1, y: 0, z: -3}
-  - {x: 2, y: 0, z: -3}
-  - {x: 3, y: 0, z: -3}
-  - {x: 4, y: 0, z: -3}
-  - {x: 0, y: 0, z: -4}
-  - {x: 1, y: 0, z: -4}
-  - {x: 2, y: 0, z: -4}
-  - {x: 3, y: 0, z: -4}
-  - {x: 4, y: 0, z: -4}
+  - {x: -3, y: 0, z: 0}
+  - {x: -4, y: 0, z: 0}
+  - {x: -5, y: 0, z: 0}
+  - {x: -6, y: 0, z: 0}
+  - {x: -3, y: 0, z: -1}
+  - {x: -4, y: 0, z: -1}
+  - {x: -5, y: 0, z: -1}
+  - {x: -6, y: 0, z: -1}
+  - {x: -3, y: 0, z: -2}
+  - {x: -4, y: 0, z: -2}
+  - {x: -5, y: 0, z: -2}
+  - {x: -6, y: 0, z: -2}
+  - {x: -3, y: 0, z: -3}
+  - {x: -4, y: 0, z: -3}
+  - {x: -5, y: 0, z: -3}
+  - {x: -6, y: 0, z: -3}
+  - {x: -3, y: 0, z: -4}
+  - {x: -4, y: 0, z: -4}
+  - {x: -5, y: 0, z: -4}
+  - {x: -6, y: 0, z: -4}
+  - {x: 0, y: 0, z: -1}
+  - {x: -2, y: 0, z: -3}
   EndGameUnits:
-  - targetType: 4
-    targetPos: {x: 3, y: 0, z: -1}
   - targetType: 5
-    targetPos: {x: 2, y: 0, z: -3}
+    targetPos: {x: -3, y: 0, z: 0}
+  - targetType: 4
+    targetPos: {x: -5, y: 0, z: -2}
   maxMovingTurn: 20
   maxTroop: 2
   excellentRank: 110000000e000000

@@ -84,6 +84,7 @@ namespace JumpeeIsland
             Debug.Log("Remove building");
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             _buildingController.RemoveBuilding(this);
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
             gameObject.SetActive(false);
         }
 

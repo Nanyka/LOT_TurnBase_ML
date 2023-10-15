@@ -17,7 +17,7 @@ namespace JumpeeIsland
         [SerializeField] private FireComp m_FireComp;
         [SerializeField] private AnimateComp m_AnimateComp;
         [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
-        
+
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -66,7 +66,9 @@ namespace JumpeeIsland
             return m_BuildingData.FactionType;
         }
 
-        public override void GainGoldValue() { }
+        public override void GainGoldValue()
+        {
+        }
 
         public BuildingType GetBuildingType()
         {
@@ -136,7 +138,8 @@ namespace JumpeeIsland
 
         public void StoreCurrency(int amount)
         {
-            m_BuildingData.CurrentStorage += amount <= m_BuildingData.GetStoreSpace()? amount : m_BuildingData.GetStoreSpace();
+            m_BuildingData.CurrentStorage +=
+                amount <= m_BuildingData.GetStoreSpace() ? amount : m_BuildingData.GetStoreSpace();
             m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);
             m_HealthComp.UpdatePriceText(CalculateSellingPrice());
         }
@@ -180,7 +183,7 @@ namespace JumpeeIsland
                 if (m_BuildingData.BuildingType != BuildingType.MAINHALL)
                     m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
             }
-            else if(GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+            else if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
             {
                 // If player's creatures attack enemy building, they also seize loot from this storage
                 if (fromEntity.GetFaction() == FactionType.Player && m_BuildingData.FactionType == FactionType.Enemy)
@@ -195,12 +198,15 @@ namespace JumpeeIsland
             }
             else
                 m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
-            
+
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         private int EnemyRopeCurrency(int damage)
         {
+            if (m_BuildingData.StorageCurrency == CurrencyType.NONE)
+                return 0;
+
             int seizedAmount = 0;
             if (m_BuildingData.CurrentStorage > m_BuildingData.CurrentHp)
             {
@@ -211,12 +217,12 @@ namespace JumpeeIsland
                 seizedAmount = m_BuildingData.CurrentStorage > damage ? damage : m_BuildingData.CurrentStorage;
 
             m_BuildingData.CurrentStorage -= seizedAmount;
-            
+
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 DeductCurrency(seizedAmount);
             else if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
                 MainUI.Instance.OnUpdateCurrencies.Invoke();
-            
+
             return seizedAmount;
         }
 
