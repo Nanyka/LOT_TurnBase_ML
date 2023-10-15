@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
@@ -20,10 +21,13 @@ namespace JumpeeIsland
             Addressables.WebRequestOverride = AddPrivateToken;
 #endif
 
+            if (m_LogPrefab.IsNullOrWhitespace())
+                return null;
+
             var handle = Addressables.LoadAssetAsync<Sprite>(m_LogPrefab);
             return handle.WaitForCompletion();
         }
-        
+
         public ScriptableObject GetAddressableSO(string objectKey)
         {
             m_LogPrefab = objectKey;
@@ -40,7 +44,7 @@ namespace JumpeeIsland
         public void GetAddressableGameObject(string objectKey, Transform spawnTransform)
         {
             m_LogPrefab = objectKey;
-            
+
 #if UNITY_STANDALONE_OSX
             //Add private token to addressable web request header
             Addressables.WebRequestOverride = AddPrivateToken;
@@ -49,12 +53,13 @@ namespace JumpeeIsland
             // Reset spawnTransform
             foreach (Transform child in spawnTransform)
                 Destroy(child.gameObject);
-            
+
             Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
         }
 
         // Get skin for animated objects
-        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp, AnimateComp animateComp)
+        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp,
+            AnimateComp animateComp)
         {
             m_LogPrefab = objectKey;
 
@@ -89,6 +94,19 @@ namespace JumpeeIsland
             var encodedToken = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($":{bucketAccessToken}"));
 
             request.SetRequestHeader("Authorization", $"Basic {encodedToken}");
+        }
+
+        public Material GetMaterial(string objectKey)
+        {
+            m_LogPrefab = objectKey;
+
+#if UNITY_STANDALONE_OSX
+            //Add private token to addressable web request header
+            Addressables.WebRequestOverride = AddPrivateToken;
+#endif
+
+            var handle = Addressables.LoadAssetAsync<Material>(m_LogPrefab);
+            return handle.WaitForCompletion();
         }
     }
 }

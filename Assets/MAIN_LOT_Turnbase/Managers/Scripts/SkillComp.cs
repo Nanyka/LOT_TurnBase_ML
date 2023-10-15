@@ -1,22 +1,38 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class SkillComp: MonoBehaviour
+    public class SkillComp : MonoBehaviour
     {
-        [SerializeField] private Skill_SO[] m_SkillSOs;
+        [SerializeField] private List<Skill_SO> m_SkillSOs = new();
 
-        public IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep)
+        public void Init(string creatureName)
         {
-            if (m_SkillSOs.Length < jumpStep || m_SkillSOs[jumpStep - 1] == null)
+            if (m_SkillSOs.Count > 0)
+                return;
+
+            var enemyInventory = SavingSystemManager.Instance.GetInventoryItemByName(creatureName);
+            if (enemyInventory.skillsAddress == null)
+                return;
+
+            foreach (var skillAddress in enemyInventory.skillsAddress)
+                m_SkillSOs.Add((Skill_SO)AddressableManager.Instance.GetAddressableSO(skillAddress));
+        }
+
+        public IEnumerable<Vector3> AttackPath(Vector3 targetPos, Vector3 direction, int jumpStep)
+        {
+            if (m_SkillSOs.Count == 0)
                 return null;
-            return m_SkillSOs[jumpStep - 1].CalculateSkillRange(targetPos, direction);
+            
+            return m_SkillSOs[m_SkillSOs.Count < jumpStep ? m_SkillSOs.Count - 1 : jumpStep - 1]
+                .CalculateSkillRange(targetPos, direction);
         }
 
         public float GetSkillMagnitude(int jumpStep)
         {
-            return m_SkillSOs[jumpStep-1].GetMagnitude();
+            return m_SkillSOs[jumpStep - 1].GetDuration();
         }
 
         public IEnumerable<Skill_SO> GetSkills()
@@ -26,12 +42,13 @@ namespace JumpeeIsland
 
         public Skill_SO GetSkillByIndex(int index)
         {
+            index = index < GetSkillAmount() ? index : (GetSkillAmount() - 1);
             return m_SkillSOs[index];
         }
 
         public int GetSkillAmount()
         {
-            return m_SkillSOs.Length;
+            return m_SkillSOs.Count();
         }
 
         public string GetAttackAnimation(int atIndex)

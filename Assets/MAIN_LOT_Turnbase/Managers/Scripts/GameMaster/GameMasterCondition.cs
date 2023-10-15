@@ -66,20 +66,26 @@ namespace JumpeeIsland
 
         [VerticalGroup("Creature/Row2")] public int CreatureAmount;
 
+        public bool IsExpCondition;
+        [ShowIf("@IsExpCondition == true")] public long playerExp;
+
         public bool IsUICondition;
         [ShowIf("@IsUICondition == true")] public string UIElement;
 
-        public bool IsScoreCondition;
+        public bool IsSelectEntity;
+        [ShowIf("@IsSelectEntity == true")] public string EntityName;
 
-        [VerticalGroup("Score", VisibleIf = "@IsScoreCondition == true")] [VerticalGroup("Score/Row2")]
-        public CompareType ScoreCompare;
+        public bool IsCheckBattle;
+        [ShowIf("@IsCheckBattle == true")] public int BattleCount;
 
-        [VerticalGroup("Score/Row1")] public int ScoreAmount;
+        public bool IsCheckBossUnlock;
+        [ShowIf("@IsCheckBossUnlock == true")] public int BossUnlockAmount;
 
         public bool CheckPass()
         {
             return CheckMapSize() && CheckCurrency() && CheckStorageSpace() && CheckResource() && CheckCollectable() &&
-                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckScore();
+                   CheckBuildingType() && CheckCreatureType() && CheckUICondition() && CheckBattleCount() &&
+                   CheckBossUnlock() && CheckEntityCondition() && CheckPlayerExp();
         }
 
         private bool CheckMapSize()
@@ -166,9 +172,11 @@ namespace JumpeeIsland
 
             int totalAmount = 0;
             foreach (var collectable in collectables)
+            {
                 if (collectable.CollectableType == Collectable)
                     totalAmount++;
-
+            }
+            
             switch (CollectableCompare)
             {
                 case CompareType.Higher:
@@ -241,23 +249,39 @@ namespace JumpeeIsland
             return MainUI.Instance.CheckUIActive(UIElement);
         }
 
-        private bool CheckScore()
+        private bool CheckEntityCondition()
         {
-            if (IsScoreCondition == false)
+            if (IsSelectEntity == false)
                 return true;
 
-            var totalScore = SavingSystemManager.Instance.CalculateEnvScore();
-            switch (BuildingCompare)
-            {
-                case CompareType.Higher:
-                    return totalScore > ScoreAmount;
-                case CompareType.Lower:
-                    return totalScore < ScoreAmount;
-                case CompareType.Equal:
-                    return totalScore == ScoreAmount;
-            }
+            if (MainUI.Instance.GetSelectedEntity() == null)
+                return false;
 
-            return true;
+            return MainUI.Instance.GetSelectedEntity().GetData().EntityName.Equals(EntityName);
+        }
+
+        private bool CheckBattleCount()
+        {
+            if (IsCheckBattle == false)
+                return true;
+
+            return SavingSystemManager.Instance.GetGameProcess().battleCount >= BattleCount;
+        }
+
+        private bool CheckBossUnlock()
+        {
+            if (IsCheckBossUnlock == false)
+                return true;
+
+            return SavingSystemManager.Instance.GetGameProcess().bossUnlock >= BossUnlockAmount;
+        }
+
+        private bool CheckPlayerExp()
+        {
+            if (IsExpCondition == false)
+                return true;
+
+            return SavingSystemManager.Instance.GetPlayerExp() > playerExp;
         }
     }
 }

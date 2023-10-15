@@ -7,14 +7,18 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class NPCInGame : CreatureInGame, IGetCreatureInfo
+    public class NPCInGame : CreatureInGame, IGetEntityInfo
     {
         public DummyAction InferMoving;
+
+        [Tooltip("NPC will switch brain to infer their motion based on skills")]
         public bool _isSwitchBrain = true;
+
+        [Tooltip("Some NPC just move around without jumping. If NPC can not jump, its animator is not set as root motion and not require ParentGoWithRoot script")]
+        public bool _isJumpable = true;
 
         private BehaviorParameters m_BehaviorParameters;
         private Agent m_Agent;
-        private int _currentDirection;
 
         public virtual void Awake()
         {
@@ -61,7 +65,10 @@ namespace JumpeeIsland
 
         public virtual void AskForAction()
         {
-            m_Agent?.RequestDecision();
+            if (m_BehaviorParameters.Model == null)
+                m_FactionController.WaitForCreature();
+            else
+                m_Agent?.RequestDecision();
         }
 
         public virtual void ResponseAction(int direction)
@@ -95,7 +102,8 @@ namespace JumpeeIsland
 
         public void SetBrain(NNModel brain)
         {
-            m_BehaviorParameters.Model = brain;
+            if (brain != null)
+                m_BehaviorParameters.Model = brain;
         }
 
         #endregion
@@ -106,32 +114,63 @@ namespace JumpeeIsland
         {
             MarkAsUsedThisTurn();
             InferMoving = selectedAction;
+            CreatureStartMove(m_Transform.position, InferMoving.Action);
+        }
+        
+        // Use in battleReplayMode
+        public void ConductSelectedAction(int action, int jump)
+        {
+            MarkAsUsedThisTurn();
+            InferMoving.Action = action;
+            InferMoving.JumpCount = jump;
+            CreatureStartMove(m_Transform.position, InferMoving.Action);
+        }
 
-            // Change agent direction before the agent jump to the new position
-            if (selectedAction.TargetPos != m_Transform.position)
-                _rotatePart.forward = selectedAction.TargetPos - m_Transform.position;
+        protected override void CreatureStartMove(Vector3 currentPos, int direction)
+        {
+            MainUI.Instance.OnShowInfo.Invoke(this);
+            m_Entity.ConductCreatureMove(currentPos, direction, this);
 
-            StartCoroutine(MoveOverTime());
+            if (InferMoving.JumpCount > 0)
+                m_Entity.AttackSetup(this);
+            
+            m_Entity.TurnHealthSlider(false);
+        }
+
+        public override void CreatureEndMove()
+        {
+            m_Entity.UpdateTransform(InferMoving.TargetPos, m_RotatePart.eulerAngles);
+            m_Entity.TurnHealthSlider(true);
+            m_FactionController.KickOffNewTurn();
         }
 
         private IEnumerator MoveOverTime()
         {
             m_Entity.SetAnimation(AnimateType.Walk, true);
-            m_Entity.UpdateTransform(InferMoving.TargetPos, _rotatePart.eulerAngles);
             while (transform.position != InferMoving.TargetPos)
             {
-                m_Transform.position = Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 2f * Time.deltaTime);
+                m_Transform.position =
+                    Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 0.5f * Time.deltaTime);
                 yield return null;
             }
 
             m_Entity.SetAnimation(AnimateType.Walk, false);
+            m_Entity.UpdateTransform(InferMoving.TargetPos, m_RotatePart.eulerAngles);
             // Ask for the next inference
-            m_FactionController.KickOffNewTurn();
+            if (GetJumpStep() > 0)
+                Attack();
+            else
+                m_FactionController.KickOffNewTurn();
         }
 
-        public new void Attack()
+        private new void Attack()
         {
-            m_Entity.AttackSetup(this);
+            m_Entity.AttackSetup(this, this);
+        }
+        
+        public override void AttackResponse()
+        {
+            m_FactionController.KickOffNewTurn();
         }
 
         #endregion
@@ -145,7 +184,8 @@ namespace JumpeeIsland
 
         public new (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, _rotatePart.forward, InferMoving.JumpCount, m_FactionController.GetFaction());
+            return (InferMoving.TargetPos, GameFlowManager.Instance.GetEnvManager().GetMovementInspector().DirectionTo(InferMoving.Action),
+                InferMoving.JumpCount, m_FactionController.GetFaction());
         }
 
         public new EnvironmentManager GetEnvironment()

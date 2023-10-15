@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf1697fabb846e3b99a078da6de5cd6, type: 3}
+  m_Name: Tier0_GameCondition
+  m_EditorClassIdentifier: 
+  m_EntityType: 4
+  _getThroughCondition:
+    MapSize: 0
+    Currency: 1
+    CurrencyCompare: 1
+    CurrencyAmount: 5
+    Storage: 0
+    StorageCompare: 1
+    StorageAmount: 1
+    Resource: 0
+    ResourceCompare: 0
+    ResourceAmount: 0
+    Collectable: 0
+    CollectableCompare: 0
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
+    IsUICondition: 0
+    UIElement: 
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
+  _mainCondition:
+    MapSize: 0
+    Currency: 0
+    CurrencyCompare: 0
+    CurrencyAmount: 0
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
+    Resource: 0
+    ResourceCompare: 1
+    ResourceAmount: 2
+    Collectable: 0
+    CollectableCompare: 0
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 1
+    CreatureCompare: 1
+    CreatureAmount: 4
+    IsExpCondition: 0
+    playerExp: 0
+    IsUICondition: 0
+    UIElement: 
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
+  _spawnDecisions:
+  - ObjectName: Pig
+    Proportion: 100
+  _maxSpawningAmount: 4

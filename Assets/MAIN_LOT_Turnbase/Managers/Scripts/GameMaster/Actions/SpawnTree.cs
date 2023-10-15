@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using GOAP;
-using JumpeeIsland;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -13,7 +10,7 @@ namespace JumpeeIsland
         public override bool PrePerform()
         {
             var availableTile = GameFlowManager.Instance.GetEnvManager().GetPotentialTile();
-            if (availableTile != Vector3.negativeInfinity)
+            if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
                 SavingSystemManager.Instance.OnSpawnResource(_resourceId,availableTile);
         
             return true;

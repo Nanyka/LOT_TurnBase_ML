@@ -9,8 +9,8 @@ namespace JumpeeIsland
     public class CreatureBuyButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction
     {
         [SerializeField] private GameObject m_Container;
-        [SerializeField] private TextMeshProUGUI m_ItemName;
         [SerializeField] private Image m_ItemIcon;
+        [SerializeField] private TextMeshProUGUI m_Price;
         
         // private AsyncOperationHandle m_UCDObjectLoadingHandle;
         protected CreatureMenu m_CreatureMenu;
@@ -27,11 +27,14 @@ namespace JumpeeIsland
         public virtual void TurnOn(JIInventoryItem creatureItem, CreatureMenu creatureMenu)
         {
             m_CreatureItem = creatureItem;
-            m_ItemName.text = m_CreatureItem.inventoryName;
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(m_CreatureItem.spriteAddress);
             if (m_CreatureMenu == null)
                 m_CreatureMenu = creatureMenu;
 
+            var costs = SavingSystemManager.Instance.GetPurchaseCost(creatureItem.virtualPurchaseId);
+            if (costs.Count > 0)
+                m_Price.text = costs[0].amount.ToString();
+            
             m_Container.SetActive(true);
         }
 
@@ -61,7 +64,7 @@ namespace JumpeeIsland
                 return;
 
             _spawnPosition = collidedTile.transform.position;
-            m_CreatureMenu.EndDeal(this);
+            m_CreatureMenu.EndSelectionPhase(this, m_CreatureItem);
         }
 
         public virtual void ClickYes()

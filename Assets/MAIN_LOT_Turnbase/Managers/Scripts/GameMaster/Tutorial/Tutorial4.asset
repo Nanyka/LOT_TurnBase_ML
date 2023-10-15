@@ -24,47 +24,28 @@ MonoBehaviour:
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 0
-    Collectable: 1
+    Collectable: 0
     CollectableCompare: 0
     CollectableAmount: 0
-    Building: 0
+    Building: 5
     BuildingCompare: 0
     BuildingAmount: 0
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
-  conditions:
-  - MapSize: 0
-    Currency: 0
-    CurrencyCompare: 0
-    CurrencyAmount: 1
-    Storage: 0
-    StorageCompare: 0
-    StorageAmount: 0
-    Resource: 0
-    ResourceCompare: 0
-    ResourceAmount: 1
-    Collectable: 1
-    CollectableCompare: 1
-    CollectableAmount: 1
-    Building: 1
-    BuildingCompare: 2
-    BuildingAmount: 1
-    Creature: 0
-    CreatureCompare: 0
-    CreatureAmount: 0
-    IsUICondition: 0
-    UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
+  conditions: []
   steps:
-  - Pointer: 0
+  - Pointer: 1
     EntitySelection: 0
     EntityType: 0
     CurrencyFromResource: 0
@@ -72,16 +53,16 @@ MonoBehaviour:
     CreatureType: 0
     ArrowSign: 0
     MinJump: 0
-    ButtonSelection: 0
-    ButtonName: 
+    ButtonSelection: 1
+    ButtonName: BuyBuilding
     CheckPosition: 0
     CheckEntity: 0
-    Spawner: 1
-    SpawnType: 5
+    Spawner: 0
+    SpawnType: 0
     IsDesignatedPos: 0
     DesignatedPos: {x: 0, y: 0, z: 0}
     SpawnResource: 
-    SpawnCollectable: Startup2_Chest
+    SpawnCollectable: 
     SpawnCollectableLevel: 0
     SpawnEnemy: 
     SpawnEnemyLevel: 0
@@ -97,20 +78,80 @@ MonoBehaviour:
       Resource: 0
       ResourceCompare: 0
       ResourceAmount: 0
-      Collectable: 1
+      Collectable: 0
       CollectableCompare: 2
       CollectableAmount: 1
       Building: 0
+      BuildingCompare: 2
+      BuildingAmount: 1
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
+      IsUICondition: 1
+      UIElement: BuildingTabHolder
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
+    IsEndTutorial: 0
+    Conversation: 0
+    Message: 
+  - Pointer: 1
+    EntitySelection: 0
+    EntityType: 0
+    CurrencyFromResource: 0
+    BuildingType: 0
+    CreatureType: 0
+    ArrowSign: 0
+    MinJump: 0
+    ButtonSelection: 1
+    ButtonName: DefendBuildingTab
+    CheckPosition: 0
+    CheckEntity: 0
+    Spawner: 0
+    SpawnType: 0
+    IsDesignatedPos: 0
+    DesignatedPos: {x: 0, y: 0, z: 0}
+    SpawnResource: 
+    SpawnCollectable: 
+    SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
+    CheckEndCondition: 1
+    EndCondition:
+      MapSize: 0
+      Currency: 0
+      CurrencyCompare: 0
+      CurrencyAmount: 0
+      Storage: 0
+      StorageCompare: 0
+      StorageAmount: 0
+      Resource: 0
+      ResourceCompare: 0
+      ResourceAmount: 0
+      Collectable: 0
+      CollectableCompare: 0
+      CollectableAmount: 0
+      Building: 5
       BuildingCompare: 0
       BuildingAmount: 0
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 

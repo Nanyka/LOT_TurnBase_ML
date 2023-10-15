@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GOAP;
 using JumpeeIsland;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -33,68 +35,72 @@ namespace JumpeeIsland
             if (_spawnTree == null)
                 return;
             
-            var responseDecision = _spawnTree.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
-                return;
-            beliefs.ModifyState(responseDecision, 0);
+            // var responseDecision = _spawnTree.GetObjectsToSpawn();
+            // if (responseDecision == null || !responseDecision.Any())
+            //     return;
+            
+            // if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
+            //     return;
+            //
+            // beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
 
         private void AskForHuntingGame(WorldStates beliefs)
         {
-            if (_spawnGame == null)
-                return;
-            
-            var responseDecision = _spawnGame.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
-                return;
-            beliefs.ModifyState(responseDecision, 0);
+            // if (_spawnGame == null)
+            //     return;
+            //
+            // var responseDecision = _spawnGame.GetObjectsToSpawn();
+            // if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
+            //     return;
+            // beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
         
         private void AskForObstacle(WorldStates beliefs)
         {
-            if (_spawnObstacle == null)
-                return;
-            
-            var responseDecision = _spawnObstacle.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
-                return;
-            beliefs.ModifyState(responseDecision, 0);
+            // if (_spawnObstacle == null)
+            //     return;
+            //
+            // var responseDecision = _spawnObstacle.GetObjectsToSpawn();
+            // if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
+            //     return;
+            // beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
         
         private void AskForChess(WorldStates beliefs)
         {
-            if (_spawnChess == null)
-                return;
-            
-            var responseDecision = _spawnChess.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
-                return;
-            beliefs.ModifyState(responseDecision, 0);
+            // if (_spawnChess == null)
+            //     return;
+            //
+            // var responseDecision = _spawnChess.GetObjectsToSpawn();
+            // if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
+            //     return;
+            // beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
         
         private void AskForBoss(WorldStates beliefs)
         {
-            if (_spawnBoss == null)
-                return;
-            
-            var responseDecision = _spawnBoss.MakeDecision();
-            if (String.IsNullOrEmpty(responseDecision))
-                return;
-            beliefs.ModifyState(responseDecision, 0);
+            // if (_spawnBoss == null)
+            //     return;
+            //
+            // var responseDecision = _spawnBoss.GetObjectsToSpawn();
+            // if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
+            //     return;
+            // beliefs.ModifyState(responseDecision.ElementAt(0), 0);
         }
 
         private void AskForChangeDecision(WorldStates beliefs)
         {
-            if (_changeDesicion == null)
-                return;
-
-            foreach (var decision in _changeDesicion)
-            {
-                var responseDecision = decision.MakeDecision();
-                if (String.IsNullOrEmpty(responseDecision))
-                    return;
-                beliefs.ModifyState(responseDecision, 0);
-            }
+            // if (_changeDesicion == null)
+            //     return;
+            //
+            // foreach (var decision in _changeDesicion)
+            // {
+            //     var responseDecision = decision.GetObjectsToSpawn();
+                // if (String.IsNullOrEmpty(responseDecision.ElementAt(0)))
+                //     return;
+                // beliefs.ModifyState(responseDecision.ElementAt(0), 0);
+            // }
         }
     }
 }

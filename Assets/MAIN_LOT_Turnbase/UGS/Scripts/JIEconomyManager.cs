@@ -10,9 +10,11 @@ namespace JumpeeIsland
 {
     public class JIEconomyManager : MonoBehaviour
     {
+        public static JIEconomyManager instance { get; private set; }
+
         // Dictionary of all Virtual Purchase transactions ids to lists of costs & rewards.
-        private Dictionary<string, (List<JIItemAndAmountSpec> costs, List<JIItemAndAmountSpec> rewards)>
-            virtualPurchaseTransactions { get; set; }
+        public Dictionary<string, (List<JIItemAndAmountSpec> costs, List<JIItemAndAmountSpec> rewards)>
+            virtualPurchaseTransactions { get; private set; } = new();
 
         private List<CurrencyDefinition> currencyDefinitions { get; set; }
         private List<InventoryItemDefinition> inventoryItemDefinitions { get; set; }
@@ -21,6 +23,18 @@ namespace JumpeeIsland
         private int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
         private List<VirtualPurchaseDefinition> m_VirtualPurchaseDefinitions;
 
+        void Awake()
+        {
+            if (instance != null && instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                instance = this;
+            }
+        }
+        
         public async Task RefreshEconomyConfiguration()
         {
             // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
@@ -40,6 +54,15 @@ namespace JumpeeIsland
 
         #region CURRENCY
 
+        public string GetSpriteAddress(string currencyId)
+        {
+            var currencyData = currencyDefinitions.Find(t => t.Id.Equals(currencyId));
+            if (currencyData == null)
+                return null;
+            
+            return currencyData.CustomDataDeserializable.GetAs<CurrencyCustomData>().spriteAddress;
+        }
+
         public async Task<List<PlayerBalance>> RefreshCurrencyBalances()
         {
             GetBalancesResult balanceResult = null;
@@ -58,14 +81,37 @@ namespace JumpeeIsland
                 Debug.Log("Problem getting Economy currency balances:");
                 Debug.LogException(e);
             }
+            
+            return null;
+        }
+        
+        public async Task InGameRefreshCurrencyBalances()
+        {
+            GetBalancesResult balanceResult = null;
+
+            try
+            {
+                balanceResult = await GetEconomyBalances();
+            }
+            catch (EconomyRateLimitedException e)
+            {
+                balanceResult = await JIUtils.RetryEconomyFunction(GetEconomyBalances, e.RetryAfter);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Problem getting Economy currency balances:");
+                Debug.LogException(e);
+            }
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
-            return null;
+            if (this == null) return;
+
+            // TODO: Update local currency
         }
 
         static Task<GetBalancesResult> GetEconomyBalances()
         {
-            var options = new GetBalancesOptions {ItemsPerFetch = 100};
+            var options = new GetBalancesOptions { ItemsPerFetch = 100 };
             return EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
         }
 
@@ -81,15 +127,10 @@ namespace JumpeeIsland
                 Debug.LogException(e);
             }
         }
-        
+
         public async Task OnGrantCurrency(string currencyId, int amount)
         {
             await GrantCurrency(currencyId, amount);
-        }
-
-        public async void OnGrantCurrencyForTest(string currencyId)
-        {
-            await GrantCurrency(currencyId, 5);
         }
 
         public async Task DeductCurrency(string currencyId, int amount)
@@ -116,6 +157,11 @@ namespace JumpeeIsland
             }
         }
 
+        private class CurrencyCustomData
+        {
+            public string spriteAddress;
+        }
+
         #endregion
 
         #region INVENTORY
@@ -140,7 +186,7 @@ namespace JumpeeIsland
 
             if (this == null || inventoryResult == null)
                 return null;
-            
+
             _playersInventory = inventoryResult.PlayersInventoryItems;
 
             return _playersInventory;
@@ -148,7 +194,7 @@ namespace JumpeeIsland
 
         private Task<GetInventoryResult> LoadPlayerInventory()
         {
-            var options = new GetInventoryOptions {ItemsPerFetch = 100};
+            var options = new GetInventoryOptions { ItemsPerFetch = 100 };
             return EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
         }
 
@@ -161,7 +207,7 @@ namespace JumpeeIsland
         {
             if (_playersInventory == null || _playersInventory.Count == 0)
                 return;
-            
+
             foreach (var inventory in _playersInventory)
             {
                 await EconomyService.Instance.PlayerInventory.DeletePlayersInventoryItemAsync(inventory
@@ -173,11 +219,25 @@ namespace JumpeeIsland
 
         // This method is used to help test this Use Case sample by giving some currency to permit
         // transactions to be completed.
-        private async Task GrantDebugInventory(string inventoryId)
+        private async Task<PlayersInventoryItem> GrantDebugInventory(string inventoryId)
         {
             try
             {
-                await EconomyService.Instance.PlayerInventory.AddInventoryItemAsync(inventoryId);
+                return await EconomyService.Instance.PlayerInventory.AddInventoryItemAsync(inventoryId);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                return null;
+            }
+        }
+
+        private async Task GrantDebugInventory(string inventoryId, int level)
+        {
+            try
+            {
+                var option = new AddInventoryItemOptions { InstanceData = new InventoryInstanceData(level) };
+                await EconomyService.Instance.PlayerInventory.AddInventoryItemAsync(inventoryId, option);
             }
             catch (Exception e)
             {
@@ -185,13 +245,48 @@ namespace JumpeeIsland
             }
         }
 
-        public async Task OnGrantInventory(string inventoryId)
+        public async Task<PlayersInventoryItem> OnGrantInventory(string inventoryId)
+        {
+            foreach (var inventory in _playersInventory)
+                if (inventory.InventoryItemId.Equals(inventoryId))
+                    return null;
+
+            return await GrantDebugInventory(inventoryId);
+        }
+
+        public async Task OnGrantInventory(string inventoryId, int level)
         {
             foreach (var inventory in _playersInventory)
                 if (inventory.InventoryItemId.Equals(inventoryId))
                     return;
+
+            await GrantDebugInventory(inventoryId, level);
+        }
+
+        public async Task OnUpdatePlayerInventory(string itemId, int level)
+        {
+            foreach (var item in _playersInventory)
+            {
+                if (item.InventoryItemId.Equals(itemId) || item.GetItemDefinition().Name.Equals(itemId))
+                {
+                    await EconomyService.Instance.PlayerInventory.UpdatePlayersInventoryItemAsync(
+                        item.PlayersInventoryItemId, new InventoryInstanceData(level));
+                }
+            }
+        }
+
+        public int GetInventoryLevel(string inventoryId)
+        {
+            int returnLevel = 0;
+            var selectedInventory = _playersInventory.Find(t => t.InventoryItemId.Equals(inventoryId)) ??
+                                    _playersInventory.Find(t => t.GetItemDefinition().Name.Equals(inventoryId));
+
+            if (selectedInventory == null) return returnLevel;
             
-            await GrantDebugInventory(inventoryId);
+            var instanceData = selectedInventory.InstanceData.GetAs<InventoryInstanceData>();
+            if (instanceData != null)
+                returnLevel = instanceData.level;
+            return returnLevel;
         }
 
         #endregion
@@ -238,7 +333,7 @@ namespace JumpeeIsland
                 foreach (var cost in costs)
                     if (SavingSystemManager.Instance.CheckEnoughCurrency(cost.id, cost.amount) == false)
                         return null;
-                
+
                 return await EconomyService.Instance.Purchases.MakeVirtualPurchaseAsync(virtualPurchaseId);
             }
             catch (EconomyException e)
@@ -259,11 +354,39 @@ namespace JumpeeIsland
             return virtualPurchaseTransactions[virtualPurchaseId].costs;
         }
 
+        public List<JIItemAndAmountSpec> GetVirtualPurchaseReward(string virtualPurchaseId)
+        {
+            return virtualPurchaseTransactions[virtualPurchaseId].rewards;
+        }
+
         public VirtualPurchaseDefinition GetPurchaseDefinition(string id)
         {
             return m_VirtualPurchaseDefinitions.Find(t => t.Id == id);
         }
 
+        public List<VirtualPurchaseDefinition> GetPurchasedDefinitions()
+        {
+            return m_VirtualPurchaseDefinitions;
+        }
+
         #endregion
+        
+        void OnDestroy()
+        {
+            if (instance == this)
+            {
+                instance = null;
+            }
+        }
+    }
+
+    public class InventoryInstanceData
+    {
+        public int level;
+
+        public InventoryInstanceData(int assignLevel)
+        {
+            level = assignLevel;
+        }
     }
 }

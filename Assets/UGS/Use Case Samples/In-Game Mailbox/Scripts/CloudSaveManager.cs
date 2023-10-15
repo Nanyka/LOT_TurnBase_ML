@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JumpeeIsland;
 using Unity.Services.CloudSave;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace Unity.Services.Samples.InGameMailbox
 
         const string k_InboxStateKey = "MESSAGES_INBOX_STATE";
         const string k_LastMessageDownloadedKey = "MESSAGES_LAST_MESSAGE_DOWNLOADED_ID";
+        const string k_InboxBattleRecordsKey = "MESSAGES_INBOX_BATTLE_RECORDS";
 
         void Awake()
         {
@@ -30,6 +32,8 @@ namespace Unity.Services.Samples.InGameMailbox
             }
         }
 
+        // TODO: Fetch EnvData and GameProcess from CloudSave
+        
         public async Task FetchPlayerInbox()
         {
             try
@@ -48,11 +52,69 @@ namespace Unity.Services.Samples.InGameMailbox
                 m_LastMessageDownloadedId = cloudSaveData.ContainsKey(k_LastMessageDownloadedKey)
                     ? cloudSaveData[k_LastMessageDownloadedKey]
                     : "";
+                
+                // TODO Add battle mail
+                // 1- Use CloudSave to save battleMail, try to save one demo battleMail (Use SavePlayerInboxInCloudSave as reference)
+                // 2- Fetch battleMail and put it into inboxMessages
+
+                if (cloudSaveData.TryGetValue(k_InboxBattleRecordsKey, out var value))
+                {
+                    var inbox = JsonUtility.FromJson<InboxState>(value);
+                    inboxMessages = inbox.messages;
+                }
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
             }
+        }
+
+        public async void AddTestMail()
+        {
+            try
+            {
+                // var mails = new List<InboxMessage>();
+                // mails.Add(CreateATestMail());
+                
+                inboxMessages.Add(CreateATestMail());
+                
+                var inboxBattleRecords = new InboxState
+                {
+                    messages = inboxMessages
+                };
+                var inboxBattleRecordsJson = JsonUtility.ToJson(inboxBattleRecords);
+
+                var dataToSave = new Dictionary<string, object>
+                {
+                    { k_InboxStateKey, inboxBattleRecordsJson }
+                };
+
+                await CloudSaveService.Instance.Data.ForceSaveAsync(dataToSave);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        private InboxMessage CreateATestMail()
+        {
+            var testBattleMessage = new BattleMessage();
+            testBattleMessage.messageId = "TEST_BATTLE_MESSAGE";
+            testBattleMessage.messageInfo = new MessageInfo();
+            testBattleMessage.messageInfo.title = "TestMessage";
+            testBattleMessage.messageInfo.content = "I create this message to test adding a new message";
+            testBattleMessage.messageInfo.attachment = "cache playerId here";
+            testBattleMessage.messageInfo.expiration = "0.00:03:00.00";
+            testBattleMessage.environmentData = new EnvironmentData();
+            testBattleMessage.environmentData.mapSize = 12345;
+
+            var expirationPeriod = TimeSpan.Parse(testBattleMessage.messageInfo.expiration);
+            var hasUnclaimedAttachment = !string.IsNullOrEmpty(testBattleMessage.messageInfo.attachment);
+
+            testBattleMessage.metadata = new MessageMetadata(expirationPeriod, hasUnclaimedAttachment);
+
+            return testBattleMessage;
         }
 
         public int DeleteExpiredMessages()
@@ -125,7 +187,7 @@ namespace Unity.Services.Samples.InGameMailbox
 
             foreach (var inboxMessage in newMessages)
             {
-                Debug.Log($"[TODO] Message {inboxMessage.messageId} with content:\n{inboxMessage.messageInfo.content}");
+                // Debug.Log($"[TODO] Message {inboxMessage.messageId} with content:\n{inboxMessage.messageInfo.content}");
                 
                 var expirationPeriod = TimeSpan.Parse(inboxMessage.messageInfo.expiration);
                 var hasUnclaimedAttachment = !string.IsNullOrEmpty(inboxMessage.messageInfo.attachment);

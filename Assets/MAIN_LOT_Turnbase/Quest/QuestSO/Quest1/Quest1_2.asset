@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8123338e5e904732872613fb8fd1ab7, type: 3}
+  m_Name: Quest1_2
+  m_EditorClassIdentifier: 
+  isFinalBoss: 0
+  questMessage: 
+  environmentData:
+    timestamp: 0
+    lastTimestamp: 0
+    moveTimestamp: 0
+    mapSize: 0
+    ResourceData:
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -4, y: 0, z: -1}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 0
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -4, y: 0, z: -2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 0
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -4, y: 0, z: -3}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 0
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -6, y: 0, z: -1}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 0
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    - EntityName: Tree1
+      SkinAddress: 
+      Position: {x: -6, y: 0, z: -3}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 0
+      CurrentHp: 0
+      CurrentLevel: 0
+      AccumulatedStep: 0
+      Level: 0
+      ResourceType: 0
+      CollectedCurrency: 0
+    BuildingData: []
+    PlayerData: []
+    EnemyData:
+    - EntityName: FirePig
+      SkinAddress: 
+      Position: {x: -5, y: 0, z: -2}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 1
+      CurrentHp: 3
+      CurrentLevel: 0
+      CreatureType: 1
+      CurrentShield: 0
+      CurrentExp: 0
+      TurnCount: 0
+      CurrentDamage: 1
+      EffectCaches: []
+    CollectableData:
+    - EntityName: PigTarget
+      SkinAddress: 
+      Position: {x: -3, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      FactionType: 2
+      CurrentHp: 1
+      CurrentLevel: 0
+      CollectableType: 3
+      AccumulatedStep: 0
+  winCondition:
+    MapSize: 0
+    Currency: 0
+    CurrencyCompare: 0
+    CurrencyAmount: 0
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
+    Resource: 0
+    ResourceCompare: 2
+    ResourceAmount: 0
+    Collectable: 3
+    CollectableCompare: 2
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 2
+    CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
+    IsUICondition: 0
+    UIElement: 
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
+  enableTiles:
+  - {x: -3, y: 0, z: 0}
+  - {x: -4, y: 0, z: 0}
+  - {x: -5, y: 0, z: 0}
+  - {x: -6, y: 0, z: 0}
+  - {x: -3, y: 0, z: -1}
+  - {x: -4, y: 0, z: -1}
+  - {x: -5, y: 0, z: -1}
+  - {x: -6, y: 0, z: -1}
+  - {x: -3, y: 0, z: -2}
+  - {x: -4, y: 0, z: -2}
+  - {x: -5, y: 0, z: -2}
+  - {x: -6, y: 0, z: -2}
+  - {x: -3, y: 0, z: -3}
+  - {x: -4, y: 0, z: -3}
+  - {x: -5, y: 0, z: -3}
+  - {x: -6, y: 0, z: -3}
+  - {x: -3, y: 0, z: -4}
+  - {x: -4, y: 0, z: -4}
+  - {x: -5, y: 0, z: -4}
+  - {x: -6, y: 0, z: -4}
+  - {x: 0, y: 0, z: -1}
+  - {x: -2, y: 0, z: -3}
+  EndGameUnits: []
+  maxMovingTurn: 20
+  maxTroop: 2
+  excellentRank: 0e00000011000000
+  rewards:
+  - service: 
+    id: WOOD
+    amount: 1
+  tutorialForQuest: 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -13,5 +14,54 @@ namespace JumpeeIsland
         public int StorageCapacity;
         public int TurnCount;
         public CurrencyType StorageCurrency;
+
+        public BuildingData() { }
+        
+        public BuildingData(BuildingData buildingData)
+        {
+            EntityName = buildingData.EntityName;
+            SkinAddress = buildingData.SkinAddress;
+            Position = buildingData.Position;
+            Rotation = buildingData.Rotation;
+            FactionType = buildingData.FactionType;
+            BuildingType = buildingData.BuildingType;
+            CurrentHp = buildingData.CurrentHp;
+            CurrentDamage = buildingData.CurrentDamage;
+            CurrentShield = buildingData.CurrentShield;
+            CurrentExp = buildingData.CurrentExp;
+            CurrentStorage = buildingData.CurrentStorage;
+            StorageCapacity = buildingData.StorageCapacity;
+            TurnCount = buildingData.TurnCount;
+            StorageCurrency = buildingData.StorageCurrency;
+        }
+
+        public int GetStoreSpace(CurrencyType currencyType, ref List<BuildingData> buildingDatas)
+        {
+            if (currencyType == StorageCurrency)
+            {
+                buildingDatas.Add(this);
+                return StorageCapacity - CurrentStorage;
+            }
+
+            return 0;
+        }
+        
+        public int GetStoreSpace(CurrencyType currencyType)
+        {
+            if (currencyType == StorageCurrency)
+                return StorageCapacity - CurrentStorage;
+
+            return 0;
+        }
+
+        public int GetStoreSpace()
+        {
+            return StorageCapacity - CurrentStorage;
+        }
+
+        public void StoreCurrency(int amount)
+        {
+            CurrentStorage += amount;
+        }
     }
 }

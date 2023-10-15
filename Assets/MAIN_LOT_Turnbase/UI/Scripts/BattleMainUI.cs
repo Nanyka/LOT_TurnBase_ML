@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
@@ -7,15 +9,33 @@ namespace JumpeeIsland
         protected override void Start()
         {
             _creatureMenu = GetComponent<CreatureMenu>();
-            
-            OnEnableInteract.AddListener(SetInteractable);
+            _mainCamera = Camera.main;
+
+            OnEnableInteract.AddListener(EnableInteractable);
+            GameFlowManager.Instance.OnGameOver.AddListener(DisableInteractable);
         }
 
-        private void SetInteractable()
+        private void EnableInteractable()
         {
             IsInteractable = true;
         }
 
-        protected override void Update() { }
+        private void DisableInteractable(int delayInterval)
+        {
+            IsInteractable = false;
+        }
+
+        protected override void Update()
+        {
+            if (Input.GetMouseButton(0))
+            {
+                var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
+                {
+                    if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
+                        OnSelectDirection.Invoke(selectionCircle);
+                }
+            }
+        }
     }
 }

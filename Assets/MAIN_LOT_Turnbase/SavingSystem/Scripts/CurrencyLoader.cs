@@ -34,8 +34,10 @@ namespace JumpeeIsland
         public void SetLocalBalances(LocalBalancesData localBalancesData)
         {
             m_LocalBalances = localBalancesData;
+            
         }
 
+        // Update cloud currency based on local currency
         public void Init(List<PlayerBalance> currencies)
         {
             Debug.Log("Load currencies...");
@@ -44,14 +46,11 @@ namespace JumpeeIsland
 
             foreach (var localBalance in m_LocalBalances.LocalBalances)
             {
-                if (localBalance.CurrencyId == "MOVE") // MOVE is a special currency that is controlled by cloudCode only
-                    continue;
-
                 var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
                 if (localBalance.Balance != currency.Balance)
                 {
                     currency.Balance = localBalance.Balance;
-                    SavingSystemManager.Instance.OnSetCurrency(localBalance.CurrencyId,localBalance.Balance);
+                    SavingSystemManager.Instance.OnSetCloudCurrency(localBalance.CurrencyId, localBalance.Balance);
                 }
             }
 
@@ -62,6 +61,23 @@ namespace JumpeeIsland
         {
             RefreshLocalBalances();
             Init(currencies);
+        }
+
+        public void GrantMove(long moveAmount)
+        {
+            Debug.Log($"Grant {moveAmount} MOVE");
+            
+            if (moveAmount <= 0)
+                return;
+
+            var moveCurrency = m_Currencies.Find(t => t.CurrencyId == m_MoveId);
+            moveAmount = Mathf.Clamp((int)(moveCurrency.Balance + moveAmount), 0,
+                SavingSystemManager.Instance.GetMaxMove());
+
+            moveCurrency.Balance = moveAmount;
+            SavingSystemManager.Instance.OnSetCloudCurrency(m_MoveId, (int)moveCurrency.Balance);
+            SavingSystemManager.Instance.SaveLocalBalances(BalanceForSaving());
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
         public long GetCurrency(string currencyId)
@@ -89,8 +105,13 @@ namespace JumpeeIsland
         // Update local currencies to have it match with cloud data when the command is still not flushed up
         public void IncrementCurrency(string currencyId, int currencyAmount)
         {
-            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
+            var currency = m_Currencies.Find(t => t.CurrencyId == currencyId);
+            currency.Balance += currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
+            
+            // Update step from environmentManager
+            if (currencyId.Equals(m_MoveId) && currencyAmount>0)
+                GameFlowManager.Instance.GetEnvManager().UpdateRemainStep((int)currency.Balance);
 
             //Save currency
             SavingSystemManager.Instance.SaveLocalBalances(BalanceForSaving());
@@ -98,7 +119,9 @@ namespace JumpeeIsland
 
         public void DeductCurrency(string currencyId, int currencyAmount)
         {
-            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance -= currencyAmount;
+            var currency = m_Currencies.Find(t => t.CurrencyId == currencyId);
+            if (currency != null)
+                currency.Balance -= currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
 
             //Save currency 

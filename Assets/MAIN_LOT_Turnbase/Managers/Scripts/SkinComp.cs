@@ -11,9 +11,13 @@ namespace JumpeeIsland
     public class SkinComp : MonoBehaviour
     {
         [SerializeField] private Transform m_SkinAnchor;
+        [SerializeField] private ParticleSystem _appearVfx;
         [SerializeField] private List<Renderer> _factionRenderers = new();
         [SerializeField] private Material _activeMaterial;
         [SerializeField] private Material _disableMaterial;
+
+        private Material _activeCache;
+        private Material _disableCache;
 
         public void Init(string skinAddress)
         {
@@ -22,6 +26,8 @@ namespace JumpeeIsland
 
             _factionRenderers.Clear();
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor);
+            
+            ResetMaterial();
         }
 
         public void Init(string skinAddress, AnimateComp animateComp)
@@ -40,20 +46,36 @@ namespace JumpeeIsland
 
         public void SetActiveMaterial()
         {
-            if (_factionRenderers == null || _activeMaterial == null)
+            if (_factionRenderers == null || _activeCache == null)
                 return;
 
-            foreach (var item in _factionRenderers)
-                item.material = _activeMaterial;
+            SetMaterial(_activeCache);
         }
 
         public void SetDisableMaterial()
         {
-            if (_factionRenderers == null || _disableMaterial == null)
+            if (_factionRenderers == null || _disableCache == null)
                 return;
 
+            SetMaterial(_disableCache);
+        }
+        
+        public void SetCustomMaterial(Material material)
+        {
+            _activeCache = material;
+            _disableMaterial = material;
+        }
+
+        private void SetMaterial(Material material)
+        {
             foreach (var item in _factionRenderers)
-                item.material = _disableMaterial;
+                item.material = material;
+        }
+
+        public void ResetMaterial()
+        {
+            _activeCache = _activeMaterial;
+            _disableCache = _disableMaterial;
         }
     }
 }

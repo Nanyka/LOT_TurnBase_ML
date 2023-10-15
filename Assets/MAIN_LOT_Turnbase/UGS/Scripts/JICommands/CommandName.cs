@@ -5,6 +5,7 @@ namespace JumpeeIsland
     {
         NONE,
         JI_SPEND_MOVE,
+        JI_MAX_MOVE,
         JI_NEUTRAL_WOOD_1_0,
         JI_NEUTRAL_FOOD_1_0,
         JI_FOOD_1,

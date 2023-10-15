@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
+  m_Name: TutorialBoss1_1
+  m_EditorClassIdentifier: 
+  UsePassCondition: 0
+  PassCondition:
+    MapSize: 0
+    Currency: 2
+    CurrencyCompare: 0
+    CurrencyAmount: 1
+    Storage: 0
+    StorageCompare: 0
+    StorageAmount: 0
+    Resource: 0
+    ResourceCompare: 0
+    ResourceAmount: 0
+    Collectable: 0
+    CollectableCompare: 0
+    CollectableAmount: 0
+    Building: 0
+    BuildingCompare: 0
+    BuildingAmount: 0
+    Creature: 0
+    CreatureCompare: 0
+    CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
+    IsUICondition: 0
+    UIElement: 
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
+  conditions: []
+  steps:
+  - Pointer: 0
+    EntitySelection: 0
+    EntityType: 0
+    CurrencyFromResource: 2
+    BuildingType: 0
+    CreatureType: 0
+    ArrowSign: 0
+    MinJump: 0
+    ButtonSelection: 0
+    ButtonName: 
+    CheckPosition: 1
+    CheckEntity: 0
+    Spawner: 0
+    SpawnType: 0
+    IsDesignatedPos: 0
+    DesignatedPos: {x: 0, y: 0, z: 0}
+    SpawnResource: 
+    SpawnCollectable: 
+    SpawnCollectableLevel: 0
+    SpawnEnemy: 
+    SpawnEnemyLevel: 0
+    CheckEndCondition: 0
+    EndCondition:
+      MapSize: 0
+      Currency: 0
+      CurrencyCompare: 2
+      CurrencyAmount: 0
+      Storage: 0
+      StorageCompare: 0
+      StorageAmount: 0
+      Resource: 2
+      ResourceCompare: 2
+      ResourceAmount: 0
+      Collectable: 0
+      CollectableCompare: 0
+      CollectableAmount: 1
+      Building: 0
+      BuildingCompare: 0
+      BuildingAmount: 1
+      Creature: 0
+      CreatureCompare: 0
+      CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
+      IsUICondition: 0
+      UIElement: 
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
+    IsEndTutorial: 1
+    Conversation: 1
+    Message: 'DON''T KILL IT!
+
+      Let''s heading the pig to the destination'
+    MessageImage: /Icons/Tutorials/TutorialBoss1_1
+  nextTutorial: 

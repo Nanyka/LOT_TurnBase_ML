@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de20966d382545d88ab7137e2638482, type: 3}
   m_Name: Tutorial6
   m_EditorClassIdentifier: 
-  UsePassCondition: 1
+  UsePassCondition: 0
   PassCondition:
-    MapSize: 21
+    MapSize: 0
     Currency: 0
     CurrencyCompare: 0
     CurrencyAmount: 0
@@ -33,11 +33,16 @@ MonoBehaviour:
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   conditions:
   - MapSize: 0
     Currency: 0
@@ -49,26 +54,31 @@ MonoBehaviour:
     Resource: 0
     ResourceCompare: 0
     ResourceAmount: 1
-    Collectable: 0
+    Collectable: 1
     CollectableCompare: 2
-    CollectableAmount: 1
-    Building: 1
+    CollectableAmount: 0
+    Building: 0
     BuildingCompare: 2
     BuildingAmount: 1
     Creature: 0
     CreatureCompare: 0
     CreatureAmount: 0
+    IsExpCondition: 0
+    playerExp: 0
     IsUICondition: 0
     UIElement: 
-    IsScoreCondition: 0
-    ScoreCompare: 0
-    ScoreAmount: 0
+    IsSelectEntity: 0
+    EntityName: 
+    IsCheckBattle: 0
+    BattleCount: 0
+    IsCheckBossUnlock: 0
+    BossUnlockAmount: 0
   steps:
-  - Pointer: 1
-    EntitySelection: 1
-    EntityType: 2
+  - Pointer: 0
+    EntitySelection: 0
+    EntityType: 0
     CurrencyFromResource: 0
-    BuildingType: 1
+    BuildingType: 0
     CreatureType: 0
     ArrowSign: 0
     MinJump: 0
@@ -76,12 +86,12 @@ MonoBehaviour:
     ButtonName: 
     CheckPosition: 0
     CheckEntity: 0
-    Spawner: 0
-    SpawnType: 0
+    Spawner: 1
+    SpawnType: 5
     IsDesignatedPos: 0
     DesignatedPos: {x: 0, y: 0, z: 0}
     SpawnResource: 
-    SpawnCollectable: 
+    SpawnCollectable: PigEgg_lv0
     SpawnCollectableLevel: 0
     SpawnEnemy: 
     SpawnEnemyLevel: 0
@@ -97,120 +107,25 @@ MonoBehaviour:
       Resource: 0
       ResourceCompare: 0
       ResourceAmount: 0
-      Collectable: 0
+      Collectable: 1
       CollectableCompare: 2
       CollectableAmount: 1
       Building: 0
-      BuildingCompare: 2
-      BuildingAmount: 1
-      Creature: 0
-      CreatureCompare: 0
-      CreatureAmount: 0
-      IsUICondition: 1
-      UIElement: InteractBuildingMenu
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 0
-    IsEndTutorial: 0
-    Conversation: 0
-    Message: 
-  - Pointer: 1
-    EntitySelection: 0
-    EntityType: 0
-    CurrencyFromResource: 0
-    BuildingType: 0
-    CreatureType: 0
-    ArrowSign: 0
-    MinJump: 0
-    ButtonSelection: 1
-    ButtonName: FastUpgrade
-    CheckPosition: 0
-    CheckEntity: 0
-    Spawner: 0
-    SpawnType: 0
-    IsDesignatedPos: 0
-    DesignatedPos: {x: 0, y: 0, z: 0}
-    SpawnResource: 
-    SpawnCollectable: 
-    SpawnCollectableLevel: 0
-    SpawnEnemy: 
-    SpawnEnemyLevel: 0
-    CheckEndCondition: 1
-    EndCondition:
-      MapSize: 0
-      Currency: 0
-      CurrencyCompare: 0
-      CurrencyAmount: 0
-      Storage: 0
-      StorageCompare: 0
-      StorageAmount: 0
-      Resource: 0
-      ResourceCompare: 0
-      ResourceAmount: 0
-      Collectable: 0
-      CollectableCompare: 0
-      CollectableAmount: 0
-      Building: 0
       BuildingCompare: 0
       BuildingAmount: 0
       Creature: 0
       CreatureCompare: 0
       CreatureAmount: 0
-      IsUICondition: 1
-      UIElement: InteractBuildingConfirm
-      IsScoreCondition: 0
-      ScoreCompare: 0
-      ScoreAmount: 10
-    IsEndTutorial: 0
-    Conversation: 0
-    Message: 
-  - Pointer: 1
-    EntitySelection: 0
-    EntityType: 0
-    CurrencyFromResource: 0
-    BuildingType: 0
-    CreatureType: 0
-    ArrowSign: 0
-    MinJump: 0
-    ButtonSelection: 1
-    ButtonName: InteractBuildingYes
-    CheckPosition: 0
-    CheckEntity: 0
-    Spawner: 0
-    SpawnType: 0
-    IsDesignatedPos: 0
-    DesignatedPos: {x: 0, y: 0, z: 0}
-    SpawnResource: 
-    SpawnCollectable: 
-    SpawnCollectableLevel: 0
-    SpawnEnemy: 
-    SpawnEnemyLevel: 0
-    CheckEndCondition: 1
-    EndCondition:
-      MapSize: 0
-      Currency: 0
-      CurrencyCompare: 0
-      CurrencyAmount: 0
-      Storage: 0
-      StorageCompare: 0
-      StorageAmount: 0
-      Resource: 0
-      ResourceCompare: 0
-      ResourceAmount: 0
-      Collectable: 0
-      CollectableCompare: 0
-      CollectableAmount: 0
-      Building: 0
-      BuildingCompare: 0
-      BuildingAmount: 0
-      Creature: 0
-      CreatureCompare: 0
-      CreatureAmount: 0
+      IsExpCondition: 0
+      playerExp: 0
       IsUICondition: 0
       UIElement: 
-      IsScoreCondition: 1
-      ScoreCompare: 0
-      ScoreAmount: 9
+      IsSelectEntity: 0
+      EntityName: 
+      IsCheckBattle: 0
+      BattleCount: 0
+      IsCheckBossUnlock: 0
+      BossUnlockAmount: 0
     IsEndTutorial: 0
     Conversation: 0
     Message: 

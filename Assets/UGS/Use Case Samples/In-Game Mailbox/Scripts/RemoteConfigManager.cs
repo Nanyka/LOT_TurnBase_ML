@@ -48,6 +48,8 @@ namespace Unity.Services.Samples.InGameMailbox
         void CacheConfigValues()
         {
             var json = RemoteConfigService.Instance.appConfig.GetJson("MESSAGES_ALL", "");
+            
+            Debug.Log(json);
 
             if (string.IsNullOrEmpty(json))
             {

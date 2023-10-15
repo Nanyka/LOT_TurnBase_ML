@@ -14,7 +14,7 @@ namespace JumpeeIsland
         [SerializeField] private BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
         [SerializeField] private CreatureLoader enemyLoader;
-        [FormerlySerializedAs("_collectableLoader")] [SerializeField] private CollectableObjectLoader collectableLoader;
+        [SerializeField] private CollectableObjectLoader collectableLoader;
         [SerializeField] protected EnvironmentData _environmentData;
 
         public virtual void Init()
@@ -46,7 +46,7 @@ namespace JumpeeIsland
             tileManager.Init(_environmentData.mapSize);
         }
 
-        public EnvironmentData GetData()
+        public virtual EnvironmentData GetData()
         {
             return _environmentData;
         }
@@ -54,6 +54,7 @@ namespace JumpeeIsland
         // Use a distinct function to get data for saving and override it in BattleEnvLoader
         public virtual EnvironmentData GetDataForSave()
         {
+            _environmentData.RemoveZeroHpPlayerCreatures();
             return _environmentData;
         }
 
@@ -68,6 +69,15 @@ namespace JumpeeIsland
         {
             removeInterface.Remove(_environmentData);
         }
+
+        #region TILES
+
+        // public List<Transform> GetTiles()
+        // {
+        //     return tileManager.GetTiles();
+        // }
+
+        #endregion
 
         #region RESOURCE
 
@@ -97,14 +107,24 @@ namespace JumpeeIsland
             buildingLoader.PlaceNewObject(buildingData);
         }
 
-        public void StoreRewardToBuildings(string currencyId, int amount)
+        public void StoreRewardAtBuildings(string currencyId, int amount)
         {
-            buildingLoader.GetController().StoreRewardToBuildings(currencyId, amount);
+            buildingLoader.GetController().StoreRewardAtBuildings(currencyId, amount);
         }
 
-        public int GetStorageSpace(string currencyId)
+        public void DeductCurrencyFromBuildings(string currencyId, int amount)
         {
-            return buildingLoader.GetController().GetStorageSpace(currencyId);
+            buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId,amount);
+        }
+
+        public MainHallTier GetCurrentTier()
+        {
+            return buildingLoader.GetCurrentTier();
+        }
+        
+        public MainHallTier GetUpcomingTier()
+        {
+            return buildingLoader.GetUpcomingTier();
         }
 
         #endregion

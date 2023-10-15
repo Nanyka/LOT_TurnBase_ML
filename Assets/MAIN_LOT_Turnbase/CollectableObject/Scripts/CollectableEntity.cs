@@ -18,6 +18,17 @@ namespace JumpeeIsland
             RefreshEntity();
         }
 
+        // Remove all listener when entity completed die process
+        private void OnDisable()
+        {
+            OnUnitDie.RemoveAllListeners();
+        }
+
+        public override void Relocate(Vector3 position)
+        {
+            m_Transform.position = position;
+        }
+
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
             throw new System.NotImplementedException();
@@ -42,20 +53,17 @@ namespace JumpeeIsland
         {
             return m_CollectableData.FactionType;
         }
-        
+
+        public override void GainGoldValue() { }
+
         public bool CheckSelfCollect()
         {
             return m_CurrentStat.IsSelfCollect;
         }
 
-        public override int GetExpReward()
+        public CollectableType GetCollectableType()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override void CollectExp(int expAmount)
-        {
-            throw new System.NotImplementedException();
+            return m_CollectableStats[m_CollectableData.CurrentLevel].CollectableType;
         }
 
         public override void TakeDamage(int damage, Entity fromEntity)
@@ -63,25 +71,28 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override int GetCurrentHealth()
+        public virtual int GetCurrentHealth()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void DieIndividualProcess(Entity killedByEntity)
+        public virtual void DieIndividualProcess(Entity killedByEntity)
         {
-            OnUnitDie.RemoveAllListeners();
+            // grant effect on killedByEntity
+            if (killedByEntity != this && m_CurrentStat._skillEffectType != SkillEffectType.None)
+                m_CurrentStat.GetSkillEffect().TakeEffectOn(this, killedByEntity);
+
             // TODO add animation or effect here
         }
 
-        public override void AttackSetup(IGetCreatureInfo unitInfo)
+        public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }
 
         public override int GetAttackDamage()
         {
-            throw new System.NotImplementedException();
+            return m_CurrentStat.TrapDamage;
         }
 
         public override IEnumerable<Skill_SO> GetSkills()
@@ -89,37 +100,57 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override void SetAnimation(AnimateType animation, bool isTurnOn)
+        #region SKIN
+
+        public override SkinComp GetSkin()
+        {
+            return m_SkinComp;
+        }
+
+        #endregion
+
+        #region EFFECT
+
+        public override EffectComp GetEffectComp()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
+        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new System.NotImplementedException();
         }
 
         #region GENERAL
-        
-        public override void ContributeCommands()
-        {
-            foreach (var command in m_CurrentStat.Commands)
-            {
-                SavingSystemManager.Instance.OnContributeCommand.Invoke(command);
-                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
-            }
 
+        public virtual void ContributeCommands()
+        {
+            // If collectable item include currency rewards
+            foreach (var command in m_CurrentStat.Commands)
+                SavingSystemManager.Instance.StoreCurrencyAtBuildings(command.ToString(), m_CollectableData.Position);
+
+            // If collectable item include creature rewards
             if (m_CurrentStat.SpawnedEntityType == EntityType.NONE)
                 return;
 
             switch (m_CurrentStat.SpawnedEntityType)
             {
                 case EntityType.BUILDING:
-                    SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position,
-                        true);
+                    SavingSystemManager.Instance.OnPlaceABuilding(m_CurrentStat.EntityName, m_CollectableData.Position, true);
                     break;
                 case EntityType.ENEMY:
-                    SavingSystemManager.Instance.SpawnMovableEntity(m_CurrentStat.EntityName,m_CollectableData.Position);
+                    SavingSystemManager.Instance.OnSpawnMovableEntity(m_CurrentStat.EntityName, m_CollectableData.Position);
+                    break;
+                
+                case EntityType.RESOURCE:
+                    SavingSystemManager.Instance.OnSpawnResource(m_CurrentStat.EntityName, m_CollectableData.Position);
                     break;
             }
         }
 
-        public override void RefreshEntity()
+        public virtual void RefreshEntity()
         {
             // Set entity stats
             m_CurrentStat = m_CollectableStats[m_CollectableData.CurrentLevel];
@@ -129,7 +160,9 @@ namespace JumpeeIsland
             m_CollectableData.SkinAddress = m_CurrentStat.SkinAddress;
 
             // Retrieve entity data
-            m_SkinComp.Init(m_CollectableData.SkinAddress);
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY || m_CurrentStat.CollectableType != CollectableType.TRAP)
+                m_SkinComp.Init(m_CollectableData.SkinAddress);
+
             m_CollectComp.Init(OnUnitDie);
             OnUnitDie.AddListener(DieIndividualProcess);
         }
