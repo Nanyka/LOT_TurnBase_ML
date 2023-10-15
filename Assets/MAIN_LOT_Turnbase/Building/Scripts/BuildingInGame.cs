@@ -70,7 +70,7 @@ namespace JumpeeIsland
         private void DestroyBuilding(Entity killedByEntity)
         {
             // just contribute resource when it is killed by player faction as selling out this building
-            if (killedByEntity.GetFaction() == FactionType.Player)
+            if (killedByEntity.GetFaction() == FactionType.Player && GameFlowManager.Instance.GameMode != GameMode.REPLAY)
                 SavingSystemManager.Instance.GrantCurrency(CurrencyType.GOLD.ToString(),
                     m_Entity.CalculateSellingPrice());
 

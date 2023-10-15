@@ -326,6 +326,7 @@ namespace JumpeeIsland
         public void OnSpawnResource(string resourceId, Vector3 position)
         {
             var inventoryItems = m_InventoryLoader.GetInventoriesByType(InventoryType.Resource);
+            Debug.Log($"Resource to spawn: {resourceId}, Inventory items: {inventoryItems.Count()}");
             if (inventoryItems == null)
                 return;
 
