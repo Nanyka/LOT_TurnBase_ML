@@ -12,7 +12,7 @@ namespace JumpeeIsland
         public void VisualCurrency(string iconAddress, int cost)
         {
             _costIcon.sprite = AddressableManager.Instance.GetAddressableSprite(
-                    SavingSystemManager.Instance.GetCurrencySprite(iconAddress));
+                SavingSystemManager.Instance.GetCurrencySprite(iconAddress));
             _costIcon.gameObject.SetActive(true);
             _costText.text = cost.ToString();
         }
@@ -21,6 +21,11 @@ namespace JumpeeIsland
         {
             _costText.text = message;
             _costIcon.gameObject.SetActive(false);
+        }
+
+        public void UpdateCost(int cost)
+        {
+            _costText.text = cost.ToString();
         }
     }
 }

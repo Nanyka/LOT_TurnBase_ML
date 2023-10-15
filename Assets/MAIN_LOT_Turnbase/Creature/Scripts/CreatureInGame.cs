@@ -18,6 +18,7 @@ namespace JumpeeIsland
         protected IFactionController m_FactionController;
         protected Transform m_Transform;
         private (Vector3 targetPos, int jumpCount, int overEnemy) _movement;
+        private int _currentDirection;
         private int _currentPower;
         [SerializeField] private bool _isUsed;
 
@@ -44,28 +45,54 @@ namespace JumpeeIsland
 
         public void MoveDirection(int moveDirection)
         {
-            if (_isUsed) return; // Avoid double moving
+            // Record creature action in BATTLE mode
+            if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+            {
+                var recordAction = new RecordAction
+                {
+                    Action = moveDirection,
+                    // AtSecond = CountDownClock.GetBattleTime(),
+                    AtPos = GetCurrentPosition(),
+                    EntityType = EntityType.ENEMY
+                };
+            
+                SavingSystemManager.Instance.OnRecordAction.Invoke(recordAction);
+            }
+            
+            if (_isUsed && GameFlowManager.Instance.GameMode != GameMode.REPLAY) return; // Avoid double moving
 
-
+            _currentDirection = moveDirection;
             _movement = m_FactionController.GetMovementInspector()
-                .MovingPath(m_Transform.position, moveDirection, 0, 0);
+                .MovingPath(m_Transform.position, _currentDirection, 0, 0);
 
             MarkAsUsedThisTurn();
             CreatureStartMove(m_Transform.position, moveDirection);
-            // StartCoroutine(MoveOverTime(_movement.targetPos));
+            
+            
         }
 
-        public void CreatureStartMove(Vector3 currentPos, int direction)
+        protected virtual void CreatureStartMove(Vector3 currentPos, int direction)
         {
             MainUI.Instance.OnShowInfo.Invoke(this);
             m_Entity.ConductCreatureMove(currentPos, direction, this);
+
+            if (_movement.jumpCount > 0)
+                m_Entity.AttackSetup(this);
+            
+            m_Entity.TurnHealthSlider(false);
         }
 
         public virtual void CreatureEndMove()
         {
             m_Entity.UpdateTransform(_movement.targetPos, m_RotatePart.eulerAngles);
-            if (GetJumpStep() > 0 && m_Entity.CheckEntityDie() == false)
-                Attack();
+            m_Entity.TurnHealthSlider(true);
+            
+            // When double kills or more, take extra attack
+            if (m_Entity.GetKillAccumulation() > 1)
+            {
+                m_Entity.GetAnimateComp().TriggerAttackAnim(m_Entity.GetKillAccumulation());
+                m_Entity.ResetKillAccumulation();
+            }
             else
                 m_FactionController.WaitForCreature();
         }
@@ -79,11 +106,12 @@ namespace JumpeeIsland
 
         public void NewTurnReset()
         {
-            m_Entity.GetEffectComp().EffectCountDown();
+            // m_Entity.GetEffectComp().EffectCountDown();
             _isUsed = m_Entity.GetEffectComp().CheckSkipTurn();
             _movement.jumpCount = 0;
             _movement.overEnemy = 0;
-            m_Entity.SetActiveMaterial();
+            // m_Entity.SetActiveMaterial();
+            m_Entity.RefreshCreature();
         }
 
         private void Attack()
@@ -110,16 +138,14 @@ namespace JumpeeIsland
 
         public (Entity, int) ShowInfo()
         {
-            // var data = (CreatureData)m_Entity.GetData();
-            // return
-            //     $"{data.EntityName}\nHp:{data.CurrentHp}\nDamage:{data.CurrentDamage}\nJumpCount:{_movement.jumpCount}";
-
             return (m_Entity, GetJumpStep());
         }
 
         public (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, m_RotatePart.forward, _movement.jumpCount, m_FactionController.GetFaction());
+            return (_movement.targetPos,
+                GameFlowManager.Instance.GetEnvManager().GetMovementInspector().DirectionTo(_currentDirection),
+                _movement.jumpCount, m_FactionController.GetFaction());
         }
 
         public EntityData GetEntityData()
@@ -155,6 +181,10 @@ namespace JumpeeIsland
                 if (killedByEntity.GetFaction() == FactionType.Player)
                     m_Entity.ContributeCommands();
             }
+            
+            // Contribute Exp
+            if (killedByEntity.GetFaction() == FactionType.Player)
+                SavingSystemManager.Instance.GainExp(m_Entity.GetStats().ExpReward);
 
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this); // remove its domain
             m_FactionController.RemoveAgent(this);

@@ -14,6 +14,8 @@ namespace JumpeeIsland
 
         private void Show()
         {
+            Debug.Log("Update currency info");
+            
             // Show enemy economy
             var woodAmount = 0;
             foreach (var buildingData in SavingSystemManager.Instance.GetEnvironmentData().BuildingData)

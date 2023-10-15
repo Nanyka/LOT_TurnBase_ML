@@ -54,6 +54,8 @@ namespace JumpeeIsland
             return m_CollectableData.FactionType;
         }
 
+        public override void GainGoldValue() { }
+
         public bool CheckSelfCollect()
         {
             return m_CurrentStat.IsSelfCollect;
@@ -69,12 +71,12 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override int GetCurrentHealth()
+        public virtual int GetCurrentHealth()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void DieIndividualProcess(Entity killedByEntity)
+        public virtual void DieIndividualProcess(Entity killedByEntity)
         {
             // grant effect on killedByEntity
             if (killedByEntity != this && m_CurrentStat._skillEffectType != SkillEffectType.None)
@@ -83,7 +85,7 @@ namespace JumpeeIsland
             // TODO add animation or effect here
         }
 
-        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
+        public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             throw new System.NotImplementedException();
         }
@@ -116,14 +118,14 @@ namespace JumpeeIsland
 
         #endregion
 
-        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
+        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new System.NotImplementedException();
         }
 
         #region GENERAL
 
-        public override void ContributeCommands()
+        public virtual void ContributeCommands()
         {
             // If collectable item include currency rewards
             foreach (var command in m_CurrentStat.Commands)
@@ -148,7 +150,7 @@ namespace JumpeeIsland
             }
         }
 
-        public override void RefreshEntity()
+        public virtual void RefreshEntity()
         {
             // Set entity stats
             m_CurrentStat = m_CollectableStats[m_CollectableData.CurrentLevel];

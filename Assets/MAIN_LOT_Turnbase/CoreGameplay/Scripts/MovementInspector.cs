@@ -92,7 +92,7 @@ namespace JumpeeIsland
             return jumpingPoints;
         }
 
-        private Vector3 DirectionTo(int direction)
+        public Vector3 DirectionTo(int direction)
         {
             var checkVector = Vector3.zero;
 
@@ -111,6 +111,31 @@ namespace JumpeeIsland
                     break;
                 case 4:
                     checkVector += Vector3.forward;
+                    break;
+            }
+
+            return checkVector;
+        }
+        
+        public Vector3 DirectionTo(int direction, Vector3 forward)
+        {
+            var checkVector = Vector3.zero;
+
+            switch (direction)
+            {
+                case 0:
+                    break;
+                case 1:
+                    checkVector = new Vector3(forward.z,forward.y, forward.x);
+                    break;
+                case 2:
+                    checkVector = new Vector3(forward.z*-1f,forward.y, forward.x * -1f);
+                    break;
+                case 3:
+                    checkVector = new Vector3(forward.x*-1f,forward.y, forward.z * -1f);
+                    break;
+                case 4:
+                    checkVector = forward;
                     break;
             }
 

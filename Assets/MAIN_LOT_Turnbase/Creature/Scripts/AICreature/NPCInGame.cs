@@ -14,13 +14,11 @@ namespace JumpeeIsland
         [Tooltip("NPC will switch brain to infer their motion based on skills")]
         public bool _isSwitchBrain = true;
 
-        [Tooltip(
-            "Some NPC just move around without jumping. If NPC can not jump, its animator is not set as root motion and not require ParentGoWithRoot script")]
+        [Tooltip("Some NPC just move around without jumping. If NPC can not jump, its animator is not set as root motion and not require ParentGoWithRoot script")]
         public bool _isJumpable = true;
 
         private BehaviorParameters m_BehaviorParameters;
         private Agent m_Agent;
-        private int _currentDirection;
 
         public virtual void Awake()
         {
@@ -118,14 +116,32 @@ namespace JumpeeIsland
             InferMoving = selectedAction;
             CreatureStartMove(m_Transform.position, InferMoving.Action);
         }
+        
+        // Use in battleReplayMode
+        public void ConductSelectedAction(int action, int jump)
+        {
+            MarkAsUsedThisTurn();
+            InferMoving.Action = action;
+            InferMoving.JumpCount = jump;
+            CreatureStartMove(m_Transform.position, InferMoving.Action);
+        }
+
+        protected override void CreatureStartMove(Vector3 currentPos, int direction)
+        {
+            MainUI.Instance.OnShowInfo.Invoke(this);
+            m_Entity.ConductCreatureMove(currentPos, direction, this);
+
+            if (InferMoving.JumpCount > 0)
+                m_Entity.AttackSetup(this);
+            
+            m_Entity.TurnHealthSlider(false);
+        }
 
         public override void CreatureEndMove()
         {
             m_Entity.UpdateTransform(InferMoving.TargetPos, m_RotatePart.eulerAngles);
-            if (GetJumpStep() > 0)
-                Attack();
-            else
-                m_FactionController.KickOffNewTurn();
+            m_Entity.TurnHealthSlider(true);
+            m_FactionController.KickOffNewTurn();
         }
 
         private IEnumerator MoveOverTime()
@@ -168,8 +184,8 @@ namespace JumpeeIsland
 
         public new (Vector3 midPos, Vector3 direction, int jumpStep, FactionType faction) GetCurrentState()
         {
-            return (m_Transform.position, m_RotatePart.forward, InferMoving.JumpCount,
-                m_FactionController.GetFaction());
+            return (InferMoving.TargetPos, GameFlowManager.Instance.GetEnvManager().GetMovementInspector().DirectionTo(InferMoving.Action),
+                InferMoving.JumpCount, m_FactionController.GetFaction());
         }
 
         public new EnvironmentManager GetEnvironment()

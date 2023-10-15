@@ -40,17 +40,20 @@ namespace JumpeeIsland
         // invoke at CreatureDetailMenu
         [NonSerialized] public UnityEvent<string> OnCreatureUpgrade = new();
 
-        // invoke at 
+        // invoke at ???
         [NonSerialized] public UnityEvent OnSaveQuestData = new();
+        
+        // invoke at CreatureInGame, BuildingInGame
+        [NonSerialized] public UnityEvent<RecordAction> OnRecordAction = new();
 
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
 
-        private EnvironmentLoader m_EnvLoader;
+        protected EnvironmentLoader m_EnvLoader;
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
-        private GameStateData m_GameStateData = new();
+        protected RuntimeMetadata m_RuntimeMetadata = new();
         private GameProcessData m_GameProcess = new();
         private QuestData m_QuestData;
         private string _gamePath;
@@ -71,7 +74,7 @@ namespace JumpeeIsland
             OnSaveQuestData.AddListener(SaveQuestData);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             SaveGameState();
         }
@@ -91,21 +94,21 @@ namespace JumpeeIsland
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
                 Debug.Log("Error. Check internet connection!");
-                SaveDisconnectedState(true);
+                SaveMetadata();
             }
         }
 
-        public async void StartUpLoadData()
+        public virtual async void StartLoadData()
         {
             // Authenticate on UGS and get envData
             await m_CloudConnector.Init();
 
             // Load gameState from local to check if the previous session is disconnected
-            await LoadGameState();
+            await LoadPreviousMetadata();
 
             // mark as starting point of loading phase.
             // If this process is not complete, the environment will not be save at OnDisable()
-            SetInLoadingState(true);
+            SetInLoading(true);
 
             // for Testing: Do not LoadCommands(), just use remoteConfig as currency JSON
             LoadLocalCurrencies();
@@ -122,8 +125,8 @@ namespace JumpeeIsland
             await LoadGameProcess();
 
             Debug.Log("Completed loading process");
-            SaveDisconnectedState(false); // set it as connected state when loaded all disconnected session's data
-            SetInLoadingState(false); // Finish loading phase
+            SaveMetadata(); // set it as connected state when loaded all disconnected session's data
+            SetInLoading(false); // Finish loading phase
 
             GameFlowManager.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetMoveAmount());
         }
@@ -137,35 +140,43 @@ namespace JumpeeIsland
 
         #region GAME STATE
 
-        private void SetInLoadingState(bool isLoading)
+        private void SetInLoading(bool isLoading)
         {
-            m_GameStateData.IsInLoadingPhase = isLoading;
+            m_RuntimeMetadata.IsInLoadingPhase = isLoading;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(m_GameStateData, gameStatePath, GameStateWasSaved, encrypt);
+            SaveManager.Instance.Save(m_RuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
 
-        private async Task LoadGameState()
+        protected async Task LoadPreviousMetadata()
         {
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Load<GameStateData>(gameStatePath, GameStateWasLoaded, encrypt);
+            SaveManager.Instance.Load<RuntimeMetadata>(gameStatePath, MetadataWasLoaded, encrypt);
         }
 
-        private void GameStateWasLoaded(GameStateData gameState, SaveResult result, string message)
+        private void MetadataWasLoaded(RuntimeMetadata gameState, SaveResult result, string message)
         {
             if (result == SaveResult.EmptyData || result == SaveResult.Error)
                 Debug.LogError("No State data File Found -> Creating new data...");
 
             if (result == SaveResult.Success)
-                m_GameStateData = gameState;
+                m_RuntimeMetadata = gameState;
         }
 
-        private void SaveDisconnectedState(bool isDisconnected)
+        private void SaveMetadata()
         {
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(m_GameStateData, gameStatePath, GameStateWasSaved, encrypt);
+            SaveManager.Instance.Save(m_RuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
 
-        private void GameStateWasSaved(SaveResult result, string message)
+        public void SaveMetadata(BattleRecord battleRecord)
+        {
+            Debug.Log("Save data for recordMode");
+            m_RuntimeMetadata.BattleRecord = battleRecord;
+            var gameStatePath = GetSavingPath(SavingPath.GameState);
+            SaveManager.Instance.Save(m_RuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
+        }
+
+        private void MetadataWasSaved(SaveResult result, string message)
         {
             if (result == SaveResult.Error)
                 Debug.LogError($"Error saving data:\n{result}\n{message}");
@@ -173,7 +184,7 @@ namespace JumpeeIsland
 
         private bool CheckLoadingPhaseFinished()
         {
-            return !m_GameStateData.IsInLoadingPhase;
+            return !m_RuntimeMetadata.IsInLoadingPhase;
         }
 
         #endregion
@@ -210,7 +221,7 @@ namespace JumpeeIsland
             }
 
             quest.StarAmount = starAmount;
-            
+
             var gameStatePath = GetSavingPath(SavingPath.QuestData);
             SaveManager.Instance.Save(m_QuestData, gameStatePath, QuestDataWasSaved, encrypt);
         }
@@ -221,7 +232,7 @@ namespace JumpeeIsland
                 Debug.LogError($"Error saving quest data:\n{result}\n{message}");
         }
 
-        private async Task LoadQuestData()
+        private void LoadQuestData()
         {
             var gameStatePath = GetSavingPath(SavingPath.QuestData);
             SaveManager.Instance.Load<QuestData>(gameStatePath, QuestDataWasLoaded, encrypt);
@@ -252,6 +263,9 @@ namespace JumpeeIsland
 
         private void SavePlayerEnv()
         {
+            if (GameFlowManager.Instance.GameMode == GameMode.REPLAY)
+                return;
+
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
             SaveManager.Instance.Save(m_EnvLoader.GetData(), envPath, DataWasSaved, encrypt);
         }
@@ -530,6 +544,68 @@ namespace JumpeeIsland
             m_CurrencyLoader.DeductCurrency(currencyId, amount);
         }
 
+        /// <summary>
+        /// All currency increment must go through this function
+        /// </summary>
+        public void StoreCurrencyAtBuildings(string commandId, Vector3 fromPos)
+        {
+            if (commandId.Equals("NONE"))
+                return;
+
+            var rewards = m_CloudConnector.GetRewardByCommandId(commandId);
+            foreach (var reward in rewards)
+            {
+                switch (reward.service)
+                {
+                    case "currency":
+                    {
+                        if (reward.id.Equals(CurrencyType.GOLD.ToString()) ||
+                            reward.id.Equals(CurrencyType.GEM.ToString()) ||
+                            reward.id.Equals(CurrencyType.MOVE.ToString()))
+                            IncrementLocalCurrency(reward.id, reward.amount);
+                        else
+                            m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
+
+                        // show currency vfx
+                        MainUI.Instance.OnShowCurrencyVfx.Invoke(reward.id, reward.amount, fromPos);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void StoreCurrencyAtBuildings(string currency, int amount)
+        {
+            if (currency.Equals(CurrencyType.GOLD.ToString()) ||
+                currency.Equals(CurrencyType.GEM.ToString()) ||
+                currency.Equals(CurrencyType.MOVE.ToString()))
+                IncrementLocalCurrency(currency, amount);
+            else
+                m_EnvLoader.StoreRewardAtBuildings(currency, amount);
+        }
+
+        ///<summary>
+        ///Store currency into buildings of a given EnvData
+        ///</summary>
+        public void StoreCurrencyByEnvData(string currencyId, int amount, EnvironmentData envData)
+        {
+            envData.StoreRewardAtBuildings(currencyId, amount);
+        }
+
+        /// <summary>
+        /// All currency deduction must go through this function
+        /// </summary>
+        public void DeductCurrencyFromBuildings(string currencyId, int amount)
+        {
+            if (currencyId.Equals(CurrencyType.GOLD.ToString()) ||
+                currencyId.Equals(CurrencyType.GEM.ToString()) ||
+                currencyId.Equals(CurrencyType.MOVE.ToString()))
+                DeductCurrency(currencyId, amount);
+            else
+                m_EnvLoader.DeductCurrencyFromBuildings(currencyId, amount);
+        }
+
         public IEnumerable<PlayerBalance> GetCurrencies()
         {
             return m_CurrencyLoader.GetCurrencies();
@@ -572,7 +648,7 @@ namespace JumpeeIsland
             return m_CloudConnector.GetCurrencySprite(currencyId);
         }
 
-        public MainHallTier GetCurrentTier()
+        private MainHallTier GetCurrentTier()
         {
             return m_EnvLoader.GetCurrentTier();
         }
@@ -752,6 +828,21 @@ namespace JumpeeIsland
             return m_CloudConnector.GetPlayerScore();
         }
 
+        public void GainExp(int amount)
+        {
+            m_CloudConnector.PlayerRecordExp(amount);
+        }
+
+        public int GetPlayerExp()
+        {
+            return m_CloudConnector.GetPlayerExp();
+        }
+
+        public string GetEnemyId()
+        {
+            return m_CloudConnector.GetEnemyId();
+        }
+
         #endregion
 
         #region GAME PROCESS
@@ -772,7 +863,7 @@ namespace JumpeeIsland
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
-        public async void SaveBattleResult(int starAmount, int score)
+        public async void SaveBattleResult(string enemyId , int starAmount, int score, float winRate)
         {
             if (starAmount == 0)
                 m_GameProcess.winStack = 0;
@@ -795,6 +886,16 @@ namespace JumpeeIsland
             m_GameProcess.battleCount++;
             m_GameProcess.score = Mathf.Clamp(m_GameProcess.score + score, 0, m_GameProcess.score + score);
 
+            var battleRecord = GetComponent<BattleRecorder>().GetBattleRecord();
+            battleRecord.winStar = starAmount;
+            battleRecord.winStack = m_GameProcess.winStack;
+            battleRecord.winRate = winRate;
+            battleRecord.score = score;
+            battleRecord.isRecorded = true;
+
+            //TODO send an email to enemy
+            m_CloudConnector.AddBattleEmail(enemyId ,battleRecord);
+            
             m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
@@ -810,6 +911,11 @@ namespace JumpeeIsland
             m_GameProcess.bossUnlock = bossIndex;
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
+
+        // public void GainExp(int expAmount)
+        // {
+        //     m_GameProcess.experience += expAmount;
+        // }
 
         #endregion
 
@@ -851,58 +957,6 @@ namespace JumpeeIsland
         public GameProcessData GetGameProcess()
         {
             return m_GameProcess;
-        }
-
-        /// <summary>
-        /// All currency increment must go through this function
-        /// </summary>
-        public void StoreCurrencyAtBuildings(string commandId, Vector3 fromPos)
-        {
-            if (commandId.Equals("NONE"))
-                return;
-
-            var rewards = m_CloudConnector.GetRewardByCommandId(commandId);
-            foreach (var reward in rewards)
-            {
-                switch (reward.service)
-                {
-                    case "currency":
-                    {
-                        if (reward.id.Equals(CurrencyType.GOLD.ToString()) ||
-                            reward.id.Equals(CurrencyType.GEM.ToString()) ||
-                            reward.id.Equals(CurrencyType.MOVE.ToString()))
-                            IncrementLocalCurrency(reward.id, reward.amount);
-                        else
-                            m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
-
-                        // show currency vfx
-                        MainUI.Instance.OnShowCurrencyVfx.Invoke(reward.id, reward.amount, fromPos);
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        ///<summary>
-        ///Store currency into buildings of a given EnvData
-        ///</summary>
-        public void StoreCurrencyByEnvData(string currencyId, int amount, EnvironmentData envData)
-        {
-            envData.StoreRewardAtBuildings(currencyId, amount);
-        }
-
-        /// <summary>
-        /// All currency deduction must go through this function
-        /// </summary>
-        public void DeductCurrencyFromBuildings(string currencyId, int amount)
-        {
-            if (currencyId.Equals(CurrencyType.GOLD.ToString()) ||
-                currencyId.Equals(CurrencyType.GEM.ToString()) ||
-                currencyId.Equals(CurrencyType.MOVE.ToString()))
-                DeductCurrency(currencyId, amount);
-            else
-                m_EnvLoader.DeductCurrencyFromBuildings(currencyId, amount);
         }
 
         #endregion

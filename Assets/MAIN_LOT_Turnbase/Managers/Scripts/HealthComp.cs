@@ -7,7 +7,8 @@ namespace JumpeeIsland
 {
     public class HealthComp : MonoBehaviour
     {
-        [SerializeField] private HealthBar _healthBar;
+        [FormerlySerializedAs("_healthBar")] [SerializeField]
+        private EntityUI entityUI;
 
         private int m_MAXHp;
         private int m_MAXStorage;
@@ -17,19 +18,31 @@ namespace JumpeeIsland
         public void Init(int maxHp, UnityEvent<Entity> dieEvent, EntityData entityData)
         {
             m_MAXHp = maxHp;
-            _healthBar.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
+            entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
             _dieEvent = dieEvent;
             _isDeath = false;
 
             if (entityData is BuildingData)
             {
                 var buildingData = (BuildingData)entityData;
-                _healthBar.ShowHealthBar(GameFlowManager.Instance.GameMode == GameMode.ECONOMY,
+                entityUI.ShowBars(GameFlowManager.Instance.GameMode == GameMode.ECONOMY,
+                    buildingData.BuildingType != BuildingType.MAINHALL || GameFlowManager.Instance.GameMode != GameMode.ECONOMY,
                     buildingData.BuildingType != BuildingType.TOWER);
                 m_MAXStorage = buildingData.StorageCapacity;
+
+                if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+                {
+                    entityUI.UpdatePrice(buildingData.StorageCurrency.ToString(), buildingData.CurrentStorage);
+                }
+            }
+            else if (entityData is CreatureData)
+            {
+                var creatureData = (CreatureData)entityData;
+                entityUI.ShowBars(GameFlowManager.Instance.GameMode != GameMode.ECONOMY, true, false);
+                entityUI.UpdatePrice(creatureData.CurrentExp);
             }
             else
-                _healthBar.ShowHealthBar(false, false);
+                entityUI.ShowBars(false, true, false);
         }
 
         public void TakeDamage(int damage, EntityData entityData, Entity killedBy)
@@ -38,10 +51,15 @@ namespace JumpeeIsland
                 return;
 
             entityData.CurrentHp -= damage;
-            _healthBar.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
+            entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
 
             if (entityData.CurrentHp <= 0)
+            {
+                if (killedBy.TryGetComponent(out CreatureEntity creatureEntity))
+                    creatureEntity.AccumulateKills();
+
                 Die(killedBy);
+            }
         }
 
         private void Die(Entity killedByFaction)
@@ -52,12 +70,17 @@ namespace JumpeeIsland
 
         public void UpdateStorage(int value)
         {
-            _healthBar.UpdateStorageSlider(value * 1f / m_MAXStorage);
+            entityUI.UpdateStorageSlider(value * 1f / m_MAXStorage);
         }
 
         public void UpdatePriceText(int price)
         {
-            _healthBar.UpdatePrice(price);
+            entityUI.UpdatePrice(price);
+        }
+
+        public void TurnHealthSlider(bool isOn)
+        {
+            entityUI.TurnHealthSlider(isOn);
         }
     }
 }

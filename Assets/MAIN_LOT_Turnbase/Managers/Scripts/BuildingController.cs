@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     public class BuildingController : MonoBehaviour
     {
-        private List<BuildingInGame> m_buildings = new();
+        protected List<BuildingInGame> m_buildings = new();
         private EnvironmentManager m_Environment;
         private Camera _camera;
         private int _layerMask = 1 << 9;
@@ -27,9 +27,9 @@ namespace JumpeeIsland
                     continue;
                 
                 building.DurationDeduct(m_Environment.GetCurrFaction());
-
                 if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                     return;
+                
                 building.AskForAttack();
             }
         }
@@ -39,7 +39,7 @@ namespace JumpeeIsland
             m_buildings.Add(building);
         }
 
-        public void Update()
+        public virtual void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -138,7 +138,7 @@ namespace JumpeeIsland
                 var deductedAmount = building.GetCurrentStorage(currency);
                 deductedAmount = deductedAmount > amount ? amount : deductedAmount;
                 building.DeductCurrency(deductedAmount);
-                SavingSystemManager.Instance.DeductCurrency(currencyId, deductedAmount);
+                // SavingSystemManager.Instance.DeductCurrency(currencyId, deductedAmount);
                 amount -= deductedAmount;
             }
         }

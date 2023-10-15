@@ -9,23 +9,23 @@ namespace JumpeeIsland
     [RequireComponent(typeof(ObjectPool))]
     public class CreatureLoader : MonoBehaviour, ILoadData
     {
-        private IFactionController _factionController;
+        protected IFactionController _factionController;
         private ObjectPool _creaturePool;
-        private List<CreatureData> _creatureDatas;
+        protected List<CreatureData> _creatureDatas;
 
         public void StartUpLoadData<T>(T data)
         {
             _creatureDatas = (List<CreatureData>)Convert.ChangeType(data, typeof(List<CreatureData>));
         }
 
-        private void Start()
+        protected void Start()
         {
             GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
             _factionController = GetComponent<IFactionController>();
             _creaturePool = GetComponent<ObjectPool>();
         }
 
-        private void Init()
+        protected virtual void Init()
         {
             foreach (var creatureData in _creatureDatas)
                 TrainANewCreature(creatureData);
@@ -33,13 +33,13 @@ namespace JumpeeIsland
             _factionController.Init();
         }
 
-        public void PlaceNewObject<T>(T data)
+        public virtual void PlaceNewObject<T>(T data)
         {
             var creatureData = (CreatureData)Convert.ChangeType(data, typeof(CreatureData));
             TrainANewCreature(creatureData);
         }
 
-        private void TrainANewCreature(CreatureData creatureData)
+        protected void TrainANewCreature(CreatureData creatureData)
         {
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)

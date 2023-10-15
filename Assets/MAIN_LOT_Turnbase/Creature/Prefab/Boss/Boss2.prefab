@@ -24284,7 +24284,7 @@ GameObject:
   - component: {fileID: 935929486893718955}
   - component: {fileID: 7685358287014474119}
   - component: {fileID: 8081009781559897514}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: Boss2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24305,7 +24305,7 @@ Transform:
   m_Children:
   - {fileID: 6824173235661951956}
   - {fileID: 3973109056894181792}
-  - {fileID: 3443972647525049879}
+  - {fileID: 599996816490178304}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24399,14 +24399,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 5897075231589375173}
   m_RotatePart: {fileID: 3973109056894181792}
-  m_UnitStats:
-  - {fileID: 11400000, guid: d1efb0c5e0611416f9a09b2004b270e6, type: 2}
   m_SkinComp: {fileID: 7200372622406747792}
   m_HealthComp: {fileID: 4882782820569169678}
   m_AttackComp: {fileID: 228184939763068423}
   m_SkillComp: {fileID: 1670896166245438440}
   m_EffectComp: {fileID: 935929486893718955}
   m_AnimateComp: {fileID: 7685358287014474119}
+  _killAccumulation: 0
 --- !u!114 &7200372622406747792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24420,6 +24419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 7147004885822148437}
+  _appearVfx: {fileID: 0}
   _factionRenderers: []
   _activeMaterial: {fileID: 2100000, guid: 5d84c2ba2c1d4408ca682be990685e67, type: 2}
   _disableMaterial: {fileID: 2100000, guid: 5d84c2ba2c1d4408ca682be990685e67, type: 2}
@@ -24435,7 +24435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d2ef52d0914d41ba4570437b257075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBar: {fileID: 8647286017689312386}
+  entityUI: {fileID: 5417337456933432009}
 --- !u!114 &228184939763068423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24487,7 +24487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Animator: {fileID: 0}
   m_RotatePart: {fileID: 3973109056894181792}
 --- !u!114 &8081009781559897514
 MonoBehaviour:
@@ -63064,14 +63063,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
---- !u!224 &3443972647525049879 stripped
+--- !u!224 &599996816490178304 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 899191763252822658, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3162227506753504149, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
   m_PrefabInstance: {fileID: 2572083999962834069}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8647286017689312386 stripped
+--- !u!114 &5417337456933432009 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6606978653053188119, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7538989989522001500, guid: e457ea5b907c1420d966cc8ff05e1176, type: 3}
   m_PrefabInstance: {fileID: 2572083999962834069}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

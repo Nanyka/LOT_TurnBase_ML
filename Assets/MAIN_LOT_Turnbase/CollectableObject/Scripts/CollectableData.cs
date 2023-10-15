@@ -6,7 +6,8 @@ namespace JumpeeIsland
     {
         NONE,
         REWARD,
-        TRAP
+        TRAP,
+        TARGET
     }
 
     [System.Serializable]

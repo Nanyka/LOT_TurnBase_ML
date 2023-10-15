@@ -33,7 +33,6 @@ namespace JumpeeIsland
                 
                 SavingSystemManager.Instance.SendBossQuestEvent(_bossIndex);
                 Addressables.LoadSceneAsync(_bossScene);
-                // SceneManager.LoadScene(_bossScene);
             }
         }
 

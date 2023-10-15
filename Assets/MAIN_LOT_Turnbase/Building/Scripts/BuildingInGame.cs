@@ -67,11 +67,6 @@ namespace JumpeeIsland
             SellBuilding(SavingSystemManager.Instance.GetEnvironmentData());
         }
 
-        public Entity GetEntity()
-        {
-            return m_Entity;
-        }
-
         private void DestroyBuilding(Entity killedByEntity)
         {
             // just contribute resource when it is killed by player faction as selling out this building
@@ -89,13 +84,13 @@ namespace JumpeeIsland
             Debug.Log("Remove building");
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             _buildingController.RemoveBuilding(this);
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
             gameObject.SetActive(false);
         }
 
         public void Remove(EnvironmentData environmentData)
         {
-            // Building will not be deleted from player data, unless player sell it out
-            // environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
+            environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
         }
 
         private void SellBuilding(EnvironmentData environmentData)
@@ -107,6 +102,20 @@ namespace JumpeeIsland
         {
             if (m_Entity.GetBuildingType() == BuildingType.TOWER)
             {
+                // Record building action in BATTLE mode
+                if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+                {
+                    var recordAction = new RecordAction
+                    {
+                        Action = 0,
+                        // AtSecond = CountDownClock.GetBattleTime(),
+                        AtPos = GetPosition(),
+                        EntityType = EntityType.BUILDING
+                    };
+            
+                    SavingSystemManager.Instance.OnRecordAction.Invoke(recordAction);
+                }
+                
                 m_Entity.AttackSetup(this, this);
             }
         }
@@ -120,5 +129,19 @@ namespace JumpeeIsland
         {
             // Debug.Log("Building finished an attack");
         }
+
+        #region GET
+        
+        public Entity GetEntity()
+        {
+            return m_Entity;
+        }
+
+        public Vector3 GetPosition()
+        {
+            return m_Entity.GetData().Position;
+        }
+
+        #endregion
     }
 }

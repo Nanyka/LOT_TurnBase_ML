@@ -11,6 +11,7 @@ namespace JumpeeIsland
     public class SkinComp : MonoBehaviour
     {
         [SerializeField] private Transform m_SkinAnchor;
+        [SerializeField] private ParticleSystem _appearVfx;
         [SerializeField] private List<Renderer> _factionRenderers = new();
         [SerializeField] private Material _activeMaterial;
         [SerializeField] private Material _disableMaterial;

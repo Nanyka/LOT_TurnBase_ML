@@ -1,0 +1,169 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bef40bf9ead4a699271907218a67330, type: 3}
+  m_Name: TestRecord
+  m_EditorClassIdentifier: 
+  BattleRecord:
+    isRecorded: 1
+    score: 0
+    winStar: 0
+    winStack: 0
+    winRate: 0.8
+    rewards: []
+    environmentData:
+      timestamp: 0
+      lastTimestamp: 0
+      moveTimestamp: 0
+      mapSize: 0
+      ResourceData:
+      - EntityName: Obstacle1
+        SkinAddress: /Resources/Obstacle1
+        Position: {x: -1, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0}
+        FactionType: 2
+        CurrentHp: 2
+        CurrentLevel: 0
+        AccumulatedStep: 0
+        Level: 0
+        ResourceType: 0
+        CollectedCurrency: 0
+      - EntityName: Obstacle1
+        SkinAddress: /Resources/Obstacle1
+        Position: {x: 1, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0}
+        FactionType: 2
+        CurrentHp: 2
+        CurrentLevel: 0
+        AccumulatedStep: 0
+        Level: 0
+        ResourceType: 0
+        CollectedCurrency: 0
+      - EntityName: Tree1
+        SkinAddress: /Resources/Tree1
+        Position: {x: -1, y: 0, z: 2}
+        Rotation: {x: 0, y: 0, z: 0}
+        FactionType: 2
+        CurrentHp: 2
+        CurrentLevel: 0
+        AccumulatedStep: 0
+        Level: 0
+        ResourceType: 0
+        CollectedCurrency: 2
+      - EntityName: Tree1
+        SkinAddress: /Resources/Tree1
+        Position: {x: -4, y: 0, z: 3}
+        Rotation: {x: 0, y: 0, z: 0}
+        FactionType: 2
+        CurrentHp: 2
+        CurrentLevel: 0
+        AccumulatedStep: 0
+        Level: 0
+        ResourceType: 0
+        CollectedCurrency: 2
+      BuildingData:
+      - EntityName: MainHall
+        SkinAddress: /Buildings/MainHall_lv0
+        Position: {x: -2, y: 0, z: 3}
+        Rotation: {x: -0, y: 0, z: 0}
+        FactionType: 1
+        CurrentHp: 3
+        CurrentLevel: 0
+        BuildingType: 1
+        CurrentDamage: 0
+        CurrentShield: 0
+        CurrentExp: 0
+        CurrentStorage: 2
+        StorageCapacity: 10
+        TurnCount: 0
+        StorageCurrency: 3
+      - EntityName: WoodStorage
+        SkinAddress: /Buildings/WoodStorage_lv0
+        Position: {x: 0, y: 0, z: 2}
+        Rotation: {x: -0, y: 0, z: 0}
+        FactionType: 1
+        CurrentHp: 3
+        CurrentLevel: 0
+        BuildingType: 3
+        CurrentDamage: 0
+        CurrentShield: 0
+        CurrentExp: 0
+        CurrentStorage: 0
+        StorageCapacity: 10
+        TurnCount: 0
+        StorageCurrency: 2
+      - EntityName: FoodStorage
+        SkinAddress: /Buildings/FoodStorage_lv0
+        Position: {x: -4, y: 0, z: -1}
+        Rotation: {x: -0, y: 0, z: 0}
+        FactionType: 1
+        CurrentHp: 1
+        CurrentLevel: 0
+        BuildingType: 2
+        CurrentDamage: 0
+        CurrentShield: 0
+        CurrentExp: 0
+        CurrentStorage: 1
+        StorageCapacity: 10
+        TurnCount: 0
+        StorageCurrency: 1
+      - EntityName: ArcherTower
+        SkinAddress: /Buildings/ArcherTower_lv0
+        Position: {x: -1, y: 0, z: 3}
+        Rotation: {x: -0, y: 0, z: 0}
+        FactionType: 1
+        CurrentHp: 3
+        CurrentLevel: 0
+        BuildingType: 5
+        CurrentDamage: 1
+        CurrentShield: 0
+        CurrentExp: 0
+        CurrentStorage: 0
+        StorageCapacity: 0
+        TurnCount: 0
+        StorageCurrency: 0
+      PlayerData:
+      - EntityName: King
+        SkinAddress: /Creatures/King_lv0
+        Position: {x: -4, y: 0, z: -2}
+        Rotation: {x: -0, y: 0, z: 0}
+        FactionType: 0
+        CurrentHp: 6
+        CurrentLevel: 0
+        CreatureType: 2
+        CurrentShield: 0
+        CurrentExp: 0
+        TurnCount: 0
+        CurrentDamage: 1
+        EffectCaches:
+        - EffectType: 4
+          EffectRemain: 0
+      EnemyData: []
+      CollectableData: []
+    Actions:
+    - AtPos: {x: -3, y: 0, z: -2}
+      Action: 1
+      EntityType: 4
+    - AtPos: {x: -1, y: 0, z: 3}
+      Action: 0
+      EntityType: 2
+    - AtPos: {x: -4, y: 0, z: -2}
+      Action: 4
+      EntityType: 4
+    - AtPos: {x: -1, y: 0, z: 3}
+      Action: 0
+      EntityType: 2
+    - AtPos: {x: -4, y: 0, z: 0}
+      Action: 3
+      EntityType: 4
+    - AtPos: {x: -1, y: 0, z: 3}
+      Action: 0
+      EntityType: 2

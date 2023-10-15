@@ -36,6 +36,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<Vector3, bool> OnSwitchButtonPointer = new(); // send to ButtonPointer, invoke at TutorialController
 
         [NonSerialized] public UnityEvent<string, bool> OnConversationUI = new(); // send to ConversationDialog, invoke at TutorialController
+        
+        [NonSerialized] public UnityEvent<string, string, bool> OnImageTutorial = new(); // send to ConversationDialog, invoke at TutorialController
 
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
@@ -44,6 +46,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<string, int, Vector3> OnShowCurrencyVfx = new(); // send to CollectCurrencyEffects; invoke at SavingSystemManager
 
         [NonSerialized] public UnityEvent<SelectionCircle> OnSelectDirection = new(); // send to MovingVisual
+
+        [NonSerialized] public UnityEvent<int, string, bool> OnStarGuide = new(); // send to QuestInfoButton ;invoke at GameResultCalculator  
 
         public bool IsInteractable;
         public bool IsInRelocating;
@@ -67,7 +71,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(EnableInteract);
         }
 
-        private void EnableInteract(long arg0)
+        protected void EnableInteract(long arg0)
         {
             OnEnableInteract.Invoke();
             IsInteractable = true;

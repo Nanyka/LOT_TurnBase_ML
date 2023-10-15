@@ -12,7 +12,7 @@ namespace JumpeeIsland
         public int CurrentExp;
         public int TurnCount;
         public int CurrentDamage;
-        public List<EffectCache> EffectCaches;
+        public List<EffectCache> EffectCaches = new();
 
         public CreatureData() { }
         
@@ -25,6 +25,7 @@ namespace JumpeeIsland
             FactionType = creatureData.FactionType;
             CreatureType = creatureData.CreatureType;
             CurrentHp = creatureData.CurrentHp;
+            CurrentLevel = creatureData.CurrentLevel;
             CurrentShield = creatureData.CurrentShield;
             CurrentExp = creatureData.CurrentExp;
             TurnCount = creatureData.TurnCount;

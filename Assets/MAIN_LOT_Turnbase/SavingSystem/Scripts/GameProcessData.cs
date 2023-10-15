@@ -17,10 +17,5 @@ namespace JumpeeIsland
         public int winStack;
         public int bossUnlock;
         public int score;
-
-        public int CalculateExp()
-        {
-            return battleCount + win1StarCount + win2StarCount * 2 + win3StarCount * 4;
-        }
     }
 }

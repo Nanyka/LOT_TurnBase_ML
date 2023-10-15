@@ -21,7 +21,9 @@ public class Skill_SO : ScriptableObject
     [Header("Skill effect")]
     [SerializeField] private SkillEffectType _skillEffectType;
     [SerializeField] private Material _effectMaterial;
+    [Tooltip("GlobalTarget mean the unit just keep attacking and don't care about hitting target or not")]
     [SerializeField] private bool _isGlobalTarget;
+    [SerializeField] private bool _isPreAttack;
     private SkillEffect _skillEffect;
     
     [Header("ML property")]
@@ -138,5 +140,10 @@ public class Skill_SO : ScriptableObject
     public bool CheckGlobalTarget()
     {
         return _isGlobalTarget;
+    }
+
+    public bool CheckPreAttack()
+    {
+        return _isPreAttack;
     }
 }

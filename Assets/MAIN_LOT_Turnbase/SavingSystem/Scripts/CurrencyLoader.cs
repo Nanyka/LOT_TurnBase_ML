@@ -34,8 +34,10 @@ namespace JumpeeIsland
         public void SetLocalBalances(LocalBalancesData localBalancesData)
         {
             m_LocalBalances = localBalancesData;
+            
         }
 
+        // Update cloud currency based on local currency
         public void Init(List<PlayerBalance> currencies)
         {
             Debug.Log("Load currencies...");
@@ -117,7 +119,9 @@ namespace JumpeeIsland
 
         public void DeductCurrency(string currencyId, int currencyAmount)
         {
-            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance -= currencyAmount;
+            var currency = m_Currencies.Find(t => t.CurrencyId == currencyId);
+            if (currency != null)
+                currency.Balance -= currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
 
             //Save currency 

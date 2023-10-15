@@ -7,16 +7,16 @@ namespace JumpeeIsland
 {
     public class AnimateComp : MonoBehaviour
     {
-        [SerializeField] private Animator m_Animator;
-
-        private List<Vector3> tiles = new();
         [SerializeField] private Transform m_RotatePart;
+        
+        private Animator m_Animator;
+        [SerializeField] private List<Vector3> tiles = new();
         private ICreatureMove m_Creature;
         private Vector3 direction;
-        private Vector3 destination; // Ending point of the jump (Point B)
+        [SerializeField] private Vector3 destination; // Ending point of the jump (Point B)
         private bool isStartMoves; // Flag to track if the object is in a move loop
-        private bool isMoving; // Flag to track if the object is jumping
-        private int moveIndex;
+        [SerializeField] private bool isMoving; // Flag to track if the object is jumping
+        [SerializeField] private int moveIndex;
 
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int JumpUp = Animator.StringToHash("JumpUp");
@@ -41,14 +41,6 @@ namespace JumpeeIsland
 
             if (isStartMoves && !isMoving)
                 StartMove();
-
-            if (isMoving)
-            {
-                if (Vector3.Distance(destination, transform.position) < 0.1f)
-                {
-                    EndMove();
-                }
-            }
         }
 
         public void MoveToTarget(Vector3 currPos, int moveDir, ICreatureMove creature)
@@ -82,7 +74,12 @@ namespace JumpeeIsland
                 if (Mathf.Abs(Vector3.Distance(destination, transform.position)) < 1.5f)
                     m_Animator.SetBool(Walk, true);
                 else
-                    m_Animator.SetTrigger(Jump);
+                {
+                    if (moveIndex >= tiles.Count - 1)
+                        TriggerAttackAnim(1); // 1 is jump attack, combo attack is from 2 afterward
+                    else
+                        m_Animator.SetTrigger(Jump);
+                }
             }
             else if (destination.y > transform.position.y)
             {
@@ -99,7 +96,7 @@ namespace JumpeeIsland
             isMoving = true;
         }
 
-        private void EndMove()
+        public void EndMove()
         {
             m_Animator.SetBool(Walk, false);
 
@@ -108,7 +105,6 @@ namespace JumpeeIsland
 
             if (moveIndex >= tiles.Count)
             {
-                // Debug.Log($"End moves at {transform.position}");
                 isStartMoves = false;
                 m_Creature.CreatureEndMove();
             }
@@ -124,21 +120,15 @@ namespace JumpeeIsland
             }
         }
 
-        public void SetAnimation(AnimateType animate, int jumpCount)
-        {
-            m_Animator.SetInteger(AttackIndex, jumpCount);
-
-            switch (animate)
-            {
-                case AnimateType.Attack:
-                    m_Animator.SetTrigger(Attack);
-                    break;
-            }
-        }
-
         public void SetAnimator(Animator animator)
         {
             m_Animator = animator;
+        }
+
+        public void TriggerAttackAnim(int attackIndex)
+        {
+            m_Animator.SetInteger(AttackIndex, attackIndex);
+            m_Animator.SetTrigger(Attack);
         }
     }
 }

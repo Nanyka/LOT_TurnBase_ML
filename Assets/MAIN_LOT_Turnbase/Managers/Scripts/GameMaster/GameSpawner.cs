@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
+using WebSocketSharp;
 using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
@@ -18,10 +20,10 @@ namespace JumpeeIsland
 
     public class GameSpawner : MonoBehaviour
     {
-        [FormerlySerializedAs("_spawningGameTiers")] [SerializeField]
-        private List<SpawningTier> _spawningTiers;
+        [SerializeField] private List<SpawningTier> _spawningTiers;
 
         private EnvironmentManager _environmentManager;
+        [FormerlySerializedAs("_isSkipSpawning")] [FormerlySerializedAs("_isReachCondition")] [SerializeField] private bool _isSkip;
 
         private void Start()
         {
@@ -54,64 +56,49 @@ namespace JumpeeIsland
             // Select game to spawn if spawning condition is passed
             if (currentTier.spawnGameDecision != null)
             {
-                if (currentTier.spawnGameDecision.CheckGetThrough() == false)
+                _isSkip = currentTier.spawnGameDecision.CheckGetThrough();
+                if (_isSkip == false)
                 {
-                    var gameList = currentTier.spawnGameDecision.GetObjectsToSpawn();
-                    if (gameList != null && gameList.Any())
+                    var spawnGame = currentTier.spawnGameDecision.GetObjectToSpawn();
+                    if (spawnGame.IsNullOrWhitespace() == false)
                     {
-                        switch (currentTier.spawnGameDecision.GetEntityType())
+                        var creatureAmount = SavingSystemManager.Instance.GetEnvironmentData().EnemyData
+                            .Count(t => t.CreatureType == CreatureType.MOVER);
+                        var spawningAmount = Random.Range(0,
+                            currentTier.spawnGameDecision.GetMaxSpawningAmount() - creatureAmount);
+                        for (int i = 0; i < spawningAmount; i++)
                         {
-                            case EntityType.ENEMY:
+                            var availableTile = GameFlowManager.Instance.GetEnvManager()
+                                .GetRandomAvailableTile();
+                            if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
                             {
-                                var creatureAmount = SavingSystemManager.Instance.GetEnvironmentData().EnemyData
-                                    .Count(t => t.CreatureType == CreatureType.MOVER);
-                                var spawningAmount = Random.Range(0,
-                                    currentTier.spawnGameDecision.GetMaxSpawningAmount() - creatureAmount);
-                                for (int i = 0; i < spawningAmount; i++)
-                                {
-                                    var availableTile = GameFlowManager.Instance.GetEnvManager()
-                                        .GetRandomAvailableTile();
-                                    if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
-                                    {
-                                        SavingSystemManager.Instance.OnSpawnMovableEntity(
-                                            gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
-                                    }
-                                }
+                                SavingSystemManager.Instance.OnSpawnMovableEntity(spawnGame, availableTile);
                             }
-                                break;
                         }
                     }
                 }
             }
 
-            // Select game to spawn if spawning condition is passed
+            // Select resources to spawn if spawning condition is passed
             if (currentTier.spawnTreeDecision != null)
             {
-                if (currentTier.spawnTreeDecision.CheckGetThrough() == false)
+                if (_isSkip == false)
                 {
-                    var gameList = currentTier.spawnTreeDecision.GetObjectsToSpawn();
-                    if (gameList != null && gameList.Any())
+                    var spawnTree = currentTier.spawnTreeDecision.GetObjectToSpawn();
+                    if (spawnTree.IsNullOrWhitespace() == false)
                     {
-                        switch (currentTier.spawnTreeDecision.GetEntityType())
+                        var creatureAmount = SavingSystemManager.Instance.GetEnvironmentData().EnemyData
+                            .Count(t => t.CreatureType == CreatureType.MOVER);
+                        var spawningAmount = Random.Range(0,
+                            currentTier.spawnGameDecision.GetMaxSpawningAmount() - creatureAmount);
+                        for (int i = 0; i < spawningAmount; i++)
                         {
-                            case EntityType.RESOURCE:
+                            var availableTile = GameFlowManager.Instance.GetEnvManager()
+                                .GetRandomAvailableTile();
+                            if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
                             {
-                                var treeAmount = SavingSystemManager.Instance.GetEnvironmentData().ResourceData
-                                    .Count(t => t.CollectedCurrency == CurrencyType.WOOD);
-                                var spawningAmount = Random.Range(0,
-                                    currentTier.spawnGameDecision.GetMaxSpawningAmount() - treeAmount);
-                                for (int i = 0; i < spawningAmount; i++)
-                                {
-                                    var availableTile = GameFlowManager.Instance.GetEnvManager()
-                                        .GetRandomAvailableTile();
-                                    if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
-                                    {
-                                        SavingSystemManager.Instance.OnSpawnResource(
-                                            gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile);
-                                    }
-                                }
+                                SavingSystemManager.Instance.OnSpawnMovableEntity(spawnTree, availableTile);
                             }
-                                break;
                         }
                     }
                 }
@@ -120,25 +107,32 @@ namespace JumpeeIsland
             // Select collectable objects to spawn if spawning condition is passed
             if (currentTier.spawnCollectableObjDecision != null)
             {
-                if (currentTier.spawnCollectableObjDecision.CheckGetThrough() == false)
+                if (_isSkip == false)
                 {
-                    var gameList = currentTier.spawnCollectableObjDecision.GetObjectsToSpawn();
-                    if (gameList != null && gameList.Any())
+                    var spawnTree = currentTier.spawnCollectableObjDecision.GetObjectToSpawn();
+                    if (spawnTree.IsNullOrWhitespace() == false)
                     {
-                        var availableTile = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
-                        if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
+                        var creatureAmount = SavingSystemManager.Instance.GetEnvironmentData().EnemyData
+                            .Count(t => t.CreatureType == CreatureType.MOVER);
+                        var spawningAmount = Random.Range(0,
+                            currentTier.spawnGameDecision.GetMaxSpawningAmount() - creatureAmount);
+                        for (int i = 0; i < spawningAmount; i++)
                         {
-                            switch (currentTier.spawnCollectableObjDecision.GetEntityType())
+                            var availableTile = GameFlowManager.Instance.GetEnvManager()
+                                .GetRandomAvailableTile();
+                            if (availableTile.x.CompareTo(float.NegativeInfinity) == 1)
                             {
-                                case EntityType.COLLECTABLE:
-                                    SavingSystemManager.Instance.OnSpawnCollectable(
-                                        gameList.ElementAt(Random.Range(0, gameList.Count())), availableTile, 0);
-                                    break;
+                                SavingSystemManager.Instance.OnSpawnMovableEntity(spawnTree, availableTile);
                             }
                         }
                     }
                 }
             }
+        }
+
+        public bool CheckTierCondition()
+        {
+            return _isSkip;
         }
     }
 }

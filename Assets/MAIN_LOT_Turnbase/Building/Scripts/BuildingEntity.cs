@@ -17,7 +17,6 @@ namespace JumpeeIsland
         [SerializeField] private FireComp m_FireComp;
         [SerializeField] private AnimateComp m_AnimateComp;
         [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
-        
 
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
@@ -65,6 +64,10 @@ namespace JumpeeIsland
         public override FactionType GetFaction()
         {
             return m_BuildingData.FactionType;
+        }
+
+        public override void GainGoldValue()
+        {
         }
 
         public BuildingType GetBuildingType()
@@ -135,7 +138,8 @@ namespace JumpeeIsland
 
         public void StoreCurrency(int amount)
         {
-            m_BuildingData.CurrentStorage += amount;
+            m_BuildingData.CurrentStorage +=
+                amount <= m_BuildingData.GetStoreSpace() ? amount : m_BuildingData.GetStoreSpace();
             m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);
             m_HealthComp.UpdatePriceText(CalculateSellingPrice());
         }
@@ -143,11 +147,12 @@ namespace JumpeeIsland
         public void DeductCurrency(int amount)
         {
             m_BuildingData.CurrentStorage -= amount;
+            SavingSystemManager.Instance.DeductCurrency(m_BuildingData.StorageCurrency.ToString(), amount);
         }
 
         public int CalculateSellingPrice()
         {
-            return m_CurrentStats.Level * m_BuildingData.CurrentExp;
+            return Mathf.RoundToInt((1 + m_CurrentStats.Level) * m_BuildingData.CurrentStorage * 0.1f);
         }
 
         public int CalculateUpgradePrice()
@@ -167,32 +172,66 @@ namespace JumpeeIsland
 
         public override void TakeDamage(int damage, Entity fromEntity)
         {
-            // If player's creatures attack enemy building, they also seize loot from this storage
-            if (fromEntity.GetFaction() == FactionType.Player && m_BuildingData.FactionType == FactionType.Enemy)
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
-                var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp * 1f, 0f, 1f);
-                var seizedAmount = Mathf.RoundToInt(damageUpperHealth * m_BuildingData.CurrentStorage);
-                m_BuildingData.CurrentStorage -= seizedAmount;
+                if (fromEntity.GetFaction() == FactionType.Enemy)
+                {
+                    var seizedAmount = EnemyRopeCurrency(damage);
+                    Debug.Log($"Enemy seizes {seizedAmount} {m_BuildingData.StorageCurrency}");
+                }
 
-                // Storage currency require player's envData that is retrieved from SavingSystemManager.Instance.GetEnvDataForSave() in BattleMode
-                SavingSystemManager.Instance.StoreCurrencyByEnvData(m_BuildingData.StorageCurrency.ToString(),
-                    seizedAmount, SavingSystemManager.Instance.GetEnvDataForSave());
-
-                MainUI.Instance.OnShowCurrencyVfx.Invoke(m_BuildingData.StorageCurrency.ToString(), seizedAmount,
-                    fromEntity.GetData().Position);
+                if (m_BuildingData.BuildingType != BuildingType.MAINHALL)
+                    m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
             }
+            else if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+            {
+                // If player's creatures attack enemy building, they also seize loot from this storage
+                if (fromEntity.GetFaction() == FactionType.Player && m_BuildingData.FactionType == FactionType.Enemy)
+                {
+                    var seizedAmount = EnemyRopeCurrency(damage);
 
-            m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+                    MainUI.Instance.OnShowCurrencyVfx.Invoke(m_BuildingData.StorageCurrency.ToString(), seizedAmount,
+                        fromEntity.GetData().Position);
+                }
+
+                m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+            }
+            else
+                m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
 
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
-        public override int GetCurrentHealth()
+        private int EnemyRopeCurrency(int damage)
+        {
+            if (m_BuildingData.StorageCurrency == CurrencyType.NONE)
+                return 0;
+
+            int seizedAmount = 0;
+            if (m_BuildingData.CurrentStorage > m_BuildingData.CurrentHp)
+            {
+                var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp * 1f, 0f, 1f);
+                seizedAmount = Mathf.RoundToInt(damageUpperHealth * m_BuildingData.CurrentStorage);
+            }
+            else
+                seizedAmount = m_BuildingData.CurrentStorage > damage ? damage : m_BuildingData.CurrentStorage;
+
+            m_BuildingData.CurrentStorage -= seizedAmount;
+
+            if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
+                DeductCurrency(seizedAmount);
+            else if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
+                MainUI.Instance.OnUpdateCurrencies.Invoke();
+
+            return seizedAmount;
+        }
+
+        public virtual int GetCurrentHealth()
         {
             throw new NotImplementedException();
         }
 
-        public override void DieIndividualProcess(Entity killedByEntity)
+        protected virtual void DieIndividualProcess(Entity killedByEntity)
         {
             // TODO die visualization
         }
@@ -201,7 +240,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
+        public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             if (m_BuildingData.TurnCount > 0)
                 return;
@@ -212,7 +251,7 @@ namespace JumpeeIsland
         private void Attack(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
         {
             var currenState = unitInfo.GetCurrentState();
-            var attackRange = m_SkillComp.AttackPoints(currenState.midPos, currenState.direction, currenState.jumpStep);
+            var attackRange = m_SkillComp.AttackPath(currenState.midPos, currenState.direction, currenState.jumpStep);
 
             m_AttackComp.Attack(attackRange, this, currenState.jumpStep);
 
@@ -268,7 +307,7 @@ namespace JumpeeIsland
             return m_BuildingData.CurrentDamage;
         }
 
-        public override void SetAnimation(AnimateType animateType, bool isTurnOn)
+        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
         {
             throw new NotImplementedException();
         }
@@ -277,12 +316,12 @@ namespace JumpeeIsland
 
         #region GENERAL
 
-        public override void ContributeCommands()
+        public virtual void ContributeCommands()
         {
             throw new NotImplementedException();
         }
 
-        public override void RefreshEntity()
+        public virtual void RefreshEntity()
         {
             ResetEntity();
 
@@ -306,6 +345,9 @@ namespace JumpeeIsland
             m_BuildingData.StorageCapacity = m_CurrentStats.StorageCapacity;
             m_BuildingData.CurrentDamage = m_CurrentStats.AttackDamage;
             m_BuildingData.CurrentShield = m_CurrentStats.Shield;
+            m_BuildingData.CurrentHp = m_BuildingData.CurrentHp < m_CurrentStats.MaxHp
+                ? m_BuildingData.CurrentHp
+                : m_CurrentStats.MaxHp;
 
             // Set initiate data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);

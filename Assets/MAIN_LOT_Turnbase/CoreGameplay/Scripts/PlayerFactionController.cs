@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +10,12 @@ namespace JumpeeIsland
 {
     public class PlayerFactionController : MonoBehaviour, IFactionController
     {
-        [SerializeField] private FactionType m_Faction = FactionType.Player;
+        public bool _isAutomation;
 
+        [SerializeField] [ShowIf("@_isAutomation == true")]
+        private PlayerNpcController m_PlayerNpcController;
+
+        private FactionType m_Faction = FactionType.Player;
         private List<CreatureInGame> _creatures = new();
         private EnvironmentManager m_Environment;
         private Camera _camera;
@@ -30,8 +35,14 @@ namespace JumpeeIsland
             m_Environment.OnChangeFaction.AddListener(ToMyTurn);
             m_Environment.OnTouchSelection.AddListener(MoveToward);
             MainUI.Instance.OnClickIdleButton.AddListener(SetCurrentUnitIdle);
+            GameFlowManager.Instance.OnChangeAutomationMode.AddListener(ChangeAutomation);
 
             _camera = Camera.main;
+        }
+
+        private void ChangeAutomation(bool isAutomation)
+        {
+            _isAutomation = isAutomation;
         }
 
         #region ONE-TURN PIPELINE
@@ -145,12 +156,16 @@ namespace JumpeeIsland
             foreach (var unitMovement in _creatures)
                 unitMovement.SetDisableMaterial();
 
-            StartCoroutine(WaitForChangeFaction());
+            if (_isAutomation)
+                m_PlayerNpcController.ToMyTurn();
+            else
+                m_Environment.ChangeFaction();
+                // StartCoroutine(WaitForChangeFaction());
         }
 
         private IEnumerator WaitForChangeFaction()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             m_Environment.ChangeFaction();
         }
 

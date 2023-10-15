@@ -20,7 +20,10 @@ namespace JumpeeIsland
         [SerializeField] private JIRemoteConfigManager _remoteConfigManager;
         [SerializeField] private JILeaderboardManager _leaderboardManager;
         [SerializeField] private JICustomEventSender _customEventSender;
- 
+        [SerializeField] private JICloudSaveManager _cloudSaveManager;
+
+        private string _enemyPlayerId;
+        
         public async Task Init()
         {
             try
@@ -46,9 +49,16 @@ namespace JumpeeIsland
                 if (this == null)
                     return;
 
-                await _leaderboardManager.RefreshPlayerScore();
+                await _leaderboardManager.RefreshBoards();
                 if (this == null)
                     return;
+
+                if (_cloudSaveManager != null)
+                {
+                    await _cloudSaveManager.Init();
+                    if (this == null)
+                        return;
+                }
 
                 await FetchUpdatedServicesData();
                 if (this == null) return;
@@ -65,7 +75,7 @@ namespace JumpeeIsland
         {
             await Task.WhenAll(
                 OnLoadInventory(),
-                _remoteConfigManager.FetchConfigs()
+                _remoteConfigManager.FetchCommandConfigs()
             );
         }
 
@@ -424,8 +434,8 @@ namespace JumpeeIsland
             getPlayerRange = getPlayerRange.FindAll(t =>
                     t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
 
-            var selectRandomPlayer = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
-            return await _cloudCodeManager.CallLoadEnemyEnvironment(selectRandomPlayer);
+            _enemyPlayerId = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
+            return await _cloudCodeManager.CallLoadEnemyEnvironment(_enemyPlayerId);
         }
 
         public async Task<List<LeaderboardEntry>> GetPlayerRange()
@@ -441,6 +451,21 @@ namespace JumpeeIsland
         public int GetPlayerScore()
         {
             return _leaderboardManager.GetPlayerScore();
+        }
+        
+        public void PlayerRecordExp(int playerExp)
+        {
+            _leaderboardManager.AddExp(playerExp);
+        }
+
+        public int GetPlayerExp()
+        {
+            return _leaderboardManager.GetPlayerExp();
+        }
+
+        public string GetEnemyId()
+        {
+            return _enemyPlayerId;
         }
 
         #endregion
@@ -487,6 +512,15 @@ namespace JumpeeIsland
         public void SendTutorialTrackEvent(string stepId)
         {
             _customEventSender.SendTutorialTrackEvent(stepId);
+        }
+
+        #endregion
+
+        #region CLOUDSAVE
+
+        public void AddBattleEmail(string playerId ,BattleRecord battleRecord)
+        {
+            _cloudSaveManager.AddBattleMail(playerId ,battleRecord);
         }
 
         #endregion

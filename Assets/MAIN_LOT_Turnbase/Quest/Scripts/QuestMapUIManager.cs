@@ -23,14 +23,13 @@ namespace JumpeeIsland
 
         private void Init(QuestData questData)
         {
-            if (questData.QuestChains == null || questData.QuestChains.Count == 0)
+            Debug.Log($"Boss index: {m_BossIndex}, questChains: {questData.QuestChains.Count}");
+            if (questData.QuestChains == null || questData.QuestChains.Count < m_BossIndex)
                 return;
-            
-            foreach (var button in m_QuestButtons)
-                foreach (var quest in questData.QuestChains[m_BossIndex].QuestUnits)
-                {
-                    button.Init(quest);
-                }
+
+            var questUnits = questData.QuestChains[m_BossIndex - 1].QuestUnits;
+            for (int i = 0; i < questUnits.Count; i++)
+                m_QuestButtons[i].Init(questUnits[i]);
         }
 
         protected virtual void Update()

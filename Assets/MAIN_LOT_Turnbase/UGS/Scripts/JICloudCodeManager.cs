@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Services.Authentication;
 using Unity.Services.CloudCode;
+using Unity.Services.Samples;
 using Unity.Services.Samples.IdleClickerGame;
 using UnityEngine;
 
@@ -10,6 +12,8 @@ namespace JumpeeIsland
 {
     public class JICloudCodeManager : MonoBehaviour
     {
+        public static JICloudCodeManager instance { get; private set; }
+
         // Cloud Code SDK status codes from Client
         const int k_CloudCodeRateLimitExceptionStatusCode = 50;
         const int k_CloudCodeMissingScriptExceptionStatusCode = 9002;
@@ -35,6 +39,18 @@ namespace JumpeeIsland
         const int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
         const int k_EconomyValidationExceptionStatusCode = 1007;
         const int k_RateLimitExceptionStatusCode = 50;
+        
+        void Awake()
+        {
+            if (instance != null && instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                instance = this;
+            }
+        }
         
         #region CLOUDSAVE ENVIRONMENT DATA
 
@@ -193,6 +209,8 @@ namespace JumpeeIsland
                 HandleCloudCodeException(e);
                 throw new CloudCodeResultUnavailableException(e,
                     "Handled exception in CallGetGameProcess.");
+                
+                //TODO: Fail to load, reload scene here
             }
         }
 
@@ -211,6 +229,154 @@ namespace JumpeeIsland
                 HandleCloudCodeException(e);
                 throw new CloudCodeResultUnavailableException(e,
                     "Handled exception in CallGrantMove.");
+            }
+        }
+
+        #endregion
+
+        #region MAILBOX
+        
+        public async Task CallClaimMessageAttachmentEndpoint(string messageId)
+        {
+            try
+            {
+                JICloudSaveManager.instance.MailboxPanel.sceneView.SetInteractable(false);
+
+                Debug.Log($"Claiming attachment for message {messageId} via Cloud Code...");
+
+                await CloudCodeService.Instance.CallEndpointAsync("InGameMailbox_ClaimAttachment",
+                    new Dictionary<string, object> { { "messageId", messageId } });
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            finally
+            {
+                if (this != null)
+                {
+                    JICloudSaveManager.instance.MailboxPanel.sceneView.SetInteractable(true);
+                }
+            }
+        }
+
+        public async Task CallClaimAllMessageAttachmentsEndpoint()
+        {
+            try
+            {
+                JICloudSaveManager.instance.MailboxPanel.sceneView.SetInteractable(false);
+
+                Debug.Log("Claiming all message attachments via Cloud Code...");
+
+                var result = await CloudCodeService.Instance.CallEndpointAsync<ClaimAllResult>(
+                    "InGameMailbox_ClaimAllAttachments", new Dictionary<string, object>());
+                if (this == null) return;
+
+                var rewards = GetAggregatedRewardDetails(result.processedTransactions);
+                if (rewards.Count > 0)
+                {
+                    JICloudSaveManager.instance.MailboxPanel.sceneView.ShowClaimAllSucceededPopup(rewards);
+                }
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            finally
+            {
+                if (this != null)
+                {
+                    JICloudSaveManager.instance.MailboxPanel.sceneView.SetInteractable(true);
+                }
+            }
+        }
+        
+        public struct ClaimAllResult
+        {
+            public string[] processedTransactions;
+        }
+        
+        List<RewardDetail> GetAggregatedRewardDetails(string[] processedTransactions)
+        {
+            var aggregatedRewardCounts = GetAggregatedRewardCounts(processedTransactions);
+            return GetRewardDetails(aggregatedRewardCounts);
+        }
+        
+        Dictionary<string, int> GetAggregatedRewardCounts(string[] processedTransactions)
+        {
+            var aggregatedRewardCounts = new Dictionary<string, int>();
+
+            if (processedTransactions == null)
+            {
+                return aggregatedRewardCounts;
+            }
+
+            foreach (var transactionId in processedTransactions)
+            {
+                if (JIEconomyManager.instance.virtualPurchaseTransactions.TryGetValue(transactionId, out var virtualPurchase))
+                {
+                    foreach (var reward in virtualPurchase.rewards)
+                    {
+                        if (aggregatedRewardCounts.ContainsKey(reward.id))
+                        {
+                            aggregatedRewardCounts[reward.id] += reward.amount;
+                        }
+                        else
+                        {
+                            aggregatedRewardCounts.Add(reward.id, reward.amount);
+                        }
+                    }
+                }
+            }
+
+            return aggregatedRewardCounts;
+        }
+
+        List<RewardDetail> GetRewardDetails(Dictionary<string, int> aggregatedRewardCounts)
+        {
+            var rewardDetails = new List<RewardDetail>();
+
+            foreach (var rewardCount in aggregatedRewardCounts)
+            {
+                rewardDetails.Add(new RewardDetail
+                {
+                    id = rewardCount.Key,
+                    quantity = rewardCount.Value,
+                    sprite = AddressableManager.Instance.GetAddressableSprite(rewardCount.Key)
+                });
+            }
+
+            return rewardDetails;
+        }
+
+        public async Task SendBattleEmail(string playerId , string message)
+        {
+            try
+            {
+                // Call the function within the module and provide the parameters we defined in there
+                await CloudCodeService.Instance.CallModuleEndpointAsync("TestCSharpModule", "SendBattleEmail", new Dictionary<string, object>
+                {
+                    {"playerId", playerId},
+                    {"message", message}
+                });
+                
+                await CloudCodeService.Instance.CallModuleEndpointAsync("TestCSharpModule", "SendBattleEmail", new Dictionary<string, object>
+                {
+                    {"playerId", AuthenticationService.Instance.PlayerId},
+                    {"message", message}
+                });
+            }
+            catch (CloudCodeException exception)
+            {
+                Debug.LogException(exception);
             }
         }
 
@@ -369,5 +535,13 @@ namespace JumpeeIsland
         }
 
         #endregion
+        
+        void OnDestroy()
+        {
+            if (instance == this)
+            {
+                instance = null;
+            }
+        }
     }
 }

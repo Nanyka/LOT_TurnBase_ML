@@ -22,7 +22,7 @@ namespace JumpeeIsland
 
         public abstract FactionType GetFaction();
 
-        // public abstract void CollectExp(int expAmount);
+        public abstract void GainGoldValue();
 
         #endregion
         
@@ -30,15 +30,9 @@ namespace JumpeeIsland
 
         public abstract void TakeDamage(int damage, Entity fromEntity);
 
-        public abstract int GetCurrentHealth();
-
-        public abstract void DieIndividualProcess(Entity killedByEntity);
-
         #endregion
         
         #region ATTACK
-        
-        public abstract void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser);
 
         public abstract int GetAttackDamage();
 
@@ -59,20 +53,6 @@ namespace JumpeeIsland
         #region EFFECT
 
         public abstract EffectComp GetEffectComp();
-
-        #endregion
-
-        #region ANIMATE COMPONENT
-
-        public abstract void SetAnimation(AnimateType animateType, bool isTurnOn);
-
-        #endregion
-
-        #region GENERAL
-
-        public abstract void ContributeCommands();
-
-        public abstract void RefreshEntity();
 
         #endregion
     }

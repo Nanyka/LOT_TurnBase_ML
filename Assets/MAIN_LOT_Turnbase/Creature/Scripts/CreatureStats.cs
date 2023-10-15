@@ -9,6 +9,7 @@ namespace JumpeeIsland
         public int Strength;
         public int Armor;
         public int CostToLevelUp;
+        public int ExpReward;
         public List<CommandName> Commands;
         public CreatureType CreatureType;
     }

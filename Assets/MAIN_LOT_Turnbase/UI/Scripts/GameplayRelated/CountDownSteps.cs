@@ -8,8 +8,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private GameObject _clock;
         [SerializeField] private TextMeshProUGUI _clockText;
-        
-        private int _remainSteps;
+        [SerializeField] private int _remainSteps;
         
         private void Start()
         {

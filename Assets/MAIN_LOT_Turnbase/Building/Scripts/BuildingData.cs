@@ -25,6 +25,7 @@ namespace JumpeeIsland
             Rotation = buildingData.Rotation;
             FactionType = buildingData.FactionType;
             BuildingType = buildingData.BuildingType;
+            CurrentHp = buildingData.CurrentHp;
             CurrentDamage = buildingData.CurrentDamage;
             CurrentShield = buildingData.CurrentShield;
             CurrentExp = buildingData.CurrentExp;
@@ -51,6 +52,11 @@ namespace JumpeeIsland
                 return StorageCapacity - CurrentStorage;
 
             return 0;
+        }
+
+        public int GetStoreSpace()
+        {
+            return StorageCapacity - CurrentStorage;
         }
 
         public void StoreCurrency(int amount)
