@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Services.Authentication;
 using Unity.Services.CloudCode;
 using Unity.Services.Samples;
 using Unity.Services.Samples.IdleClickerGame;
@@ -354,6 +355,29 @@ namespace JumpeeIsland
             }
 
             return rewardDetails;
+        }
+
+        public async Task SendBattleEmail(string playerId , string message)
+        {
+            try
+            {
+                // Call the function within the module and provide the parameters we defined in there
+                await CloudCodeService.Instance.CallModuleEndpointAsync("TestCSharpModule", "SendBattleEmail", new Dictionary<string, object>
+                {
+                    {"playerId", playerId},
+                    {"message", message}
+                });
+                
+                await CloudCodeService.Instance.CallModuleEndpointAsync("TestCSharpModule", "SendBattleEmail", new Dictionary<string, object>
+                {
+                    {"playerId", AuthenticationService.Instance.PlayerId},
+                    {"message", message}
+                });
+            }
+            catch (CloudCodeException exception)
+            {
+                Debug.LogException(exception);
+            }
         }
 
         #endregion

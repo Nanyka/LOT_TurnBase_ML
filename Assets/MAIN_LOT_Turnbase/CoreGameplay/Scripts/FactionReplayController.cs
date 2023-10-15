@@ -55,7 +55,7 @@ namespace JumpeeIsland
 
         public void RemoveAgent(CreatureInGame creatureInGame)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Remove record unit");
         }
 
         public void ResetData()

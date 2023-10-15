@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -134,7 +135,8 @@ namespace JumpeeIsland
         {
             if (m_Message.battleData.battleRecord.isRecorded)
             {
-                SavingSystemManager.Instance.SaveMetadata("BattleRecord");
+                SavingSystemManager.Instance.SaveMetadata(m_Message.battleData.battleRecord);
+                Addressables.LoadSceneAsync("ReplayMode");
             }
         }
     }

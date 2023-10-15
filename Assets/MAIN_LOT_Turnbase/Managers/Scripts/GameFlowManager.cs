@@ -53,16 +53,7 @@ namespace JumpeeIsland
 
         protected virtual void Start()
         {
-            // _environmentManager = FindObjectOfType<EnvironmentManager>();
-            // _tutorialController = FindObjectOfType<TutorialController>();
-            // _gameSpawner = FindObjectOfType<GameSpawner>();
-            // _globalVfx = GetComponent<GlobalVfx>();
-            //
-            // OnStartGame.AddListener(RecordStartedState);
-            // OnKickOffEnv.AddListener(ConfirmGameStarted);
-            // OnGameOver.AddListener(GameOverState);
-            
-            SavingSystemManager.Instance.StartUpLoadData();
+            SavingSystemManager.Instance.StartLoadData();
         }
 
         protected virtual void ConfirmGameStarted()

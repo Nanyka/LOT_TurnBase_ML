@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.CloudSave;
 using UnityEngine;
@@ -45,6 +46,8 @@ namespace JumpeeIsland
                     FetchPlayerInbox()
                 );
             }
+            else
+                await FetchPlayerInbox();
         }
 
         public async Task FetchPlayerInbox()
@@ -84,12 +87,24 @@ namespace JumpeeIsland
         }
 
         #region TESTING
-        
-        public async void AddTestMail(BattleRecord battleRecord)
+
+        public async void AddBattleMail(string playerId, BattleRecord battleRecord)
         {
             try
             {
-                inboxMessages.Add(CreateATestMail(battleRecord));
+                // Ensure mail box just contain maximum 5 battle emails
+                var battleEmails = inboxMessages.FindAll(t => t.mailType == MailType.BATTLE);
+                if (battleEmails.Count >= 5)
+                {
+                    battleEmails.RemoveAt(0);
+                    battleEmails.Add(CreateATestMail(battleRecord, 5));
+                    inboxMessages = inboxMessages.Where(t => t.mailType != MailType.BATTLE).ToList();
+                    foreach (var email in battleEmails)
+                        inboxMessages.Add(email);
+                }
+                else
+                    inboxMessages.Add(CreateATestMail(battleRecord,
+                        inboxMessages.Count(t => t.mailType == MailType.BATTLE)));
 
                 var inboxBattleRecords = new InboxState
                 {
@@ -97,13 +112,8 @@ namespace JumpeeIsland
                 };
                 var inboxBattleRecordsJson = JsonUtility.ToJson(inboxBattleRecords);
 
-                //TODO: check how to save the mail on a specific playerID
-                var dataToSave = new Dictionary<string, object>
-                {
-                    { k_InboxStateKey, inboxBattleRecordsJson }
-                };
-
-                await CloudSaveService.Instance.Data.ForceSaveAsync(dataToSave);
+                //TODO: figure out how to save the mail on a specific playerID
+                await JICloudCodeManager.instance.SendBattleEmail(playerId, inboxBattleRecordsJson);
             }
             catch (Exception e)
             {
@@ -111,14 +121,15 @@ namespace JumpeeIsland
             }
         }
 
-        private InboxMessage CreateATestMail(BattleRecord battleRecord)
+        private InboxMessage CreateATestMail(BattleRecord battleRecord, int battlemailIndex)
         {
             var testBattleMessage = new InboxMessage();
-            testBattleMessage.messageId = "TEST_BATTLE_MESSAGE";
+            testBattleMessage.mailType = MailType.BATTLE;
+            testBattleMessage.messageId = $"BATTLE_MESSAGE_{battlemailIndex}";
             testBattleMessage.messageInfo = new MessageInfo();
-            testBattleMessage.messageInfo.title = "TestMessage";
-            testBattleMessage.messageInfo.content = "I create this message to test adding a new message";
-            testBattleMessage.messageInfo.expiration = "0.00:03:00.00";
+            testBattleMessage.messageInfo.title = $"BattleMessage{battlemailIndex}";
+            testBattleMessage.messageInfo.content = "This message is about the battle you got in";
+            testBattleMessage.messageInfo.expiration = "0.03:00:00.00";
             testBattleMessage.battleData = new MessageBattleData();
             testBattleMessage.battleData.battleRecord = battleRecord;
 
@@ -188,27 +199,27 @@ namespace JumpeeIsland
             {
                 return;
             }
-            
+
             MailboxPanel.StartFetchingNewMessagesSpinner();
             var newMessages =
-            JIRemoteConfigManager.instance.GetNextMessages(spaceForNewMessages, m_LastMessageDownloadedId);
+                JIRemoteConfigManager.instance.GetNextMessages(spaceForNewMessages, m_LastMessageDownloadedId);
 
             if (newMessages == null || newMessages.Count == 0)
             {
                 MailboxPanel.StopFetchingNewMessagesSpinner();
                 return;
             }
-            
+
             foreach (var inboxMessage in newMessages)
             {
                 var expirationPeriod = TimeSpan.Parse(inboxMessage.messageInfo.expiration);
                 var hasUnclaimedAttachment = !string.IsNullOrEmpty(inboxMessage.messageInfo.attachment);
-            
+
                 inboxMessage.metadata = new MessageMetadata(expirationPeriod, hasUnclaimedAttachment);
-            
+
                 inboxMessages.Add(inboxMessage);
             }
-            
+
             m_LastMessageDownloadedId = inboxMessages[inboxMessages.Count - 1].messageId;
             MailboxPanel.StopFetchingNewMessagesSpinner();
         }
@@ -318,7 +329,7 @@ namespace JumpeeIsland
         }
 
         [Serializable]
-        struct InboxState
+        public struct InboxState
         {
             public List<InboxMessage> messages;
         }

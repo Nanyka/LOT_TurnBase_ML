@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -14,6 +15,8 @@ namespace JumpeeIsland
 
         // MessageMetadata is all the player-specific instance data for a given message, stored in Cloud Save.
         public MessageMetadata metadata;
+
+        public MailType mailType;
         
         // MessageBattleData is about the battle when other player invade your land
         public MessageBattleData battleData;
@@ -75,5 +78,12 @@ namespace JumpeeIsland
         {
             return $"{id}:{amount}";
         }
+    }
+
+    public enum MailType
+    {
+        NONE,
+        INFO,
+        BATTLE
     }
 }

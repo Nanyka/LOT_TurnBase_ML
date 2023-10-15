@@ -53,7 +53,7 @@ namespace JumpeeIsland
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
-        private RuntimeMetadata _mRuntimeMetadata = new();
+        protected RuntimeMetadata m_RuntimeMetadata = new();
         private GameProcessData m_GameProcess = new();
         private QuestData m_QuestData;
         private string _gamePath;
@@ -98,7 +98,7 @@ namespace JumpeeIsland
             }
         }
 
-        public virtual async void StartUpLoadData()
+        public virtual async void StartLoadData()
         {
             // Authenticate on UGS and get envData
             await m_CloudConnector.Init();
@@ -142,9 +142,9 @@ namespace JumpeeIsland
 
         private void SetInLoading(bool isLoading)
         {
-            _mRuntimeMetadata.IsInLoadingPhase = isLoading;
+            m_RuntimeMetadata.IsInLoadingPhase = isLoading;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(_mRuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
+            SaveManager.Instance.Save(m_RuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
 
         protected async Task LoadPreviousMetadata()
@@ -159,21 +159,21 @@ namespace JumpeeIsland
                 Debug.LogError("No State data File Found -> Creating new data...");
 
             if (result == SaveResult.Success)
-                _mRuntimeMetadata = gameState;
+                m_RuntimeMetadata = gameState;
         }
 
         private void SaveMetadata()
         {
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(_mRuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
+            SaveManager.Instance.Save(m_RuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
 
-        public void SaveMetadata(string recordInfo)
+        public void SaveMetadata(BattleRecord battleRecord)
         {
             Debug.Log("Save data for recordMode");
-            _mRuntimeMetadata.RecordInfo = recordInfo;
+            m_RuntimeMetadata.BattleRecord = battleRecord;
             var gameStatePath = GetSavingPath(SavingPath.GameState);
-            SaveManager.Instance.Save(_mRuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
+            SaveManager.Instance.Save(m_RuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
 
         private void MetadataWasSaved(SaveResult result, string message)
@@ -184,7 +184,7 @@ namespace JumpeeIsland
 
         private bool CheckLoadingPhaseFinished()
         {
-            return !_mRuntimeMetadata.IsInLoadingPhase;
+            return !m_RuntimeMetadata.IsInLoadingPhase;
         }
 
         #endregion
@@ -838,6 +838,11 @@ namespace JumpeeIsland
             return m_CloudConnector.GetPlayerExp();
         }
 
+        public string GetEnemyId()
+        {
+            return m_CloudConnector.GetEnemyId();
+        }
+
         #endregion
 
         #region GAME PROCESS
@@ -858,7 +863,7 @@ namespace JumpeeIsland
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
-        public async void SaveBattleResult(int starAmount, int score, float winRate)
+        public async void SaveBattleResult(string enemyId , int starAmount, int score, float winRate)
         {
             if (starAmount == 0)
                 m_GameProcess.winStack = 0;
@@ -889,7 +894,7 @@ namespace JumpeeIsland
             battleRecord.isRecorded = true;
 
             //TODO send an email to enemy
-            m_CloudConnector.AddBattleEmail(battleRecord);
+            m_CloudConnector.AddBattleEmail(enemyId ,battleRecord);
             
             m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);

@@ -5,11 +5,10 @@ namespace JumpeeIsland
 {
     public sealed class ReplaySavingManager : SavingSystemManager
     {
-        [SerializeField] private TestBattleRecord m_BattleRecord;
+        // [SerializeField] private TestBattleRecord m_BattleRecord;
 
         private FactionReplayController _factionReplay;
         private BuildingReplayController _buildingReplay;
-
         private int actionIndex;
 
         protected override void Awake()
@@ -28,21 +27,21 @@ namespace JumpeeIsland
         {
         }
 
-        public override async void StartUpLoadData()
+        public override async void StartLoadData()
         {
             // Authenticate on UGS and get envData
             await m_CloudConnector.Init();
 
             // Load gameState from local to check if the previous session is disconnected
             await LoadPreviousMetadata();
-
-            m_EnvLoader.SetData(m_BattleRecord.BattleRecord.environmentData);
+            
+            m_EnvLoader.SetData(m_RuntimeMetadata.BattleRecord.environmentData);
             m_EnvLoader.Init();
 
             GameFlowManager.Instance.OnStartGame.Invoke(0);
             Debug.Log("Completed loading process");
 
-            if (m_BattleRecord.BattleRecord.actions.Count > 0)
+            if (m_RuntimeMetadata.BattleRecord.actions.Count > 0)
                 Invoke(nameof(Replay), 1f);
             else
                 GameFlowManager.Instance.OnGameOver.Invoke(3000);
@@ -57,26 +56,20 @@ namespace JumpeeIsland
         {
             Debug.Log($"Delay millisecond: {waitPeriod}");
             await Task.Delay(waitPeriod);
-            if (actionIndex < m_BattleRecord.BattleRecord.actions.Count)
+            if (actionIndex < m_RuntimeMetadata.BattleRecord.actions.Count)
             {
-                var currentAction = m_BattleRecord.BattleRecord.actions[actionIndex];
+                var currentAction = m_RuntimeMetadata.BattleRecord.actions[actionIndex];
 
                 switch (currentAction.EntityType)
                 {
                     case EntityType.ENEMY:
-                        _factionReplay.MoveCreature(m_BattleRecord.BattleRecord.actions[actionIndex]);
+                        _factionReplay.MoveCreature(m_RuntimeMetadata.BattleRecord.actions[actionIndex]);
                         break;
                     case EntityType.BUILDING:
-                        _buildingReplay.BuildingFire(m_BattleRecord.BattleRecord.actions[actionIndex]);
+                        _buildingReplay.BuildingFire(m_RuntimeMetadata.BattleRecord.actions[actionIndex]);
                         break;
                 }
-
-                // if (actionIndex + 1 == m_BattleRecord.BattleRecord.Actions.Count)
-                //     waitPeriod = Mathf.RoundToInt(m_BattleRecord.BattleRecord.Actions[actionIndex].AtSecond * 1000);
-                // else
-                //     waitPeriod = Mathf.RoundToInt((m_BattleRecord.BattleRecord.Actions[actionIndex + 1].AtSecond -
-                //                                    m_BattleRecord.BattleRecord.Actions[actionIndex].AtSecond) * 1000);
-
+                
                 actionIndex++;
                 await WaitForTheNextAction(waitPeriod);
             }
@@ -86,7 +79,7 @@ namespace JumpeeIsland
 
         public BattleRecord GetBattleRecord()
         {
-            return m_BattleRecord.BattleRecord;
+            return m_RuntimeMetadata.BattleRecord;
         }
     }
 }

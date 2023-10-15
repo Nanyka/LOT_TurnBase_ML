@@ -17,7 +17,6 @@ namespace JumpeeIsland
         {
             try
             {
-                Debug.Log("Test why this function go into loop");
                 _cloudSaveManager = FindObjectOfType<JICloudSaveManager>();
                 
                 await FetchUpdatedInboxData();

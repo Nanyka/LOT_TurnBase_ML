@@ -9,7 +9,6 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    [RequireComponent(typeof(CollectedLoot))]
     public class GameResultCalculator : MonoBehaviour
     {
         [SerializeField] protected GameObject _winPanel;
@@ -176,7 +175,7 @@ namespace JumpeeIsland
             }
 
             // Save battle statistic & Record score
-            SavingSystemManager.Instance.SaveBattleResult(winStar, score, winRate);
+            SavingSystemManager.Instance.SaveBattleResult(SavingSystemManager.Instance.GetEnemyId() ,winStar, score, winRate);
         }
     }
 }

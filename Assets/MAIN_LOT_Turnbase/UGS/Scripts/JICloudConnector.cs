@@ -463,6 +463,11 @@ namespace JumpeeIsland
             return _leaderboardManager.GetPlayerExp();
         }
 
+        public string GetEnemyId()
+        {
+            return _enemyPlayerId;
+        }
+
         #endregion
 
         #region GAME PROCESS
@@ -513,9 +518,9 @@ namespace JumpeeIsland
 
         #region CLOUDSAVE
 
-        public void AddBattleEmail(BattleRecord battleRecord)
+        public void AddBattleEmail(string playerId ,BattleRecord battleRecord)
         {
-            _cloudSaveManager.AddTestMail(battleRecord);
+            _cloudSaveManager.AddBattleMail(playerId ,battleRecord);
         }
 
         #endregion
