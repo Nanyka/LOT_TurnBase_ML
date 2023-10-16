@@ -87,5 +87,22 @@ namespace JumpeeIsland
             }
             return Vector3.zero;
         }
+
+        public static int VectorToDirectionIndex(Vector3 directionVector)
+        {
+            if (Vector3.Distance(Vector3.left,directionVector) < 0.1f)
+                return 1;
+
+            if (Vector3.Distance(Vector3.right,directionVector) < 0.1f)
+                return 2;
+
+            if (Vector3.Distance(Vector3.back,directionVector) < 0.1f)
+                return 3;
+
+            if (Vector3.Distance(Vector3.forward,directionVector) < 0.1f)
+                return 4;
+
+            return 0;
+        }
     }
 }

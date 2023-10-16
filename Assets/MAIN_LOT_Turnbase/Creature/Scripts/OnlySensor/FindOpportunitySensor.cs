@@ -11,15 +11,15 @@ namespace JumpeeIsland
         // Check the movement that bring character as close to the intent position as possible
 
         private int _detectRange;
-        private int _maxHits;
-        private List<Vector3> potentialPos = new();
+        private List<(Vector3 pos,int reward)> potentialPos = new();
 
         public FindOpportunitySensor(int detectRange)
         {
             _detectRange = detectRange;
         }
-        
-        public (int,int) DecideDirection(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
+
+        public (int, int) DecideDirection(CreatureData mCreatureData, Transform mTransform,
+            EnvironmentManager envManager,
             CreatureEntity mEntity, SkillComp skillComp)
         {
             int movingIndex = 0;
@@ -35,9 +35,10 @@ namespace JumpeeIsland
 
                     detectPos += mTransform.position;
 
+                    // To select obstacle only, the function just check if it is not movable
                     if (envManager.FreeToMove(detectPos) || envManager.CheckOutOfBoundary(detectPos))
                         continue;
-
+                    
                     for (int k = 1; k < 5; k++)
                     {
                         var jumpPos = detectPos + JIGeneralUtils.AdverseDirectionTo(k);
@@ -51,24 +52,36 @@ namespace JumpeeIsland
 
                                 if (skillComp.GetSkillByIndex(movement.jumpCount - 1).CheckGlobalTarget())
                                 {
-                                    potentialPos.Add(jumpPos);
+                                    var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
+                                        movement.jumpCount, skillComp);
+                                    
+                                    if (attackPoints == null)
+                                        continue;
+
+                                    var hitAmount = 0;
+                                    foreach (var attackPoint in attackPoints)
+                                        if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
+                                            hitAmount++;
+
+                                    if (hitAmount > 0)
+                                        potentialPos.Add((jumpPos, hitAmount));
                                     continue;
                                 }
-                                
-                                var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
-                                    movement.jumpCount, skillComp);
-                                if (attackPoints == null)
-                                    continue;
 
-                                var hitAmount = 0;
-                                foreach (var attackPoint in attackPoints)
-                                    if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
-                                        hitAmount++;
-
-                                if (hitAmount > _maxHits)
+                                for (int l = 1; l < 5; l++)
                                 {
-                                    _maxHits = hitAmount;
-                                    potentialPos.Add(jumpPos);
+                                    var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(l),
+                                        movement.jumpCount, skillComp);
+                                    if (attackPoints == null)
+                                        continue;
+
+                                    var hitAmount = 0;
+                                    foreach (var attackPoint in attackPoints)
+                                        if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
+                                            hitAmount++;
+
+                                    if (hitAmount > 0)
+                                        potentialPos.Add((jumpPos,hitAmount));
                                 }
                             }
                         }
@@ -76,30 +89,30 @@ namespace JumpeeIsland
                 }
             }
 
-            float minDistance = Mathf.Infinity;
-            Vector3 target = Vector3.negativeInfinity;
-            foreach (var pos in potentialPos)
+            var minPath = int.MaxValue;
+            Vector3 returnPos = Vector3.positiveInfinity;
+            int returnReward = 0;
+            foreach (var tuple in potentialPos)
             {
-                var curDistance = Vector3.Distance(pos, mTransform.position);
-                if (curDistance < minDistance)
+                var movingPath = GameFlowManager.Instance.GetEnvManager()
+                    .GetAStarPath(mTransform.position, tuple.pos);
+
+                if (movingPath == null)
+                    continue;
+                
+                if (movingPath.Count <= minPath)
                 {
-                    minDistance = curDistance;
-                    target = pos;
+                    minPath = movingPath.Count;
+                    returnPos = movingPath[0].position;
+                    returnReward = tuple.reward;
                 }
             }
-                
-            if (target.x.CompareTo(float.NegativeInfinity) < 0.1f)
-            {
-                return (movingIndex,_maxHits);
-            }
-                
-            var movingPath = GameFlowManager.Instance.GetEnvManager()
-                .GetAStarPath(mTransform.position, target);
 
-            return (movingPath == null? 0 : envManager.GetActionByDirection(movingPath[0].position - mTransform.position),_maxHits);
+            return (JIGeneralUtils.VectorToDirectionIndex((returnPos - mTransform.position).normalized), returnReward);
         }
-        
-        private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep, SkillComp m_Skills)
+
+        private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep,
+            SkillComp m_Skills)
         {
             if (m_Skills.GetSkillByIndex(jumpStep - 1) == null)
                 return null;
