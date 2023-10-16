@@ -74,6 +74,8 @@ namespace JumpeeIsland
                 SavingSystemManager.Instance.GrantCurrency(CurrencyType.GOLD.ToString(),
                     m_Entity.CalculateSellingPrice());
 
+            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
+
             StartCoroutine(DestroyVisual());
         }
 
@@ -82,7 +84,6 @@ namespace JumpeeIsland
             // VFX
             yield return new WaitForSeconds(1f);
             Debug.Log("Remove building");
-            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             _buildingController.RemoveBuilding(this);
             MainUI.Instance.OnUpdateCurrencies.Invoke();
             gameObject.SetActive(false);

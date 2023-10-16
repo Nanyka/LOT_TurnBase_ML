@@ -104,6 +104,14 @@ namespace JumpeeIsland
             
             return PlayerData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
         }
+        
+        public bool CheckCohort(Vector3 atPos, FactionType fromFaction)
+        {
+            if (fromFaction == FactionType.Enemy)
+                return EnemyData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
+            
+            return PlayerData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
+        }
 
         public bool CheckBuilding(Vector3 atPos)
         {

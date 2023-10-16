@@ -5,21 +5,23 @@ namespace JumpeeIsland
 {
     public class FindOpportunitySensor : ISensorExecute
     {
+        // Get object in range
+        // Check any available position to execute successful attacks from the objects
+        // Check jumping point for that attack is available or not
+        // Check the movement that bring character as close to the intent position as possible
+
         private int _detectRange;
-        List<Vector3> potentialPos = new();
+        private int _maxHits;
+        private List<Vector3> potentialPos = new();
 
         public FindOpportunitySensor(int detectRange)
         {
             _detectRange = detectRange;
         }
         
-        public int DecideDirection(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
+        public (int,int) DecideDirection(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
             CreatureEntity mEntity, SkillComp skillComp)
         {
-            // Get object in range
-            // Check any available position to execute successful attacks from the objects
-            // Check jumping point for that attack is available or not
-            // Check the movement that bring character as close to the intent position as possible
             int movingIndex = 0;
             potentialPos.Clear();
 
@@ -57,14 +59,16 @@ namespace JumpeeIsland
                                     movement.jumpCount, skillComp);
                                 if (attackPoints == null)
                                     continue;
-                            
+
+                                var hitAmount = 0;
                                 foreach (var attackPoint in attackPoints)
-                                {
                                     if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
-                                    {
-                                        // Debug.Log($"Detect pos: {detectPos}, jump pos: {jumpPos}, jump count: {movement.jumpCount}");
-                                        potentialPos.Add(jumpPos);
-                                    }
+                                        hitAmount++;
+
+                                if (hitAmount > _maxHits)
+                                {
+                                    _maxHits = hitAmount;
+                                    potentialPos.Add(jumpPos);
                                 }
                             }
                         }
@@ -86,13 +90,13 @@ namespace JumpeeIsland
                 
             if (target.x.CompareTo(float.NegativeInfinity) < 0.1f)
             {
-                return movingIndex;
+                return (movingIndex,_maxHits);
             }
                 
             var movingPath = GameFlowManager.Instance.GetEnvManager()
                 .GetAStarPath(mTransform.position, target);
 
-            return movingPath == null? 0 : envManager.GetActionByDirection(movingPath[0].position - mTransform.position);
+            return (movingPath == null? 0 : envManager.GetActionByDirection(movingPath[0].position - mTransform.position),_maxHits);
         }
         
         private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep, SkillComp m_Skills)
