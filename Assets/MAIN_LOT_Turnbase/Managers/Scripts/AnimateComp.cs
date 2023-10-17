@@ -27,6 +27,7 @@ namespace JumpeeIsland
         private static readonly int Die = Animator.StringToHash("Die");
         private static readonly int Jump = Animator.StringToHash("Jump");
         private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
+        private static readonly int TakeDamage = Animator.StringToHash("TakeDamage");
 
         private void Start()
         {
@@ -34,7 +35,7 @@ namespace JumpeeIsland
                 m_RotatePart = transform;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space) && !isStartMoves)
                 ResetMoves();
@@ -116,6 +117,9 @@ namespace JumpeeIsland
             {
                 case AnimateType.Die:
                     m_Animator.SetTrigger(Die);
+                    break;
+                case AnimateType.TakeDamage:
+                    m_Animator.SetTrigger(TakeDamage);
                     break;
             }
         }

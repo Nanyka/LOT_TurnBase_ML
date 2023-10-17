@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AttackVisual : MonoBehaviour
+    public class AttackVisual : MonoBehaviour,IAttackExecutor
     {
         [SerializeField] private bool _isRangeAttack;
 

@@ -54,7 +54,7 @@ namespace JumpeeIsland
 
         private IEnumerator DestroyVisual()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(3f);
             _collectableController.RemoveCollectable(this);
             gameObject.SetActive(false);
         }

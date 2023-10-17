@@ -160,6 +160,7 @@ namespace JumpeeIsland
             if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 return;
 
+            m_AnimateComp.SetAnimation(AnimateType.TakeDamage);
             m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
