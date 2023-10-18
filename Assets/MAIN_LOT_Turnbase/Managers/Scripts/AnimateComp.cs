@@ -134,5 +134,10 @@ namespace JumpeeIsland
             m_Animator.SetInteger(AttackIndex, attackIndex);
             m_Animator.SetTrigger(Attack);
         }
+
+        public void SetFloatParameter(string param, float value)
+        {
+            m_Animator.SetFloat(param,value);
+        }
     }
 }

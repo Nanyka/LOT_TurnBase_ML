@@ -472,27 +472,30 @@ namespace JumpeeIsland
 
         #region GAME PROCESS
 
-        public async Task<GameProcessData> OnLoadGameProcess()
+        public GameProcessData OnLoadGameProcess()
         {
-            try
-            {
-                var gameProcess = await _cloudCodeManager.CallLoadGameProcess();
-                if (this == null)
-                    return null;
+            return _cloudSaveManager.FetchGameProcess();
 
-                return gameProcess;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-
-            return null;
+            // try
+            // {
+            //     var gameProcess = await _cloudCodeManager.CallLoadGameProcess();
+            //     if (this == null)
+            //         return null;
+            //
+            //     return gameProcess;
+            // }
+            // catch (Exception e)
+            // {
+            //     Debug.LogException(e);
+            // }
+            //
+            // return null;
         }
 
         public async Task OnSaveGameProcess(GameProcessData currentProcess)
         {
-            await _cloudCodeManager.CallSaveGameProcess(currentProcess);
+            await _cloudSaveManager.SaveGameProcess(currentProcess);
+            // await _cloudCodeManager.CallSaveGameProcess(currentProcess);
         }
 
         public async Task<long> OnGrantMove()

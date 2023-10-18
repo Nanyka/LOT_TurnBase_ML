@@ -106,10 +106,5 @@ namespace JumpeeIsland
         {
             return null;
         }
-
-        public bool CheckTierPass()
-        {
-            return _gameSpawner.CheckTierCondition();
-        }
     }
 }

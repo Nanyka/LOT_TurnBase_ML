@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
@@ -30,6 +31,7 @@ namespace JumpeeIsland
 
             SavingSystemManager.Instance.OnCreatureUpgrade.AddListener(CreatureUpgrade);
 
+            InvokeRepeating(nameof(ChangeAnimBlend), 10f,10f); // Change idle animation
             RefreshEntity();
         }
 
@@ -345,6 +347,11 @@ namespace JumpeeIsland
         public AnimateComp GetAnimateComp()
         {
             return m_AnimateComp;
+        }
+
+        public void ChangeAnimBlend()
+        {
+            m_AnimateComp.SetFloatParameter("Blend",Random.Range(0f,1f));
         }
 
         #endregion

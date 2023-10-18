@@ -46,7 +46,7 @@ namespace JumpeeIsland
                 return;
             
             // check if creature stand out of the map
-            if (GameFlowManager.Instance.GetEnvManager().FreeToMove(creatureData.Position) == false)
+            if (creatureData.CreatureType != CreatureType.BOSS && GameFlowManager.Instance.GetEnvManager().FreeToMove(creatureData.Position) == false)
             {
                 var availablePos = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
                 if (availablePos.x.Equals(float.NegativeInfinity) == false)

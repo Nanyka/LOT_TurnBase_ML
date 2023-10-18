@@ -67,8 +67,6 @@ namespace JumpeeIsland
 
             MarkAsUsedThisTurn();
             CreatureStartMove(m_Transform.position, moveDirection);
-            
-            
         }
 
         protected virtual void CreatureStartMove(Vector3 currentPos, int direction)

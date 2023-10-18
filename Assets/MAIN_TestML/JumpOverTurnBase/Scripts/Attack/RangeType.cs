@@ -12,4 +12,5 @@ public enum RangeType
     Circle,
     TShapeFront,
     PerpendicularWipe,
+    RandomOnMap
 }

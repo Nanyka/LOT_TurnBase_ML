@@ -42,9 +42,9 @@ namespace JumpeeIsland
         }
 
         // Use to set _isRangeAttack by animation
-        public void SetRangeAttack(int isRange)
+        public void SetRangeAttack(int range)
         {
-            _isRangeAttack = isRange > 0;
+            _isRangeAttack = range > 0;
         }
 
         public void ExecuteHitEffect(int posIndex)
@@ -70,19 +70,20 @@ namespace JumpeeIsland
         // There are some kind of attack:
         // 1- Based on attack path calculated from skill
         // 2- Use FireComp to execute accurate attacks and cast damage on target using AttackCollider
-        //    In _isSelfSetPath case, attack path is created by fireComp, so, not require to us RotateTowardTarget()
+        //    With regard to _isSelfSetPath case, attack path is created by fireComp, so, not require RotateTowardTarget()
         // 3- Execute attackVfx and take damage on objects collided with the particle system via AttackCollider
+        // [REMEMBER] ExecuteAttackEffect use 1-based index
+        
         public void ExecuteAttackEffect(int index)
         {
             if (_isRangeAttack)
             {
-                if (_isSelfSetPath)
-                    m_FireComp.PlayCurveFX(m_Creature.CalculateAttackRange(index), this);
-                else
-                    m_FireComp.PlayCurveFX(m_Creature.GetAttackRange(), this);
+                m_FireComp.SetBulletFX(m_AttackVfx[index-1]);
+                m_FireComp.PlayCurveFX(
+                    _isSelfSetPath ? m_Creature.CalculateAttackRange(index) : m_Creature.GetAttackRange(), this);
             }
             else
-                m_AttackVfx[index].Play();
+                m_AttackVfx[index-1].Play();
         }
 
         public void ExecutePreAttackEffect()
