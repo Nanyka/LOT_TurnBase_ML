@@ -134,6 +134,11 @@ namespace JumpeeIsland
             _killAccumulation = 0;
         }
 
+        public CreatureType GetCreatureType()
+        {
+            return m_CreatureData.CreatureType;
+        }
+
         #endregion
 
         #region SKIN

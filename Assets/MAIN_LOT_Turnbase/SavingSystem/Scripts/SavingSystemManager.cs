@@ -851,7 +851,6 @@ namespace JumpeeIsland
         private void LoadGameProcess()
         {
             m_GameProcess = m_CloudConnector.OnLoadGameProcess();
-            Debug.Log($"Return game process: {m_GameProcess.currentTutorial}");
 
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 GameFlowManager.Instance.LoadTutorialManager(m_GameProcess == null

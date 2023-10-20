@@ -475,21 +475,6 @@ namespace JumpeeIsland
         public GameProcessData OnLoadGameProcess()
         {
             return _cloudSaveManager.FetchGameProcess();
-
-            // try
-            // {
-            //     var gameProcess = await _cloudCodeManager.CallLoadGameProcess();
-            //     if (this == null)
-            //         return null;
-            //
-            //     return gameProcess;
-            // }
-            // catch (Exception e)
-            // {
-            //     Debug.LogException(e);
-            // }
-            //
-            // return null;
         }
 
         public async Task OnSaveGameProcess(GameProcessData currentProcess)
