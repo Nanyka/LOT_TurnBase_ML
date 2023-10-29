@@ -16,7 +16,6 @@ namespace JumpeeIsland
         [Tooltip("If it false, don't make this decision")]
         [SerializeField] private GameMasterCondition _mainCondition;
         [SerializeField] private List<SpawnObjectDecision> _spawnDecisions;
-        // [SerializeField] private int _gapDuration;
         [SerializeField] private int _maxSpawningAmount;
 
         public string GetObjectToSpawn()

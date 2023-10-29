@@ -50,6 +50,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
+            GameFlowManager.Instance.OnDomainRemover.AddListener(DomainRemover);
             GameFlowManager.Instance.OnKickOffEnv.AddListener(KickOffEnvironment);
         }
 
@@ -172,6 +173,11 @@ namespace JumpeeIsland
         private void DomainRegister(GameObject domainOwner, FactionType factionType)
         {
             _domainManager.UpdateDomainOwner(domainOwner, factionType);
+        }
+
+        private void DomainRemover(GameObject domainOwner, FactionType factionType)
+        {
+            _domainManager.RemoveObject(domainOwner,factionType);
         }
 
         public Vector3 GetPotentialTile()

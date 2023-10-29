@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -16,10 +17,11 @@ namespace JumpeeIsland
 
         private Vector3 _velocity;
 
-        public void PlayCurveFX()
+        public void PlayCurveFX(Vector3 targetPos)
         {
             if (_bulletFX != null)
             {
+                _targetPos = targetPos;
                 var position = _bulletFX.transform.position;
                 _velocity = CalcBallisticVelocityVector(position, _targetPos, _angle);
                 _bulletFX.transform.LookAt(new Vector3(_targetPos.x, position.y, _targetPos.z));
@@ -104,6 +106,11 @@ namespace JumpeeIsland
         public int GetReloadDuration()
         {
             return _reloadDuration;
+        }
+
+        public void SetBulletFX(ParticleSystem bulletFX)
+        {
+            _bulletFX = bulletFX;
         }
     }
 }

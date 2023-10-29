@@ -11,7 +11,9 @@ namespace JumpeeIsland
     {
         [NonSerialized] public UnityEvent OnEnableInteract = new(); // send to DontMoveButton; invoke here in EcoMode and at DropTroopMenu in BattleMode
 
-        [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController
+        [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController, NpcInGame
+
+        [NonSerialized] public UnityEvent<float> OnEcoBossInfo = new(); // send to EcoBossInfoUI; invoke at PlayerFactionController
 
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
 
@@ -58,6 +60,7 @@ namespace JumpeeIsland
         private BuyBuildingMenu _buyBuildingMenu;
         protected CreatureMenu _creatureMenu;
         private CreatureInfoUI _creatureInfo;
+        private EcoBossInfoUI _ecoBossInfo;
         protected Camera _mainCamera;
         protected int _layerMask = 1 << 9 | 1 << 8 | 1 << 7;
 
@@ -66,6 +69,7 @@ namespace JumpeeIsland
             _buyBuildingMenu = GetComponent<BuyBuildingMenu>();
             _creatureMenu = GetComponent<CreatureMenu>();
             _creatureInfo = GetComponent<CreatureInfoUI>();
+            _ecoBossInfo = GetComponent<EcoBossInfoUI>();
             _mainCamera = Camera.main;
 
             GameFlowManager.Instance.OnStartGame.AddListener(EnableInteract);
@@ -121,6 +125,11 @@ namespace JumpeeIsland
         public Entity GetSelectedEntity()
         {
             return _creatureInfo.GetSelectedEntity();
+        }
+
+        public void TurnOnEcoBossInfo(string spriteAddress)
+        {
+            _ecoBossInfo.TurnOn(spriteAddress);
         }
     }
 }

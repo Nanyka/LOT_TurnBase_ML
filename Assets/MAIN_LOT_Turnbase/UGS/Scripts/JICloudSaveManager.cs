@@ -14,11 +14,14 @@ namespace JumpeeIsland
         public MailBoxPanelManager MailboxPanel { get; private set; }
         public List<InboxMessage> inboxMessages = new();
 
-        string m_LastMessageDownloadedId;
+        private Dictionary<string, string> cloudSaveData;
+        private string m_LastMessageDownloadedId;
 
         const string k_InboxStateKey = "MESSAGES_INBOX_STATE";
         const string k_LastMessageDownloadedKey = "MESSAGES_LAST_MESSAGE_DOWNLOADED_ID";
         const string k_InboxBattleRecordsKey = "MESSAGES_INBOX_BATTLE_RECORDS";
+        const string k_GameProcess = "JI_GAME_PROCESS";
+
 
         void Awake()
         {
@@ -43,47 +46,11 @@ namespace JumpeeIsland
             {
                 await Task.WhenAll(
                     MailboxPanel.Init(),
-                    FetchPlayerInbox()
+                    FetchPlayerCloudSave()
                 );
             }
             else
-                await FetchPlayerInbox();
-        }
-
-        public async Task FetchPlayerInbox()
-        {
-            try
-            {
-                var cloudSaveData = await CloudSaveService.Instance.Data.LoadAllAsync();
-
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
-
-                if (cloudSaveData.ContainsKey(k_InboxStateKey))
-                {
-                    var inbox = JsonUtility.FromJson<InboxState>(cloudSaveData[k_InboxStateKey]);
-                    inboxMessages = inbox.messages;
-                }
-
-                m_LastMessageDownloadedId = cloudSaveData.ContainsKey(k_LastMessageDownloadedKey)
-                    ? cloudSaveData[k_LastMessageDownloadedKey]
-                    : "";
-
-                // TODO Add battle mail
-                // 1- Use CloudSave to save battleMail, try to save one demo battleMail (Use SavePlayerInboxInCloudSave as reference)
-                // 2- Fetch battleMail and put it into inboxMessages
-
-                if (cloudSaveData.TryGetValue(k_InboxBattleRecordsKey, out var value))
-                {
-                    var inbox = JsonUtility.FromJson<InboxState>(value);
-                    foreach (var message in inbox.messages)
-                        inboxMessages.Add(message);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
+                await FetchPlayerCloudSave();
         }
 
         #region TESTING
@@ -143,6 +110,44 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        #region MAILBOX
+
+        public async Task FetchPlayerCloudSave()
+        {
+            try
+            {
+                cloudSaveData = await CloudSaveService.Instance.Data.LoadAllAsync();
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return;
+
+                if (cloudSaveData.ContainsKey(k_InboxStateKey))
+                {
+                    var inbox = JsonUtility.FromJson<InboxState>(cloudSaveData[k_InboxStateKey]);
+                    inboxMessages = inbox.messages;
+                }
+
+                m_LastMessageDownloadedId = cloudSaveData.ContainsKey(k_LastMessageDownloadedKey)
+                    ? cloudSaveData[k_LastMessageDownloadedKey]
+                    : "";
+
+                // TODO Add battle mail
+                // 1- Use CloudSave to save battleMail, try to save one demo battleMail (Use SavePlayerInboxInCloudSave as reference)
+                // 2- Fetch battleMail and put it into inboxMessages
+
+                if (cloudSaveData.TryGetValue(k_InboxBattleRecordsKey, out var value))
+                {
+                    var inbox = JsonUtility.FromJson<InboxState>(value);
+                    foreach (var message in inbox.messages)
+                        inboxMessages.Add(message);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
 
         public int DeleteExpiredMessages()
         {
@@ -304,6 +309,42 @@ namespace JumpeeIsland
             return messagesDeletedCount;
         }
 
+        [Serializable]
+        public struct InboxState
+        {
+            public List<InboxMessage> messages;
+        }
+
+        #endregion
+
+        #region GAME PROCESS
+
+        public GameProcessData FetchGameProcess()
+        {
+            return cloudSaveData.TryGetValue(k_GameProcess, out var value) ? JsonUtility.FromJson<GameProcessData>(value) : null;
+        }
+
+        public async Task SaveGameProcess(GameProcessData currentProcess)
+        {
+            try
+            {
+                // var gameProcessJson = JsonUtility.ToJson(currentProcess);
+
+                var dataToSave = new Dictionary<string, object>
+                {
+                    { k_GameProcess, currentProcess }
+                };
+
+                await CloudSaveService.Instance.Data.ForceSaveAsync(dataToSave);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        #endregion
+
         public async Task ResetCloudSaveData()
         {
             try
@@ -328,12 +369,6 @@ namespace JumpeeIsland
             {
                 instance = null;
             }
-        }
-
-        [Serializable]
-        public struct InboxState
-        {
-            public List<InboxMessage> messages;
         }
     }
 }

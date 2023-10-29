@@ -7,11 +7,15 @@ namespace JumpeeIsland
 {
     public class AttackSensor : ISensorExecute
     {
-        public int DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
+        // Check the possible directions and calculate jumps for each
+        // If it is a jumpable direction, check all direction the unit can face at
+        // Select the direction that make the maximum attacks
+        
+        public (int,int) DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
             CreatureEntity m_Entity, SkillComp skillComp)
         {
-            if (GameFlowManager.Instance.CheckTierPass())
-                return 0;
+            // if (GameFlowManager.Instance.CheckTierPass())
+            //     return 0;
             
             int movingIndex = 0;
             var maxHit = 0;
@@ -61,41 +65,16 @@ namespace JumpeeIsland
                         detectList.Add(tuple);
                     }
 
-                    int curHit = detectList.Sum(t => t.hitAmount);
+                    int curHit = detectList.Max(t => t.hitAmount);
                     if (curHit > maxHit)
                     {
                         maxHit = curHit;
                         movingIndex = i;
                     }
-                    
-                    // var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i), dummyJump, skillComp);
-                    // if (attackPoints == null)
-                    //     continue;
-                    //
-                    // int curHit = 0;
-                    // foreach (var attackPoint in attackPoints)
-                    //     if (_envManager.CheckEnemy(attackPoint, m_Entity.GetFaction()))
-                    //         curHit++;
-                    //
-                    // if (curHit > maxHit)
-                    // {
-                    //     maxHit = curHit;
-                    //     movingIndex = i;
-                    // }
                 }
             }
 
-            return movingIndex;
-        }
-
-        private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep,
-            SkillComp m_Skills)
-        {
-            if (m_Skills.GetSkillByIndex(jumpStep - 1) == null)
-                return null;
-
-            jumpStep = jumpStep < m_Skills.GetSkillAmount() ? jumpStep : m_Skills.GetSkillAmount();
-            return m_Skills.GetSkillByIndex(jumpStep - 1).CalculateSkillRange(targetPos, direction);
+            return (movingIndex,maxHit);
         }
     }
 }

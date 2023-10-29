@@ -5,6 +5,7 @@ namespace JumpeeIsland
         Idle,
         Walk,
         Attack,
-        Die
+        Die,
+        TakeDamage
     }
 }

@@ -4,7 +4,7 @@ namespace JumpeeIsland
 {
     public class PikupSensor : ISensorExecute
     {
-        public int DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
+        public (int,int) DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
             CreatureEntity m_Entity, SkillComp skillComp)
         {
             var pickUpList = SavingSystemManager.Instance.GetEnvironmentData().CollectableData;
@@ -39,7 +39,7 @@ namespace JumpeeIsland
                     }
                 }
             }
-            return movingIndex;
+            return (movingIndex,0);
         }
     }
 }

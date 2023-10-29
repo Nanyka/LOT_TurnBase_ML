@@ -41,7 +41,7 @@ namespace JumpeeIsland
             _currenInferer.AddActionToCache(InferMoving);
         }
 
-        public void ResponseAction(int direction, int weight)
+        public void ResponseAction(int direction, int reward, int weight)
         {
             InferMoving.Action = direction;
             InferMoving.CurrentPos = m_Transform.position;
@@ -49,7 +49,10 @@ namespace JumpeeIsland
             if (direction == 0)
                 InferMoving.VoteAmount = 1;
             else
+            {
                 InferMoving.VoteAmount = weight;
+                InferMoving.Reward = reward;
+            }
             _currenInferer.AddActionToCache(InferMoving);
         }
 

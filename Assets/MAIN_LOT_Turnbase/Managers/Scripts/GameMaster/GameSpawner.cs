@@ -23,7 +23,6 @@ namespace JumpeeIsland
         [SerializeField] private List<SpawningTier> _spawningTiers;
 
         private EnvironmentManager _environmentManager;
-        [FormerlySerializedAs("_isSkipSpawning")] [FormerlySerializedAs("_isReachCondition")] [SerializeField] private bool _isSkip;
 
         private void Start()
         {
@@ -56,8 +55,8 @@ namespace JumpeeIsland
             // Select game to spawn if spawning condition is passed
             if (currentTier.spawnGameDecision != null)
             {
-                _isSkip = currentTier.spawnGameDecision.CheckGetThrough();
-                if (_isSkip == false)
+                currentTier.spawnGameDecision.CheckGetThrough();
+                if (currentTier.spawnGameDecision.CheckGetThrough() == false)
                 {
                     var spawnGame = currentTier.spawnGameDecision.GetObjectToSpawn();
                     if (spawnGame.IsNullOrWhitespace() == false)
@@ -82,7 +81,7 @@ namespace JumpeeIsland
             // Select resources to spawn if spawning condition is passed
             if (currentTier.spawnTreeDecision != null)
             {
-                if (_isSkip == false)
+                if (currentTier.spawnTreeDecision.CheckGetThrough() == false)
                 {
                     var spawnTree = currentTier.spawnTreeDecision.GetObjectToSpawn();
                     if (spawnTree.IsNullOrWhitespace() == false)
@@ -107,7 +106,7 @@ namespace JumpeeIsland
             // Select collectable objects to spawn if spawning condition is passed
             if (currentTier.spawnCollectableObjDecision != null)
             {
-                if (_isSkip == false)
+                if (currentTier.spawnCollectableObjDecision.CheckGetThrough() == false)
                 {
                     var spawnTree = currentTier.spawnCollectableObjDecision.GetObjectToSpawn();
                     if (spawnTree.IsNullOrWhitespace() == false)
@@ -128,11 +127,6 @@ namespace JumpeeIsland
                     }
                 }
             }
-        }
-
-        public bool CheckTierCondition()
-        {
-            return _isSkip;
         }
     }
 }

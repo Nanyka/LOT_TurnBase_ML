@@ -60,33 +60,35 @@ namespace JumpeeIsland
         {
             //--> START brainstorming from here
 
+            // Calculate reward for each action
+            // foreach (var action in m_ActionCache)
+            // {
+            //     // Debug.Log($"Agent {action.AgentIndex} action as {action.Action} with direction {action.Direction} have reward {action.Reward} and {action.VoteAmount} votes");
+            //
+            //     // Calculate reward for each agent
+            //     if (action.JumpCount > 0)
+            //     {
+            //         var attackPoints = AttackPoints(action.TargetPos, action.Direction, action.JumpCount);
+            //         // var attackRange = attackPoints as Vector3[] ?? attackPoints.ToArray();
+            //         // _agentManager.GetJumpers()[action.AgentIndex].ShowAttackRange(attackRange); // --> TESTING
+            //
+            //         if (attackPoints == null)
+            //             continue;
+            //
+            //         foreach (var attackPoint in attackPoints)
+            //             if (_npcsController.GetEnvironment().CheckEnemy(attackPoint, _npcsController.GetFaction()))
+            //                 action.Reward++;
+            //     }
+            // }
+
             // Sort by reward
-            foreach (var action in m_ActionCache)
-            {
-                // Debug.Log($"Agent {action.AgentIndex} action as {action.Action} with direction {action.Direction} have reward {action.Reward} and {action.VoteAmount} votes");
+            // var orderedAction = m_ActionCache.OrderByDescending(x => x.Reward).ElementAt(0);
+            // if (orderedAction.Reward == 0)
+            //     orderedAction = m_ActionCache.OrderByDescending(x => x.Action > 0).ThenByDescending(x => x.VoteAmount).ElementAt(0);
 
-                // Calculate reward for each agent
-                if (action.JumpCount > 0)
-                {
-                    var attackPoints = AttackPoints(action.TargetPos, action.Direction, action.JumpCount);
-                    // var attackRange = attackPoints as Vector3[] ?? attackPoints.ToArray();
-                    // _agentManager.GetJumpers()[action.AgentIndex].ShowAttackRange(attackRange); // --> TESTING
-
-                    if (attackPoints == null)
-                        continue;
-
-                    foreach (var attackPoint in attackPoints)
-                        if (_npcsController.GetEnvironment()
-                            .CheckEnemy(attackPoint, _npcsController.GetFaction()))
-                            action.Reward++;
-                }
-            }
-
-            // Sort by reward
-            var orderedAction = m_ActionCache.OrderByDescending(x => x.Reward).ElementAt(0);
-            if (orderedAction.Reward == 0)
-                orderedAction = m_ActionCache.OrderByDescending(x => x.Action > 0).ThenByDescending(x => x.VoteAmount).ElementAt(0);
-
+            // Sort by reward and by voting after
+            var orderedAction = m_ActionCache.OrderByDescending(x => x.Action > 0).ThenByDescending(x => x.VoteAmount).ElementAt(0);
+            
             // Get top tuple
             _npcsController.GetEnemies()[orderedAction.AgentIndex].ConductSelectedAction(orderedAction);
 

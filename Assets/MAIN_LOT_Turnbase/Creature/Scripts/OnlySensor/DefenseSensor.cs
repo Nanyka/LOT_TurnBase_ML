@@ -5,7 +5,7 @@ namespace JumpeeIsland
 {
     public class DefenseSensor : ISensorExecute
     {
-        public int DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
+        public (int,int) DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
             CreatureEntity m_Entity, SkillComp skillComp)
         {
             // Get enemy list
@@ -60,7 +60,7 @@ namespace JumpeeIsland
                 }
             }
 
-            return movingIndex;
+            return (movingIndex,0);
         }
         
         private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, Skill_SO skill)

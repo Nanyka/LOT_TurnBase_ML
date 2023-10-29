@@ -174,11 +174,8 @@ namespace JumpeeIsland
         {
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
-                if (fromEntity.GetFaction() == FactionType.Enemy)
-                {
-                    var seizedAmount = EnemyRopeCurrency(damage);
-                    Debug.Log($"Enemy seizes {seizedAmount} {m_BuildingData.StorageCurrency}");
-                }
+                if (fromEntity.GetFaction() != FactionType.Player)
+                    EnemyRopeCurrency(damage);
 
                 if (m_BuildingData.BuildingType != BuildingType.MAINHALL)
                     m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
@@ -210,13 +207,11 @@ namespace JumpeeIsland
             int seizedAmount = 0;
             if (m_BuildingData.CurrentStorage > m_BuildingData.CurrentHp)
             {
-                var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp * 1f, 0f, 1f);
+                var damageUpperHealth = Mathf.Clamp(damage * 1f / m_BuildingData.CurrentHp, 0f, 1f);
                 seizedAmount = Mathf.RoundToInt(damageUpperHealth * m_BuildingData.CurrentStorage);
             }
             else
                 seizedAmount = m_BuildingData.CurrentStorage > damage ? damage : m_BuildingData.CurrentStorage;
-
-            m_BuildingData.CurrentStorage -= seizedAmount;
 
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 DeductCurrency(seizedAmount);

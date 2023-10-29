@@ -5,7 +5,7 @@ namespace JumpeeIsland
 {
     public class SupportSensor : ISensorExecute
     {
-        public int DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
+        public (int,int) DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
             CreatureEntity m_Entity, SkillComp skillComp)
         {
             // Get cohorts
@@ -129,7 +129,7 @@ namespace JumpeeIsland
                 }
             }
 
-            return movingIndex;
+            return (movingIndex,0);
         }
         
         private IEnumerable<Vector3> AttackPoints(Vector3 targetPos, Vector3 direction, int jumpStep, SkillComp m_Skills)

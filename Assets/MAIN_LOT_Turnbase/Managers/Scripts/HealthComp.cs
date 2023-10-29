@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -7,8 +8,9 @@ namespace JumpeeIsland
 {
     public class HealthComp : MonoBehaviour
     {
-        [FormerlySerializedAs("_healthBar")] [SerializeField]
-        private EntityUI entityUI;
+        [NonSerialized] public UnityEvent<float> TakeDamageEvent = new(); 
+
+        [SerializeField] private EntityUI entityUI;
 
         private int m_MAXHp;
         private int m_MAXStorage;
@@ -43,6 +45,8 @@ namespace JumpeeIsland
             }
             else
                 entityUI.ShowBars(false, true, false);
+            
+            TakeDamageEvent.Invoke(entityData.CurrentHp * 1f / m_MAXHp);
         }
 
         public void TakeDamage(int damage, EntityData entityData, Entity killedBy)
@@ -51,7 +55,9 @@ namespace JumpeeIsland
                 return;
 
             entityData.CurrentHp -= damage;
-            entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
+            var healthPortion = entityData.CurrentHp * 1f / m_MAXHp;
+            entityUI.UpdateHealthSlider(healthPortion);
+            TakeDamageEvent.Invoke(healthPortion);
 
             if (entityData.CurrentHp <= 0)
             {
