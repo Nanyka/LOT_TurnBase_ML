@@ -101,6 +101,9 @@ public class Skill_SO : ScriptableObject
             case RangeType.PerpendicularWipe:
                 _skillRange = new PerpendicularWipe();
                 break;
+            case RangeType.RandomOnMap:
+                _skillRange = new RandomOnMap();
+                break;
         }
     }
     

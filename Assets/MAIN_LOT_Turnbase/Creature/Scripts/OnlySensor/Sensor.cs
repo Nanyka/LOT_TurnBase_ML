@@ -11,7 +11,8 @@ namespace JumpeeIsland
         SUPPORT,
         FINDOPPORTUNITY,
         PICKUP,
-        STEPASIDE
+        STEPASIDE,
+        FIREINPLACE
     }
     
     [CreateAssetMenu(fileName = "Sensor", menuName = "JumpeeIsland/Sensor", order = 8)]
@@ -22,7 +23,7 @@ namespace JumpeeIsland
         public int SensorWeight;
         private ISensorExecute SensorExecute;
 
-        public int Execute(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
+        public (int,int) Execute(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
             CreatureEntity mEntity, SkillComp skillComp)
         {
             if (SensorExecute == null)
@@ -31,7 +32,7 @@ namespace JumpeeIsland
             if (SensorExecute != null)
                 return SensorExecute.DecideDirection(mCreatureData, mTransform, envManager, mEntity, skillComp);
 
-            return 0;
+            return (0,0);
         }
 
         private void InitiateSensor()
@@ -58,6 +59,9 @@ namespace JumpeeIsland
                     break;
                 case SensorType.STEPASIDE:
                     SensorExecute = new StepAside();
+                    break;
+                case SensorType.FIREINPLACE:
+                    SensorExecute = new StandInPlace();
                     break;
             }
         }

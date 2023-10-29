@@ -20,7 +20,7 @@ namespace JumpeeIsland
             if (GameFlowManager.Instance.GetEnvManager().GetCurrFaction() == FactionType.Player)
             {
                 var buildingData = m_BuildingEntity.GetData() as BuildingData;
-                if (buildingData == null)
+                if (buildingData == null || buildingData.CurrentHp <= 0)
                     return;
                 
                 var product = m_BuildingEntity.GetStats().Productivity;

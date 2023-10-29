@@ -174,7 +174,7 @@ namespace JumpeeIsland
         {
             if (_domainOwners.ContainsKey(fromFaction) == false)
                 _domainOwners.Add(fromFaction, new List<GameObject>());
-
+            
             return _domainOwners[fromFaction].Find(x => Vector3.Distance(x.transform.position, position) < 0.1f);
         }
 

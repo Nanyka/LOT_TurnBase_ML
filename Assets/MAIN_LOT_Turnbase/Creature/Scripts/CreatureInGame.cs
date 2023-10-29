@@ -26,9 +26,16 @@ namespace JumpeeIsland
         {
             m_Entity.Init(creatureData);
             m_RotatePart.eulerAngles = creatureData.Rotation;
-            m_Transform.position = creatureData.Position;
             m_FactionController = playerFaction;
             m_FactionController.AddCreatureToFaction(this);
+            if (creatureData.CreatureType != CreatureType.ECOBOSS && GameFlowManager.Instance.GetEnvManager().CheckOutOfBoundary(creatureData.Position))
+            {
+                var availablePos = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
+                if (availablePos.x.Equals(float.NegativeInfinity) == false)
+                    creatureData.Position = availablePos;
+            }
+            m_Transform.position = creatureData.Position;
+            
             MarkAsUsedThisTurn();
         }
 
@@ -67,8 +74,6 @@ namespace JumpeeIsland
 
             MarkAsUsedThisTurn();
             CreatureStartMove(m_Transform.position, moveDirection);
-            
-            
         }
 
         protected virtual void CreatureStartMove(Vector3 currentPos, int direction)

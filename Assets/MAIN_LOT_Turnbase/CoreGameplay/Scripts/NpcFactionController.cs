@@ -160,7 +160,7 @@ namespace JumpeeIsland
             //
             // m_Environment.ChangeFaction();
 
-            await WaitForChangeFaction(100);
+            await WaitForChangeFaction(500);
         }
 
         private async Task WaitForChangeFaction(int miliseconds)

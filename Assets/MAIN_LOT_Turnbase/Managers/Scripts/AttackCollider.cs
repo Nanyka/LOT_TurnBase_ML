@@ -5,12 +5,13 @@ namespace JumpeeIsland
 {
     public class AttackCollider : MonoBehaviour
     {
-        [SerializeField] private int skillIndex = -1; // if it is -1, use current jump step as skill index
+        [Tooltip("If it is -1, use current jump step as skill index")]
+        [SerializeField] private int skillIndex = -1;
 
-        private AttackVisual _attackVisual;
+        private IAttackExecutor _attackVisual;
         private ParticleSystem m_AttackVfx;
 
-        public void Init(AttackVisual attackVisual)
+        public void Init(IAttackExecutor attackVisual)
         {
             _attackVisual = attackVisual;
             m_AttackVfx = GetComponent<ParticleSystem>();

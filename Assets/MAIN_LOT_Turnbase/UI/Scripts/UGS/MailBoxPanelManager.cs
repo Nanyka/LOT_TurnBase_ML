@@ -36,7 +36,7 @@ namespace JumpeeIsland
         {
             await Task.WhenAll(
                 JIRemoteConfigManager.instance.FetchMailboxConfigs(),
-                _cloudSaveManager.FetchPlayerInbox()
+                _cloudSaveManager.FetchPlayerCloudSave()
             );
             if (this == null) return;
 
@@ -115,7 +115,7 @@ namespace JumpeeIsland
             // TODO update local currency
             await Task.WhenAll(
                 JIEconomyManager.instance.RefreshCurrencyBalances(),
-                _cloudSaveManager.FetchPlayerInbox()
+                _cloudSaveManager.FetchPlayerCloudSave()
             );
             if (this == null) return;
 

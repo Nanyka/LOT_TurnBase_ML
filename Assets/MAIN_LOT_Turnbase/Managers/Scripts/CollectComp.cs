@@ -10,12 +10,13 @@ namespace JumpeeIsland
         [SerializeField] private bool _isGlobalVfx;
         [SerializeField] private GlobalVfxType _globalVfxType;
         [SerializeField] private bool _isForBattleMode;
-        
+
         private UnityEvent<Entity> _dieEvent;
-        
+
         public void Init(UnityEvent<Entity> dieEvent)
         {
             _dieEvent = dieEvent;
+            // _dieEvent.AddListener(DieVisual);
             MainUI.Instance.OnEnableInteract.AddListener(EnableTrigger);
         }
 
@@ -28,20 +29,27 @@ namespace JumpeeIsland
         {
             if (_isForBattleMode && GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 return;
-            
-            if (other.TryGetComponent(out CreatureEntity creatureEntity))
-            {
-                Die(creatureEntity);
-                _collectingVfx.Play();
 
-                if (_isGlobalVfx)
-                    GameFlowManager.Instance.AskGlobalVfx(_globalVfxType,transform.position);
-            }
+            if (other.TryGetComponent(out CreatureEntity creatureEntity))
+                Die(creatureEntity);
         }
 
         private void Die(Entity killedByFaction)
         {
+            DieVisual();
             _dieEvent.Invoke(killedByFaction);
         }
+
+        private void DieVisual()
+        {
+            _collectingVfx.Play();
+            if (_isGlobalVfx)
+                GameFlowManager.Instance.AskGlobalVfx(_globalVfxType, transform.position);
+        }
+
+        // private void DieVisual(Entity killedBy)
+        // {
+        //     DieVisual();
+        // }
     }
 }

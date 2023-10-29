@@ -35,7 +35,7 @@ namespace JumpeeIsland
         #region ATTACK
 
         public abstract int GetAttackDamage();
-
+        
         #endregion
         
         #region SKILL

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -15,7 +14,6 @@ namespace JumpeeIsland
         private EnvironmentManager _envManager;
         private Transform m_Transform;
         private int movingIndex;
-        private List<Vector3> enemyHits = new();
 
         public void Init()
         {
@@ -37,9 +35,9 @@ namespace JumpeeIsland
         
         #region CONNECT TO CREATURE
 
-        private void ResponseToCreature(int actionIndex, int weight)
+        private void ResponseToCreature((int,int) action, int weight)
         {
-            m_Creature.ResponseAction(actionIndex, weight);
+            m_Creature.ResponseAction(action.Item1, action.Item2, weight);
         }
 
         #endregion

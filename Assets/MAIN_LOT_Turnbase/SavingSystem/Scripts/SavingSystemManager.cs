@@ -54,7 +54,7 @@ namespace JumpeeIsland
         private InventoryLoader m_InventoryLoader;
 
         protected RuntimeMetadata m_RuntimeMetadata = new();
-        private GameProcessData m_GameProcess = new();
+        [SerializeField] private GameProcessData m_GameProcess = new();
         private QuestData m_QuestData;
         private string _gamePath;
         private bool encrypt = true;
@@ -122,7 +122,7 @@ namespace JumpeeIsland
             m_EnvLoader.Init();
 
             // Load game process to refresh current tutorial
-            await LoadGameProcess();
+            LoadGameProcess();
 
             Debug.Log("Completed loading process");
             SaveMetadata(); // set it as connected state when loaded all disconnected session's data
@@ -326,9 +326,6 @@ namespace JumpeeIsland
         public void OnSpawnResource(string resourceId, Vector3 position)
         {
             var inventoryItems = m_InventoryLoader.GetInventoriesByType(InventoryType.Resource);
-            Debug.Log($"Resource to spawn: {resourceId}, Inventory items: {inventoryItems.Count()}");
-            if (inventoryItems == null)
-                return;
 
             foreach (var item in inventoryItems)
             {
@@ -848,9 +845,9 @@ namespace JumpeeIsland
 
         #region GAME PROCESS
 
-        private async Task LoadGameProcess()
+        private void LoadGameProcess()
         {
-            m_GameProcess = await m_CloudConnector.OnLoadGameProcess();
+            m_GameProcess = m_CloudConnector.OnLoadGameProcess();
 
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 GameFlowManager.Instance.LoadTutorialManager(m_GameProcess == null
@@ -894,7 +891,7 @@ namespace JumpeeIsland
             battleRecord.score = score;
             battleRecord.isRecorded = true;
 
-            //TODO send an email to enemy
+            // Send an email to enemy
             m_CloudConnector.AddBattleEmail(enemyId ,battleRecord);
             
             m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
@@ -913,10 +910,11 @@ namespace JumpeeIsland
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
-        // public void GainExp(int expAmount)
-        // {
-        //     m_GameProcess.experience += expAmount;
-        // }
+        public async void SaveEcoBoss(int bossIndex)
+        {
+            m_GameProcess.ecoBoss = bossIndex;
+            await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
+        }
 
         #endregion
 

@@ -23,7 +23,7 @@ namespace JumpeeIsland
         [SerializeField] private JICloudSaveManager _cloudSaveManager;
 
         private string _enemyPlayerId;
-        
+
         public async Task Init()
         {
             try
@@ -329,7 +329,7 @@ namespace JumpeeIsland
         {
             return await _economyManager.OnGrantInventory(inventoryId);
         }
-        
+
         public async Task OnGrantInventory(string inventoryId, int level)
         {
             await _economyManager.OnGrantInventory(inventoryId, level);
@@ -363,7 +363,7 @@ namespace JumpeeIsland
         {
             return _economyManager.GetVirtualPurchaseCost(virtualPurchaseId);
         }
-        
+
         public List<JIItemAndAmountSpec> GetVirtualPurchaseReward(string virtualPurchaseId)
         {
             return _economyManager.GetVirtualPurchaseReward(virtualPurchaseId);
@@ -415,7 +415,8 @@ namespace JumpeeIsland
                 }
             }
 
-            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.UpdatePlayerScore(),battleConfig);
+            return await _remoteConfigManager.GetBattleWinConfigs(await _leaderboardManager.UpdatePlayerScore(),
+                battleConfig);
         }
 
         public async Task<MainHallTier> GetMainHallTier(int curMainHallLevel)
@@ -432,7 +433,7 @@ namespace JumpeeIsland
             var getPlayerRange = await _leaderboardManager.GetPlayerRange();
 
             getPlayerRange = getPlayerRange.FindAll(t =>
-                    t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
+                t.PlayerId.Equals(AuthenticationService.Instance.PlayerId) == false);
 
             _enemyPlayerId = getPlayerRange[Random.Range(0, getPlayerRange.Count)].PlayerId;
             return await _cloudCodeManager.CallLoadEnemyEnvironment(_enemyPlayerId);
@@ -452,7 +453,7 @@ namespace JumpeeIsland
         {
             return _leaderboardManager.GetPlayerScore();
         }
-        
+
         public void PlayerRecordExp(int playerExp)
         {
             _leaderboardManager.AddExp(playerExp);
@@ -472,27 +473,15 @@ namespace JumpeeIsland
 
         #region GAME PROCESS
 
-        public async Task<GameProcessData> OnLoadGameProcess()
+        public GameProcessData OnLoadGameProcess()
         {
-            try
-            {
-                var gameProcess = await _cloudCodeManager.CallLoadGameProcess();
-                if (this == null)
-                    return null;
-
-                return gameProcess;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-
-            return null;
+            return _cloudSaveManager.FetchGameProcess();
         }
 
         public async Task OnSaveGameProcess(GameProcessData currentProcess)
         {
-            await _cloudCodeManager.CallSaveGameProcess(currentProcess);
+            await _cloudSaveManager.SaveGameProcess(currentProcess);
+            // await _cloudCodeManager.CallSaveGameProcess(currentProcess);
         }
 
         public async Task<long> OnGrantMove()
@@ -518,9 +507,9 @@ namespace JumpeeIsland
 
         #region CLOUDSAVE
 
-        public void AddBattleEmail(string playerId ,BattleRecord battleRecord)
+        public void AddBattleEmail(string playerId, BattleRecord battleRecord)
         {
-            _cloudSaveManager.AddBattleMail(playerId ,battleRecord);
+            _cloudSaveManager.AddBattleMail(playerId, battleRecord);
         }
 
         #endregion

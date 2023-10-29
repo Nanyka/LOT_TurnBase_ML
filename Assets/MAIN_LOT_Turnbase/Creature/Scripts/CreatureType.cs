@@ -1,11 +1,12 @@
 namespace JumpeeIsland
 {
-    public enum CreatureType
+    public enum CreatureType: byte
     {
         NONE,
         MOVER,
         PLAYER,
         ENEMY,
-        BOSS
+        BOSS,
+        ECOBOSS
     }
 }

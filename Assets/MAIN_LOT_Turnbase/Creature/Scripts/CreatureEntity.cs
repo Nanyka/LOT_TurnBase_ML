@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
@@ -30,6 +31,7 @@ namespace JumpeeIsland
 
             SavingSystemManager.Instance.OnCreatureUpgrade.AddListener(CreatureUpgrade);
 
+            InvokeRepeating(nameof(ChangeAnimBlend), 10f,10f); // Change idle animation
             RefreshEntity();
         }
 
@@ -132,6 +134,11 @@ namespace JumpeeIsland
             _killAccumulation = 0;
         }
 
+        public CreatureType GetCreatureType()
+        {
+            return m_CreatureData.CreatureType;
+        }
+
         #endregion
 
         #region SKIN
@@ -160,6 +167,7 @@ namespace JumpeeIsland
             if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 return;
 
+            m_AnimateComp.SetAnimation(AnimateType.TakeDamage);
             m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
@@ -344,6 +352,11 @@ namespace JumpeeIsland
         public AnimateComp GetAnimateComp()
         {
             return m_AnimateComp;
+        }
+
+        public void ChangeAnimBlend()
+        {
+            m_AnimateComp.SetFloatParameter("Blend",Random.Range(0f,1f));
         }
 
         #endregion

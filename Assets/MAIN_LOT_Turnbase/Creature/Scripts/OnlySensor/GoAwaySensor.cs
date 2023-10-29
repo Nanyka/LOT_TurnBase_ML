@@ -11,7 +11,7 @@ namespace JumpeeIsland
             _checkingRadius = range;
         }
         
-        public int DecideDirection(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
+        public (int,int) DecideDirection(CreatureData mCreatureData, Transform mTransform, EnvironmentManager envManager,
             CreatureEntity mEntity, SkillComp skillComp)
         {
             Vector3 _enemyPos = Vector3.negativeInfinity;
@@ -37,7 +37,7 @@ namespace JumpeeIsland
             }
 
             if (float.IsNegativeInfinity(_enemyPos.x))
-                return 0;
+                return (0,0);
 
                 // check the adjacent directions and add state to belief if available
             var movingIndex = 0;
@@ -81,7 +81,7 @@ namespace JumpeeIsland
                 }
             }
             
-            return movingIndex;
+            return (movingIndex,0);
         }
     }
 }

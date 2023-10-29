@@ -43272,9 +43272,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Sensors:
-  - {fileID: 11400000, guid: ca8c58951bb8547ef984204929f59050, type: 2}
   - {fileID: 11400000, guid: ec934e9bb750b46bd85d31ec1e82bfcd, type: 2}
   - {fileID: 11400000, guid: fd02eb3b53c454bc982e5bdc5ba21b0a, type: 2}
+  - {fileID: 11400000, guid: ca8c58951bb8547ef984204929f59050, type: 2}
 --- !u!114 &8779693012981644325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43323,6 +43323,7 @@ MonoBehaviour:
   m_SkillComp: {fileID: 9064295759534460190}
   m_EffectComp: {fileID: 302912797953456210}
   m_AnimateComp: {fileID: 6446188049573437542}
+  _killAccumulation: 0
 --- !u!114 &1689942937867861285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43365,8 +43366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195778cf17423598463240da65e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HitContainer: {fileID: 4769733544996562985}
-  m_HitVfx: {fileID: 8546083317953485757}
 --- !u!114 &9064295759534460190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43407,6 +43406,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RotatePart: {fileID: 2637572199306876249}
+  tiles: []
+  destination: {x: 0, y: 0, z: 0}
+  isMoving: 0
+  moveIndex: 0
 --- !u!114 &4604419118882980231
 MonoBehaviour:
   m_ObjectHideFlags: 0
