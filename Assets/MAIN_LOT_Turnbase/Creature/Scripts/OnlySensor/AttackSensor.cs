@@ -71,21 +71,6 @@ namespace JumpeeIsland
                         maxHit = curHit;
                         movingIndex = i;
                     }
-                    
-                    // var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i), dummyJump, skillComp);
-                    // if (attackPoints == null)
-                    //     continue;
-                    //
-                    // int curHit = 0;
-                    // foreach (var attackPoint in attackPoints)
-                    //     if (_envManager.CheckEnemy(attackPoint, m_Entity.GetFaction()))
-                    //         curHit++;
-                    //
-                    // if (curHit > maxHit)
-                    // {
-                    //     maxHit = curHit;
-                    //     movingIndex = i;
-                    // }
                 }
             }
 

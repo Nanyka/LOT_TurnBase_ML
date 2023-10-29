@@ -19,8 +19,7 @@ namespace JumpeeIsland
         }
 
         public (int, int) DecideDirection(CreatureData mCreatureData, Transform mTransform,
-            EnvironmentManager envManager,
-            CreatureEntity mEntity, SkillComp skillComp)
+            EnvironmentManager envManager, CreatureEntity mEntity, SkillComp skillComp)
         {
             int movingIndex = 0;
             potentialPos.Clear();
@@ -38,54 +37,57 @@ namespace JumpeeIsland
                     // To select obstacle only, the function just check if it is not movable
                     if (envManager.FreeToMove(detectPos) || envManager.CheckOutOfBoundary(detectPos))
                         continue;
+
+                    if (envManager.CheckEnemy(detectPos,mEntity.GetFaction()))
+                        potentialPos.Add((detectPos,1));
                     
-                    for (int k = 1; k < 5; k++)
-                    {
-                        var jumpPos = detectPos + JIGeneralUtils.AdverseDirectionTo(k);
-                        if (envManager.FreeToMove(jumpPos))
-                        {
-                            var movement = envManager.GetMovementInspector()
-                                .MovingPath(jumpPos, k, 0, 0);
-                            if (movement.jumpCount > 0)
-                            {
-                                movement.jumpCount += mEntity.GetJumpBoost();
-
-                                if (skillComp.GetSkillByIndex(movement.jumpCount - 1).CheckGlobalTarget())
-                                {
-                                    var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
-                                        movement.jumpCount, skillComp);
-                                    
-                                    if (attackPoints == null)
-                                        continue;
-
-                                    var hitAmount = 0;
-                                    foreach (var attackPoint in attackPoints)
-                                        if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
-                                            hitAmount++;
-
-                                    if (hitAmount > 0)
-                                        potentialPos.Add((jumpPos, hitAmount));
-                                    continue;
-                                }
-
-                                for (int l = 1; l < 5; l++)
-                                {
-                                    var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(l),
-                                        movement.jumpCount, skillComp);
-                                    if (attackPoints == null)
-                                        continue;
-
-                                    var hitAmount = 0;
-                                    foreach (var attackPoint in attackPoints)
-                                        if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
-                                            hitAmount++;
-
-                                    if (hitAmount > 0)
-                                        potentialPos.Add((jumpPos,hitAmount));
-                                }
-                            }
-                        }
-                    }
+                    // for (int k = 1; k < 5; k++)
+                    // {
+                    //     var jumpPos = detectPos + JIGeneralUtils.AdverseDirectionTo(k);
+                    //     if (envManager.FreeToMove(jumpPos))
+                    //     {
+                    //         var movement = envManager.GetMovementInspector()
+                    //             .MovingPath(jumpPos, k, 0, 0);
+                    //         if (movement.jumpCount > 0)
+                    //         {
+                    //             movement.jumpCount += mEntity.GetJumpBoost();
+                    //
+                    //             if (skillComp.GetSkillByIndex(movement.jumpCount - 1).CheckGlobalTarget())
+                    //             {
+                    //                 var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(k),
+                    //                     movement.jumpCount, skillComp);
+                    //                 
+                    //                 if (attackPoints == null)
+                    //                     continue;
+                    //
+                    //                 var hitAmount = 0;
+                    //                 foreach (var attackPoint in attackPoints)
+                    //                     if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
+                    //                         hitAmount++;
+                    //
+                    //                 if (hitAmount > 0)
+                    //                     potentialPos.Add((jumpPos, hitAmount));
+                    //                 continue;
+                    //             }
+                    //
+                    //             for (int l = 1; l < 5; l++)
+                    //             {
+                    //                 var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(l),
+                    //                     movement.jumpCount, skillComp);
+                    //                 if (attackPoints == null)
+                    //                     continue;
+                    //
+                    //                 var hitAmount = 0;
+                    //                 foreach (var attackPoint in attackPoints)
+                    //                     if (envManager.CheckEnemy(attackPoint, mEntity.GetFaction()))
+                    //                         hitAmount++;
+                    //
+                    //                 if (hitAmount > 0)
+                    //                     potentialPos.Add((jumpPos,hitAmount));
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 }
             }
 
@@ -94,9 +96,7 @@ namespace JumpeeIsland
             int returnReward = 0;
             foreach (var tuple in potentialPos)
             {
-                var movingPath = GameFlowManager.Instance.GetEnvManager()
-                    .GetAStarPath(mTransform.position, tuple.pos);
-
+                var movingPath = envManager.GetAStarPath(mTransform.position, tuple.pos);
                 if (movingPath == null)
                     continue;
                 

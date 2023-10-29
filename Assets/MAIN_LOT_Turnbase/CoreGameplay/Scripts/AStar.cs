@@ -40,10 +40,11 @@ namespace JumpeeIsland
         public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
         {
             Node startNode = new Node(startPos,true);
-            Node targetNode = NodeFromVector3(targetPos);
-
-            if (targetNode == null)
-                return null;
+            Node targetNode = new Node(targetPos, true);
+            
+            // Node targetNode = NodeFromVector3(targetPos);
+            // if (targetNode == null)
+            //     return null;
             
             // Debug.Log($"Start node: {startPos} ,Target node: {targetNode.position}");
 

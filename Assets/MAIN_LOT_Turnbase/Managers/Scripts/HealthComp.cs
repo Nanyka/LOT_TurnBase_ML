@@ -45,6 +45,8 @@ namespace JumpeeIsland
             }
             else
                 entityUI.ShowBars(false, true, false);
+            
+            TakeDamageEvent.Invoke(entityData.CurrentHp * 1f / m_MAXHp);
         }
 
         public void TakeDamage(int damage, EntityData entityData, Entity killedBy)

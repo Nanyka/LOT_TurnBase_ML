@@ -14,7 +14,7 @@ namespace JumpeeIsland
 
         private void OnDisable()
         {
-            GameFlowManager.Instance.OnDomainRemover.Invoke(gameObject, _factionType);
+            GameFlowManager.Instance?.OnDomainRemover.Invoke(gameObject, _factionType);
         }
     }
 }
