@@ -24,7 +24,7 @@ namespace JumpeeIsland
                 m_MapContainer.SetDisableTile();
             m_Tiles = m_MapContainer.GetTiles();
             SpawnTileMap(mapIndex);
-            GameFlowManager.Instance.OnInitiateObjects.Invoke();
+            // GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
         private void SpawnTileMap(int mapIndex)

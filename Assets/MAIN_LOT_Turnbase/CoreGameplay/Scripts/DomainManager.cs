@@ -9,7 +9,7 @@ namespace JumpeeIsland
     public class DomainManager : MonoBehaviour
     {
         private Dictionary<FactionType, List<GameObject>> _domainOwners = new();
-        private List<MovableTile> _tileAreas = new();
+        [SerializeField] private List<MovableTile> _tileAreas = new();
         private List<Vector3> _potentialPos = new(4);
         private readonly AStar _aStarGrid = new();
 

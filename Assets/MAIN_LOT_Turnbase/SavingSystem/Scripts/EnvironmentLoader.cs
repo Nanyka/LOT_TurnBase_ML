@@ -9,7 +9,7 @@ namespace JumpeeIsland
 {
     public class EnvironmentLoader : MonoBehaviour
     {
-        [SerializeField] private TileManager tileManager;
+        [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
         [SerializeField] private BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
@@ -21,6 +21,7 @@ namespace JumpeeIsland
         {
             SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
             Debug.Log("Load data into managers...");
+            tileManager.Init(_environmentData.mapSize);
             ExecuteEnvData();
         }
 
@@ -42,8 +43,8 @@ namespace JumpeeIsland
             playerLoader.StartUpLoadData(_environmentData.PlayerData);
             enemyLoader.StartUpLoadData(_environmentData.EnemyData);
             collectableLoader.StartUpLoadData(_environmentData.CollectableData);
-
-            tileManager.Init(_environmentData.mapSize);
+            
+            GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
         public virtual EnvironmentData GetData()

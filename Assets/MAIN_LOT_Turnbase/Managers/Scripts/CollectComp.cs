@@ -46,10 +46,5 @@ namespace JumpeeIsland
             if (_isGlobalVfx)
                 GameFlowManager.Instance.AskGlobalVfx(_globalVfxType, transform.position);
         }
-
-        // private void DieVisual(Entity killedBy)
-        // {
-        //     DieVisual();
-        // }
     }
 }
