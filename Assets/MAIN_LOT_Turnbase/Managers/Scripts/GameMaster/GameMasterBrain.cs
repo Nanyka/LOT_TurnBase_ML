@@ -54,10 +54,10 @@ namespace JumpeeIsland
                 {
                     _isDone = false;
                     _actionQueue = null;
-                    if (!isInvoke)
+                    if (!_isInvoke)
                     {
                         Invoke("CompleteAction", CurrentAction.Duration);
-                        isInvoke = true;
+                        _isInvoke = true;
                     }
                 }
 

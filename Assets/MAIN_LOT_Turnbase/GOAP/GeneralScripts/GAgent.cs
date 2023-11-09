@@ -6,21 +6,23 @@ namespace GOAP
 {
     public class GAgent : MonoBehaviour
     {
-        public List<GAction> Actions = new List<GAction>();
-        public Dictionary<SubGoal, int> Goals = new Dictionary<SubGoal, int>();
+        public List<GAction> Actions = new();
+        public Dictionary<SubGoal, int> Goals = new();
 
         public GAction CurrentAction;
         public SubGoal CurrentGoal;
 
-        public GInventory Inventory = new GInventory();
-        public WorldStates Beliefs = new WorldStates();
+        public GInventory Inventory = new();
+        public WorldStates Beliefs = new();
 
         protected GPlanner _planner;
         protected Queue<GAction> _actionQueue;
 
-        [SerializeField] private float finishDistance = 3f;
-        protected Vector3 destination = Vector3.zero;
-        protected bool isInvoke = false;
+        public float RestInterval = 1f;
+        [SerializeField] protected float _finishDistance = 3f;
+        protected Transform _destination;
+        public Vector3 _posDestination;
+        protected bool _isInvoke = false;
 
         protected virtual void Start()
         {
@@ -31,23 +33,18 @@ namespace GOAP
             InvokeRepeating("APlusAlgorithm",1f,1f);
         }
 
-        // private void LateUpdate()
-        // {
-        //     APlusAlgorithm();
-        // }
-
         protected virtual void APlusAlgorithm()
         {
             if (CurrentAction != null && CurrentAction.running)
             {
-                float distanceToTarget = Vector3.Distance(destination, transform.position);
-                if (distanceToTarget <= finishDistance)
+                float distanceToTarget = Vector3.Distance(_destination.position, transform.position);
+                if (distanceToTarget <= _finishDistance)
                 {
                     // Debug.Log("Distance to Goal: " + distanceToTarget);
-                    if (!isInvoke) 
+                    if (!_isInvoke) 
                     {
                         Invoke("CompleteAction", CurrentAction.Duration);
-                        isInvoke = true;
+                        _isInvoke = true;
                     }
                 }
 
@@ -93,16 +90,16 @@ namespace GOAP
                     {
                         CurrentAction.running = true;
 
-                        destination = CurrentAction.Target.transform.position;
+                        _destination.position = CurrentAction.Target.transform.position;
                         Transform
                             identifiedDestination =
                                 CurrentAction.Target.transform
                                     .Find(
                                         "Destination"); // find if the target create a child called "Destination" or not. If so, the destination is this object rather than the parent Target
                         if (identifiedDestination != null)
-                            destination = identifiedDestination.position;
+                            _destination.position = identifiedDestination.position;
 
-                        CurrentAction.mNavMeshAgent.SetDestination(destination);
+                        CurrentAction.mNavMeshAgent.SetDestination(_destination.position);
                     }
                 }
                 else
@@ -116,7 +113,7 @@ namespace GOAP
         {
             CurrentAction.running = false;
             CurrentAction.PostPerform();
-            isInvoke = false;
+            _isInvoke = false;
         }
     }
 }

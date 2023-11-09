@@ -51,9 +51,9 @@ namespace JumpeeIsland
                 {
                     _isDone = false;
                     _actionQueue = null;
-                    if (!isInvoke)
+                    if (!_isInvoke)
                     {
-                        isInvoke = true;
+                        _isInvoke = true;
                         CompleteAction();
                     }
                 }

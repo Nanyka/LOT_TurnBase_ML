@@ -10,6 +10,8 @@ namespace JumpeeIsland
             MainUI.Instance.OnEnableInteract.AddListener(AnnounceFinishPlaceCreature);
             Debug.Log("Load data into managers...");
             
+            tileManager.Init(_environmentData.mapSize);
+
             // Save playerEnv into the cache that will be used for saving at the end of battle
             _playerEnvCache = _environmentData;
             
