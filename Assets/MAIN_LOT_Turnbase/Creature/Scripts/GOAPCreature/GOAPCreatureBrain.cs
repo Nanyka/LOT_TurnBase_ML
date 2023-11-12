@@ -43,7 +43,7 @@ namespace JumpeeIsland
                 Actions.Add(action);
         }
 
-        protected override void APlusAlgorithm()
+        public override void APlusAlgorithm()
         {
             if (CurrentAction != null && CurrentAction.running)
             {

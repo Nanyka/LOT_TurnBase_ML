@@ -82,7 +82,7 @@ namespace JumpeeIsland
         }
 
         #endregion
-
+        
         #region ATTACK
 
         public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)

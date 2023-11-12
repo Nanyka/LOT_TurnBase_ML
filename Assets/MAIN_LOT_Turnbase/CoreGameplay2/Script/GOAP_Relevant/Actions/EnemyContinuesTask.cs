@@ -2,18 +2,17 @@ using UnityEngine;
 
 namespace GOAP
 {
-    public class EnemyIdle : GAction
+    public class EnemyContinuesTask : GAction
     {
-        private float _originalInterval;
-
         public override bool PrePerform()
         {
+            Debug.Log("Execute attack animation");
             return true;
         }
 
         public override bool PostPerform()
         {
-            m_GAgent.Beliefs.RemoveState("Idle");
+            Debug.Log("Check to remove (\")targetAvailable(\") state");
             return true;
         }
     }

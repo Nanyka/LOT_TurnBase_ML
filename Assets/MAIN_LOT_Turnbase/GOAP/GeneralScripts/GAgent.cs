@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GOAP
 {
@@ -19,9 +20,10 @@ namespace GOAP
         protected Queue<GAction> _actionQueue;
 
         public float RestInterval = 1f;
-        [SerializeField] protected float _finishDistance = 3f;
+        private float _finishDistance = 3f;
         protected Transform _destination;
         public Vector3 _posDestination;
+        protected IProcessUpdate m_ProcessUpdate;
         protected bool _isInvoke = false;
 
         protected virtual void Start()
@@ -33,7 +35,7 @@ namespace GOAP
             InvokeRepeating("APlusAlgorithm",1f,1f);
         }
 
-        protected virtual void APlusAlgorithm()
+        public virtual void APlusAlgorithm()
         {
             if (CurrentAction != null && CurrentAction.running)
             {
@@ -109,11 +111,25 @@ namespace GOAP
             }
         }
 
+        // Wait to use when an action wanna finish from outside of APlusAlgorithm
+        public virtual void FinishFromOutside() { }
+
         protected void CompleteAction()
         {
             CurrentAction.running = false;
             CurrentAction.PostPerform();
             _isInvoke = false;
+        }
+
+        public void SetIProcessUpdate(IProcessUpdate processUpdate)
+        {
+            m_ProcessUpdate = processUpdate;
+            WhenChaseTarget();
+        }
+
+        protected virtual void WhenChaseTarget()
+        {
+            Debug.Log("Start chase target");
         }
     }
 }

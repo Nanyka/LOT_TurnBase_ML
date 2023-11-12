@@ -10,13 +10,12 @@ namespace GOAP
         [SerializeField] private EnemyGoalManager m_GoalManager;
         [SerializeField] private float _stopDistance = 5;
 
-        private IProcessUpdate m_ProcessUpdate;
         private SubGoal _currentGoal;
         private bool _isActive;
 
         #region INITIATE
 
-        protected void OnEnable()
+        protected virtual void OnEnable()
         {
             _isActive = true;
 
@@ -30,9 +29,7 @@ namespace GOAP
             _isActive = false;
         }
 
-        protected override void Start()
-        {
-        }
+        protected override void Start() { }
 
         private void SetActions()
         {
@@ -76,7 +73,7 @@ namespace GOAP
 
         #region A* ALGORITHM
 
-        protected override void APlusAlgorithm()
+        public override void APlusAlgorithm()
         {
             if (_isActive == false)
                 return;
@@ -93,26 +90,19 @@ namespace GOAP
                         // Invoke("CompleteAction", CurrentAction.Duration);
                     }
                 }
-                else
-                {
-                    float distanceToTarget = 0f;
-                    if (CurrentAction.IsChasePosition)
-                        distanceToTarget = Vector3.Distance(_posDestination, transform.position);
-                    else
-                        distanceToTarget = Vector3.Distance(_destination.position, transform.position);
-
-                    if (distanceToTarget <= _finishDistance)
-                    {
-                        WaitForPostPerformance();
-                    }
-                    else
-                    {
-                        if (distanceToTarget < _stopDistance)
-                            WhenChaseTarget();
-                        else
-                            WaitForPostPerformance();
-                    }
-                }
+                // else
+                // {
+                //     float distanceToTarget = 0f;
+                //     if (CurrentAction.IsChasePosition)
+                //         distanceToTarget = Vector3.Distance(_posDestination, transform.position);
+                //     else
+                //         distanceToTarget = Vector3.Distance(_destination.position, transform.position);
+                //
+                //     if (distanceToTarget < _stopDistance)
+                //         WhenChaseTarget();
+                //     else
+                //         WaitForPostPerformance();
+                // }
 
                 return;
             }
@@ -173,15 +163,14 @@ namespace GOAP
                 WhenNoSelectedAction();
         }
         
-        private void WhenChaseTarget()
+        protected override void WhenChaseTarget()
         {
             if (m_ProcessUpdate != null)
             {
-                if (CurrentAction.IsChasePosition)
-                    m_ProcessUpdate.MoveToDestination(_mainTranform, _posDestination);
-                else
-                    m_ProcessUpdate.MoveToDestination(_mainTranform, CurrentAction.Target.transform.position);
-                Invoke(nameof(APlusAlgorithm), RestInterval);
+                // TODO: Use a separate script to move object and return APlusAlgorithm when get destination
+                m_ProcessUpdate.MoveToDestination(_mainTranform,
+                    CurrentAction.IsChasePosition ? _posDestination : CurrentAction.Target.transform.position);
+                // Invoke(nameof(APlusAlgorithm), RestInterval);
             }
             else
             {
@@ -201,6 +190,11 @@ namespace GOAP
             if (CurrentAction.IsWaitAndStop == false)
                 m_ProcessUpdate?.StopProcess();
 
+            await CompleteAction();
+        }
+
+        public override async void FinishFromOutside()
+        {
             await CompleteAction();
         }
 

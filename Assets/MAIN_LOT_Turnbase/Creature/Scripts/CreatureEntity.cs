@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GOAP;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,6 +17,7 @@ namespace JumpeeIsland
         [SerializeField] private SkillComp m_SkillComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
+        [SerializeField] private MovementComp m_MovementComp;
 
         private List<CreatureStats> m_CreatureStats;
         private CreatureData m_CreatureData;
@@ -192,6 +194,21 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region MOVEMENT
+        
+        public void MoveTowards(Vector3 destination, IProcessUpdate processUpdate)
+        {
+            m_MovementComp.MoveTo(destination, processUpdate);
+            m_AnimateComp.SetAnimation(AnimateType.Walk, true);
+        }
+
+        public void StopMoving()
+        {
+            m_AnimateComp.SetAnimation(AnimateType.Walk,false);
+        }
+
+        #endregion
+
         #region ATTACK
 
         public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponse) { }
@@ -358,6 +375,11 @@ namespace JumpeeIsland
         {
             m_AnimateComp.SetFloatParameter("Blend",Random.Range(0f,1f));
         }
+        
+        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
+        {
+            m_AnimateComp.SetAnimation(animateType);
+        }
 
         #endregion
 
@@ -385,15 +407,6 @@ namespace JumpeeIsland
         public int GetJumpBoost()
         {
             return m_EffectComp.GetJumpBoost();
-        }
-
-        #endregion
-
-        #region ANIMATE COMPONENT
-
-        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
-        {
-            m_AnimateComp.SetAnimation(animateType);
         }
 
         #endregion

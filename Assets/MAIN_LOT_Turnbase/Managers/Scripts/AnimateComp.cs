@@ -8,15 +8,15 @@ namespace JumpeeIsland
     public class AnimateComp : MonoBehaviour
     {
         [SerializeField] private Transform m_RotatePart;
+        [SerializeField] private Animator m_Animator;
         
-        private Animator m_Animator;
-        [SerializeField] private List<Vector3> tiles = new();
+        private List<Vector3> tiles = new();
         private ICreatureMove m_Creature;
         private Vector3 direction;
-        [SerializeField] private Vector3 destination; // Ending point of the jump (Point B)
+        private Vector3 destination; // Ending point of the jump (Point B)
         private bool isStartMoves; // Flag to track if the object is in a move loop
-        [SerializeField] private bool isMoving; // Flag to track if the object is jumping
-        [SerializeField] private int moveIndex;
+        private bool isMoving; // Flag to track if the object is jumping
+        private int moveIndex;
 
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int JumpUp = Animator.StringToHash("JumpUp");
@@ -111,6 +111,7 @@ namespace JumpeeIsland
             }
         }
 
+        // Use for trigger animation
         public void SetAnimation(AnimateType animate)
         {
             switch (animate)
@@ -120,6 +121,17 @@ namespace JumpeeIsland
                     break;
                 case AnimateType.TakeDamage:
                     m_Animator.SetTrigger(TakeDamage);
+                    break;
+            }
+        }
+        
+        // Use for bool animation
+        public void SetAnimation(AnimateType animate, bool isActivate)
+        {
+            switch (animate)
+            {
+                case AnimateType.Walk:
+                    m_Animator.SetBool(Walk,isActivate);
                     break;
             }
         }

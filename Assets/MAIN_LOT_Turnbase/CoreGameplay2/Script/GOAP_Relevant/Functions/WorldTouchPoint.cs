@@ -1,4 +1,5 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GOAP
@@ -6,7 +7,7 @@ namespace GOAP
     public class WorldTouchPoint : MonoBehaviour
     {
         [SerializeField] private string m_WorldState;
-        
+
         private void OnEnable()
         {
             Init();
