@@ -95,6 +95,7 @@ namespace JumpeeIsland
                 {
                     CurrentAction.running = true;
                     _isDone = true;
+                    Debug.Log("APlus from PrePerform");
                     APlusAlgorithm();
                 }
             }

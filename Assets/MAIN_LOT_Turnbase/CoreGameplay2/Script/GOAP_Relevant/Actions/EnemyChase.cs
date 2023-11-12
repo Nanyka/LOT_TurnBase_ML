@@ -9,7 +9,7 @@ namespace JumpeeIsland
 {
     public class EnemyChase : GAction, IProcessUpdate
     {
-        [SerializeField] private CreatureEntity m_Entity;
+        [SerializeField] private CharacterEntity m_Entity;
         [SerializeField] private GameObject[] TestTarget;
         [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")]
         [SerializeField] private bool _isContibutePhase;
@@ -30,7 +30,9 @@ namespace JumpeeIsland
             var availableTarget = _targets.FindAll(t => t.IsCheckable());
             if (availableTarget.Count > 0)
             {
-                Target = availableTarget[Random.Range(0,availableTarget.Count)].GetGameObject();
+                var selectedTarget = availableTarget[Random.Range(0,availableTarget.Count)].GetGameObject();
+                Target = selectedTarget;
+                m_GAgent.Inventory.AddItem(selectedTarget);
                 m_GAgent.SetIProcessUpdate(this);
             }
             

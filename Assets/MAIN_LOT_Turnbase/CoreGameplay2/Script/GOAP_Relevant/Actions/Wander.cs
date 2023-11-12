@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class Wander : GAction, IProcessUpdate
     {
-        [SerializeField] private CreatureEntity m_Entity;
+        [SerializeField] private CharacterEntity m_Entity;
         [SerializeField] private float wanderRange = 1f;
         
         public override bool PrePerform()
@@ -23,6 +23,7 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
+            // Debug.Log("Wander");
             return true;
         }
 

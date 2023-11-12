@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WebSocketSharp;
 
 namespace GOAP
 {
@@ -14,9 +15,12 @@ namespace GOAP
 
         public GameObject FindItemWithTag(string targettag)
         {
+            if (targettag.IsNullOrEmpty())
+                return null;
+
             foreach (var item in items)
             {
-                if (item == null)  // check if the object is destroyed while AICharacter try to access it
+                if (item == null) // check if the object is destroyed while AICharacter try to access it
                     break;
 
                 if (item.CompareTag(targettag))

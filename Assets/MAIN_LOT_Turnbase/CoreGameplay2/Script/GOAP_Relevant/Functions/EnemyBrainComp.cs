@@ -32,7 +32,9 @@ namespace JumpeeIsland
             _isActive = false;
         }
 
-        protected override void Start() { }
+        protected override void Start()
+        {
+        }
 
         private void SetActions()
         {
@@ -78,9 +80,11 @@ namespace JumpeeIsland
 
         public override void APlusAlgorithm()
         {
+            Debug.Log("Run APlusAlgorithm");
+
             if (_isActive == false)
                 return;
-            
+
             // Debug.Log("AStar algorithm");
             if (CurrentAction != null && CurrentAction.running)
             {
@@ -141,6 +145,11 @@ namespace JumpeeIsland
                         return;
                     }
 
+                    // Debug.Log("APlus from PrePerform");
+                    // WaitForPostPerformance();
+                    // return;
+
+                    Debug.Log("APlus from PrePerform");
                     Invoke(nameof(APlusAlgorithm), CurrentAction.Duration);
                 }
                 else
@@ -152,7 +161,7 @@ namespace JumpeeIsland
             else
                 WhenNoSelectedAction();
         }
-        
+
         protected override void WhenChaseTarget()
         {
             if (m_ProcessUpdate != null)
@@ -172,9 +181,10 @@ namespace JumpeeIsland
         private void WhenNoSelectedAction()
         {
             Beliefs.ModifyState("Idle", 0);
+            Debug.Log("APlus from NoSelectedAction");
             Invoke(nameof(APlusAlgorithm), RestInterval);
         }
-        
+
         private async void WaitForPostPerformance()
         {
             if (CurrentAction.IsWaitAndStop == false)
@@ -190,16 +200,17 @@ namespace JumpeeIsland
 
         private new async Task CompleteAction()
         {
-            await Task.Delay(Mathf.RoundToInt(CurrentAction.Duration)*1000);
-            
+            await Task.Delay(Mathf.RoundToInt(CurrentAction.Duration) * 1000);
+
             if (CurrentAction.IsWaitAndStop)
                 m_ProcessUpdate?.StopProcess();
-            
+
             CurrentAction.running = false;
             CurrentAction.PostPerform();
             m_ProcessUpdate = null;
             _isInvoke = false;
-            
+
+            Debug.Log("APlus from CompleteAction");
             APlusAlgorithm();
         }
 

@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class MoveToInProcessArea : GAction, IProcessUpdate
     {
-        [SerializeField] private CreatureEntity m_Entity;
+        [SerializeField] private CharacterEntity m_Entity;
         [SerializeField] private GameObject[] TestTarget;
         [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")]
 

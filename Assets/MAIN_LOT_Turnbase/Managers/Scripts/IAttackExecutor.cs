@@ -8,5 +8,6 @@ namespace JumpeeIsland
         public void ExecuteHitEffect(int posIndex);
         public void ExecuteHitEffect(Vector3 atPos);
         public void ExecuteHitEffect(Vector3 atPos, int skillIndex);
+        public void ExecuteHitEffect(GameObject target);
     }
 }

@@ -87,7 +87,12 @@ namespace JumpeeIsland
 
         #region ATTACK
         
-        public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
+        public override void StartAttack(ICharacterAttack attack)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void SuccessAttack(GameObject target)
         {
             throw new System.NotImplementedException();
         }

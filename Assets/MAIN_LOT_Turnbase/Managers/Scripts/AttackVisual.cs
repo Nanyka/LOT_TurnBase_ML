@@ -62,6 +62,11 @@ namespace JumpeeIsland
             m_Creature.Attack(atPos, skillIndex);
         }
 
+        public void ExecuteHitEffect(GameObject target)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void ExecuteJumpEffect()
         {
             GameFlowManager.Instance.AskGlobalVfx(GlobalVfxType.JUMP, transform.position);

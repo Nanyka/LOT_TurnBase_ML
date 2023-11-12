@@ -36,6 +36,10 @@ namespace JumpeeIsland
         
         #region ATTACK
 
+        public abstract void StartAttack(ICharacterAttack attack);
+
+        public abstract void SuccessAttack(GameObject target);
+
         public abstract int GetAttackDamage();
         
         #endregion

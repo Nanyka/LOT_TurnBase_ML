@@ -8,6 +8,7 @@ namespace GOAP
 
         public override bool PrePerform()
         {
+            // Debug.Log("Idle");
             return true;
         }
 

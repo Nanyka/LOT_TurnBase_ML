@@ -54,5 +54,10 @@ namespace JumpeeIsland
         {
             throw new System.NotImplementedException();
         }
+
+        public void ExecuteHitEffect(GameObject target)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

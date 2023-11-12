@@ -122,6 +122,9 @@ namespace JumpeeIsland
                 case AnimateType.TakeDamage:
                     m_Animator.SetTrigger(TakeDamage);
                     break;
+                case AnimateType.Attack:
+                    m_Animator.SetTrigger(Attack);
+                    break;
             }
         }
         
