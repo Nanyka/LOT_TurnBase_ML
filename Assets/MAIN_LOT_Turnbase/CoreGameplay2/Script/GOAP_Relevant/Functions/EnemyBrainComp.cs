@@ -1,8 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
+using GOAP;
 using UnityEngine;
 
-namespace GOAP
+namespace JumpeeIsland
 {
     public class EnemyBrainComp : GAgent
     {
@@ -87,22 +88,8 @@ namespace GOAP
                     {
                         WaitForPostPerformance();
                         _isInvoke = true;
-                        // Invoke("CompleteAction", CurrentAction.Duration);
                     }
                 }
-                // else
-                // {
-                //     float distanceToTarget = 0f;
-                //     if (CurrentAction.IsChasePosition)
-                //         distanceToTarget = Vector3.Distance(_posDestination, transform.position);
-                //     else
-                //         distanceToTarget = Vector3.Distance(_destination.position, transform.position);
-                //
-                //     if (distanceToTarget < _stopDistance)
-                //         WhenChaseTarget();
-                //     else
-                //         WaitForPostPerformance();
-                // }
 
                 return;
             }
@@ -157,6 +144,7 @@ namespace GOAP
                 else
                 {
                     _actionQueue.Clear();
+                    APlusAlgorithm();
                 }
             }
             else

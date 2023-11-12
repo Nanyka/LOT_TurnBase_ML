@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
 using GOAP;
-using JumpeeIsland;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class EnemyCheckAvailableTarget : GAction
+    public class CheckInProcessArea : GAction
     {
         [SerializeField] private float _checkDistance = 1f;
         [SerializeField] private GameObject[] TestTarget;
@@ -28,7 +26,7 @@ namespace JumpeeIsland
             var distanceToTarget = float.PositiveInfinity;
             foreach (var target in _checkableObjects)
             {
-                if (target.IsCheckable() == false)
+                if (target.IsCheckable() == true)
                     continue;
                 
                 var curDis = Vector3.Distance(transform.position, target.GetPosition());

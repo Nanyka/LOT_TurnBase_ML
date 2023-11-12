@@ -42,6 +42,11 @@ namespace GOAP
             }
         }
 
+        public void ClearInventory()
+        {
+            items.Clear();
+        }
+
         public bool IsEmpty()
         {
             return items.Count == 0;

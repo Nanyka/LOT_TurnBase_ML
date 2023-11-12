@@ -1,11 +1,9 @@
-using System;
 using GOAP;
-using JumpeeIsland;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class EnemyContinuesTask : GAction
+    public class ConstructorContinuesTask : GAction
     {
         [SerializeField] private float _checkDistance = 1f;
         private ICheckableObject _currentPoint;
@@ -19,7 +17,8 @@ namespace JumpeeIsland
                 if (currentTarget.TryGetComponent(out ICheckableObject checkableObject))
                 {
                     _currentPoint = checkableObject;
-                    if (Vector3.Distance(transform.position, _currentPoint.GetPosition()) < _checkDistance && _currentPoint.IsCheckable())
+                    if (Vector3.Distance(transform.position, _currentPoint.GetPosition()) < _checkDistance &&
+                        _currentPoint.IsCheckable() == false)
                     {
                         _currentPoint.ReduceCheckableAmount(1);
                         Duration = 1f;
@@ -28,7 +27,7 @@ namespace JumpeeIsland
                     }
                 }
             }
-            
+
             m_GAgent.Beliefs.RemoveState("targetAvailable");
             m_GAgent.Inventory.ClearInventory();
             Duration = 0f;

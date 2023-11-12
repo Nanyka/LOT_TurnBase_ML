@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,6 +9,11 @@ namespace GOAP
     public class UpdateWorld : MonoBehaviour
     {
         public TextMeshProUGUI States;
+
+        // private void OnEnable()
+        // {
+        //     GWorld.Instance.ResetWorldState();
+        // }
 
         private void LateUpdate()
         {

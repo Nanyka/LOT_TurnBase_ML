@@ -1,18 +1,14 @@
-using System;
 using System.Collections.Generic;
 using GOAP;
-using JumpeeIsland;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class EnemyChase : GAction, IProcessUpdate
+    public class MoveToInProcessArea : GAction, IProcessUpdate
     {
         [SerializeField] private CreatureEntity m_Entity;
         [SerializeField] private GameObject[] TestTarget;
         [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")]
-        [SerializeField] private bool _isContibutePhase;
 
         private readonly List<ICheckableObject> _targets = new(); // TODO: move this list to a distinct manager
 
@@ -27,7 +23,7 @@ namespace JumpeeIsland
 
         public override bool PrePerform()
         {
-            var availableTarget = _targets.FindAll(t => t.IsCheckable());
+            var availableTarget = _targets.FindAll(t => t.IsCheckable() == false);
             if (availableTarget.Count > 0)
             {
                 Target = availableTarget[Random.Range(0,availableTarget.Count)].GetGameObject();
@@ -39,12 +35,6 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            if (_isContibutePhase)
-            {
-                m_GAgent.Beliefs.RemoveState("targetAvailable");
-                m_GAgent.Beliefs.ModifyState("Empty",1);
-            }
-            
             return true;
         }
 

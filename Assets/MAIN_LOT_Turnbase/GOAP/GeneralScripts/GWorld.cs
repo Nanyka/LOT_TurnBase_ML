@@ -28,6 +28,11 @@ namespace GOAP
             // resources.Add("Puddle", puddles);
         }
 
+        public void ResetWorldState()
+        {
+            world = new WorldStates();
+        }
+
         public ResourceQueue GetQueue(string type)
         {
             return resources[type];

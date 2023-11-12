@@ -13,7 +13,7 @@ namespace JumpeeIsland
 
         private int _curProcess;
 
-        public bool IsAvailable { get; private set; }
+        private bool IsAvailable { get; set; }
 
         private void OnEnable()
         {
@@ -57,7 +57,7 @@ namespace JumpeeIsland
 
         public bool IsCheckable()
         {
-            return !IsAvailable;
+            return IsAvailable;
         }
 
         public Vector3 GetPosition()
@@ -74,6 +74,11 @@ namespace JumpeeIsland
             SetResourceScale();
             if (_curProcess >= _cost)
                 Refresh();
+        }
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
         }
 
         private void SetResourceScale()
