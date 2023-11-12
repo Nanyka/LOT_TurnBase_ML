@@ -6,12 +6,12 @@ namespace GOAP
     public sealed class GWorld: Singleton<GWorld>
     {
         // private static readonly GWorld instance = new();
-        private static WorldStates world;  // manage global states
-        private static ResourceQueue patients;
-        private static ResourceQueue cubicles;
-        private static ResourceQueue offices;
-        private static ResourceQueue toilets;
-        private static ResourceQueue puddles;
+        private WorldStates world;  // manage global states
+        // private static ResourceQueue patients;
+        // private static ResourceQueue cubicles;
+        // private static ResourceQueue offices;
+        // private static ResourceQueue toilets;
+        // private static ResourceQueue puddles;
         private static Dictionary<string, ResourceQueue> resources = new();
 
         // static GWorld()
@@ -34,7 +34,7 @@ namespace GOAP
             ResetWorldState();
         }
 
-        public void ResetWorldState()
+        private void ResetWorldState()
         {
             world = new WorldStates();
         }

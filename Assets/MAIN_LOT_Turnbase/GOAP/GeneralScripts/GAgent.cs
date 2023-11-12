@@ -32,7 +32,7 @@ namespace GOAP
             foreach (var action in actions)
                 Actions.Add(action);
             
-            InvokeRepeating("APlusAlgorithm",1f,1f);
+            // InvokeRepeating("APlusAlgorithm",1f,1f);
         }
 
         public virtual void APlusAlgorithm()

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GOAP
 {
@@ -29,7 +30,7 @@ namespace GOAP
                 if (_states[key] <= 0)
                     RemoveState(key);
             }
-            else
+            else if (value > 0)
                 _states.Add(key, value);
         }
 

@@ -32,9 +32,7 @@ namespace JumpeeIsland
             _isActive = false;
         }
 
-        protected override void Start()
-        {
-        }
+        protected override void Start() { }
 
         private void SetActions()
         {
@@ -80,7 +78,7 @@ namespace JumpeeIsland
 
         public override void APlusAlgorithm()
         {
-            Debug.Log("Run APlusAlgorithm");
+            // Debug.Log("Run APlusAlgorithm");
 
             if (_isActive == false)
                 return;
@@ -88,15 +86,15 @@ namespace JumpeeIsland
             // Debug.Log("AStar algorithm");
             if (CurrentAction != null && CurrentAction.running)
             {
-                if (CurrentAction.IsAutoComplete)
-                {
-                    if (!_isInvoke)
-                    {
-                        WaitForPostPerformance();
-                        _isInvoke = true;
-                    }
-                }
-
+                // if (CurrentAction.IsAutoComplete)
+                // {
+                //     if (!_isInvoke)
+                //     {
+                //         WaitForPostPerformance();
+                //         _isInvoke = true;
+                //     }
+                // }
+            
                 return;
             }
 
@@ -135,22 +133,17 @@ namespace JumpeeIsland
                         CurrentAction.running = true;
                         _destination = CurrentAction.Target.transform;
                     }
-                    else if (CurrentAction.IsAutoComplete || CurrentAction.IsChasePosition)
-                    {
-                        CurrentAction.running = true;
-                    }
+                    // else if (CurrentAction.IsAutoComplete || CurrentAction.IsChasePosition)
+                    // {
+                    //     CurrentAction.running = true;
+                    // }
                     else
                     {
                         WaitForPostPerformance();
-                        return;
                     }
 
                     // Debug.Log("APlus from PrePerform");
-                    // WaitForPostPerformance();
-                    // return;
-
-                    Debug.Log("APlus from PrePerform");
-                    Invoke(nameof(APlusAlgorithm), CurrentAction.Duration);
+                    // Invoke(nameof(APlusAlgorithm), CurrentAction.Duration);
                 }
                 else
                 {
@@ -173,15 +166,15 @@ namespace JumpeeIsland
             }
             else
             {
-                Debug.Log("Null processUpdate");
+                // Debug.Log("Null processUpdate");
                 WaitForPostPerformance();
             }
         }
 
         private void WhenNoSelectedAction()
         {
-            Beliefs.ModifyState("Idle", 0);
-            Debug.Log("APlus from NoSelectedAction");
+            Beliefs.ModifyState("Idle", 1);
+            // Debug.Log("APlus from NoSelectedAction");
             Invoke(nameof(APlusAlgorithm), RestInterval);
         }
 
@@ -210,7 +203,7 @@ namespace JumpeeIsland
             m_ProcessUpdate = null;
             _isInvoke = false;
 
-            Debug.Log("APlus from CompleteAction");
+            // Debug.Log("APlus from CompleteAction");
             APlusAlgorithm();
         }
 

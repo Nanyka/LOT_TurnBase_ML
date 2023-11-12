@@ -54,18 +54,23 @@ namespace JumpeeIsland
 
         private void Refresh()
         {
-            GWorld.Instance.GetWorld().ModifyState(m_FinishState, 1);
-            GWorld.Instance.GetWorld().ModifyState(m_InProcessState, -1);
-
-            IsAvailable = true;
+            if (IsAvailable == false)
+            {
+                GWorld.Instance.GetWorld().ModifyState(m_FinishState, 1);
+                GWorld.Instance.GetWorld().ModifyState(m_InProcessState, -1);
+                IsAvailable = true;
+            }
         }
 
         private void Destroyed()
         {
-            _curProcess = 0;
-            SetResourceScale();
-            GWorld.Instance?.GetWorld().ModifyState(m_FinishState, -1);
-            IsAvailable = false;
+            if (IsAvailable && GWorld.Instance != null)
+            {
+                _curProcess = 0;
+                SetResourceScale();
+                GWorld.Instance.GetWorld().ModifyState(m_FinishState, -1);
+                IsAvailable = false;
+            }
         }
 
         #region EXPLOITING

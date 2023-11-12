@@ -51,7 +51,7 @@ namespace JumpeeIsland
 
             if (target.TryGetComponent(out ICheckableObject checkableObject))
             {
-                if (Vector3.Distance(transform.position,checkableObject.GetPosition()) < _checkDistance)
+                if (Vector3.Distance(transform.position,checkableObject.GetPosition()) < _checkDistance && checkableObject.IsCheckable())
                 {
                     _character.StartAttack(this);
                     m_GAgent.Beliefs.RemoveState("Empty");
