@@ -123,6 +123,16 @@ namespace GOAP
 
         public void SetIProcessUpdate(IProcessUpdate processUpdate)
         {
+            CurrentAction.IsChasePosition = false;
+            m_ProcessUpdate = processUpdate;
+            WhenChaseTarget();
+        }
+
+        // Use for position target only
+        public void SetIProcessUpdate(IProcessUpdate processUpdate, Vector3 positionTarget)
+        {
+            CurrentAction.IsChasePosition = true;
+            _posDestination = positionTarget;
             m_ProcessUpdate = processUpdate;
             WhenChaseTarget();
         }

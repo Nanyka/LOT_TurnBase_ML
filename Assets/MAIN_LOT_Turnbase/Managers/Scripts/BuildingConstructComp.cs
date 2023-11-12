@@ -22,6 +22,21 @@ namespace JumpeeIsland
 
         private void Init()
         {
+            // if (_isFinishConstructed)
+            //     Refresh();
+            // else
+            // {
+            //     _curProcess = 0;
+            //     SetResourceScale();
+            //     GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
+            // }
+            
+            Invoke(nameof(TempSetWorldState),1f);
+        }
+
+        //TODO: refactor --> call for initiating GWorld first and not use this Invoke
+        private void TempSetWorldState()
+        {
             if (_isFinishConstructed)
                 Refresh();
             else
@@ -49,7 +64,7 @@ namespace JumpeeIsland
         {
             _curProcess = 0;
             SetResourceScale();
-            GWorld.Instance.GetWorld().ModifyState(m_FinishState, -1);
+            GWorld.Instance?.GetWorld().ModifyState(m_FinishState, -1);
             IsAvailable = false;
         }
 

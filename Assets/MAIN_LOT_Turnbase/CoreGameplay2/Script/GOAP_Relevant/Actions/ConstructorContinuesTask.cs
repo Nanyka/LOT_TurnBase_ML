@@ -22,7 +22,6 @@ namespace JumpeeIsland
                     {
                         _currentPoint.ReduceCheckableAmount(1);
                         Duration = 1f;
-                        Debug.Log($"Constructing {currentTarget}");
                         return false;
                     }
                 }

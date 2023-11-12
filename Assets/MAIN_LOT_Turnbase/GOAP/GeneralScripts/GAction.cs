@@ -16,7 +16,7 @@ namespace GOAP
         [Tooltip("If it is for an in-place action, turn off IsChasePosition")]
         public bool IsAutoComplete;
         [Tooltip("Chase a specific position instead of gameObject")]
-        public bool IsChasePosition;
+        [NonSerialized] public bool IsChasePosition;
         [Tooltip("Action finish right at the time motion stop")]
         public bool IsWaitAndStop;
         
