@@ -86,14 +86,14 @@ namespace JumpeeIsland
             // Debug.Log("AStar algorithm");
             if (CurrentAction != null && CurrentAction.running)
             {
-                // if (CurrentAction.IsAutoComplete)
-                // {
-                //     if (!_isInvoke)
-                //     {
-                //         WaitForPostPerformance();
-                //         _isInvoke = true;
-                //     }
-                // }
+                if (CurrentAction.IsAutoComplete)
+                {
+                    if (!_isInvoke)
+                    {
+                        WaitForPostPerformance();
+                        _isInvoke = true;
+                    }
+                }
             
                 return;
             }
@@ -133,10 +133,11 @@ namespace JumpeeIsland
                         CurrentAction.running = true;
                         _destination = CurrentAction.Target.transform;
                     }
-                    // else if (CurrentAction.IsAutoComplete || CurrentAction.IsChasePosition)
-                    // {
-                    //     CurrentAction.running = true;
-                    // }
+                    else if (CurrentAction.IsAutoComplete || CurrentAction.IsChasePosition)
+                    {
+                        CurrentAction.running = true;
+                        APlusAlgorithm();
+                    }
                     else
                     {
                         WaitForPostPerformance();
@@ -166,7 +167,7 @@ namespace JumpeeIsland
             }
             else
             {
-                // Debug.Log("Null processUpdate");
+                Debug.Log("Null processUpdate");
                 WaitForPostPerformance();
             }
         }
