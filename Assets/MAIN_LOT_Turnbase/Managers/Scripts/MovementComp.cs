@@ -84,5 +84,10 @@ namespace JumpeeIsland
                     new Vector3(_currentConner.x, m_Transform.position.y, _currentConner.z)) < _stopDistance)
                 SetCurrentConner();
         }
+
+        public float GetStopDistance()
+        {
+            return _stopDistance;
+        }
     }
 }

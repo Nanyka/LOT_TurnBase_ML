@@ -11,8 +11,8 @@ namespace JumpeeIsland
     {
         [SerializeField] private CharacterEntity m_Entity;
         [SerializeField] private GameObject[] TestTarget;
-        [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")]
-        [SerializeField] private bool _isContibutePhase;
+        [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")] [SerializeField]
+        private bool _isContibutePhase;
 
         private readonly List<ICheckableObject> _targets = new(); // TODO: move this list to a distinct manager
 
@@ -30,12 +30,12 @@ namespace JumpeeIsland
             var availableTarget = _targets.FindAll(t => t.IsCheckable());
             if (availableTarget.Count > 0)
             {
-                var selectedTarget = availableTarget[Random.Range(0,availableTarget.Count)].GetGameObject();
+                var selectedTarget = availableTarget[Random.Range(0, availableTarget.Count)].GetGameObject();
                 Target = selectedTarget;
                 m_GAgent.Inventory.AddItem(selectedTarget);
                 m_GAgent.SetIProcessUpdate(this);
             }
-            
+
             return true;
         }
 
@@ -44,15 +44,18 @@ namespace JumpeeIsland
             if (_isContibutePhase)
             {
                 m_GAgent.Beliefs.RemoveState("targetAvailable");
-                m_GAgent.Beliefs.ModifyState("Empty",1);
+                m_GAgent.Beliefs.ModifyState("Empty", 1);
             }
-            
+
             return true;
         }
 
         public void MoveToDestination(Transform myTransform, Vector3 targetPos)
         {
-            m_Entity.MoveTowards(targetPos, this);
+            if (Vector3.Distance(myTransform.position, targetPos) < m_Entity.GetStopDistance())
+                m_GAgent.FinishFromOutside();
+            else
+                m_Entity.MoveTowards(targetPos, this);
         }
 
         public void StopProcess()

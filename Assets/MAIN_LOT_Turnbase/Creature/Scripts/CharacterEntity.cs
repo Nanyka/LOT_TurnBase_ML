@@ -97,6 +97,11 @@ namespace JumpeeIsland
             m_AnimateComp.SetAnimation(AnimateType.Walk,false);
         }
 
+        public float GetStopDistance()
+        {
+            return m_MovementComp.GetStopDistance();
+        }
+
         #endregion
         
         #region ATTACK
