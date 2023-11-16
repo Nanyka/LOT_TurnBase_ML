@@ -71,6 +71,11 @@ namespace JumpeeIsland
             Beliefs.ModifyState("FoundPlayer", 1);
             Inventory.AddItem(target);
         }
+        
+        public void AddBeliefs(string state)
+        {
+            Beliefs.ModifyState(state, 1);
+        }
 
         #endregion
 

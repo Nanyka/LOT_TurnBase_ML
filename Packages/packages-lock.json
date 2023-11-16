@@ -49,6 +49,15 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.cinemachine": {
+      "version": "2.9.5",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.31"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.collab-proxy": {
       "version": "2.0.7",
       "depth": 0,
@@ -92,6 +101,16 @@
         "com.unity.performance.profile-analyzer": "1.2.2",
         "com.unity.test-framework": "1.1.33",
         "com.unity.testtools.codecoverage": "1.2.4"
+      }
+    },
+    "com.unity.feature.gameplay-storytelling": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.cinemachine": "2.9.5",
+        "com.unity.timeline": "1.7.5",
+        "com.unity.visualscripting": "1.9.0"
       }
     },
     "com.unity.film-internal-utilities": {

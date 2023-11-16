@@ -6,11 +6,14 @@ namespace JumpeeIsland
 {
     public class CharacterEntity : Entity
     {
+        public Vector3 _assemblyPoint { get; set; }
+
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private MovementComp m_MovementComp;
         [SerializeField] private AnimateComp m_AnimateComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
+        [SerializeField] private EnemyBrainComp m_Brain;
 
         private List<CreatureStats> m_CreatureStats;
         private CreatureData m_CreatureData;
@@ -44,6 +47,12 @@ namespace JumpeeIsland
         public override void GainGoldValue()
         {
             throw new System.NotImplementedException();
+        }
+        
+        public void SetAssemblyPoint(Vector3 assemblyPoint)
+        {
+            _assemblyPoint = assemblyPoint;
+            m_Brain.AddBeliefs("HaveJustWentOut");
         }
         
         #endregion
