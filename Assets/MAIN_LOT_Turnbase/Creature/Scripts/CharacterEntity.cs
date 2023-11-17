@@ -48,15 +48,15 @@ namespace JumpeeIsland
         {
             throw new System.NotImplementedException();
         }
-        
+
         public void SetAssemblyPoint(Vector3 assemblyPoint)
         {
             _assemblyPoint = assemblyPoint;
             m_Brain.AddBeliefs("HaveJustWentOut");
         }
-        
+
         #endregion
-        
+
         #region SKIN
 
         public override SkinComp GetSkin()
@@ -82,7 +82,7 @@ namespace JumpeeIsland
         {
             throw new System.NotImplementedException();
         }
-        
+
         protected virtual void DieIndividualProcess(Entity killedByEntity)
         {
             _isDie = true;
@@ -90,20 +90,26 @@ namespace JumpeeIsland
             // Set animation and effect when entity die here
             m_AnimateComp.SetAnimation(AnimateType.Die);
         }
-        
+
         #endregion
-        
+
         #region MOVEMENT
-        
+
         public void MoveTowards(Vector3 destination, IProcessUpdate processUpdate)
         {
+            if (Vector3.Distance(m_Transform.position, destination) < m_MovementComp.GetStopDistance())
+            {
+                processUpdate.StopProcess();
+                return;
+            }
+            
             m_MovementComp.MoveTo(destination, processUpdate);
             m_AnimateComp.SetAnimation(AnimateType.Walk, true);
         }
 
         public void StopMoving()
         {
-            m_AnimateComp.SetAnimation(AnimateType.Walk,false);
+            m_AnimateComp.SetAnimation(AnimateType.Walk, false);
         }
 
         public float GetStopDistance()
@@ -112,7 +118,7 @@ namespace JumpeeIsland
         }
 
         #endregion
-        
+
         #region ATTACK
 
         public override void StartAttack(ICharacterAttack attack)
@@ -125,34 +131,34 @@ namespace JumpeeIsland
         {
             _currentAttack.ExecuteAttack(target);
         }
-        
+
         public override int GetAttackDamage()
         {
             throw new System.NotImplementedException();
         }
-        
+
         #endregion
-        
+
         #region SKILL
 
         public override IEnumerable<Skill_SO> GetSkills()
         {
             throw new System.NotImplementedException();
         }
-        
+
         #endregion
-        
+
         #region EFFECT
 
         public override EffectComp GetEffectComp()
         {
             throw new System.NotImplementedException();
         }
-        
+
         #endregion
-        
+
         #region GENERAL
-        
+
         protected virtual void RefreshEntity()
         {
             // Set stats based on currentLevel
@@ -195,7 +201,7 @@ namespace JumpeeIsland
             SetActiveMaterial();
             _killAccumulation = 0;
         }
-        
+
         #endregion
     }
 }

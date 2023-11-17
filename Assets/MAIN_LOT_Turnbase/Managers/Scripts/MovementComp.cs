@@ -10,7 +10,7 @@ namespace JumpeeIsland
     public class MovementComp : MonoBehaviour
     {
         [SerializeField] private float _stopDistance;
-
+        
         private Transform m_Transform;
         private NavMeshPath _path;
         private Rigidbody _rigidbody;
@@ -43,13 +43,6 @@ namespace JumpeeIsland
             // Wait for entity reach the conner
 
             var currentPos = m_Transform.position;
-
-            if (Vector3.Distance(currentPos, _currentDestination) < _stopDistance)
-            {
-                _currentProcessUpdate.StopProcess();
-                return;
-            }
-
             NavMesh.CalculatePath(currentPos, _currentDestination, NavMesh.AllAreas, _path);
             _path.corners.OrderBy(t => Vector3.Distance(currentPos, t));
             _currentIndex = 0;

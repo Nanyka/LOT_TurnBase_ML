@@ -12,18 +12,27 @@ namespace JumpeeIsland
 
         [SerializeField] private Transform m_FocalPoint;
         [SerializeField] private float _movingSpeed;
+        [SerializeField] private float _lerpSpeed;
+
+        private Vector3 _target;
 
         private void Start()
         {
+            _target = m_FocalPoint.position;
+            
             OnMoveFocalPoint.AddListener(MoveFocalPoint);
+        }
+
+        private void Update()
+        {
+            m_FocalPoint.position = Vector3.Lerp(m_FocalPoint.position, _target, _lerpSpeed * Time.deltaTime);
         }
 
         private void MoveFocalPoint(Vector2 delta)
         {
             delta *= _movingSpeed;
-            var position = m_FocalPoint.position;
-            position += new Vector3(delta.x, position.y, delta.y);
-            m_FocalPoint.position = position;
+            _target = m_FocalPoint.position;
+            _target += new Vector3(delta.x, _target.y, delta.y);
         }
     }
 }

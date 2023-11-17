@@ -31,8 +31,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
         [NonSerialized] public UnityEvent<bool> OnChangeAutomationMode = new(); // sent to PlayerFactionController; invoke at 
         
-        [FormerlySerializedAs("IsEcoMode")] public GameMode GameMode = GameMode.NONE;
-        [SerializeField] public bool _isGameRunning;
+        public GameMode GameMode = GameMode.NONE;
+        public bool _isGameRunning;
         
         protected EnvironmentManager _environmentManager;
         protected TutorialController _tutorialController;
@@ -54,7 +54,8 @@ namespace JumpeeIsland
 
         protected virtual void Start()
         {
-            SavingSystemManager.Instance.StartLoadData();
+            // TODO enable it again when finish setting up Core_Gameplay2
+            // SavingSystemManager.Instance.StartLoadData();
         }
 
         protected virtual void ConfirmGameStarted()
