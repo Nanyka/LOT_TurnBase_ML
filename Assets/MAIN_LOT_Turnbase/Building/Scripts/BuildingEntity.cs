@@ -331,6 +331,7 @@ namespace JumpeeIsland
         {
             ResetEntity();
 
+            m_Transform.position = m_BuildingData.Position;
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
             m_HealthComp.UpdatePriceText(CalculateSellingPrice());
             m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);

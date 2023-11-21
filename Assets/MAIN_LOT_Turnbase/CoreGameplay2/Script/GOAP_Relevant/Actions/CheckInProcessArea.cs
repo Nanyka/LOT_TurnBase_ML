@@ -1,20 +1,23 @@
 using System.Collections.Generic;
 using GOAP;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class CheckInProcessArea : GAction
     {
         [SerializeField] private float _checkDistance = 1f;
-        [SerializeField] private GameObject[] TestTarget;
 
+        private BuildingConstructComp[] _testTarget; // TODO: refactor to get it from buildingManager
         private List<ICheckableObject> _checkableObjects = new();
         private ICheckableObject _currentPoint;
 
         private void Start()
         {
-            foreach (var target in TestTarget)
+            _testTarget = FindObjectsByType<BuildingConstructComp>(FindObjectsSortMode.None);
+
+            foreach (var target in _testTarget)
             {
                 if (target.TryGetComponent(out ICheckableObject checkableObject))
                     _checkableObjects.Add(checkableObject);

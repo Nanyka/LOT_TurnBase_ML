@@ -71,7 +71,7 @@ namespace JumpeeIsland
 
         public virtual void ClickYes()
         {
-            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition);
+            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition, true);
         }
 
         public Entity GetEntity()

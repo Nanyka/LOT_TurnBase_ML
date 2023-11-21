@@ -21,7 +21,7 @@ namespace JumpeeIsland
         protected Camera _camera;
         private int _layerMask = 1 << 7;
 
-        public void AddCreatureToFaction(CreatureInGame creatureInGame)
+        public void AddCreatureToFaction(ICreatureType creatureInGame)
         {
             m_NpcUnits.Add((NPCInGame)creatureInGame);
         }

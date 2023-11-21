@@ -1,23 +1,25 @@
 using System.Collections.Generic;
 using GOAP;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class EnemyChaseByName : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
-        [SerializeField] private TowerComp[] TestTarget;
-        [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")] [SerializeField]
+        [FormerlySerializedAs("TestTarget")] [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")] [SerializeField]
+        
+        private TowerComp[] _testTarget;
         private bool _isContibutePhase;
 
         private readonly List<ICheckableObject> _targets = new(); // TODO: move this list to a distinct manager
 
         private void Start()
         {
-            TestTarget = FindObjectsByType<TowerComp>(FindObjectsSortMode.None);
+            _testTarget = FindObjectsByType<TowerComp>(FindObjectsSortMode.None);
             
-            foreach (var target in TestTarget)
+            foreach (var target in _testTarget)
             {
                 if (target.TryGetComponent(out ICheckableObject checkableObject))
                     _targets.Add(checkableObject);

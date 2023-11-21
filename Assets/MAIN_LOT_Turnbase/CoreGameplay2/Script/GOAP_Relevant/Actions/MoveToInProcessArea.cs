@@ -7,14 +7,16 @@ namespace JumpeeIsland
     public class MoveToInProcessArea : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
-        [SerializeField] private GameObject[] TestTarget;
         [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")]
 
+        private BuildingConstructComp[] _testTarget;
         private readonly List<ICheckableObject> _targets = new(); // TODO: move this list to a distinct manager
 
         private void Start()
         {
-            foreach (var target in TestTarget)
+            _testTarget = FindObjectsByType<BuildingConstructComp>(FindObjectsSortMode.None);
+
+            foreach (var target in _testTarget)
             {
                 if (target.TryGetComponent(out ICheckableObject checkableObject))
                     _targets.Add(checkableObject);

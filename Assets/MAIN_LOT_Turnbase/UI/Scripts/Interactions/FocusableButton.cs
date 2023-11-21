@@ -12,8 +12,9 @@ namespace JumpeeIsland
         [SerializeField] private Sprite _activeButton;
         
         private Vector3 _originalScale;
+        protected bool _isActive;
         
-        private void Start()
+        protected virtual void Start()
         {
             MainUI.Instance.OnHideAllMenu.AddListener(DeactiveButton);
             _originalScale = _creatureButton.localScale;
@@ -21,6 +22,9 @@ namespace JumpeeIsland
         
         protected void ActiveButton()
         {
+            if (_isActive == false)
+                return;
+            
             _creatureButton.localScale = _originalScale * 1.2f;
             _buttonImage.sprite = _activeButton;
             _focusFrame.SetActive(true);
@@ -31,6 +35,7 @@ namespace JumpeeIsland
             _creatureButton.localScale = _originalScale;
             _buttonImage.sprite = _defaultButton;
             _focusFrame.SetActive(false);
+            _isActive = false;
         }
     }
 }

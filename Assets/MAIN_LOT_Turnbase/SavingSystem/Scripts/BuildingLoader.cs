@@ -8,10 +8,11 @@ namespace JumpeeIsland
 {
     public class BuildingLoader : MonoBehaviour, ILoadData
     {
-        [SerializeField] private ObjectPool _buildingPool;
+        [SerializeField] protected ObjectPool _buildingPool;
+        [SerializeField] private FactionType _faction;
 
         private BuildingController _buildingController;
-        private List<BuildingData> _buildingDatas;
+        private List<BuildingData> _buildingDatas = new();
         private MainHallTier _currentTier;
         private MainHallTier _upcomingTier;
         
@@ -30,7 +31,7 @@ namespace JumpeeIsland
         {
             foreach (var building in _buildingDatas)
             {
-                // refresh MainHallTier if the building is mainHall
+                building.FactionType = _faction;
                 if (building.BuildingType == BuildingType.MAINHALL)
                     await UpdateTierInfo(building);
 
@@ -73,7 +74,7 @@ namespace JumpeeIsland
             return _buildingController;
         }
         
-        private void ConstructBuilding(BuildingData building)
+        protected virtual void ConstructBuilding(BuildingData building)
         {
             var buildingObj = _buildingPool.GetObject(building.EntityName);
             GameFlowManager.Instance.OnDomainRegister.Invoke(buildingObj, building.FactionType);

@@ -12,7 +12,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private GameObject _tabHolder;
         [SerializeField] private GameObject _confirmPanel;
-        [SerializeField] private TabButton[] _buildingTas;
+        [FormerlySerializedAs("_buildingTas")] [SerializeField] private TabButton[] _buildingTab;
         [SerializeField] private List<BuildingBuyButton> _functionBuildings;
         [SerializeField] private List<BuildingBuyButton> _towers;
         [SerializeField] private List<BuildingBuyButton> _trap;
@@ -71,13 +71,13 @@ namespace JumpeeIsland
         private void ShowBuildingMenu(List<JIInventoryItem> inventories)
         {
             _tabHolder.SetActive(true);
-            _buildingTas[0].OnActiveTab();
+            _buildingTab[0].OnActiveTab();
         }
 
         private void HideBuildingMenu()
         {
             _tabHolder.SetActive(false);
-            foreach (var tabButton in _buildingTas)
+            foreach (var tabButton in _buildingTab)
                 tabButton.OnDeactiveTab();
         }
 

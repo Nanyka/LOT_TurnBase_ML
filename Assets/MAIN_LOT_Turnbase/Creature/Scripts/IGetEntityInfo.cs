@@ -11,4 +11,9 @@ namespace JumpeeIsland
     {
         public (Entity entity,int jump) ShowInfo();
     }
+
+    public interface ICreatureType
+    {
+        
+    }
 }

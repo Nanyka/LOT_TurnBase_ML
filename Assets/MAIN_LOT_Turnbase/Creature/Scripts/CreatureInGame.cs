@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 namespace JumpeeIsland
 {
     public class CreatureInGame : MonoBehaviour, IGetEntityInfo, IShowInfo, IRemoveEntity, ICreatureMove,
-        IAttackResponse
+        IAttackResponse, ICreatureType
     {
         [Header("Creature Components")] [SerializeField]
         protected Transform m_RotatePart;

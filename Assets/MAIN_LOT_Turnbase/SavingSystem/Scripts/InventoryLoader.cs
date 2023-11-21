@@ -70,5 +70,6 @@ namespace JumpeeIsland
         Tower,
         Trap,
         Decoration,
+        Worker
     }
 }

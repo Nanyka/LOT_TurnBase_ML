@@ -5,15 +5,13 @@ using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
-    public class TroopDropButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction
+    public class WorkerButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction
     {
         [SerializeField] private TextMeshProUGUI m_Level;
         [SerializeField] private Image m_ItemIcon;
-        [SerializeField] private Slider m_HealthBar;
-        
+
         // private AsyncOperationHandle m_UCDObjectLoadingHandle;
-        private DropTroopMenu m_DropTroopMenu;
-        private CreatureData m_CreatureItem;
+        private AoeWorkerMenu _mAoeWorkerMenu;
         private Vector3 _spawnPosition;
         private JIInventoryItem _inventoryItem;
         private int _layerMask = 1 << 6;
@@ -24,16 +22,13 @@ namespace JumpeeIsland
             _camera = Camera.main;
         }
 
-        public virtual void TurnOn(CreatureData creatureItem, DropTroopMenu dropTroopMenu)
+        public void TurnOn(JIInventoryItem creatureInventory, AoeWorkerMenu aoeTroopMenu)
         {
-            m_CreatureItem = creatureItem;
-            _inventoryItem = creatureItem.GetInventoryItem();
+            _inventoryItem = creatureInventory;
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(_inventoryItem.spriteAddress);
-            m_Level.text = creatureItem.CurrentLevel.ToString();
-            // TODO add Stats address and set Health Slider here
             
-            if (m_DropTroopMenu == null)
-                m_DropTroopMenu = dropTroopMenu;
+            if (_mAoeWorkerMenu == null)
+                _mAoeWorkerMenu = aoeTroopMenu;
         }
 
         public void TurnOff()
@@ -43,7 +38,7 @@ namespace JumpeeIsland
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            m_DropTroopMenu.StartADeal(_inventoryItem.skinAddress[0]);
+            _mAoeWorkerMenu.StartADeal(_inventoryItem.skinAddress[0]);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -52,7 +47,7 @@ namespace JumpeeIsland
             if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
                 return;
             
-            m_DropTroopMenu.SelectLocation(collidedTile.transform.position);
+            _mAoeWorkerMenu.SelectLocation(collidedTile.transform.position);
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -62,16 +57,12 @@ namespace JumpeeIsland
                 return;
 
             _spawnPosition = collidedTile.transform.position;
-            m_DropTroopMenu.EndDeal(this);
+            _mAoeWorkerMenu.EndDeal(this);
         }
 
         public void ClickYes()
         {
-            SavingSystemManager.Instance.OnTrainACreature(m_CreatureItem,_spawnPosition);
-            
-            // Remove item from CreatureMenu
-            TurnOff();
-            m_DropTroopMenu.CheckEmptyMenu();
+            SavingSystemManager.Instance.OnTrainACreature(_inventoryItem ,_spawnPosition, false);
         }
 
         public Entity GetEntity()

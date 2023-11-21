@@ -5,7 +5,7 @@ namespace JumpeeIsland
     public interface IFactionController
     {
         public void Init();
-        public void AddCreatureToFaction(CreatureInGame creatureInGame);
+        public void AddCreatureToFaction(ICreatureType creatureInGame);
         public MovementInspector GetMovementInspector();
         public void KickOffNewTurn();
         public void WaitForCreature();

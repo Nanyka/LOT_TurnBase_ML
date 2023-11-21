@@ -8,6 +8,8 @@ namespace JumpeeIsland
 {
     public class DropTroopMenu : MonoBehaviour
     {
+        public bool _isInADeal { get; set; }
+
         [SerializeField] private GameObject _creatureMenu;
         [SerializeField] private GameObject _confirmPanel;
         [SerializeField] protected List<TroopDropButton> _troopDropButtons;
@@ -17,9 +19,8 @@ namespace JumpeeIsland
         private List<CreatureData> m_Troops;
         private TroopDropButton _selectedCreature;
         private IConfirmFunction _currentConfirm;
-        private bool _isInADeal;
 
-        protected void Start()
+        protected virtual void Start()
         {
             // MainUI.Instance.OnShowCreatureMenu.AddListener(ShowCreatureMenu);
             MainUI.Instance.OnHideAllMenu.AddListener(HideCreatureMenu);
@@ -94,13 +95,15 @@ namespace JumpeeIsland
 
         public void EndDeal(IConfirmFunction confirmFunction)
         {
-            _isInADeal = false;
             _currentConfirm = confirmFunction;
             _confirmPanel.SetActive(true);
+            _isInADeal = false;
+            Debug.Log($"Current confirm1: {_currentConfirm}");
         }
 
         public void MakeTheDeal()
         {
+            Debug.Log($"Current confirm2: {_currentConfirm}");
             _currentConfirm.ClickYes();
             CleanGhostCreature();
         }

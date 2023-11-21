@@ -11,7 +11,7 @@ namespace JumpeeIsland
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
-        [SerializeField] private BuildingLoader buildingLoader;
+        [SerializeField] protected BuildingLoader buildingLoader;
         [SerializeField] private CreatureLoader playerLoader;
         [SerializeField] private CreatureLoader enemyLoader;
         [SerializeField] private CollectableObjectLoader collectableLoader;
@@ -36,7 +36,7 @@ namespace JumpeeIsland
             buildingLoader.Reset();
         }
 
-        protected void ExecuteEnvData()
+        protected virtual void ExecuteEnvData()
         {
             resourceLoader.StartUpLoadData(_environmentData.ResourceData);
             buildingLoader.StartUpLoadData(_environmentData.BuildingData);
@@ -102,7 +102,7 @@ namespace JumpeeIsland
 
         #region BUILDINGS
 
-        public void PlaceABuilding(BuildingData buildingData)
+        public virtual void PlaceABuilding(BuildingData buildingData)
         {
             _environmentData.AddBuildingData(buildingData);
             buildingLoader.PlaceNewObject(buildingData);

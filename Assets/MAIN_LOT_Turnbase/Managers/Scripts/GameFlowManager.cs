@@ -13,27 +13,38 @@ namespace JumpeeIsland
         ECONOMY,
         BOSS,
         BATTLE,
-        REPLAY
+        REPLAY,
+        AOE
     }
 
     public class GameFlowManager : Singleton<GameFlowManager>
     {
         // [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
         [NonSerialized] public UnityEvent<long> OnStartGame = new(); // send to EnvironmentManager, invoke at SavingSystemManager
+
         [NonSerialized] public UnityEvent OnInitiateObjects = new(); // send to Managers; invoke from TileManager
+
         [NonSerialized] public UnityEvent<MovableTile> OnUpdateTilePos = new(); // send to EnvironmentManager; invoke at TileManager
+
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRegister = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
+
         [NonSerialized] public UnityEvent<GameObject, FactionType> OnDomainRemover = new(); // send to EnvironmentManager; invoke at BuildingManager, ResourceManager, CreatureManager
+
         [NonSerialized] public UnityEvent<EntityData> OnSelectEntity = new(); // send to TutorialController; invoke at PlayerFactionController
+
         [NonSerialized] public UnityEvent OnKickOffEnv = new(); // send to EnvironmentManager; invoke at CreatureMenu in BATTLE MODE, at this script in ECO MODE
+
         [NonSerialized] public UnityEvent<int> OnGameOver = new(); // send to GameResultPanel, BattleMainUI, this; invoke at CountDownClock, CountDownStep, PlayerFactionController
+
         [NonSerialized] public UnityEvent OnKilledBoss = new(); // send to GameResultPanel; invoke at CreatureUnlockComp
+
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
+
         [NonSerialized] public UnityEvent<bool> OnChangeAutomationMode = new(); // sent to PlayerFactionController; invoke at 
-        
+
         public GameMode GameMode = GameMode.NONE;
         public bool _isGameRunning;
-        
+
         protected EnvironmentManager _environmentManager;
         protected TutorialController _tutorialController;
         protected GameSpawner _gameSpawner;
@@ -46,7 +57,7 @@ namespace JumpeeIsland
             _tutorialController = FindObjectOfType<TutorialController>();
             _gameSpawner = FindObjectOfType<GameSpawner>();
             _globalVfx = GetComponent<GlobalVfx>();
-            
+
             OnStartGame.AddListener(RecordStartedState);
             OnKickOffEnv.AddListener(ConfirmGameStarted);
             OnGameOver.AddListener(GameOverState);
@@ -54,8 +65,7 @@ namespace JumpeeIsland
 
         protected virtual void Start()
         {
-            // TODO enable it again when finish setting up Core_Gameplay2
-            // SavingSystemManager.Instance.StartLoadData();
+            SavingSystemManager.Instance.StartLoadData();
         }
 
         protected virtual void ConfirmGameStarted()
@@ -89,7 +99,7 @@ namespace JumpeeIsland
 
         public void AskGlobalVfx(GlobalVfxType vfxType, Vector3 atPos)
         {
-            _globalVfx.PlayGlobalVfx(vfxType,atPos);
+            _globalVfx.PlayGlobalVfx(vfxType, atPos);
         }
 
         public void AskForShowingAttackPath(IEnumerable<Vector3> highlightPos)
@@ -102,7 +112,7 @@ namespace JumpeeIsland
         {
             return null;
         }
-        
+
         public virtual QuestData GetQuestData()
         {
             return null;

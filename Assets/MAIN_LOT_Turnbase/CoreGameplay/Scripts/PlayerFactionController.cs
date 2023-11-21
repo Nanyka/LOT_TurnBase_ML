@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +23,10 @@ namespace JumpeeIsland
         private int _countMovedUnit;
 
         // Add creature to this faction manager from it's Init()
-        public void AddCreatureToFaction(CreatureInGame creature)
+        public void AddCreatureToFaction(ICreatureType creature)
         {
-            _creatures.Add(creature);
+            var creatureInGame = creature as CreatureInGame;
+            _creatures.Add(creatureInGame);
         }
 
         public void Init()

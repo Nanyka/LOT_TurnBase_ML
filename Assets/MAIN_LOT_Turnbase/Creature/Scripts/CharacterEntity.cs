@@ -24,9 +24,18 @@ namespace JumpeeIsland
 
         #region CREATURE DATA
 
+        public void Init(CreatureData creatureData)
+        {
+            m_CreatureData = creatureData;
+            m_Transform = transform;
+            m_Transform.position = m_CreatureData.Position;
+
+            // RefreshEntity();
+        }
+
         public override void Relocate(Vector3 position)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
@@ -36,7 +45,7 @@ namespace JumpeeIsland
 
         public override EntityData GetData()
         {
-            throw new System.NotImplementedException();
+            return m_CreatureData;
         }
 
         public override FactionType GetFaction()
@@ -159,7 +168,7 @@ namespace JumpeeIsland
 
         #region GENERAL
 
-        protected virtual void RefreshEntity()
+        protected void RefreshEntity()
         {
             // Set stats based on currentLevel
             var creatureLevel = SavingSystemManager.Instance.GetInventoryLevel(m_CreatureData.EntityName);

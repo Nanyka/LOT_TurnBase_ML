@@ -30,29 +30,31 @@ namespace JumpeeIsland
             //     SetResourceScale();
             //     GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
             // }
-            
-            Invoke(nameof(TempSetWorldState),1f);
+
+            Invoke(nameof(TempSetWorldState), 1f);
         }
 
         //TODO: refactor --> call for initiating GWorld first and not use this Invoke
         private void TempSetWorldState()
         {
             if (_isFinishConstructed)
-                Refresh();
+                Completion();
             else
             {
                 _curProcess = 0;
                 SetResourceScale();
+                Debug.Log("Set in process state"); //TODO: it is duplicated here
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
             }
         }
 
         private void OnDisable()
         {
-            Destroyed();
+            if (GWorld.Instance != null)
+                GWorld.Instance.GetWorld().ModifyState(_isFinishConstructed ? m_FinishState : m_InProcessState, -1);
         }
 
-        private void Refresh()
+        private void Completion()
         {
             if (IsAvailable == false)
             {
@@ -93,7 +95,10 @@ namespace JumpeeIsland
             _curProcess = Mathf.Clamp(_curProcess + amount, 0, _cost);
             SetResourceScale();
             if (_curProcess >= _cost)
-                Refresh();
+            {
+                _isFinishConstructed = true;
+                Completion();
+            }
         }
 
         public GameObject GetGameObject()

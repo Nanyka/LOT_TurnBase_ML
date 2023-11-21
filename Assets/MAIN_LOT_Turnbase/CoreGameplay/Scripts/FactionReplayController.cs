@@ -15,10 +15,14 @@ namespace JumpeeIsland
             m_Environment = GameFlowManager.Instance.GetEnvManager();
         }
 
-        public void AddCreatureToFaction(CreatureInGame creatureInGame)
+        public void AddCreatureToFaction(ICreatureType creature)
         {
-            creatureInGame.GetEntityData().FactionType = Faction;
-            _creatures.Add(creatureInGame);
+            var creatureInGame = creature as CreatureInGame;
+            if (creatureInGame != null)
+            {
+                creatureInGame.GetEntityData().FactionType = Faction;
+                _creatures.Add(creatureInGame);
+            }
         }
 
         public void MoveCreature(RecordAction action)

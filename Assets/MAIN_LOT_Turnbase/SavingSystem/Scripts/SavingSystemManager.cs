@@ -354,9 +354,11 @@ namespace JumpeeIsland
         }
 
         // Player pay some cost for constructing the building
-        public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position)
+        public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position, bool isCheckMax)
         {
-            if (GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
+            // Debug.Log($"Place {inventoryItem.inventoryName}");
+            
+            if (isCheckMax && GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
             {
                 MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
                 return;

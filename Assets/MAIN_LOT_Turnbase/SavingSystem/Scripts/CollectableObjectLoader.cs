@@ -8,7 +8,7 @@ namespace JumpeeIsland
     public class CollectableObjectLoader : MonoBehaviour, ILoadData
     {
         [SerializeField] private ObjectPool _collectablePool;
-        private List<CollectableData> _collectableData;
+        private List<CollectableData> _collectableData = new();
         private CollectableController _collectableController;
 
         private void Start()

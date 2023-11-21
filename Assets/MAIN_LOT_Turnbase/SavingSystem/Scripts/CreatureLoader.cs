@@ -10,7 +10,7 @@ namespace JumpeeIsland
     public class CreatureLoader : MonoBehaviour, ILoadData
     {
         protected IFactionController _factionController;
-        private ObjectPool _creaturePool;
+        protected ObjectPool _creaturePool;
         protected List<CreatureData> _creatureDatas;
 
         public void StartUpLoadData<T>(T data)
@@ -18,7 +18,7 @@ namespace JumpeeIsland
             _creatureDatas = (List<CreatureData>)Convert.ChangeType(data, typeof(List<CreatureData>));
         }
 
-        protected void Start()
+        protected virtual void Start()
         {
             GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
             _factionController = GetComponent<IFactionController>();
@@ -39,19 +39,11 @@ namespace JumpeeIsland
             TrainANewCreature(creatureData);
         }
 
-        protected void TrainANewCreature(CreatureData creatureData)
+        protected virtual void TrainANewCreature(CreatureData creatureData)
         {
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
                 return;
-            
-            // check if creature stand out of the map
-            // if (creatureData.CreatureType != CreatureType.ECOBOSS && GameFlowManager.Instance.GetEnvManager().FreeToMove(creatureData.Position) == false)
-            // {
-            //     var availablePos = GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile();
-            //     if (availablePos.x.Equals(float.NegativeInfinity) == false)
-            //         creatureData.Position = availablePos;
-            // }
 
             creatureData.FactionType = _factionController.GetFaction(); // assign Faction
             GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
