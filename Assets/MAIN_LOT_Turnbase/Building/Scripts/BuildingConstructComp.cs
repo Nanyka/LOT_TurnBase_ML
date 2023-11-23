@@ -12,26 +12,23 @@ namespace JumpeeIsland
         [SerializeField] private bool _isFinishConstructed;
 
         private int _curProcess;
-
         private bool IsAvailable { get; set; }
+        private bool _isInit;
 
-        private void OnEnable()
+        public void Init()
         {
-            Init();
-        }
-
-        private void Init()
-        {
-            // if (_isFinishConstructed)
-            //     Refresh();
-            // else
-            // {
-            //     _curProcess = 0;
-            //     SetResourceScale();
-            //     GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
-            // }
-
-            Invoke(nameof(TempSetWorldState), 1f);
+            _isInit = true;
+            
+            if (_isFinishConstructed)
+                Completion();
+            else
+            {
+                _curProcess = 0;
+                SetResourceScale(); 
+                GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
+            }
+            
+            // Invoke(nameof(TempSetWorldState), 1f);
         }
 
         //TODO: refactor --> call for initiating GWorld first and not use this Invoke
@@ -42,7 +39,7 @@ namespace JumpeeIsland
             else
             {
                 _curProcess = 0;
-                SetResourceScale();
+                SetResourceScale(); 
                 Debug.Log("Set in process state"); //TODO: it is duplicated here
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
             }
@@ -50,7 +47,7 @@ namespace JumpeeIsland
 
         private void OnDisable()
         {
-            if (GWorld.Instance != null)
+            if (GWorld.Instance != null && _isInit)
                 GWorld.Instance.GetWorld().ModifyState(_isFinishConstructed ? m_FinishState : m_InProcessState, -1);
         }
 

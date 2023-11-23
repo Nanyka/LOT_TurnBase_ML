@@ -43,7 +43,7 @@ namespace JumpeeIsland
             playerLoader.StartUpLoadData(_environmentData.PlayerData);
             enemyLoader.StartUpLoadData(_environmentData.EnemyData);
             collectableLoader.StartUpLoadData(_environmentData.CollectableData);
-            
+
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
@@ -115,17 +115,22 @@ namespace JumpeeIsland
 
         public void DeductCurrencyFromBuildings(string currencyId, int amount)
         {
-            buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId,amount);
+            buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId, amount);
         }
 
         public MainHallTier GetCurrentTier()
         {
             return buildingLoader.GetCurrentTier();
         }
-        
+
         public MainHallTier GetUpcomingTier()
         {
             return buildingLoader.GetUpcomingTier();
+        }
+
+        public virtual IEnumerable<BuildingInGame> GetBuildings(FactionType faction)
+        {
+            return buildingLoader.GetBuildings();
         }
 
         #endregion

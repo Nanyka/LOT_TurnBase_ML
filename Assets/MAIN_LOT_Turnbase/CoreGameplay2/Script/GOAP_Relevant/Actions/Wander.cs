@@ -23,7 +23,6 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            // Debug.Log("Wander");
             return true;
         }
 

@@ -4,9 +4,9 @@ namespace JumpeeIsland
 {
     public class BuildingReplayController : BuildingController
     {
-        public override void Update()
-        {
-        }
+        // public override void Update()
+        // {
+        // }
 
         public void BuildingFire(RecordAction action)
         {

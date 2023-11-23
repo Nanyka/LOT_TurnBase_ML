@@ -366,8 +366,6 @@ namespace JumpeeIsland
 
             if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
 
-            Debug.Log("How can you get this line even when reaching the max amount of construction");
-
             // ...and get the building in place
             var newBuilding = new BuildingData
             {
@@ -958,6 +956,11 @@ namespace JumpeeIsland
         public GameProcessData GetGameProcess()
         {
             return m_GameProcess;
+        }
+
+        public EnvironmentLoader GetEnvLoader()
+        {
+            return m_EnvLoader;
         }
 
         #endregion

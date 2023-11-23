@@ -6,16 +6,13 @@ namespace JumpeeIsland
     {
         protected override void ConstructBuilding(BuildingData building)
         {
-            Debug.Log($"Build {building.EntityName}");
             var buildingObj = _buildingPool.GetObject(building.EntityName);
             GameFlowManager.Instance.OnDomainRegister.Invoke(buildingObj, building.FactionType);
             
-            // buildingObj.SetActive(true);
-
-            if (buildingObj.TryGetComponent(out BuildingEntity buildingEntity))
+            if (buildingObj.TryGetComponent(out BuildingInGame buildingEntity))
             {
                 buildingEntity.gameObject.SetActive(true);
-                buildingEntity.Init(building);
+                buildingEntity.Init(building, _buildingController);
             }
         }
     }

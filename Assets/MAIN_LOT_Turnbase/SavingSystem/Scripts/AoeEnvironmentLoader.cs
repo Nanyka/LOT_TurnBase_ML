@@ -5,8 +5,8 @@ namespace JumpeeIsland
 {
     public class AoeEnvironmentLoader : EnvironmentLoader
     {
-        [SerializeField] private BuildingLoader _playerBuildingLoader;
         [SerializeField] protected EnvironmentData _playerEnvCache;
+        [SerializeField] private BuildingLoader _playerBuildingLoader;
 
         public override async void Init()
         {
@@ -16,13 +16,13 @@ namespace JumpeeIsland
 
             // Save playerEnv into the cache that will be used for saving at the end of battle
             _playerEnvCache = _environmentData;
-            
+
             // Load EnemyEnv
             _environmentData = await SavingSystemManager.Instance.GetEnemyEnv();
-            
+
             // Customize battle env from enemy env and player env
             _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
-            
+
             // Update currency UI
             MainUI.Instance.OnUpdateCurrencies.Invoke();
 
@@ -30,7 +30,7 @@ namespace JumpeeIsland
             Debug.Log("----GAME START!!!----");
             // SavingSystemManager.Instance.OnAskForShowingCreatureMenu();
         }
-        
+
         public override EnvironmentData GetData()
         {
             return _environmentData;
@@ -47,7 +47,7 @@ namespace JumpeeIsland
         {
             return _playerEnvCache.PlayerData;
         }
-        
+
         protected override void ExecuteEnvData()
         {
             buildingLoader.StartUpLoadData(_environmentData.BuildingData);
@@ -58,20 +58,26 @@ namespace JumpeeIsland
             // playerLoader.StartUpLoadData(_environmentData.PlayerData);
             // enemyLoader.StartUpLoadData(_environmentData.EnemyData);
             // collectableLoader.StartUpLoadData(_environmentData.CollectableData);
-            
+
             // GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
-        
+
         public override void PlaceABuilding(BuildingData buildingData)
         {
-            Debug.Log($"Place {buildingData.EntityName}");
-
             _environmentData.AddBuildingData(buildingData);
-            
+
             if (buildingData.FactionType == FactionType.Enemy)
                 buildingLoader.PlaceNewObject(buildingData);
             else
                 _playerBuildingLoader.PlaceNewObject(buildingData);
+        }
+
+        public override IEnumerable<BuildingInGame> GetBuildings(FactionType faction)
+        {
+            if (faction == FactionType.Player)
+                return _playerBuildingLoader.GetBuildings();
+            else
+                return buildingLoader.GetBuildings();
         }
     }
 }

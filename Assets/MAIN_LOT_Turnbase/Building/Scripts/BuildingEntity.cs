@@ -17,6 +17,7 @@ namespace JumpeeIsland
         [SerializeField] private SkillComp m_SkillComp;
         [SerializeField] private FireComp m_FireComp;
         [SerializeField] private AnimateComp m_AnimateComp;
+        [SerializeField] private BuildingConstructComp m_Constructor;
         [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
 
         private BuildingData m_BuildingData { get; set; }
@@ -337,6 +338,9 @@ namespace JumpeeIsland
             m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);
             m_SkillComp.Init(m_BuildingData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
+
+            if (m_BuildingData.FactionType == FactionType.Player)
+                m_Constructor.Init();
         }
 
         private void ResetEntity()

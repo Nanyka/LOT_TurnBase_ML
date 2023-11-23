@@ -11,7 +11,7 @@ namespace JumpeeIsland
         [SerializeField] protected ObjectPool _buildingPool;
         [SerializeField] private FactionType _faction;
 
-        private BuildingController _buildingController;
+        protected BuildingController _buildingController;
         private List<BuildingData> _buildingDatas = new();
         private MainHallTier _currentTier;
         private MainHallTier _upcomingTier;
@@ -84,6 +84,11 @@ namespace JumpeeIsland
                 buildingInGame.gameObject.SetActive(true);
                 buildingInGame.Init(building, _buildingController);
             }
+        }
+
+        public IEnumerable<BuildingInGame> GetBuildings()
+        {
+            return _buildingController.GetBuildings();
         }
     }
 }
