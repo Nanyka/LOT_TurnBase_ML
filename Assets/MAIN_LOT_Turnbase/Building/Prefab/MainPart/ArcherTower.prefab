@@ -5036,6 +5036,7 @@ GameObject:
   - component: {fileID: 4123322022964983800}
   - component: {fileID: 418207618415105855}
   - component: {fileID: 2139280082619884275}
+  - component: {fileID: 2463683017551376041}
   m_Layer: 9
   m_Name: ArcherTower
   m_TagString: Untagged
@@ -5115,7 +5116,7 @@ MonoBehaviour:
   m_SkillComp: {fileID: 1938474214466930038}
   m_FireComp: {fileID: 7758177322212829743}
   m_AnimateComp: {fileID: 418207618415105855}
-  m_Constructor: {fileID: 0}
+  m_Constructor: {fileID: 2463683017551376041}
   OnThisBuildingUpgrade:
     m_PersistentCalls:
       m_Calls: []
@@ -5214,6 +5215,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f65722cc0e480fbdf904f4f185e249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2463683017551376041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136725998028430087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8fc1ba32cd447c906dd55429a09992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cost: 0
+  m_InProcessState: 
+  m_FinishState: Tower
 --- !u!1 &3194885446414522042
 GameObject:
   m_ObjectHideFlags: 0

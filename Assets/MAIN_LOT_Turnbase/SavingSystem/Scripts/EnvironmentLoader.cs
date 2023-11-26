@@ -88,6 +88,11 @@ namespace JumpeeIsland
             resourceLoader.PlaceNewObject(resourceData);
         }
 
+        public IEnumerable<ResourceInGame> GetResources()
+        {
+            return resourceLoader.GetResources();
+        }
+
         #endregion
 
         #region COLLECTABLE
@@ -102,10 +107,10 @@ namespace JumpeeIsland
 
         #region BUILDINGS
 
-        public virtual void PlaceABuilding(BuildingData buildingData)
+        public virtual GameObject PlaceABuilding(BuildingData buildingData)
         {
             _environmentData.AddBuildingData(buildingData);
-            buildingLoader.PlaceNewObject(buildingData);
+            return buildingLoader.PlaceNewObject(buildingData);
         }
 
         public void StoreRewardAtBuildings(string currencyId, int amount)
@@ -137,10 +142,10 @@ namespace JumpeeIsland
 
         #region CREATURES
 
-        public void TrainACreature(CreatureData creatureData)
+        public GameObject TrainACreature(CreatureData creatureData)
         {
             _environmentData.AddPlayerData(creatureData);
-            playerLoader.PlaceNewObject(creatureData);
+            return playerLoader.PlaceNewObject(creatureData);
         }
 
         #region ENEMY

@@ -34,5 +34,10 @@ namespace JumpeeIsland
             m_Environment.RemoveObject(resource.gameObject, FactionType.Neutral);
             m_Resources.Remove(resource);
         }
+
+        public IEnumerable<ResourceInGame> GetResources()
+        {
+            return m_Resources;
+        }
     }
 }

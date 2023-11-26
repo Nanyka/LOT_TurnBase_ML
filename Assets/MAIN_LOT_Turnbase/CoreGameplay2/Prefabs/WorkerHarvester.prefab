@@ -15023,7 +15023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb479c1897d249b9af36dedf62bc46e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stopDistance: 2
+  _stopDistance: 1.5
   _currentConner: {x: 0, y: 0, z: 0}
 --- !u!114 &8427985570679263861
 MonoBehaviour:
@@ -19984,9 +19984,10 @@ GameObject:
   - component: {fileID: 4952066524200732265}
   - component: {fileID: 8637627360216125607}
   - component: {fileID: 7342381394058512354}
-  - component: {fileID: 7041918934403201742}
+  - component: {fileID: 5831950784103615832}
   - component: {fileID: 4656565170856368703}
-  - component: {fileID: 6670176128556305871}
+  - component: {fileID: 686241382050454328}
+  - component: {fileID: 6849165543891369076}
   m_Layer: 0
   m_Name: Brain
   m_TagString: Untagged
@@ -20115,7 +20116,7 @@ MonoBehaviour:
   running: 0
   m_Entity: {fileID: 9179717548206420640}
   wanderRange: 5
---- !u!114 &7041918934403201742
+--- !u!114 &5831950784103615832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20124,14 +20125,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5502745477038106911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ca5aded85f24505a51cb20159a3ada8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4eda8af87c1549f1a4160b045f1bd069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActionName: Collect resource
+  ActionName: Action
   Cost: 1
   Target: {fileID: 0}
   TargetTag: 
-  Duration: 1
+  Duration: 0
   IsAutoComplete: 0
   IsWaitAndStop: 0
   PreConditions:
@@ -20147,11 +20148,6 @@ MonoBehaviour:
   mNavMeshAgent: {fileID: 0}
   running: 0
   m_Entity: {fileID: 9179717548206420640}
-  TestTarget:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _isContibutePhase: 0
 --- !u!114 &4656565170856368703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20179,10 +20175,10 @@ MonoBehaviour:
     value: 0
   mNavMeshAgent: {fileID: 0}
   running: 0
+  m_Character: {fileID: 9179717548206420640}
   _checkDistance: 3
-  _targetTag: Tree
-  _character: {fileID: 9179717548206420640}
---- !u!114 &6670176128556305871
+  _isModifyBeliefs: 1
+--- !u!114 &686241382050454328
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20191,14 +20187,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5502745477038106911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ca5aded85f24505a51cb20159a3ada8, type: 3}
+  m_Script: {fileID: 11500000, guid: 436c7dd4944e4663a649b4f1b777dc4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ActionName: Contribute to storage
   Cost: 1
   Target: {fileID: 0}
   TargetTag: 
-  Duration: 1
+  Duration: 0
   IsAutoComplete: 0
   IsWaitAndStop: 0
   PreConditions:
@@ -20212,10 +20208,22 @@ MonoBehaviour:
   mNavMeshAgent: {fileID: 0}
   running: 0
   m_Entity: {fileID: 9179717548206420640}
-  TestTarget:
-  - {fileID: 0}
-  - {fileID: 0}
-  _isContibutePhase: 1
+  _isConstructor: 0
+  _addState: Empty
+  _removeState: targetAvailable
+--- !u!114 &6849165543891369076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5502745477038106911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc26d35c3de2646da9d4dee12fd157d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisAgent: {fileID: 4952066524200732265}
 --- !u!1 &5648076853122367656
 GameObject:
   m_ObjectHideFlags: 0

@@ -62,22 +62,22 @@ namespace JumpeeIsland
             // GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
-        public override void PlaceABuilding(BuildingData buildingData)
+        public override GameObject PlaceABuilding(BuildingData buildingData)
         {
             _environmentData.AddBuildingData(buildingData);
 
             if (buildingData.FactionType == FactionType.Enemy)
-                buildingLoader.PlaceNewObject(buildingData);
-            else
-                _playerBuildingLoader.PlaceNewObject(buildingData);
+                return buildingLoader.PlaceNewObject(buildingData);
+            
+            return _playerBuildingLoader.PlaceNewObject(buildingData);
         }
 
         public override IEnumerable<BuildingInGame> GetBuildings(FactionType faction)
         {
             if (faction == FactionType.Player)
                 return _playerBuildingLoader.GetBuildings();
-            else
-                return buildingLoader.GetBuildings();
+            
+            return buildingLoader.GetBuildings();
         }
     }
 }

@@ -377,15 +377,15 @@ namespace JumpeeIsland
         }
 
         // Spawn from a reward, player pay nothing for it
-        public async void OnPlaceABuilding(string buildingName, Vector3 position, bool isFromCollectable)
+        public async Task<GameObject> OnPlaceABuilding(string buildingName, Vector3 position, bool isFromCollectable)
         {
             var inventoryItem = GetInventoryItemByName(buildingName);
             if (inventoryItem == null)
-                return;
+                return null;
 
             if (isFromCollectable == false)
                 if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false)
-                    return;
+                    return null;
 
             // ...and get the building in place
             var newBuilding = new BuildingData
@@ -394,7 +394,7 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
-            m_EnvLoader.PlaceABuilding(newBuilding);
+            return m_EnvLoader.PlaceABuilding(newBuilding);
         }
 
         public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isWaitForPurchase)
@@ -424,6 +424,43 @@ namespace JumpeeIsland
             }
 
             m_EnvLoader.TrainACreature(newCreature);
+        }
+
+        public async Task<GameObject> OnTrainACreature(string creatureName, Vector3 position, bool isWaitForPurchase)
+        {
+            var inventoryItem = GetInventoryItemByName(creatureName);
+
+            if (inventoryItem == null)
+            {
+                Debug.Log($"No any inventory name {creatureName}");
+                return null;
+            }
+            
+            if (m_EnvLoader.GetData().CheckFullCapacity())
+            {
+                MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
+                return null;
+            }
+
+            if (isWaitForPurchase)
+            {
+                if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return null;
+            }
+
+            var newCreature = new CreatureData()
+            {
+                EntityName = inventoryItem.inventoryName,
+                Position = position,
+                CurrentLevel = 0
+            };
+
+            if (inventoryItem.EntityData != null)
+            {
+                newCreature = (CreatureData)inventoryItem.EntityData;
+                newCreature.Position = position;
+            }
+
+            return m_EnvLoader.TrainACreature(newCreature);
         }
 
         public void OnTrainACreature(CreatureData creatureData, Vector3 position)

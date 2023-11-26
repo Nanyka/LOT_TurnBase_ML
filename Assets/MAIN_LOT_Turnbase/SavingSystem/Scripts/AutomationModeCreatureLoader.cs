@@ -29,19 +29,20 @@ namespace JumpeeIsland
             _factionController.Init();
         }
 
-        public override void PlaceNewObject<T>(T data)
+        public override GameObject PlaceNewObject<T>(T data)
         {
             var creatureData = (CreatureData)Convert.ChangeType(data, typeof(CreatureData));
             var playerFaction = (PlayerFactionController)_factionController;
             if (playerFaction._isAutomation)
             {
                 if (creatureData.EntityName.Equals("King"))
-                    TrainANewCreature(creatureData);
-                else
-                    _playerNpcLoader.PlaceNewObject(data);
+                    return TrainANewCreature(creatureData);
+                _playerNpcLoader.PlaceNewObject(data);
             }
             else
-                TrainANewCreature(creatureData);
+                return TrainANewCreature(creatureData);
+
+            return null;
         }
     }
 }

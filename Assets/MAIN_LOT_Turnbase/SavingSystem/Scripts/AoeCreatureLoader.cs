@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace JumpeeIsland
 {
     public class AoeCreatureLoader : CreatureLoader
@@ -7,11 +9,11 @@ namespace JumpeeIsland
             _factionController.Init();
         }
         
-        protected override void TrainANewCreature(CreatureData creatureData)
+        protected override GameObject TrainANewCreature(CreatureData creatureData)
         {
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
-                return;
+                return null;
 
             creatureData.FactionType = _factionController.GetFaction(); // assign Faction
             GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
@@ -21,6 +23,8 @@ namespace JumpeeIsland
                 creatureInGame.gameObject.SetActive(true);
                 creatureInGame.Init(creatureData);
             }
+
+            return creatureObj;
         }
     }
 }

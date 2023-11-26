@@ -34,13 +34,13 @@ namespace JumpeeIsland
             _resourceController.Init();
         }
 
-        public void PlaceNewObject<T>(T data)
+        public GameObject PlaceNewObject<T>(T data)
         {
             var resourceData = (ResourceData)Convert.ChangeType(data, typeof(ResourceData));
-            SpawnResource(resourceData);
+            return SpawnResource(resourceData);
         }
 
-        private void SpawnResource(ResourceData resourceData)
+        private GameObject SpawnResource(ResourceData resourceData)
         {
             var resourceObj = _resoucePool.GetObject(resourceData.EntityName);
             resourceData.FactionType = FactionType.Neutral; // assign Faction
@@ -51,12 +51,19 @@ namespace JumpeeIsland
                 resourceInGame.gameObject.SetActive(true);
                 resourceInGame.Init(resourceData, _resourceController);
             }
+
+            return resourceObj;
         }
         
         public void Reset()
         {
             _resoucePool.ResetPool();
             _resourceDatas = new();
+        }
+
+        public IEnumerable<ResourceInGame> GetResources()
+        {
+            return _resourceController.GetResources();
         }
     }
 }

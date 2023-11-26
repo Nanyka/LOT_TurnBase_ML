@@ -24,7 +24,7 @@ namespace JumpeeIsland
         {
             SavingSystemManager.Instance.OnSetUpBuildingMenus.AddListener(Init);
             MainUI.Instance.OnBuyBuildingMenu.AddListener(ShowBuildingMenu);
-            MainUI.Instance.OnHideAllMenu.AddListener(HideBuildingMenu);
+            // MainUI.Instance.OnHideAllMenu.AddListener(HideBuildingMenu);
         }
 
         private void Init(List<JIInventoryItem> inventories)
@@ -56,7 +56,7 @@ namespace JumpeeIsland
             _buildingTab[0].OnActiveTab();
         }
 
-        private void HideBuildingMenu()
+        public void HideBuildingMenu()
         {
             _tabHolder.SetActive(false);
             foreach (var tabButton in _buildingTab)

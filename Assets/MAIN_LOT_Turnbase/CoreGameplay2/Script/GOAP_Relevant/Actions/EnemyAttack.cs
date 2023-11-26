@@ -9,53 +9,37 @@ namespace JumpeeIsland
 {
     public class EnemyAttack : GAction, ICharacterAttack
     {
+        [SerializeField] private CharacterEntity m_Character;
         [SerializeField] private float _checkDistance = 1f;
-        [SerializeField] private string _targetTag;
-        [SerializeField] private CharacterEntity _character;
-        // [SerializeField] private GameObject[] TestTarget;
-
-        // private List<ICheckableObject> _checkableObjects = new();
-        // private ICheckableObject _currentPoint;
-
-        // private void Start()
-        // {
-        //     foreach (var target in TestTarget)
-        //     {
-        //         if (target.TryGetComponent(out ICheckableObject checkableObject))
-        //             _checkableObjects.Add(checkableObject);
-        //     }
-        // }
+        [SerializeField] private bool _isModifyBeliefs;
 
         public override bool PrePerform()
         {
-            // var distanceToTarget = float.PositiveInfinity;
-            // foreach (var target in _checkableObjects)
-            // {
-            //     if (target.IsCheckable() == false)
-            //         continue;
-            //     
-            //     var curDis = Vector3.Distance(transform.position, target.GetPosition());
-            //     if (curDis < distanceToTarget)
-            //     {
-            //         distanceToTarget = curDis;
-            //         _currentPoint = target;
-            //     }
-            // }
-
-            var target = m_GAgent.Inventory.FindItemWithTag(_targetTag);
-            if (target == null)
-            {
-                Duration = 0f;
+            if (m_GAgent.Inventory.IsEmpty())
                 return true;
-            }
+
+            var target = m_GAgent.Inventory.items[0];
 
             if (target.TryGetComponent(out ICheckableObject checkableObject))
             {
-                if (Vector3.Distance(transform.position,checkableObject.GetPosition()) < _checkDistance && checkableObject.IsCheckable())
+                var distanceToTarget = Vector3.Distance(checkableObject.GetPosition(), transform.position);
+
+                if (distanceToTarget < _checkDistance)
                 {
-                    _character.StartAttack(this);
-                    m_GAgent.Beliefs.RemoveState("Empty");
-                    m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
+                    // checkableObject.ReduceCheckableAmount(1);
+                    var position = target.transform.position;
+                    m_Character.transform.LookAt(new Vector3(position.x, m_Character.transform.position.y, position.z));
+                    m_Character.StartAttack(this);
+                    
+                    if (checkableObject.IsCheckable() == false)
+                        m_GAgent.Inventory.ClearInventory();
+
+                    if (_isModifyBeliefs)
+                    {
+                        m_GAgent.Beliefs.RemoveState("Empty");
+                        m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
+                    }
+                    
                     Duration = 1f;
                 }
                 else

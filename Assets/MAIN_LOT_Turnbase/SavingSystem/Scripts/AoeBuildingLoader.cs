@@ -4,7 +4,7 @@ namespace JumpeeIsland
 {
     public class AoeBuildingLoader : BuildingLoader
     {
-        protected override void ConstructBuilding(BuildingData building)
+        protected override GameObject ConstructBuilding(BuildingData building)
         {
             var buildingObj = _buildingPool.GetObject(building.EntityName);
             GameFlowManager.Instance.OnDomainRegister.Invoke(buildingObj, building.FactionType);
@@ -14,6 +14,8 @@ namespace JumpeeIsland
                 buildingEntity.gameObject.SetActive(true);
                 buildingEntity.Init(building, _buildingController);
             }
+
+            return buildingObj;
         }
     }
 }

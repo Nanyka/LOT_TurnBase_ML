@@ -236,7 +236,7 @@ namespace JumpeeIsland
         #endregion
 
         #region ATTACK
-        
+
         public override void StartAttack(ICharacterAttack attack)
         {
             throw new NotImplementedException();
@@ -339,8 +339,8 @@ namespace JumpeeIsland
             m_SkillComp.Init(m_BuildingData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
 
-            if (m_BuildingData.FactionType == FactionType.Player)
-                m_Constructor.Init();
+            if (GameFlowManager.Instance.GameMode == GameMode.AOE)
+                m_Constructor?.Init(m_BuildingData.FactionType);
         }
 
         private void ResetEntity()

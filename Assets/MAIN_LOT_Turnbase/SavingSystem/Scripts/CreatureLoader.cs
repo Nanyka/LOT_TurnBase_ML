@@ -33,17 +33,17 @@ namespace JumpeeIsland
             _factionController.Init();
         }
 
-        public virtual void PlaceNewObject<T>(T data)
+        public virtual GameObject PlaceNewObject<T>(T data)
         {
             var creatureData = (CreatureData)Convert.ChangeType(data, typeof(CreatureData));
-            TrainANewCreature(creatureData);
+            return TrainANewCreature(creatureData);
         }
 
-        protected virtual void TrainANewCreature(CreatureData creatureData)
+        protected virtual GameObject TrainANewCreature(CreatureData creatureData)
         {
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
-                return;
+                return null;
 
             creatureData.FactionType = _factionController.GetFaction(); // assign Faction
             GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
@@ -53,6 +53,8 @@ namespace JumpeeIsland
                 creatureInGame.gameObject.SetActive(true);
                 creatureInGame.Init(creatureData, _factionController);
             }
+
+            return creatureObj;
         }
 
         public void Reset()

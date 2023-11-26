@@ -35,24 +35,25 @@ namespace JumpeeIsland
             _collectableController.Init();
         }
 
-        public void PlaceNewObject<T>(T data)
+        public GameObject PlaceNewObject<T>(T data)
         {
             var collectableData = (CollectableData)Convert.ChangeType(data, typeof(CollectableData));
-            SpawnCollectableObject(collectableData);
+            return SpawnCollectableObject(collectableData);
         }
 
-        private void SpawnCollectableObject(CollectableData collectableData)
+        private GameObject SpawnCollectableObject(CollectableData collectableData)
         {
             var collectableObj = _collectablePool.GetObject(collectableData.EntityName);
             if (collectableObj == null)
-                return;
+                return null;
 
             collectableData.FactionType = FactionType.Neutral; // assign Faction
             // GameFlowManager.Instance.OnDomainRegister.Invoke(resourceObj, resourceData.CreatureType);
 
-            if (!collectableObj.TryGetComponent(out CollectableInGame collectableInGame)) return;
+            if (!collectableObj.TryGetComponent(out CollectableInGame collectableInGame)) return null;
             collectableInGame.gameObject.SetActive(true);
             collectableInGame.Init(collectableData, _collectableController);
+            return collectableObj;
         }
 
         public void Reset()

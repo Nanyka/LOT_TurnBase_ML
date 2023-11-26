@@ -24,7 +24,7 @@ namespace JumpeeIsland
         protected virtual void Start()
         {
             MainUI.Instance.OnShowCreatureMenu.AddListener(ShowWorkerMenu);
-            MainUI.Instance.OnHideAllMenu.AddListener(HideCreatureMenu);
+            // MainUI.Instance.OnHideAllMenu.AddListener(HideCreatureMenu);
             // MainUI.Instance.OnShowDropTroopMenu.AddListener(ShowMenu);
         }
 
@@ -73,7 +73,7 @@ namespace JumpeeIsland
         //     _creatureMenu.SetActive(true);
         // }
 
-        private void HideCreatureMenu()
+        public void HideCreatureMenu()
         {
             _creatureMenu.SetActive(false);
         }

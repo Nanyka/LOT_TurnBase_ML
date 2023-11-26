@@ -57,10 +57,11 @@ namespace JumpeeIsland
             return _upcomingTier;
         }
 
-        public void PlaceNewObject<T>(T data)
+        public GameObject PlaceNewObject<T>(T data)
         { 
             var buildingData = (BuildingData)Convert.ChangeType(data, typeof(BuildingData));
-            ConstructBuilding(buildingData);
+            var building = ConstructBuilding(buildingData);
+            return building;
         }
         
         public void Reset()
@@ -74,7 +75,7 @@ namespace JumpeeIsland
             return _buildingController;
         }
         
-        protected virtual void ConstructBuilding(BuildingData building)
+        protected virtual GameObject ConstructBuilding(BuildingData building)
         {
             var buildingObj = _buildingPool.GetObject(building.EntityName);
             GameFlowManager.Instance.OnDomainRegister.Invoke(buildingObj, building.FactionType);
@@ -84,6 +85,8 @@ namespace JumpeeIsland
                 buildingInGame.gameObject.SetActive(true);
                 buildingInGame.Init(building, _buildingController);
             }
+
+            return buildingObj;
         }
 
         public IEnumerable<BuildingInGame> GetBuildings()

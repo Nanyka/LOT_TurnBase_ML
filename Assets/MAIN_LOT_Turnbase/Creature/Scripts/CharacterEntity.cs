@@ -33,10 +33,7 @@ namespace JumpeeIsland
             // RefreshEntity();
         }
 
-        public override void Relocate(Vector3 position)
-        {
-            
-        }
+        public override void Relocate(Vector3 position) { }
 
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {

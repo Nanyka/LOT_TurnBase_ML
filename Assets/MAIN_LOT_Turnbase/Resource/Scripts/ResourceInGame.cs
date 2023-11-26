@@ -24,7 +24,6 @@ namespace JumpeeIsland
         {
             m_Entity.Init(resourceData);
             transform.position = resourceData.Position;
-
             _resourceController = resourceController;
             _resourceController.AddResourceToList(this);
         }

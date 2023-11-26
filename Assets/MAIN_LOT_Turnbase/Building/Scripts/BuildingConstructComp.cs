@@ -9,22 +9,23 @@ namespace JumpeeIsland
         [SerializeField] private int _cost;
         [SerializeField] private string m_InProcessState;
         [SerializeField] private string m_FinishState;
-        [SerializeField] private bool _isFinishConstructed;
-
+        
+        private bool _isFinishConstructed;
         private int _curProcess;
         private bool IsAvailable { get; set; }
         private bool _isInit;
 
-        public void Init()
+        public void Init(FactionType factionType)
         {
             _isInit = true;
+            _isFinishConstructed = factionType != FactionType.Player;
             
             if (_isFinishConstructed)
                 Completion();
             else
             {
                 _curProcess = 0;
-                SetResourceScale(); 
+                SetResourceScale();
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
             }
             
