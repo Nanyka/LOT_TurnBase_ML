@@ -319,8 +319,10 @@ namespace JumpeeIsland
             var inventoryDefinitions = _economyManager.GetInventoryDefinitions();
 
             foreach (var itemDefinition in inventoryDefinitions)
+            {
                 if (itemDefinition.Name.Equals(inventoryInfo) || itemDefinition.Id.Equals(inventoryInfo))
                     return itemDefinition.CustomDataDeserializable.GetAs<JIInventoryItem>();
+            }
 
             return null;
         }

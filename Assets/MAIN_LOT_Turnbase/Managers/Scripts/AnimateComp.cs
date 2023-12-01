@@ -9,7 +9,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private Transform m_RotatePart;
         [SerializeField] private Animator m_Animator;
-        
+
         private List<Vector3> tiles = new();
         private ICreatureMove m_Creature;
         private Vector3 direction;
@@ -29,10 +29,18 @@ namespace JumpeeIsland
         private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
         private static readonly int TakeDamage = Animator.StringToHash("TakeDamage");
 
-        private void Start()
+        // private void Start()
+        // {
+        //     if (m_RotatePart == null)
+        //         m_RotatePart = transform;
+        // }
+
+        public void Init()
         {
             if (m_RotatePart == null)
                 m_RotatePart = transform;
+            
+            m_Animator.Rebind();
         }
 
         protected virtual void Update()
@@ -127,14 +135,14 @@ namespace JumpeeIsland
                     break;
             }
         }
-        
+
         // Use for bool animation
         public void SetAnimation(AnimateType animate, bool isActivate)
         {
             switch (animate)
             {
                 case AnimateType.Walk:
-                    m_Animator.SetBool(Walk,isActivate);
+                    m_Animator.SetBool(Walk, isActivate);
                     break;
             }
         }
@@ -152,7 +160,7 @@ namespace JumpeeIsland
 
         public void SetFloatParameter(string param, float value)
         {
-            m_Animator.SetFloat(param,value);
+            m_Animator.SetFloat(param, value);
         }
     }
 }

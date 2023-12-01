@@ -30,7 +30,7 @@ namespace JumpeeIsland
             m_Transform = transform;
             m_Transform.position = m_CreatureData.Position;
 
-            // RefreshEntity();
+            RefreshEntity();
         }
 
         public override void Relocate(Vector3 position) { }
@@ -165,7 +165,7 @@ namespace JumpeeIsland
 
         #region GENERAL
 
-        protected void RefreshEntity()
+        private void RefreshEntity()
         {
             // Set stats based on currentLevel
             var creatureLevel = SavingSystemManager.Instance.GetInventoryLevel(m_CreatureData.EntityName);
@@ -177,8 +177,7 @@ namespace JumpeeIsland
             // Initiate entity data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
             m_CreatureData.SkinAddress =
-                inventoryItem.skinAddress[
-                    Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventoryItem.skinAddress.Count - 1)];
+                inventoryItem.skinAddress[Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventoryItem.skinAddress.Count - 1)];
             m_CreatureData.CreatureType = m_CurrentStat.CreatureType;
             m_CreatureData.CurrentExp = 0;
             if (m_CreatureData.CurrentHp <= 0)

@@ -81,7 +81,7 @@ namespace JumpeeIsland
 
         private async void SaveGameState()
         {
-            if (!CheckLoadingPhaseFinished()) return;
+            if (!CheckLoadingPhaseFinished() || GameFlowManager.Instance.GameMode == GameMode.AOE) return;
             if (m_EnvLoader.GetDataForSave().CheckStorable() == false)
                 return;
             SavePlayerEnvAtEndGame();

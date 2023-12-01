@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ResourceExploitComp : MonoBehaviour, ICheckableObject
+    public class ResourceRegenerateComp : MonoBehaviour, ICheckableObject
     {
         [SerializeField] private int _capacity;
         [SerializeField] private float _recoverySpeed = 1f;
+        [SerializeField] private int _recoveryAmount = 1;
         [SerializeField] private string m_WorldState;
 
         private int _curStorage;
@@ -27,12 +28,12 @@ namespace JumpeeIsland
         {
             _curStorage = _capacity;
             Refresh();
+            CancelInvoke();
             InvokeRepeating(nameof(Regenerate), _recoverySpeed, _recoverySpeed);
         }
 
         private void Refresh()
         {
-            // GWorld.Instance.GetWorld().ModifyState(m_WorldState, 1);
             Invoke(nameof(TempSetWorldState),1f);
         }
         
@@ -41,7 +42,7 @@ namespace JumpeeIsland
         {
             if (IsAvailable == false)
             {
-                GWorld.Instance.GetWorld().ModifyState(m_WorldState, 1);
+                GWorld.Instance?.GetWorld().ModifyState(m_WorldState, 1);
                 IsAvailable = true;
             }
         }
@@ -82,7 +83,7 @@ namespace JumpeeIsland
 
         private void Regenerate()
         {
-            _curStorage = Mathf.Clamp(_curStorage + 1, 0, _capacity);
+            _curStorage = Mathf.Clamp(_curStorage + _recoveryAmount, 0, _capacity);
             SetResourceScale();
             if (IsAvailable == false && _curStorage > 0)
                 Refresh();

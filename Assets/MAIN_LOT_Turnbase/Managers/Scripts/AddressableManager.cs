@@ -73,8 +73,9 @@ namespace JumpeeIsland
                 Destroy(child.gameObject);
 
             var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
+            handle.Completed += delegate { if (handle.Status == AsyncOperationStatus.Succeeded) animateComp.Init(); };
             var skin = handle.WaitForCompletion();
-            animateComp.SetAnimator(skin.GetComponent<Animator>());
+            // animateComp.SetAnimator(skin.GetComponent<Animator>());
 
             var factionPart = skin.transform.Find("FactionPart");
             if (factionPart != null)
