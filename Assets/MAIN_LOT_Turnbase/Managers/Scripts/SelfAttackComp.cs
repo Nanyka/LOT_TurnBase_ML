@@ -29,7 +29,7 @@ namespace JumpeeIsland
             }
         }
 
-        public void Attack(Vector3 attackPoint, Entity mEntity)
+        public void Attack(Vector3 attackPoint, IAttackRelated mEntity, ISkillRelated mSkill)
         {
             var mEnvironment = GameFlowManager.Instance.GetEnvManager();
             var attackFaction = mEnvironment.CheckFaction(attackPoint);
@@ -37,10 +37,10 @@ namespace JumpeeIsland
             if (target == null)
                 return;
 
-            if (target.TryGetComponent(out Entity targetEntity))
+            if (target.TryGetComponent(out IAttackRelated targetEntity))
             {
                 if (_skillEffect != null)
-                    _skillEffect.TakeEffectOn(mEntity, targetEntity);
+                    _skillEffect.TakeEffectOn(mSkill, targetEntity);
 
                 if (targetEntity.GetFaction() != mEntity.GetFaction())
                 {

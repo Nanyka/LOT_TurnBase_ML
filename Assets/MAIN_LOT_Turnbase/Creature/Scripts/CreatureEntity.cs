@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class CreatureEntity : Entity, IStatsProvider<CreatureStats>
+    public class CreatureEntity : Entity, IStatsProvider<CreatureStats>, IAttackRelated, ISkillRelated
     {
         [SerializeField] private Transform m_RotatePart;
         [SerializeField] private SkinComp m_SkinComp;
@@ -101,12 +101,17 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentLevel >= m_CreatureStats.Count() - 1;
         }
 
-        public override int GetAttackDamage()
+        public int GetAttackDamage()
         {
             return m_CreatureData.CurrentDamage;
         }
 
-        public override void GainGoldValue()
+        public Vector3 GetPosition()
+        {
+            return m_CreatureData.Position;
+        }
+
+        public void GainGoldValue()
         {
             // Accumulate Exp as the amount of collected gold at the end of Battle
             if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
@@ -164,7 +169,7 @@ namespace JumpeeIsland
 
         #region HEALTH
 
-        public override void TakeDamage(int damage, Entity fromEntity)
+        public void TakeDamage(int damage, IAttackRelated fromEntity)
         {
             if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
                 return;
@@ -179,7 +184,7 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentHp;
         }
 
-        protected virtual void DieIndividualProcess(Entity killedByEntity)
+        protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             _isDie = true;
 
@@ -198,8 +203,7 @@ namespace JumpeeIsland
         
         public void MoveTowards(Vector3 destination, IProcessUpdate processUpdate)
         {
-            m_MovementComp.MoveTo(destination, processUpdate);
-            m_AnimateComp.SetAnimation(AnimateType.Walk, true);
+            m_MovementComp.MoveTo(destination, processUpdate, m_AnimateComp);
         }
 
         public void StopMoving()
@@ -210,12 +214,7 @@ namespace JumpeeIsland
         #endregion
 
         #region ATTACK
-        
-        public override void StartAttack(ICharacterAttack attack)
-        {
-            throw new NotImplementedException();
-        }
-        
+
         public override void SuccessAttack(GameObject target)
         {
             throw new NotImplementedException();
@@ -321,18 +320,18 @@ namespace JumpeeIsland
         // Use ANIMATION's EVENT to take damage enemy and keep effect be execute simultaneously
         public void Attack(int attackPathIndex)
         {
-            m_AttackComp.Attack(_attackRange.ElementAt(attackPathIndex), this, _currentJumpStep.jumpStep);
+            m_AttackComp.Attack(_attackRange.ElementAt(attackPathIndex), this, this, _currentJumpStep.jumpStep);
         }
 
         public void Attack(Vector3 attackAt)
         {
             // Debug.Log($"{name} attack at {attackAt} with {_currentJumpStep.jumpStep} jumps");
-            m_AttackComp.Attack(attackAt,this, _currentJumpStep.jumpStep); // 2 is first 3 levels (zero-based order) that use 3 first skill of data
+            m_AttackComp.Attack(attackAt,this, this, _currentJumpStep.jumpStep); // 2 is first 3 levels (zero-based order) that use 3 first skill of data
         }
         
         public void Attack(Vector3 attackAt, int skillIndex)
         {
-            m_AttackComp.Attack(attackAt,this, skillIndex);
+            m_AttackComp.Attack(attackAt,this, this, skillIndex);
         }
 
         public void PreAttackEffect()
@@ -395,7 +394,12 @@ namespace JumpeeIsland
 
         #region SKILL
 
-        public override IEnumerable<Skill_SO> GetSkills()
+        // public override IEnumerable<Skill_SO> GetSkills()
+        // {
+        //     return m_SkillComp.GetSkills();
+        // }
+        
+        public IEnumerable<Skill_SO> GetSkills()
         {
             return m_SkillComp.GetSkills();
         }
@@ -409,7 +413,12 @@ namespace JumpeeIsland
 
         #region EFFECT
 
-        public override EffectComp GetEffectComp()
+        // public override EffectComp GetEffectComp()
+        // {
+        //     return m_EffectComp;
+        // }
+        
+        public EffectComp GetEffectComp()
         {
             return m_EffectComp;
         }

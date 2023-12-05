@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
-        public void Attack(IEnumerable<Vector3> attackPoints, Entity mEntity, int jumpStep)
+        public void Attack(IEnumerable<Vector3> attackPoints, IAttackRelated mEntity, ISkillRelated mSkill, int jumpStep)
         {
             if (attackPoints == null)
                 return;
@@ -19,7 +19,7 @@ namespace JumpeeIsland
                 if (target == null)
                     continue;
 
-                if (target.TryGetComponent(out Entity targetEntity))
+                if (target.TryGetComponent(out IAttackRelated targetEntity))
                 {
                     var selectedSkill = mEntity.GetSkills().ElementAt(jumpStep - 1);
 
@@ -27,7 +27,7 @@ namespace JumpeeIsland
                     {
                         var skillEffect = selectedSkill.GetSkillEffect();
                         if (skillEffect != null)
-                            skillEffect.TakeEffectOn(mEntity, targetEntity);
+                            skillEffect.TakeEffectOn(mSkill, targetEntity);
                     }
                     
                     if (targetEntity.GetFaction() != mEntity.GetFaction())
@@ -36,7 +36,7 @@ namespace JumpeeIsland
             }
         }
 
-        public void Attack(Vector3 attackPoint, Entity mEntity, int jumpStep)
+        public void Attack(Vector3 attackPoint, IAttackRelated mEntity, ISkillRelated mSkill, int jumpStep)
         {
             var mEnvironment = GameFlowManager.Instance.GetEnvManager();
             var attackFaction = mEnvironment.CheckFaction(attackPoint);
@@ -44,20 +44,33 @@ namespace JumpeeIsland
             if (target == null)
                 return;
 
-            if (target.TryGetComponent(out Entity targetEntity))
+            if (target.TryGetComponent(out IAttackRelated attackRelated))
             {
                 var selectedSkill = mEntity.GetSkills().ElementAt(jumpStep - 1);
                 var skillEffect = selectedSkill.GetSkillEffect();
                 if (skillEffect != null)
-                    skillEffect.TakeEffectOn(mEntity, targetEntity);
+                    skillEffect.TakeEffectOn(mSkill, attackRelated);
 
-                if (targetEntity.GetFaction() != mEntity.GetFaction())
+                if (attackRelated.GetFaction() != mEntity.GetFaction())
                 {
-                    // Debug.Log($"Take damage on {targetEntity.name} an amount: {mEntity.GetAttackDamage()}");
-                    targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
-                    mEntity.GainGoldValue();
+                    attackRelated.TakeDamage(mEntity.GetAttackDamage(), mEntity); // segregate it into ITakeDamage interface
+                    mEntity.GainGoldValue(); // segregate it into ICollectGold interface
                 }
             }
+            
+            // if (target.TryGetComponent(out Entity targetEntity))
+            // {
+            //     var selectedSkill = mEntity.GetSkills().ElementAt(jumpStep - 1);
+            //     var skillEffect = selectedSkill.GetSkillEffect();
+            //     if (skillEffect != null)
+            //         skillEffect.TakeEffectOn(mEntity, targetEntity);
+            //
+            //     if (targetEntity.GetFaction() != mEntity.GetFaction())
+            //     {
+            //         targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
+            //         mEntity.GainGoldValue();
+            //     }
+            // }
         }
     }
 }

@@ -50,5 +50,10 @@ namespace GOAP
         {
             return gameObject;
         }
+
+        public int GetRemainAmount()
+        {
+            return 0;
+        }
     }
 }

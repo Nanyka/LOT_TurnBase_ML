@@ -85,7 +85,7 @@ namespace JumpeeIsland
             return true;
         }
 
-        public void MoveToDestination(Transform myTransform, Vector3 targetPos)
+        public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
             if (Vector3.Distance(myTransform.position, targetPos) < m_Entity.GetStopDistance())
                 m_GAgent.FinishFromOutside();

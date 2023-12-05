@@ -166,7 +166,7 @@ namespace JumpeeIsland
             if (m_ProcessUpdate != null)
             {
                 // TODO: Use a separate script to move object and return APlusAlgorithm when get destination
-                m_ProcessUpdate.MoveToDestination(_mainTranform,
+                m_ProcessUpdate.StartProcess(_mainTranform,
                     CurrentAction.IsChasePosition ? _posDestination : CurrentAction.Target.transform.position);
                 // Invoke(nameof(APlusAlgorithm), RestInterval);
             }

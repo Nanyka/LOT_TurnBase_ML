@@ -12,7 +12,7 @@ public class Frozen : SkillEffect
         _effectMaterial = material;
     }
     
-    public void TakeEffectOn(Entity attackEntity, Entity sufferEntity)
+    public void TakeEffectOn(ISkillRelated attackEntity, IAttackRelated sufferEntity)
     {
         if (attackEntity.GetFaction() != sufferEntity.GetFaction())
             if (sufferEntity.GetType() == typeof(CreatureEntity))

@@ -5477,7 +5477,7 @@ Transform:
   m_GameObject: {fileID: 3160304625945149603}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9298,7 +9298,7 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 10000
     maxKillSpeed: 10000
-    radiusScale: 2
+    radiusScale: 0.5
     collidesWith:
       serializedVersion: 2
       m_Bits: 0
@@ -15232,7 +15232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4480443274318773752}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15333,6 +15333,20 @@ MonoBehaviour:
   m_HealthComp: {fileID: 7719437454923713960}
   m_EffectComp: {fileID: 3034851220945496829}
   m_Brain: {fileID: 4952066524200732265}
+  m_CreatureData:
+    EntityName: 
+    SkinAddress: 
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    FactionType: 0
+    CurrentHp: 0
+    CurrentLevel: 0
+    CreatureType: 0
+    CurrentShield: 0
+    CurrentExp: 0
+    TurnCount: 0
+    CurrentDamage: 0
+    EffectCaches: []
 --- !u!114 &2768966365666163441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15346,7 +15360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stopDistance: 1.5
-  _currentConner: {x: 0, y: 0, z: 0}
 --- !u!114 &8427985570679263861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20427,7 +20440,7 @@ GameObject:
   - component: {fileID: 7342381394058512354}
   - component: {fileID: 5831950784103615832}
   - component: {fileID: 2439088372316594720}
-  - component: {fileID: 686241382050454328}
+  - component: {fileID: 7572246948092390619}
   - component: {fileID: 6849165543891369076}
   m_Layer: 0
   m_Name: Brain
@@ -20583,6 +20596,8 @@ MonoBehaviour:
     value: 0
   - key: Empty
     value: 0
+  - key: Factory
+    value: 0
   AfterEffects:
   - key: Gather
     value: 0
@@ -20617,9 +20632,8 @@ MonoBehaviour:
   mNavMeshAgent: {fileID: 0}
   running: 0
   m_Character: {fileID: 9179717548206420640}
-  _checkDistance: 3
-  _isModifyBeliefs: 1
---- !u!114 &686241382050454328
+  _checkDistance: 2
+--- !u!114 &7572246948092390619
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20628,7 +20642,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5502745477038106911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 436c7dd4944e4663a649b4f1b777dc4e, type: 3}
+  m_Script: {fileID: 11500000, guid: f0da7ad93547463684a47a7408d5d4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ActionName: Contribute to storage
@@ -20649,9 +20663,6 @@ MonoBehaviour:
   mNavMeshAgent: {fileID: 0}
   running: 0
   m_Entity: {fileID: 9179717548206420640}
-  _isConstructor: 0
-  _addState: Empty
-  _removeState: targetAvailable
 --- !u!114 &6849165543891369076
 MonoBehaviour:
   m_ObjectHideFlags: 0

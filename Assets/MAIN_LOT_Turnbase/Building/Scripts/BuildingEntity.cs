@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class BuildingEntity : Entity
+    public class BuildingEntity : Entity, IAttackRelated, ISkillRelated
     {
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
@@ -23,6 +23,7 @@ namespace JumpeeIsland
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
+        [SerializeField] private int _killAccumulation;
 
         public void Init(BuildingData buildingData)
         {
@@ -63,13 +64,14 @@ namespace JumpeeIsland
             return m_CurrentStats;
         }
 
+        public void GainGoldValue()
+        {
+            throw new NotImplementedException();
+        }
+
         public override FactionType GetFaction()
         {
             return m_BuildingData.FactionType;
-        }
-
-        public override void GainGoldValue()
-        {
         }
 
         public BuildingType GetBuildingType()
@@ -172,7 +174,7 @@ namespace JumpeeIsland
 
         #region HEALTH
 
-        public override void TakeDamage(int damage, Entity fromEntity)
+        public void TakeDamage(int damage, IAttackRelated fromEntity)
         {
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {
@@ -190,7 +192,7 @@ namespace JumpeeIsland
                     var seizedAmount = EnemyRopeCurrency(damage);
 
                     MainUI.Instance.OnShowCurrencyVfx.Invoke(m_BuildingData.StorageCurrency.ToString(), seizedAmount,
-                        fromEntity.GetData().Position);
+                        m_Transform.position);
                 }
 
                 m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
@@ -223,12 +225,7 @@ namespace JumpeeIsland
             return seizedAmount;
         }
 
-        public virtual int GetCurrentHealth()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected virtual void DieIndividualProcess(Entity killedByEntity)
+        protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             // TODO die visualization
         }
@@ -236,11 +233,6 @@ namespace JumpeeIsland
         #endregion
 
         #region ATTACK
-
-        public override void StartAttack(ICharacterAttack attack)
-        {
-            throw new NotImplementedException();
-        }
 
         public override void SuccessAttack(GameObject target)
         {
@@ -260,7 +252,7 @@ namespace JumpeeIsland
             var currenState = unitInfo.GetCurrentState();
             var attackRange = m_SkillComp.AttackPath(currenState.midPos, currenState.direction, currenState.jumpStep);
 
-            m_AttackComp.Attack(attackRange, this, currenState.jumpStep);
+            m_AttackComp.Attack(attackRange, this, this, currenState.jumpStep);
 
             ShowAttackRange(attackRange);
             attackResponser.AttackResponse();
@@ -277,12 +269,27 @@ namespace JumpeeIsland
                 m_BuildingData.TurnCount = m_FireComp.GetReloadDuration();
             }
         }
+        
+        public int GetAttackDamage()
+        {
+            return m_BuildingData.CurrentDamage;
+        }
+
+        // public void TakeDamage(int damage, IAttackRelated fromEntity)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         #endregion
 
         #region SKILL
 
-        public override IEnumerable<Skill_SO> GetSkills()
+        // public override IEnumerable<Skill_SO> GetSkills()
+        // {
+        //     return m_SkillComp.GetSkills();
+        // }
+        
+        public IEnumerable<Skill_SO> GetSkills()
         {
             return m_SkillComp.GetSkills();
         }
@@ -300,35 +307,36 @@ namespace JumpeeIsland
 
         #region EFFECT
 
-        public override EffectComp GetEffectComp()
+        public EffectComp GetEffectComp()
         {
             throw new NotImplementedException();
         }
+
+        public void AccumulateKills()
+        {
+            // TODO: Reset kill accumulation after executing critical skill
+            _killAccumulation++;
+        }
+
+        // public override EffectComp GetEffectComp()
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         #endregion
 
-        #region ANIMATION
+        #region GOAP relevant
 
-        public override int GetAttackDamage()
+        public IChangeWorldState GetWorldStateChanger()
         {
-            return m_BuildingData.CurrentDamage;
-        }
-
-        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
-        {
-            throw new NotImplementedException();
+            return m_Constructor;
         }
 
         #endregion
 
         #region GENERAL
 
-        public virtual void ContributeCommands()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void RefreshEntity()
+        protected virtual void RefreshEntity()
         {
             ResetEntity();
 

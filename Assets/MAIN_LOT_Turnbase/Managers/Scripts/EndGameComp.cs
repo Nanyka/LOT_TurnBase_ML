@@ -10,7 +10,7 @@ namespace JumpeeIsland
             GetComponent<Entity>().OnUnitDie.AddListener(EndGame);
         }
 
-        private void EndGame(Entity arg0)
+        private void EndGame(IAttackRelated arg0)
         {
             GameFlowManager.Instance.OnGameOver.Invoke(2000);
         }

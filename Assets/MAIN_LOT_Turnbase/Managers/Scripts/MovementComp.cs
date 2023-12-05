@@ -15,8 +15,9 @@ namespace JumpeeIsland
         private NavMeshPath _path;
         private Rigidbody _rigidbody;
         private Vector3 _currentDestination;
-        [SerializeField] private Vector3 _currentConner;
+        private Vector3 _currentConner;
         private IProcessUpdate _currentProcessUpdate;
+        private IMover _mover;
         private int _currentIndex;
 
         private void Start()
@@ -26,12 +27,13 @@ namespace JumpeeIsland
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        public void MoveTo(Vector3 destination, IProcessUpdate processUpdate)
+        public void MoveTo(Vector3 destination, IProcessUpdate processUpdate, IMover mover)
         {
             _currentDestination = destination;
             _currentProcessUpdate = processUpdate;
             _currentConner = m_Transform.position;
-
+            _mover = mover;
+            _mover.StartWalk();
             StartMove();
         }
 
@@ -55,6 +57,7 @@ namespace JumpeeIsland
             if (_currentIndex >= _path.corners.Length)
             {
                 _currentProcessUpdate.StopProcess();
+                _mover.StopWalk();
                 return;
             }
 

@@ -14,10 +14,10 @@ namespace JumpeeIsland
 
         private int m_MAXHp;
         private int m_MAXStorage;
-        private UnityEvent<Entity> _dieEvent;
+        private UnityEvent<IAttackRelated> _dieEvent;
         private bool _isDeath;
 
-        public void Init(int maxHp, UnityEvent<Entity> dieEvent, EntityData entityData)
+        public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData)
         {
             m_MAXHp = maxHp;
             entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
@@ -49,7 +49,7 @@ namespace JumpeeIsland
             TakeDamageEvent.Invoke(entityData.CurrentHp * 1f / m_MAXHp);
         }
 
-        public void TakeDamage(int damage, EntityData entityData, Entity killedBy)
+        public void TakeDamage(int damage, EntityData entityData, IAttackRelated killedBy)
         {
             if (_isDeath)
                 return;
@@ -61,14 +61,16 @@ namespace JumpeeIsland
 
             if (entityData.CurrentHp <= 0)
             {
-                if (killedBy.TryGetComponent(out CreatureEntity creatureEntity))
-                    creatureEntity.AccumulateKills();
+                // if (killedBy.TryGetComponent(out CreatureEntity creatureEntity))
+                //     creatureEntity.AccumulateKills();
+                
+                killedBy.AccumulateKills();
 
                 Die(killedBy);
             }
         }
 
-        private void Die(Entity killedByFaction)
+        private void Die(IAttackRelated killedByFaction)
         {
             _isDeath = true;
             _dieEvent.Invoke(killedByFaction);

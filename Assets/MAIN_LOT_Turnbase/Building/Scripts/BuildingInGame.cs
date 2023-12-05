@@ -67,7 +67,7 @@ namespace JumpeeIsland
             SellBuilding(SavingSystemManager.Instance.GetEnvironmentData());
         }
 
-        private void DestroyBuilding(Entity killedByEntity)
+        private void DestroyBuilding(IAttackRelated killedByEntity)
         {
             // just contribute resource when it is killed by player faction as selling out this building
             if (killedByEntity.GetFaction() == FactionType.Player && GameFlowManager.Instance.GameMode != GameMode.REPLAY)

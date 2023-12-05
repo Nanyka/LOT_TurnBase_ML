@@ -17,7 +17,7 @@ namespace JumpeeIsland
             GetComponent<Entity>().OnUnitDie.AddListener(Unlock);
         }
 
-        private async void Unlock(Entity killBy)
+        private async void Unlock(IAttackRelated killBy)
         {
             SavingSystemManager.Instance.GrantInventory(_inventoryId, 0);
             await SavingSystemManager.Instance.RefreshEconomy();

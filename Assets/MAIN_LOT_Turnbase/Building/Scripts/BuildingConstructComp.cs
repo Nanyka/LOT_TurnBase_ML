@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class BuildingConstructComp : MonoBehaviour, ICheckableObject
+    public class BuildingConstructComp : MonoBehaviour, ICheckableObject, IChangeWorldState
     {
         [SerializeField] private int _cost;
         [SerializeField] private string m_InProcessState;
@@ -104,6 +104,11 @@ namespace JumpeeIsland
             return gameObject;
         }
 
+        public int GetRemainAmount()
+        {
+            return _curProcess;
+        }
+
         private void SetResourceScale()
         {
             var mTransform = transform;
@@ -113,5 +118,10 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        public void ChangeState(int amount)
+        {
+            GWorld.Instance.GetWorld().ModifyState(m_FinishState, amount);
+        }
     }
 }

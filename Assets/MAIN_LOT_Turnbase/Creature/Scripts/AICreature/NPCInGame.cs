@@ -147,24 +147,24 @@ namespace JumpeeIsland
             m_FactionController.KickOffNewTurn();
         }
 
-        private IEnumerator MoveOverTime()
-        {
-            m_Entity.SetAnimation(AnimateType.Walk, true);
-            while (transform.position != InferMoving.TargetPos)
-            {
-                m_Transform.position =
-                    Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 0.5f * Time.deltaTime);
-                yield return null;
-            }
-
-            m_Entity.SetAnimation(AnimateType.Walk, false);
-            m_Entity.UpdateTransform(InferMoving.TargetPos, m_RotatePart.eulerAngles);
-            // Ask for the next inference
-            if (GetJumpStep() > 0)
-                Attack();
-            else
-                m_FactionController.KickOffNewTurn();
-        }
+        // private IEnumerator MoveOverTime()
+        // {
+        //     m_Entity.SetAnimation(AnimateType.Walk, true);
+        //     while (transform.position != InferMoving.TargetPos)
+        //     {
+        //         m_Transform.position =
+        //             Vector3.MoveTowards(transform.position, InferMoving.TargetPos, 0.5f * Time.deltaTime);
+        //         yield return null;
+        //     }
+        //
+        //     m_Entity.SetAnimation(AnimateType.Walk, false);
+        //     m_Entity.UpdateTransform(InferMoving.TargetPos, m_RotatePart.eulerAngles);
+        //     // Ask for the next inference
+        //     if (GetJumpStep() > 0)
+        //         Attack();
+        //     else
+        //         m_FactionController.KickOffNewTurn();
+        // }
 
         private new void Attack()
         {
@@ -198,6 +198,11 @@ namespace JumpeeIsland
         }
 
         public Entity GetEntity()
+        {
+            return m_Entity;
+        }
+
+        public IAttackRelated GetAttackRelated()
         {
             return m_Entity;
         }

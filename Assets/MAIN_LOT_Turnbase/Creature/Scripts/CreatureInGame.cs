@@ -178,7 +178,7 @@ namespace JumpeeIsland
             _isUsed = true;
         }
 
-        protected void UnitDie(Entity killedByEntity)
+        protected void UnitDie(IAttackRelated killedByEntity)
         {
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {

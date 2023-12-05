@@ -5,7 +5,13 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class AnimateComp : MonoBehaviour
+    public interface IMover
+    {
+        public void StartWalk();
+        public void StopWalk();
+    }
+    
+    public class AnimateComp : MonoBehaviour, IMover
     {
         [SerializeField] private Transform m_RotatePart;
         [SerializeField] private Animator m_Animator;
@@ -17,6 +23,7 @@ namespace JumpeeIsland
         private bool isStartMoves; // Flag to track if the object is in a move loop
         private bool isMoving; // Flag to track if the object is jumping
         private int moveIndex;
+        private bool isReady;
 
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int JumpUp = Animator.StringToHash("JumpUp");
@@ -29,27 +36,27 @@ namespace JumpeeIsland
         private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
         private static readonly int TakeDamage = Animator.StringToHash("TakeDamage");
 
-        // private void Start()
-        // {
-        //     if (m_RotatePart == null)
-        //         m_RotatePart = transform;
-        // }
-
-        public void Init()
+        public void Init(GameObject skin)
         {
             if (m_RotatePart == null)
                 m_RotatePart = transform;
-            
+
+            var skinAnimator = skin.GetComponent<Animator>();
+            m_Animator = skinAnimator ? skinAnimator : m_Animator;
             m_Animator.Rebind();
+            isReady = true;
         }
 
         protected virtual void Update()
         {
+            if (isReady == false)
+                return;
+
             if (Input.GetKeyDown(KeyCode.Space) && !isStartMoves)
                 ResetMoves();
 
             if (isStartMoves && !isMoving)
-                StartMove();
+                StartJump();
         }
 
         public void MoveToTarget(Vector3 currPos, int moveDir, ICreatureMove creature)
@@ -66,7 +73,7 @@ namespace JumpeeIsland
             isStartMoves = true;
         }
 
-        private void StartMove()
+        private void StartJump()
         {
             if (tiles.Count == 0)
             {
@@ -103,6 +110,16 @@ namespace JumpeeIsland
                     : JumpDown);
 
             isMoving = true;
+        }
+
+        public void StartWalk()
+        {
+            SetAnimation(AnimateType.Walk, true);
+        }
+
+        public void StopWalk()
+        {
+            SetAnimation(AnimateType.Walk, false);
         }
 
         public void EndMove()

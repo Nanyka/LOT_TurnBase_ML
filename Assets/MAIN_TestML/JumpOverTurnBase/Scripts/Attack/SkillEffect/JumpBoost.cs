@@ -12,7 +12,7 @@ public class JumpBoost : SkillEffect
         _magnitude = magnitude;
     }
 
-    public void TakeEffectOn(Entity attackEntity, Entity sufferEntity)
+    public void TakeEffectOn(ISkillRelated attackEntity, IAttackRelated sufferEntity)
     {
         if (sufferEntity.GetType() == typeof(CreatureEntity))
             sufferEntity.GetEffectComp().JumpBoost(_duration, _magnitude);

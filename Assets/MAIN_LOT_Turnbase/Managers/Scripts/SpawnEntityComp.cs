@@ -19,7 +19,7 @@ namespace JumpeeIsland
             
         }
 
-        private void SpawnEntity(Entity killByEntity)
+        private void SpawnEntity(IAttackRelated killByEntity)
         {
             SavingSystemManager.Instance.OnSpawnMovableEntity(m_PurchaseId, m_Entity.GetData().Position);
         }

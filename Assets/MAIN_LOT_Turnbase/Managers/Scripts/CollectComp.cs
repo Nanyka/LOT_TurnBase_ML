@@ -11,9 +11,9 @@ namespace JumpeeIsland
         [SerializeField] private GlobalVfxType _globalVfxType;
         [SerializeField] private bool _isForBattleMode;
 
-        private UnityEvent<Entity> _dieEvent;
+        private UnityEvent<IAttackRelated> _dieEvent;
 
-        public void Init(UnityEvent<Entity> dieEvent)
+        public void Init(UnityEvent<IAttackRelated> dieEvent)
         {
             _dieEvent = dieEvent;
             // _dieEvent.AddListener(DieVisual);
@@ -34,7 +34,7 @@ namespace JumpeeIsland
                 Die(creatureEntity);
         }
 
-        private void Die(Entity killedByFaction)
+        private void Die(IAttackRelated killedByFaction)
         {
             DieVisual();
             _dieEvent.Invoke(killedByFaction);

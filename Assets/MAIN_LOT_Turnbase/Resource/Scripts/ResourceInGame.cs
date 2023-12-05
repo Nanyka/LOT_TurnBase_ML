@@ -33,7 +33,7 @@ namespace JumpeeIsland
             m_Entity.DurationDeduct();
         }
 
-        private void DestroyResource(Entity killedByEntity)
+        private void DestroyResource(IAttackRelated killedByEntity)
         {
             if (GameFlowManager.Instance.GameMode == GameMode.ECONOMY)
             {

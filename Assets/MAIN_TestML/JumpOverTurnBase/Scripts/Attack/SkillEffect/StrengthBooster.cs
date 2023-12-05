@@ -12,7 +12,7 @@ public class StrengthBooster : SkillEffect
         _magnitude = magnitude;
     }
     
-    public void TakeEffectOn(Entity attackEntity,Entity sufferEntity)
+    public void TakeEffectOn(ISkillRelated attackEntity,IAttackRelated sufferEntity)
     {
         if (attackEntity.GetFaction() == sufferEntity.GetFaction())
         {

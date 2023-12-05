@@ -102,6 +102,7 @@ MonoBehaviour:
   OnThisBuildingUpgrade:
     m_PersistentCalls:
       m_Calls: []
+  _killAccumulation: 0
 --- !u!114 &6015422943590722227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +215,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assemblyPoint: {x: 0, y: 0, z: 0}
   troopName: Creature0
-  troopCount: 1
+  troopCount: 3
+  costPerTroop: 5
+  _curStorage: 0
 --- !u!1 &4973922607835174253
 GameObject:
   m_ObjectHideFlags: 0

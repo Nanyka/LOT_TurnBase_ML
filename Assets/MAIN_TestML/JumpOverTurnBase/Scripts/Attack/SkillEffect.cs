@@ -11,5 +11,5 @@ public enum SkillEffectType
 
 public interface SkillEffect
 {
-    public void TakeEffectOn(Entity attackEntity,Entity sufferEntity);
+    public void TakeEffectOn(ISkillRelated attackEntity,IAttackRelated sufferEntity);
 }

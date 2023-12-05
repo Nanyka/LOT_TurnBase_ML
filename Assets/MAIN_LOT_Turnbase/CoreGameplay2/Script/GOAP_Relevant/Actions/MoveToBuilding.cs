@@ -63,14 +63,13 @@ namespace JumpeeIsland
             return true;
         }
 
-        public void MoveToDestination(Transform myTransform, Vector3 targetPos)
+        public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
             m_Entity.MoveTowards(targetPos, this);
         }
 
         public void StopProcess()
         {
-            m_Entity.StopMoving();
             m_GAgent.FinishFromOutside();
         }
     }

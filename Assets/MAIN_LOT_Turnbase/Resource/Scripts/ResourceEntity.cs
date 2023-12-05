@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ResourceEntity : Entity
+    public class ResourceEntity : Entity, IAttackRelated
     {
         [SerializeField] private List<ResourceStats> m_ResourceStats;
         [SerializeField] private SkinComp m_SkinComp;
@@ -54,18 +54,48 @@ namespace JumpeeIsland
                 OnUnitDie.Invoke(this);
         }
 
+        public Vector3 GetPosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GainGoldValue()
+        {
+            throw new NotImplementedException();
+        }
+
         public override FactionType GetFaction()
         {
             return m_ResourceData.FactionType;
         }
 
-        public override void GainGoldValue() { }
+        public int GetAttackDamage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Skill_SO> GetSkills()
+        {
+            throw new NotImplementedException();
+        }
+
+        public EffectComp GetEffectComp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AccumulateKills()
+        {
+            throw new NotImplementedException();
+        }
+
+        // public override void GainGoldValue() { }
 
         #endregion
 
         #region HEALTH DATA
 
-        public override void TakeDamage(int damage, Entity fromEntity)
+        public void TakeDamage(int damage, IAttackRelated fromEntity)
         {
             m_HealthComp.TakeDamage(damage, m_ResourceData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
@@ -76,7 +106,7 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public virtual void DieIndividualProcess(Entity killedByEntity)
+        private void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             // TODO add animation or effect here
         }
@@ -85,7 +115,7 @@ namespace JumpeeIsland
         
         #region ATTACK
         
-        public override void StartAttack(ICharacterAttack attack)
+        public virtual void StartAttack(ICharacterAttack attack)
         {
             throw new NotImplementedException();
         }
@@ -95,19 +125,19 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public override int GetAttackDamage()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override int GetAttackDamage()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         #endregion
 
         #region SKILL
 
-        public override IEnumerable<Skill_SO> GetSkills()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override IEnumerable<Skill_SO> GetSkills()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         #endregion
 
@@ -122,10 +152,10 @@ namespace JumpeeIsland
 
         #region EFFECT
 
-        public override EffectComp GetEffectComp()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override EffectComp GetEffectComp()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         #endregion
 

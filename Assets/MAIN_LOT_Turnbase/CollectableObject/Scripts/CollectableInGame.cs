@@ -34,7 +34,7 @@ namespace JumpeeIsland
             m_Entity.DurationDeduct();
         }
 
-        private void DestroyEntity(Entity killedByEntity)
+        private void DestroyEntity(IAttackRelated killedByEntity)
         {
             // just contribute commands when it is killed by player faction or itself
             if (killedByEntity.GetFaction() == FactionType.Player || m_Entity.CheckSelfCollect() ||

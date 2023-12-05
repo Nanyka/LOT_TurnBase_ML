@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CollectableEntity : Entity
+    public class CollectableEntity : Entity, IAttackRelated, ISkillRelated
     {
         [SerializeField] private CollectableStats[] m_CollectableStats;
         [SerializeField] private SkinComp m_SkinComp;
@@ -57,7 +57,12 @@ namespace JumpeeIsland
             return m_CollectableData.FactionType;
         }
 
-        public override void GainGoldValue() { }
+        public Vector3 GetPosition()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GainGoldValue() { }
 
         public bool CheckSelfCollect()
         {
@@ -69,12 +74,7 @@ namespace JumpeeIsland
             return m_CollectableStats[m_CollectableData.CurrentLevel].CollectableType;
         }
 
-        public override void TakeDamage(int damage, Entity fromEntity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected virtual void DieIndividualProcess(Entity killedByEntity)
+        protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             // grant effect on killedByEntity
             if (killedByEntity != this && m_CurrentStat._skillEffectType != SkillEffectType.None)
@@ -86,30 +86,40 @@ namespace JumpeeIsland
         }
 
         #region ATTACK
-        
-        public override void StartAttack(ICharacterAttack attack)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override void SuccessAttack(GameObject target)
         {
             throw new System.NotImplementedException();
         }
 
-        public override int GetAttackDamage()
+        public int GetAttackDamage()
         {
             return m_CurrentStat.TrapDamage;
         }
 
-        public void Attack(Vector3 attackAt)
-        {
-            m_SelfAttackComp.Attack(attackAt,this);
-        }
-
-        public override IEnumerable<Skill_SO> GetSkills()
+        public void TakeDamage(int damage, IAttackRelated fromEntity)
         {
             throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Skill_SO> GetSkills()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public EffectComp GetEffectComp()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void AccumulateKills()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Attack(Vector3 attackAt)
+        {
+            m_SelfAttackComp.Attack(attackAt,this, this);
         }
 
         #endregion
@@ -122,20 +132,24 @@ namespace JumpeeIsland
         }
 
         #endregion
-
-        #region EFFECT
-
-        public override EffectComp GetEffectComp()
-        {
-            throw new System.NotImplementedException();
-        }
+        
+        #region SKILL
+        
+        // public override IEnumerable<Skill_SO> GetSkills()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         #endregion
 
-        public virtual void SetAnimation(AnimateType animateType, bool isTurnOn)
-        {
-            throw new System.NotImplementedException();
-        }
+        #region EFFECT
+
+        // public override EffectComp GetEffectComp()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
+
+        #endregion
 
         #region GENERAL
 

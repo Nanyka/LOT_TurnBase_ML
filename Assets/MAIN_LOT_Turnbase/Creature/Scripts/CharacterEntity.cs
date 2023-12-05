@@ -16,7 +16,7 @@ namespace JumpeeIsland
         [SerializeField] private EnemyBrainComp m_Brain;
 
         private List<CreatureStats> m_CreatureStats;
-        private CreatureData m_CreatureData;
+        [SerializeField] private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
         private ICharacterAttack _currentAttack;
         private int _killAccumulation;
@@ -50,15 +50,20 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public override void GainGoldValue()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override void GainGoldValue()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         public void SetAssemblyPoint(Vector3 assemblyPoint)
         {
             _assemblyPoint = assemblyPoint;
             m_Brain.AddBeliefs("HaveJustWentOut");
+        }
+
+        public CreatureStats GetStats()
+        {
+            return m_CurrentStat;
         }
 
         #endregion
@@ -84,12 +89,12 @@ namespace JumpeeIsland
 
         #region HEALTH
 
-        public override void TakeDamage(int damage, Entity fromEntity)
+        public void TakeDamage(int damage, IAttackRelated fromEntity)
         {
             throw new System.NotImplementedException();
         }
 
-        protected virtual void DieIndividualProcess(Entity killedByEntity)
+        protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             _isDie = true;
 
@@ -109,8 +114,8 @@ namespace JumpeeIsland
                 return;
             }
             
-            m_MovementComp.MoveTo(destination, processUpdate);
-            m_AnimateComp.SetAnimation(AnimateType.Walk, true);
+            m_MovementComp.MoveTo(destination, processUpdate, m_AnimateComp);
+            // m_AnimateComp.SetAnimation(AnimateType.Walk, true);
         }
 
         public void StopMoving()
@@ -127,7 +132,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void StartAttack(ICharacterAttack attack)
+        public virtual void StartAttack(ICharacterAttack attack)
         {
             _currentAttack = attack;
             m_AnimateComp.SetAnimation(AnimateType.Attack);
@@ -138,28 +143,28 @@ namespace JumpeeIsland
             _currentAttack.ExecuteAttack(target);
         }
 
-        public override int GetAttackDamage()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override int GetAttackDamage()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         #endregion
 
         #region SKILL
 
-        public override IEnumerable<Skill_SO> GetSkills()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override IEnumerable<Skill_SO> GetSkills()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         #endregion
 
         #region EFFECT
 
-        public override EffectComp GetEffectComp()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override EffectComp GetEffectComp()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         #endregion
 

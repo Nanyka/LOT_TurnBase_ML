@@ -22,7 +22,7 @@ namespace JumpeeIsland
         {
             foreach (var enemy in _npcsController.GetEnemies())
             {
-                foreach (var skill in enemy.GetEntity().GetSkills())
+                foreach (var skill in enemy.GetAttackRelated().GetSkills())
                 {
                     if (m_SkillSOs.Contains(skill))
                         continue;

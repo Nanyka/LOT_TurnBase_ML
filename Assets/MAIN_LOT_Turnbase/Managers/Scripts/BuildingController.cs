@@ -39,40 +39,40 @@ namespace JumpeeIsland
             m_buildings.Add(building);
         }
 
-        // public virtual void Update()
-        // {
-        //     if (Input.GetMouseButtonDown(0))
-        //     {
-        //         if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
-        //             return;
-        //         
-        //         var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
-        //         if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
-        //             return;
-        //
-        //         var pos = moveHit.point;
-        //         SelectUnit(new Vector3(Mathf.RoundToInt(pos.x), 0f, Mathf.RoundToInt(pos.z)));
-        //     }
-        // }
+        public virtual void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (MainUI.Instance.IsInteractable == false || PointingChecker.IsPointerOverUIObject())
+                    return;
+                
+                var moveRay = _camera.ScreenPointToRay(Input.mousePosition);
+                if (!Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
+                    return;
+        
+                var pos = moveHit.point;
+                SelectUnit(new Vector3(Mathf.RoundToInt(pos.x), 0f, Mathf.RoundToInt(pos.z)));
+            }
+        }
 
-        // private void SelectUnit(Vector3 unitPos)
-        // {
-        //     var getUnitAtPos = GetUnitByPos(unitPos);
-        //     if (getUnitAtPos == null) return;
-        //
-        //     HighlightSelectedUnit(getUnitAtPos);
-        // }
+        private void SelectUnit(Vector3 unitPos)
+        {
+            var getUnitAtPos = GetUnitByPos(unitPos);
+            if (getUnitAtPos == null) return;
+        
+            HighlightSelectedUnit(getUnitAtPos);
+        }
 
-        // private BuildingInGame GetUnitByPos(Vector3 unitPos)
-        // {
-        //     return m_buildings.Find(x => Vector3.Distance(x.transform.position, unitPos) < Mathf.Epsilon);
-        // }
-        //
-        // private void HighlightSelectedUnit(BuildingInGame buildingInGame)
-        // {
-        //     MainUI.Instance.OnShowInfo.Invoke(buildingInGame);
-        //     // MainUI.Instance.OnInteractBuildingMenu.Invoke(getUnitAtPos);
-        // }
+        private BuildingInGame GetUnitByPos(Vector3 unitPos)
+        {
+            return m_buildings.Find(x => Vector3.Distance(x.transform.position, unitPos) < Mathf.Epsilon);
+        }
+        
+        private void HighlightSelectedUnit(BuildingInGame buildingInGame)
+        {
+            MainUI.Instance.OnShowInfo.Invoke(buildingInGame);
+            // MainUI.Instance.OnInteractBuildingMenu.Invoke(getUnitAtPos);
+        }
 
         public void StoreRewardAtBuildings(string currencyId, int amount)
         {

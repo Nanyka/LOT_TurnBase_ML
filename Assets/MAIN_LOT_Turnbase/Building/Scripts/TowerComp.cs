@@ -58,12 +58,18 @@ namespace JumpeeIsland
 
         public void ReduceCheckableAmount(int amount)
         {
-            
+            Debug.Log("Reduce hp");
         }
 
         public GameObject GetGameObject()
         {
             return gameObject;
+        }
+
+        public int GetRemainAmount()
+        {
+            // Return remain Hp
+            return 0;
         }
 
         #endregion
