@@ -15,8 +15,8 @@ namespace JumpeeIsland
         
         private AsyncOperationHandle m_UCDObjectLoadingHandle;
         private AoeConstructionMenu _mBuyBuildingMenu;
-        protected JIInventoryItem m_BuidlingItem;
-        protected Vector3 _buildingPosition;
+        private JIInventoryItem m_BuidlingItem;
+        private Vector3 _buildingPosition;
         private int _layerMask = 1 << 6;
         private Camera _camera;
 
@@ -73,9 +73,9 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition, false);
         }
 
-        public Entity GetEntity()
+        public GameObject GetGameObject()
         {
-            throw new NotImplementedException();
+            return gameObject;
         }
     }
 }

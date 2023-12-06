@@ -35,15 +35,15 @@ namespace JumpeeIsland
             m_SceneHandle = Addressables.LoadSceneAsync(bossMap);
             m_SceneHandle.Completed += OnLoadScene;
         }
-        
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
+
         private void OnLoadScene(AsyncOperationHandle obj)
         {
             Debug.Log(obj.Result);
-        }
-
-        public Entity GetEntity()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

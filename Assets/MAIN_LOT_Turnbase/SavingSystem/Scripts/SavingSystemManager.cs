@@ -18,7 +18,6 @@ namespace JumpeeIsland
         QuestData
     }
 
-    [RequireComponent(typeof(EnvironmentLoader))]
     [RequireComponent(typeof(CurrencyLoader))]
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
@@ -49,12 +48,15 @@ namespace JumpeeIsland
         [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
 
-        protected EnvironmentLoader m_EnvLoader;
+        protected IEnvironmentLoader m_EnvLoader;
+        private IHandleStorage m_StorageHandler;
+        private IMainHallTier m_MainHallTier;
+        private IResearchTopicSupervisor m_ResearchSup;
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
         protected RuntimeMetadata m_RuntimeMetadata = new();
-        [SerializeField] private GameProcessData m_GameProcess = new();
+        private GameProcessData m_GameProcess = new();
         private QuestData m_QuestData;
         private string _gamePath;
         private bool encrypt = true;
@@ -64,7 +66,10 @@ namespace JumpeeIsland
         {
             base.Awake();
             _gamePath = Application.persistentDataPath;
-            m_EnvLoader = GetComponent<EnvironmentLoader>();
+            m_EnvLoader = GetComponent<IEnvironmentLoader>();
+            m_StorageHandler = GetComponent<IHandleStorage>();
+            m_MainHallTier = GetComponent<IMainHallTier>();
+            m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_CurrencyLoader = GetComponent<CurrencyLoader>();
             m_InventoryLoader = GetComponent<InventoryLoader>();
 
@@ -571,7 +576,6 @@ namespace JumpeeIsland
             m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
         }
 
-        // TODO reduce currency storage when deduct an amount of the following currency
         public async void DeductCurrency(string currencyId, int amount)
         {
             await RefreshEconomy();
@@ -599,7 +603,7 @@ namespace JumpeeIsland
                             reward.id.Equals(CurrencyType.MOVE.ToString()))
                             IncrementLocalCurrency(reward.id, reward.amount);
                         else
-                            m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
+                            m_StorageHandler.StoreRewardAtBuildings(reward.id, reward.amount);
 
                         // show currency vfx
                         MainUI.Instance.OnShowCurrencyVfx.Invoke(reward.id, reward.amount, fromPos);
@@ -617,7 +621,7 @@ namespace JumpeeIsland
                 currency.Equals(CurrencyType.MOVE.ToString()))
                 IncrementLocalCurrency(currency, amount);
             else
-                m_EnvLoader.StoreRewardAtBuildings(currency, amount);
+                m_StorageHandler.StoreRewardAtBuildings(currency, amount);
         }
 
         ///<summary>
@@ -638,7 +642,7 @@ namespace JumpeeIsland
                 currencyId.Equals(CurrencyType.MOVE.ToString()))
                 DeductCurrency(currencyId, amount);
             else
-                m_EnvLoader.DeductCurrencyFromBuildings(currencyId, amount);
+                m_StorageHandler.DeductCurrencyFromBuildings(currencyId, amount);
         }
 
         public IEnumerable<PlayerBalance> GetCurrencies()
@@ -685,12 +689,12 @@ namespace JumpeeIsland
 
         private MainHallTier GetCurrentTier()
         {
-            return m_EnvLoader.GetCurrentTier();
+            return m_MainHallTier.GetCurrentTier();
         }
 
         public MainHallTier GetUpcomingTier()
         {
-            return m_EnvLoader.GetUpcomingTier();
+            return m_MainHallTier.GetUpcomingTier();
         }
 
         #endregion
@@ -793,7 +797,7 @@ namespace JumpeeIsland
                     reward.id.Equals(CurrencyType.MOVE.ToString()))
                     IncrementLocalCurrency(reward.id, reward.amount);
                 else
-                    m_EnvLoader.StoreRewardAtBuildings(reward.id, reward.amount);
+                    m_StorageHandler.StoreRewardAtBuildings(reward.id, reward.amount);
             }
 
             return true;
@@ -969,6 +973,15 @@ namespace JumpeeIsland
 
         #endregion
 
+        #region RESEARCHES
+
+        public IEnumerable<Research> GetResearchTopics()
+        {
+            return m_ResearchSup.GetTopics();
+        }
+
+        #endregion
+
         #region GET & SET
 
         private string GetSavingPath(SavingPath tailPath)
@@ -995,7 +1008,7 @@ namespace JumpeeIsland
             return m_GameProcess;
         }
 
-        public EnvironmentLoader GetEnvLoader()
+        public IEnvironmentLoader GetEnvLoader()
         {
             return m_EnvLoader;
         }

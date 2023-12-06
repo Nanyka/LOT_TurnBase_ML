@@ -24,9 +24,9 @@ namespace JumpeeIsland
             await SavingSystemManager.Instance.OnConductVirtualPurchase(_purchaseId);
         }
 
-        public Entity GetEntity()
+        public GameObject GetGameObject()
         {
-            throw new System.NotImplementedException();
+            return gameObject;
         }
     }
 }

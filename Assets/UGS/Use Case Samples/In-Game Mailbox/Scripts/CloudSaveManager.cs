@@ -32,8 +32,6 @@ namespace Unity.Services.Samples.InGameMailbox
             }
         }
 
-        // TODO: Fetch EnvData and GameProcess from CloudSave
-        
         public async Task FetchPlayerInbox()
         {
             try
@@ -53,7 +51,7 @@ namespace Unity.Services.Samples.InGameMailbox
                     ? cloudSaveData[k_LastMessageDownloadedKey]
                     : "";
                 
-                // TODO Add battle mail
+                // Add battle mail
                 // 1- Use CloudSave to save battleMail, try to save one demo battleMail (Use SavePlayerInboxInCloudSave as reference)
                 // 2- Fetch battleMail and put it into inboxMessages
 

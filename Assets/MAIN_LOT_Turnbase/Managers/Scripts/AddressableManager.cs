@@ -58,8 +58,7 @@ namespace JumpeeIsland
         }
 
         // Get skin for animated objects
-        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp,
-            AnimateComp animateComp)
+        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp, IInitWithGameObject animateComp)
         {
             m_LogPrefab = objectKey;
 

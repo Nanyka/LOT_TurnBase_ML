@@ -15217,6 +15217,8 @@ GameObject:
   - component: {fileID: 2270302308847082769}
   - component: {fileID: 7719437454923713960}
   - component: {fileID: 3034851220945496829}
+  - component: {fileID: -3228370107618924837}
+  - component: {fileID: 5121185516773473204}
   m_Layer: 0
   m_Name: WorkerHarvester
   m_TagString: Untagged
@@ -15329,24 +15331,10 @@ MonoBehaviour:
   m_Transform: {fileID: 765458664678213309}
   m_SkinComp: {fileID: 2270302308847082769}
   m_MovementComp: {fileID: 2768966365666163441}
-  m_AnimateComp: {fileID: 8427985570679263861}
+  m_AnimateComp: {fileID: -3228370107618924837}
   m_HealthComp: {fileID: 7719437454923713960}
   m_EffectComp: {fileID: 3034851220945496829}
   m_Brain: {fileID: 4952066524200732265}
-  m_CreatureData:
-    EntityName: 
-    SkinAddress: 
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    FactionType: 0
-    CurrentHp: 0
-    CurrentLevel: 0
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 0
-    EffectCaches: []
 --- !u!114 &2768966365666163441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15434,6 +15422,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _remainTempJumpBoost: 0
   _magnitudeJumpBoost: 0
+--- !u!114 &-3228370107618924837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480443274318773752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e313da1a50624b9997fcfeab34f04db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RotatePart: {fileID: 2013509190373015732}
+--- !u!114 &5121185516773473204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480443274318773752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909c06bee64447298cb509f180214e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackIndex: 0
 --- !u!1 &5220816418706280860
 GameObject:
   m_ObjectHideFlags: 0

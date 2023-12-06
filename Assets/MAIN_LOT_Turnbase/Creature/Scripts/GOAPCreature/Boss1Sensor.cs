@@ -26,7 +26,6 @@ namespace JumpeeIsland
             _envManager = GameFlowManager.Instance.GetEnvManager();
         }
 
-        // TODO: Check conditions based on goals
         public override void DetectEnvironment(WorldStates beliefs)
         {
             beliefs.ClearStates();

@@ -180,7 +180,6 @@ public class AgentManager : MonoBehaviour
         m_JumpOverControllers[agentIndex].MoveDirection();
         checkReward = GetTotalReward() - checkReward;
         // m_Agent.AddReward(checkReward);
-        // TODO: Use JumpOverController and this agent instead of two kind of agent;
 
         EndTurn();
     }

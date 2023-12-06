@@ -1,11 +1,15 @@
+using System;
 using GOAP;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class BuildingConstructComp : MonoBehaviour, ICheckableObject, IChangeWorldState
+    public class BuildingConstructComp : MonoBehaviour, ICheckableObject, IChangeWorldState, IBuildingConstruct
     {
+        [NonSerialized] public UnityEvent _completed = new();
+        
         [SerializeField] private int _cost;
         [SerializeField] private string m_InProcessState;
         [SerializeField] private string m_FinishState;
@@ -29,21 +33,6 @@ namespace JumpeeIsland
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
             }
             
-            // Invoke(nameof(TempSetWorldState), 1f);
-        }
-
-        //TODO: refactor --> call for initiating GWorld first and not use this Invoke
-        private void TempSetWorldState()
-        {
-            if (_isFinishConstructed)
-                Completion();
-            else
-            {
-                _curProcess = 0;
-                SetResourceScale(); 
-                Debug.Log("Set in process state"); //TODO: it is duplicated here
-                GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
-            }
         }
 
         private void OnDisable()
@@ -58,6 +47,7 @@ namespace JumpeeIsland
             {
                 GWorld.Instance.GetWorld().ModifyState(m_FinishState, 1);
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, -1);
+                _completed.Invoke();
                 IsAvailable = true;
             }
         }
@@ -123,5 +113,15 @@ namespace JumpeeIsland
         {
             GWorld.Instance.GetWorld().ModifyState(m_FinishState, amount);
         }
+
+        public UnityEvent GetCompletedEvent()
+        {
+            return _completed;
+        }
+    }
+    
+    public interface IBuildingConstruct
+    {
+        public UnityEvent GetCompletedEvent();
     }
 }

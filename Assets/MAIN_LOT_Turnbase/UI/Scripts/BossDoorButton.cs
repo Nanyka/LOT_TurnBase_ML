@@ -36,9 +36,9 @@ namespace JumpeeIsland
             }
         }
 
-        public Entity GetEntity()
+        public GameObject GetGameObject()
         {
-            throw new System.NotImplementedException();
+            return gameObject;
         }
 
         public void OnPointerClick(PointerEventData eventData)

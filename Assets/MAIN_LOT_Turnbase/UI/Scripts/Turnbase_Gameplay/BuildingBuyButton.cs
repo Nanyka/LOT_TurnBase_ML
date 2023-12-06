@@ -74,9 +74,9 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition, true);
         }
 
-        public Entity GetEntity()
+        public GameObject GetGameObject()
         {
-            throw new NotImplementedException();
+            return gameObject;
         }
     }
 }

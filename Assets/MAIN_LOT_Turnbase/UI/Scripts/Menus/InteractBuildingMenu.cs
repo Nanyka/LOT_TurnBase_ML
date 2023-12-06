@@ -61,9 +61,9 @@ namespace JumpeeIsland
             }
         }
 
-        public Entity GetEntity()
+        public GameObject GetGameObject()
         {
-            return _buildingEntity;
+            return _buildingEntity.gameObject;
         }
     }
 
@@ -96,7 +96,7 @@ namespace JumpeeIsland
 
         public void OnClickFastUpgrade()
         {
-            var buildingEntity = (BuildingEntity)_currentConfirm.GetEntity();
+            var buildingEntity = _currentConfirm as BuildingEntity;
             var fastUpgrade = new FastUpgrade(buildingEntity);
             _currentConfirm = fastUpgrade;
 
@@ -117,7 +117,7 @@ namespace JumpeeIsland
         public void OnClickSell()
         {
             _confirmMessage.text = "Sell it at this price?";
-            var buildingEntity = (BuildingEntity)_currentConfirm.GetEntity();
+            var buildingEntity = _currentConfirm as BuildingEntity;
 
             MainUI.Instance.OnHideAllMenu.Invoke();
             ShowConfirmPanel(buildingEntity.CalculateSellingPrice());
@@ -132,7 +132,7 @@ namespace JumpeeIsland
         {
             _interactBuildingMenu.SetActive(false);
             _confirmPanel.SetActive(true);
-            var buildingEntity = (BuildingEntity)_currentConfirm.GetEntity();
+            var buildingEntity = _currentConfirm as BuildingEntity;
             _currencyGroup.VisualCurrency(buildingEntity.GetUpgradeCurrency().ToString(), amount);
             MainUI.Instance.OnShowAnUI.Invoke();
         }

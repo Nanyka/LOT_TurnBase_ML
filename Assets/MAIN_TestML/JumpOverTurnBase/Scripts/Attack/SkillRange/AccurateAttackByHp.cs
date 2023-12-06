@@ -12,7 +12,6 @@ public class AccurateAttackByHp : SkillRange
 
     public IEnumerable<Vector3> CalculateSkillRange(Vector3 currentPos, Vector3 direction, int step)
     {
-        // TODO: check Boss1Sensor duplicate detection;
         var currentEntity = GameFlowManager.Instance.GetEnvManager().CheckFaction(currentPos);
         var enemies = SavingSystemManager.Instance.GetEnvironmentData().PlayerData;
         if (currentEntity == FactionType.Player)

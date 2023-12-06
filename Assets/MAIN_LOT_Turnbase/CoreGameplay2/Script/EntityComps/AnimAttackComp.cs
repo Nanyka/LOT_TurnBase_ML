@@ -6,6 +6,8 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
+    // public interface IAnimAttack
+    
     public class AnimAttackComp : MonoBehaviour, IAttackExecutor
     {
         [SerializeField] private ParticleSystem attackVfx;

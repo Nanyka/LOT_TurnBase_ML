@@ -137,6 +137,11 @@ namespace JumpeeIsland
         {
             return m_Entity;
         }
+        
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
 
         public Vector3 GetPosition()
         {

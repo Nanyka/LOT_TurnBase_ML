@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class InventoryLoader : MonoBehaviour
+    public class InventoryLoader : MonoBehaviour, IInventoryDeliver
     {
         private List<JIInventoryItem> m_Inventories;
 
@@ -70,6 +70,12 @@ namespace JumpeeIsland
         Tower,
         Trap,
         Decoration,
-        Worker
+        Worker,
+        Research
+    }
+
+    public interface IInventoryDeliver
+    {
+        public IEnumerable<JIInventoryItem> GetInventoriesByType(InventoryType inventoryType);
     }
 }

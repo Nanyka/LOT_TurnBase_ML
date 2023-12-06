@@ -4,8 +4,8 @@ namespace JumpeeIsland
     {
         NONE,
         MAINHALL,
-        FOODSTORAGE,
-        WOODSTORAGE,
+        TRAININGCAMP,
+        TECHLAB,
         TOWNHOUSE,
         TOWER,
         TRAP

@@ -65,14 +65,9 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnTrainACreature(_inventoryItem ,_spawnPosition, false);
         }
 
-        public Entity GetEntity()
+        public GameObject GetGameObject()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public bool CheckActive()
-        {
-            return gameObject.activeInHierarchy;
+            return gameObject;
         }
     }
 }

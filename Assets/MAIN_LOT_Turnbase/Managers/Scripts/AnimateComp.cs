@@ -5,13 +5,8 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public interface IMover
-    {
-        public void StartWalk();
-        public void StopWalk();
-    }
-    
-    public class AnimateComp : MonoBehaviour, IMover
+
+    public class AnimateComp : MonoBehaviour, IInitWithGameObject, IMover
     {
         [SerializeField] private Transform m_RotatePart;
         [SerializeField] private Animator m_Animator;

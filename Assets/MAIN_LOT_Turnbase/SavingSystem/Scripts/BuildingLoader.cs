@@ -89,9 +89,10 @@ namespace JumpeeIsland
             return buildingObj;
         }
 
-        public IEnumerable<BuildingInGame> GetBuildings()
+        public IEnumerable<GameObject> GetBuildings()
         {
-            return _buildingController.GetBuildings();
+            return _buildingPool.GetActiveItemList();
+            // return _buildingController.GetBuildings();
         }
     }
 }

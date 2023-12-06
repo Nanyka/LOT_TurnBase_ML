@@ -41,7 +41,7 @@ namespace JumpeeIsland
 
         public void ExecuteHitEffect(int posIndex)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void ExecuteHitEffect(Vector3 atPos)
@@ -52,12 +52,12 @@ namespace JumpeeIsland
 
         public void ExecuteHitEffect(Vector3 atPos, int skillIndex)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void ExecuteHitEffect(GameObject target)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

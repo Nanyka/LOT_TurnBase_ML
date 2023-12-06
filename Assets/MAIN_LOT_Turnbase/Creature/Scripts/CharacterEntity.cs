@@ -1,28 +1,41 @@
+using System;
 using System.Collections.Generic;
 using GOAP;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CharacterEntity : Entity
+    public class CharacterEntity : Entity, ISpecialAttackReceiver, ITroopAssembly
     {
         public Vector3 _assemblyPoint { get; set; }
 
+        // control components
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private MovementComp m_MovementComp;
-        [SerializeField] private AnimateComp m_AnimateComp;
+        [SerializeField] private AOEAnimateComp m_AnimateComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private EnemyBrainComp m_Brain;
 
+        private ISkillMonitor m_SkillMonitor;
+        
+        // loaded data
         private List<CreatureStats> m_CreatureStats;
-        [SerializeField] private CreatureData m_CreatureData;
+        
+        // in-game data
+        private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
         private ICharacterAttack _currentAttack;
+        [SerializeField] private int _attackIndex;
         private int _killAccumulation;
         private bool _isDie;
 
         #region CREATURE DATA
+
+        private void Awake()
+        {
+            m_SkillMonitor = GetComponent<ISkillMonitor>();
+        }
 
         public void Init(CreatureData creatureData)
         {
@@ -75,14 +88,9 @@ namespace JumpeeIsland
             return m_SkinComp;
         }
 
-        public void SetActiveMaterial()
+        private void SetActiveMaterial()
         {
             m_SkinComp.SetActiveMaterial();
-        }
-
-        public void SetDisableMaterial()
-        {
-            m_SkinComp.SetDisableMaterial();
         }
 
         #endregion
@@ -135,27 +143,32 @@ namespace JumpeeIsland
         public virtual void StartAttack(ICharacterAttack attack)
         {
             _currentAttack = attack;
-            m_AnimateComp.SetAnimation(AnimateType.Attack);
+            m_AnimateComp.TriggerAttackAnim(_attackIndex);
+            m_SkillMonitor.ResetPowerBar();
         }
 
+        // TODO: Refactor it by splitting it into a separated component
         public override void SuccessAttack(GameObject target)
         {
             _currentAttack.ExecuteAttack(target);
+            m_SkillMonitor.PowerUp();
         }
-
-        // public override int GetAttackDamage()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
 
         #endregion
 
         #region SKILL
+        
+        // Is set from the FactoryComp
+        public void EnablePowerBar(int index)
+        {
+            m_SkillMonitor.SetSpecialAttack(index);
+        }
 
-        // public override IEnumerable<Skill_SO> GetSkills()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
+        // PowerComp use this function to reset attackIndex
+        public void SetAttackIndex(int index)
+        {
+            _attackIndex = index;
+        }
 
         #endregion
 
@@ -213,5 +226,16 @@ namespace JumpeeIsland
         }
 
         #endregion
+    }
+
+    public interface ITroopAssembly
+    {
+        public void SetAssemblyPoint(Vector3 assemblyPoint);
+    }
+    
+    public interface ISpecialAttackReceiver
+    {
+        public void EnablePowerBar(int index);
+        public void SetAttackIndex(int index);
     }
 }

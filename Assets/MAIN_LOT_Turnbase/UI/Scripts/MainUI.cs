@@ -51,6 +51,8 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent<int, string, bool> OnStarGuide = new(); // send to QuestInfoButton ;invoke at GameResultCalculator  
 
+        [NonSerialized] public UnityEvent<ILaboratory> OnAskForResearch = new(); // send to AoeResearchMenu; invoke at LaboratoryComp
+
         public bool IsInteractable;
         public bool IsInRelocating;
 

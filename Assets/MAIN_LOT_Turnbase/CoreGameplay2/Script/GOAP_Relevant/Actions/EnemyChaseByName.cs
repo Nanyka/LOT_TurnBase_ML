@@ -14,7 +14,7 @@ namespace JumpeeIsland
         // [SerializeField] private TowerComp[] _testTarget;
         // private bool _isContributePhase;
         //
-        // private readonly List<ICheckableObject> _targets = new(); // TODO: move this list to a distinct manager
+        // private readonly List<ICheckableObject> _targets = new();
 
         private ICheckableObject _currentPoint;
 

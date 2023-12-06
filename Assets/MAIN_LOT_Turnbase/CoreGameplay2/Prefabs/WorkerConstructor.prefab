@@ -1163,6 +1163,8 @@ GameObject:
   - component: {fileID: 5925429049129339274}
   - component: {fileID: 6871338029056849902}
   - component: {fileID: 5091222814065446467}
+  - component: {fileID: 4836688417021469675}
+  - component: {fileID: 5732889581715257826}
   m_Layer: 0
   m_Name: WorkerConstructor
   m_TagString: Untagged
@@ -1274,24 +1276,10 @@ MonoBehaviour:
   m_Transform: {fileID: 6150032494686333818}
   m_SkinComp: {fileID: 5925429049129339274}
   m_MovementComp: {fileID: 1938594335514503327}
-  m_AnimateComp: {fileID: 4666780066213592028}
+  m_AnimateComp: {fileID: 4836688417021469675}
   m_HealthComp: {fileID: 5091222814065446467}
   m_EffectComp: {fileID: 6871338029056849902}
   m_Brain: {fileID: 7954787930265543559}
-  m_CreatureData:
-    EntityName: 
-    SkinAddress: 
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    FactionType: 0
-    CurrentHp: 0
-    CurrentLevel: 0
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 0
-    EffectCaches: []
 --- !u!114 &1938594335514503327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1363,6 +1351,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityUI: {fileID: 4349036051583979022}
+--- !u!114 &4836688417021469675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816986333661447145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e313da1a50624b9997fcfeab34f04db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RotatePart: {fileID: 2225446430802401055}
+--- !u!114 &5732889581715257826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816986333661447145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909c06bee64447298cb509f180214e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackIndex: 0
 --- !u!1 &6233575463602262916
 GameObject:
   m_ObjectHideFlags: 0

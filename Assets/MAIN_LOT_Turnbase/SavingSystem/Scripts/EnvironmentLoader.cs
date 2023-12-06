@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class EnvironmentLoader : MonoBehaviour
+    public class EnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage, IMainHallTier
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
@@ -30,13 +30,13 @@ namespace JumpeeIsland
             Debug.Log("Remove all environment to reset...");
             tileManager.Reset();
             resourceLoader.Reset();
+            buildingLoader.Reset();
             playerLoader.Reset();
             enemyLoader.Reset();
             collectableLoader.Reset();
-            buildingLoader.Reset();
         }
 
-        protected virtual void ExecuteEnvData()
+        protected void ExecuteEnvData()
         {
             resourceLoader.StartUpLoadData(_environmentData.ResourceData);
             buildingLoader.StartUpLoadData(_environmentData.BuildingData);
@@ -71,15 +71,6 @@ namespace JumpeeIsland
             removeInterface.Remove(_environmentData);
         }
 
-        #region TILES
-
-        // public List<Transform> GetTiles()
-        // {
-        //     return tileManager.GetTiles();
-        // }
-
-        #endregion
-
         #region RESOURCE
 
         public void SpawnResource(ResourceData resourceData)
@@ -88,7 +79,7 @@ namespace JumpeeIsland
             resourceLoader.PlaceNewObject(resourceData);
         }
 
-        public IEnumerable<ResourceInGame> GetResources()
+        public IEnumerable<GameObject> GetResources()
         {
             return resourceLoader.GetResources();
         }
@@ -133,7 +124,7 @@ namespace JumpeeIsland
             return buildingLoader.GetUpcomingTier();
         }
 
-        public virtual IEnumerable<BuildingInGame> GetBuildings(FactionType faction)
+        public virtual IEnumerable<GameObject> GetBuildings(FactionType faction)
         {
             return buildingLoader.GetBuildings();
         }
@@ -159,5 +150,35 @@ namespace JumpeeIsland
         #endregion
 
         #endregion
+    }
+    
+    public interface IEnvironmentLoader
+    {
+        public void Init();
+        public void SetData(EnvironmentData environmentData);
+        public EnvironmentData GetData();
+        public EnvironmentData GetDataForSave();
+        public void ResetData();
+        public void SpawnResource(ResourceData resourceData);
+        public void SpawnCollectable(CollectableData collectableData);
+        public GameObject PlaceABuilding(BuildingData buildingData);
+        public GameObject TrainACreature(CreatureData creatureData);
+        public void SpawnAnEnemy(CreatureData creatureData);
+        
+        // TODO: GetBuilding return an abstract interface instead of a concrete object
+        public IEnumerable<GameObject> GetBuildings(FactionType faction);
+        public IEnumerable<GameObject> GetResources();
+    }
+
+    public interface IHandleStorage
+    {
+        public void StoreRewardAtBuildings(string currencyId, int amount);
+        public void DeductCurrencyFromBuildings(string currencyId, int amount);
+    }
+
+    public interface IMainHallTier
+    {
+        public MainHallTier GetCurrentTier();
+        public MainHallTier GetUpcomingTier();
     }
 }

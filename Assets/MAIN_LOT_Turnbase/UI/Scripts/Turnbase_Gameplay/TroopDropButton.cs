@@ -73,9 +73,9 @@ namespace JumpeeIsland
             m_DropTroopMenu.CheckEmptyMenu();
         }
 
-        public Entity GetEntity()
+        public GameObject GetGameObject()
         {
-            throw new System.NotImplementedException();
+            return gameObject;
         }
 
         public bool CheckActive()

@@ -61,9 +61,10 @@ namespace JumpeeIsland
             _resourceDatas = new();
         }
 
-        public IEnumerable<ResourceInGame> GetResources()
+        public IEnumerable<GameObject> GetResources()
         {
-            return _resourceController.GetResources();
+            return _resoucePool.GetActiveItemList();
+            // return _resourceController.GetResources();
         }
     }
 }

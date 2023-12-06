@@ -45,7 +45,7 @@ namespace JumpeeIsland
             
             index = 0;
             foreach (var inventory in orderedInventories)
-                if (inventory.inventoryType == InventoryType.Trap)
+                if (inventory.inventoryType == InventoryType.Research)
                     _researchBuildings[index++].TurnOn(inventory, this);
         }
 

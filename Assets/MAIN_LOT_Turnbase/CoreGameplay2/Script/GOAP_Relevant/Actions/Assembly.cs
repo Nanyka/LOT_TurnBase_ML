@@ -35,7 +35,6 @@ namespace JumpeeIsland
 
         public void StopProcess()
         {
-            m_Entity.StopMoving();
             m_GAgent.FinishFromOutside();
         }
     }
