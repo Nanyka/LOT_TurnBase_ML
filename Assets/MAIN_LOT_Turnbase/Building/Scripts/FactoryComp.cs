@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class FactoryComp : MonoBehaviour, IInputExecutor, IStoreResource
+    public class FactoryComp : MonoBehaviour, IInputExecutor, IStoreResource, IResearchDeliver
     {
         [SerializeField] private Vector3 assemblyPoint;
         [SerializeField] private string troopName;
@@ -13,6 +13,7 @@ namespace JumpeeIsland
 
         private int _curStorage;
         private BuildingEntity m_Building;
+        private Research m_Research;
         private bool _isOnHolding;
         
         private void Start()
@@ -63,9 +64,11 @@ namespace JumpeeIsland
 
                 if (troop.TryGetComponent(out ISpecialAttackReceiver attackReceiver))
                 {
-                    // Check if any storage skill in the stock
+                    // Check if any storage research in the stock
                     // Plug the skill in the entity
-                    attackReceiver.EnablePowerBar(1); // TODO: set 1 as hard value for testing only
+
+                    if (m_Research != null)
+                        attackReceiver.EnablePowerBar(m_Research.Magnitude);
                 }
             }
 
@@ -96,6 +99,16 @@ namespace JumpeeIsland
         {
             return gameObject;
         }
+
+        public bool CheckTarget(string targetName)
+        {
+            return troopName.Equals(targetName);
+        }
+
+        public void LoadResearch(Research research)
+        {
+            m_Research = research;
+        }
     }
     
     public interface IStoreResource
@@ -105,9 +118,9 @@ namespace JumpeeIsland
         public GameObject GetGameObject();
     }
 
-    // public interface ISkillDeliver
-    // {
-    //     public void LoadUpSkill();
-    //     public void LoadDownSkill();
-    // }
+    public interface IResearchDeliver
+    {
+        public bool CheckTarget(string targetName);
+        public void LoadResearch(Research research);
+    }
 }

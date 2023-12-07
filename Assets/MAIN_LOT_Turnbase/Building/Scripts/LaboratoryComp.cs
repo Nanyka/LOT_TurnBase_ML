@@ -25,14 +25,10 @@ namespace JumpeeIsland
             GetComponent<IBuildingConstruct>().GetCompletedEvent().RemoveListener(LoadResearch);
         }
 
-        // TODO: Load research on UI and decide to conduct or not
         public void OnClick()
         {
             if (_isTopicLoaded)
-            {
-                Debug.Log($"Click on {name}");
                 MainUI.Instance.OnAskForResearch.Invoke(this);
-            }
         }
 
         public void OnHoldEnter()
@@ -62,9 +58,31 @@ namespace JumpeeIsland
 
         public void ConductResearch()
         {
-            Debug.Log("Execute the research");
-            //TODO: apply the research on relevant entities
+            ApplyResearchOnEntities();
             LoadResearch();
+        }
+
+        private void ApplyResearchOnEntities()
+        {
+            //TODO: apply the research on relevant entities
+            switch (m_Research.ResearchType)
+            {
+                case ResearchType.TROOP_TRANSFORM:
+                {
+                    var laboratories = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
+                    
+                    foreach (var laboratory in laboratories)
+                    {
+                        if (laboratory.TryGetComponent(out IResearchDeliver deliver))
+                        {
+                            if (deliver.CheckTarget(m_Research.Target))
+                                deliver.LoadResearch(m_Research);
+                        }
+                    }
+                    
+                    break;
+                }
+            }
         }
 
         public void RejectResearch()
@@ -79,10 +97,9 @@ namespace JumpeeIsland
             _isTopicLoaded = false;
             Invoke(nameof(SelectResearch), researchTime);
         }
-        
+
         private void SelectResearch()
         {
-            Debug.Log("Load research");
             if (_isTopicLoaded)
                 return;
 

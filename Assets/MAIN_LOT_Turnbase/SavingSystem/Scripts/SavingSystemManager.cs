@@ -441,11 +441,11 @@ namespace JumpeeIsland
                 return null;
             }
             
-            if (m_EnvLoader.GetData().CheckFullCapacity())
-            {
-                MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
-                return null;
-            }
+            // if (m_EnvLoader.GetData().CheckFullCapacity())
+            // {
+            //     MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
+            //     return null;
+            // }
 
             if (isWaitForPurchase)
             {
