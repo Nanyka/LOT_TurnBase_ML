@@ -6,6 +6,7 @@ namespace JumpeeIsland
     public class FactoryComp : MonoBehaviour, IInputExecutor, IStoreResource, IResearchDeliver
     {
         [SerializeField] private Vector3 assemblyPoint;
+        [SerializeField] private TroopType troopType;
         [SerializeField] private string troopName;
         [SerializeField] private int troopCount;
         [SerializeField] private int costPerTroop;
@@ -15,7 +16,7 @@ namespace JumpeeIsland
         private BuildingEntity m_Building;
         private Research m_Research;
         private bool _isOnHolding;
-        
+
         private void Start()
         {
             m_Building = GetComponent<BuildingEntity>();
@@ -41,13 +42,14 @@ namespace JumpeeIsland
         {
             if (_isOnHolding == false)
                 return;
-            
+
             _isOnHolding = false;
             if (_curStorage < costPerTroop)
                 return;
 
             if (_curStorage >= costPerTroop * troopCount)
-                m_Building.GetWorldStateChanger().ChangeState(1); // restart the factory after release a part of its storage
+                m_Building.GetWorldStateChanger()
+                    .ChangeState(1); // restart the factory after release a part of its storage
 
             var spawnAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
             for (int i = 0; i < spawnAmount; i++)
@@ -105,12 +107,17 @@ namespace JumpeeIsland
             return troopName.Equals(targetName);
         }
 
+        public bool CheckTroopType(TroopType checkType)
+        {
+            return checkType == TroopType.NONE || checkType == troopType;
+        }
+
         public void LoadResearch(Research research)
         {
             m_Research = research;
         }
     }
-    
+
     public interface IStoreResource
     {
         public bool IsFullStock();
@@ -121,6 +128,7 @@ namespace JumpeeIsland
     public interface IResearchDeliver
     {
         public bool CheckTarget(string targetName);
+        public bool CheckTroopType(TroopType checkType);
         public void LoadResearch(Research research);
     }
 }

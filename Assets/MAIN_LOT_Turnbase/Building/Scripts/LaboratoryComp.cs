@@ -64,18 +64,30 @@ namespace JumpeeIsland
 
         private void ApplyResearchOnEntities()
         {
-            //TODO: apply the research on relevant entities
+            var laboratories = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
+
             switch (m_Research.ResearchType)
             {
                 case ResearchType.TROOP_TRANSFORM:
                 {
-                    var laboratories = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
-                    
                     foreach (var laboratory in laboratories)
                     {
                         if (laboratory.TryGetComponent(out IResearchDeliver deliver))
                         {
                             if (deliver.CheckTarget(m_Research.Target))
+                                deliver.LoadResearch(m_Research);
+                        }
+                    }
+                    
+                    break;
+                }
+                case ResearchType.TROOP_STATS:
+                {
+                    foreach (var laboratory in laboratories)
+                    {
+                        if (laboratory.TryGetComponent(out IResearchDeliver deliver))
+                        {
+                            if (deliver.CheckTroopType(m_Research.TroopType))
                                 deliver.LoadResearch(m_Research);
                         }
                     }

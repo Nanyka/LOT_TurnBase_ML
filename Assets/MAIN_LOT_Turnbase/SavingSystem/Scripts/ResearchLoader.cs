@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -14,8 +15,9 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnStartGame.AddListener(LoadResearchTopics);
         }
 
-        private void LoadResearchTopics(long arg0)
+        private async void LoadResearchTopics(long arg0)
         {
+            // Load TROOP_TRANSFORM researches from inventory
             var inventories = m_Inventory.GetInventoriesByType(InventoryType.Creature);
             
             foreach (var item in inventories)
@@ -35,6 +37,25 @@ namespace JumpeeIsland
                         Explaination = $"{item.inventoryName} learn new skill"
                     };
                     m_Researches.Add(newTopic);
+                }
+            }
+            
+            // Load TROOP_STATS & SPELL researches from MainHallTier
+            await WaitToLoadTierResearches();
+        }
+
+        private async Task WaitToLoadTierResearches()
+        {
+            await Task.Delay(1000);
+            if (SavingSystemManager.Instance.GetCurrentTier() == null)
+                await WaitToLoadTierResearches();
+            else
+            {
+                var tierResearches = SavingSystemManager.Instance.GetCurrentTier().UnlockedResearches;
+                foreach (var research in tierResearches)
+                {
+                    Debug.Log($"The research about {research.ResearchName} is on the shelve");
+                    m_Researches.Add(research);
                 }
             }
         }

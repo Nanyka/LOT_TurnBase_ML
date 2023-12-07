@@ -79,6 +79,11 @@ namespace JumpeeIsland
             );
         }
 
+        public async Task FetchEnvRelevantData(int mainHallLevel)
+        {
+            await _remoteConfigManager.FetchMainHallTierConfigs(mainHallLevel);
+        }
+
         #region ENVIRONMENT DATA
 
         public async Task OnSaveEnvData()
@@ -421,10 +426,20 @@ namespace JumpeeIsland
                 battleConfig);
         }
 
-        public async Task<MainHallTier> GetMainHallTier(int curMainHallLevel)
+        public MainHallTier GetCurrentTier()
         {
-            return await _remoteConfigManager.GetMainHallTierConfigs(curMainHallLevel);
+            return _remoteConfigManager.curTier;
         }
+        
+        public MainHallTier GetNextTier()
+        {
+            return _remoteConfigManager.nextTier;
+        }
+
+        // public async Task<MainHallTier> GetMainHallTier(int curMainHallLevel)
+        // {
+        //     return await _remoteConfigManager.GetMainHallTierConfigs(curMainHallLevel);
+        // }
 
         #endregion
 

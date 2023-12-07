@@ -14,6 +14,8 @@ namespace JumpeeIsland
         public Dictionary<string, List<Reward>> commandRewards = new(5);
         public Dictionary<string, int> numericConfig = new();
         private Dictionary<string, BattleLoot> BattleLoots = new();
+        public MainHallTier curTier { get; private set; }
+        public MainHallTier nextTier{ get; private set; }
 
         void Awake()
         {
@@ -208,6 +210,12 @@ namespace JumpeeIsland
         #endregion
 
         #region MAINHALL TIERs
+
+        public async Task FetchMainHallTierConfigs(int mainHallLevel)
+        {
+            curTier = await GetMainHallTierConfigs(mainHallLevel);
+            nextTier = await GetMainHallTierConfigs(mainHallLevel+1);
+        }
         
         public async Task<MainHallTier> GetMainHallTierConfigs(int curMainHallLevel)
         {
@@ -417,6 +425,7 @@ namespace JumpeeIsland
     {
         public int MaxAmountOfBuilding;
         public List<TierItem> TierItems = new();
+        public List<Research> UnlockedResearches = new();
     }
     
     [Serializable]

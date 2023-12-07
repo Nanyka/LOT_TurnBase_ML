@@ -96,31 +96,34 @@ namespace JumpeeIsland
 
         public void OnClickFastUpgrade()
         {
-            var buildingEntity = _currentConfirm as BuildingEntity;
-            var fastUpgrade = new FastUpgrade(buildingEntity);
-            _currentConfirm = fastUpgrade;
+            if (_currentConfirm.GetGameObject().TryGetComponent(out BuildingEntity buildingEntity))
+            {
+                var fastUpgrade = new FastUpgrade(buildingEntity);
+                _currentConfirm = fastUpgrade;
 
-            // Display the statistic for the upcoming level of the constructions.
-            // If it is MainHall, reveal the types of buildings that can be unlocked
-            MainUI.Instance.OnHideAllMenu.Invoke();
-            if (buildingEntity.GetBuildingType() == BuildingType.MAINHALL)
-            {
-                _mainHallUpgrade.ShowUpgradeInfo(buildingEntity.CalculateUpgradePrice());
-            }
-            else
-            {
-                _confirmMessage.text = "Upgrade the building";
-                ShowConfirmPanel(buildingEntity.CalculateUpgradePrice());
+                // Display the statistic for the upcoming level of the constructions.
+                // If it is MainHall, reveal the types of buildings that can be unlocked
+                MainUI.Instance.OnHideAllMenu.Invoke();
+                if (buildingEntity.GetBuildingType() == BuildingType.MAINHALL)
+                {
+                    _mainHallUpgrade.ShowUpgradeInfo(buildingEntity.CalculateUpgradePrice());
+                }
+                else
+                {
+                    _confirmMessage.text = "Upgrade the building";
+                    ShowConfirmPanel(buildingEntity.CalculateUpgradePrice());
+                }
             }
         }
 
         public void OnClickSell()
         {
             _confirmMessage.text = "Sell it at this price?";
-            var buildingEntity = _currentConfirm as BuildingEntity;
-
-            MainUI.Instance.OnHideAllMenu.Invoke();
-            ShowConfirmPanel(buildingEntity.CalculateSellingPrice());
+            if (_currentConfirm.GetGameObject().TryGetComponent(out BuildingEntity buildingEntity))
+            {
+                MainUI.Instance.OnHideAllMenu.Invoke();
+                ShowConfirmPanel(buildingEntity.CalculateSellingPrice());
+            }
         }
 
         public void OnMakeTheDeal()
@@ -130,11 +133,13 @@ namespace JumpeeIsland
 
         private void ShowConfirmPanel(int amount)
         {
-            _interactBuildingMenu.SetActive(false);
-            _confirmPanel.SetActive(true);
-            var buildingEntity = _currentConfirm as BuildingEntity;
-            _currencyGroup.VisualCurrency(buildingEntity.GetUpgradeCurrency().ToString(), amount);
-            MainUI.Instance.OnShowAnUI.Invoke();
+            if (_currentConfirm.GetGameObject().TryGetComponent(out BuildingEntity buildingEntity))
+            {
+                _interactBuildingMenu.SetActive(false);
+                _confirmPanel.SetActive(true);
+                _currencyGroup.VisualCurrency(buildingEntity.GetUpgradeCurrency().ToString(), amount);
+                MainUI.Instance.OnShowAnUI.Invoke();
+            }
         }
     }
 }

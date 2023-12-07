@@ -50,7 +50,6 @@ namespace JumpeeIsland
 
         protected IEnvironmentLoader m_EnvLoader;
         private IHandleStorage m_StorageHandler;
-        private IMainHallTier m_MainHallTier;
         private IResearchTopicSupervisor m_ResearchSup;
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
@@ -68,7 +67,6 @@ namespace JumpeeIsland
             _gamePath = Application.persistentDataPath;
             m_EnvLoader = GetComponent<IEnvironmentLoader>();
             m_StorageHandler = GetComponent<IHandleStorage>();
-            m_MainHallTier = GetComponent<IMainHallTier>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_CurrencyLoader = GetComponent<CurrencyLoader>();
             m_InventoryLoader = GetComponent<InventoryLoader>();
@@ -124,7 +122,6 @@ namespace JumpeeIsland
 
             // Load environment and calculate any time-based resource increment
             await LoadEnvironment();
-            m_EnvLoader.Init();
 
             // Load game process to refresh current tutorial
             LoadGameProcess();
@@ -307,9 +304,14 @@ namespace JumpeeIsland
 
             if (result == SaveResult.Success)
             {
-                // data.lastTimestamp = m_EnvLoader.GetData().lastTimestamp;
+                // Fetch mainHallTier after receive envData
+                var mainHall = data.BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL);
+                await m_CloudConnector.FetchEnvRelevantData(mainHall.CurrentLevel);
+                
                 m_EnvLoader.SetData(data);
                 await m_CloudConnector.OnSaveEnvData(); // Update cloud data
+                
+                m_EnvLoader.Init();
             }
         }
 
@@ -516,10 +518,20 @@ namespace JumpeeIsland
             return m_CloudConnector.GetRewardByCommandId(commandId);
         }
 
-        public async Task<MainHallTier> GetMainHallTier(int mainhallLevel)
+        public MainHallTier GetCurrentTier()
         {
-            return await m_CloudConnector.GetMainHallTier(mainhallLevel);
+            return m_CloudConnector.GetCurrentTier();
         }
+
+        public MainHallTier GetUpcomingTier()
+        {
+            return m_CloudConnector.GetNextTier();
+        }
+
+        // public async Task<MainHallTier> GetMainHallTier(int mainhallLevel)
+        // {
+        //     return await m_CloudConnector.GetMainHallTier(mainhallLevel);
+        // }
 
         #endregion
 
@@ -687,15 +699,15 @@ namespace JumpeeIsland
             return m_CloudConnector.GetCurrencySprite(currencyId);
         }
 
-        private MainHallTier GetCurrentTier()
-        {
-            return m_MainHallTier.GetCurrentTier();
-        }
+        // private MainHallTier GetCurrentTier()
+        // {
+        //     return m_MainHallTier.GetCurrentTier();
+        // }
 
-        public MainHallTier GetUpcomingTier()
-        {
-            return m_MainHallTier.GetUpcomingTier();
-        }
+        // public MainHallTier GetUpcomingTier()
+        // {
+        //     return m_MainHallTier.GetUpcomingTier();
+        // }
 
         #endregion
 

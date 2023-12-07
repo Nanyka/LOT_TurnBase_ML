@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class EnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage, IMainHallTier
+    public class EnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
@@ -114,15 +114,15 @@ namespace JumpeeIsland
             buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId, amount);
         }
 
-        public MainHallTier GetCurrentTier()
-        {
-            return buildingLoader.GetCurrentTier();
-        }
-
-        public MainHallTier GetUpcomingTier()
-        {
-            return buildingLoader.GetUpcomingTier();
-        }
+        // public MainHallTier GetCurrentTier()
+        // {
+        //     return buildingLoader.GetCurrentTier();
+        // }
+        //
+        // public MainHallTier GetUpcomingTier()
+        // {
+        //     return buildingLoader.GetUpcomingTier();
+        // }
 
         public virtual IEnumerable<GameObject> GetBuildings(FactionType faction)
         {

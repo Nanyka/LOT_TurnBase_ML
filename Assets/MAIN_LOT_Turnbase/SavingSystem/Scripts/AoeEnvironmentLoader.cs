@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage, IMainHallTier
+    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
@@ -36,8 +36,9 @@ namespace JumpeeIsland
             MainUI.Instance.OnUpdateCurrencies.Invoke();
             
             ExecuteEnvData();
+            GetComponent<IEnvironmentCreator>().CreateEnvObjects(); // Create environment-relevant objects that not include in the saving data
+            
             Debug.Log("----GAME START!!!----");
-            // SavingSystemManager.Instance.OnAskForShowingCreatureMenu();
         }
 
         private void ExecuteEnvData()
@@ -143,19 +144,19 @@ namespace JumpeeIsland
 
         #endregion
 
-        #region MAIN HALL TIER
-
-        public MainHallTier GetCurrentTier()
-        {
-            return playerBuildingLoader.GetCurrentTier();
-        }
-
-        public MainHallTier GetUpcomingTier()
-        {
-            return playerBuildingLoader.GetUpcomingTier();
-        }
-
-        #endregion
+        // #region MAIN HALL TIER
+        //
+        // public MainHallTier GetCurrentTier()
+        // {
+        //     return playerBuildingLoader.GetCurrentTier();
+        // }
+        //
+        // public MainHallTier GetUpcomingTier()
+        // {
+        //     return playerBuildingLoader.GetUpcomingTier();
+        // }
+        //
+        // #endregion
         
         // [SerializeField] protected EnvironmentData _playerEnvCache;
         // [SerializeField] private BuildingLoader _playerBuildingLoader;

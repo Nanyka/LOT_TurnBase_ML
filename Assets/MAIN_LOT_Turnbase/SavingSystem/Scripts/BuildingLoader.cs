@@ -13,8 +13,8 @@ namespace JumpeeIsland
 
         protected BuildingController _buildingController;
         private List<BuildingData> _buildingDatas = new();
-        private MainHallTier _currentTier;
-        private MainHallTier _upcomingTier;
+        // private MainHallTier _currentTier;
+        // private MainHallTier _upcomingTier;
         
         public void StartUpLoadData<T>(T data)
         {
@@ -27,35 +27,32 @@ namespace JumpeeIsland
             _buildingController = GetComponent<BuildingController>();
         }
         
-        private async void Init()
+        private void Init()
         {
             foreach (var building in _buildingDatas)
             {
                 building.FactionType = _faction;
-                if (building.BuildingType == BuildingType.MAINHALL)
-                    await UpdateTierInfo(building);
-
                 ConstructBuilding(building);
             }
 
             _buildingController.Init();
         }
 
-        private async Task UpdateTierInfo(BuildingData building)
-        {
-            _currentTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel);
-            _upcomingTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel+1);
-        }
+        // private async Task UpdateTierInfo(BuildingData building)
+        // {
+        //     _currentTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel);
+        //     _upcomingTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel+1);
+        // }
 
-        public MainHallTier GetCurrentTier()
-        {
-            return _currentTier;
-        }
-        
-        public MainHallTier GetUpcomingTier()
-        {
-            return _upcomingTier;
-        }
+        // public MainHallTier GetCurrentTier()
+        // {
+        //     return _currentTier;
+        // }
+        //
+        // public MainHallTier GetUpcomingTier()
+        // {
+        //     return _upcomingTier;
+        // }
 
         public GameObject PlaceNewObject<T>(T data)
         { 
