@@ -7,7 +7,7 @@ namespace JumpeeIsland
     public class ResearchLoader : MonoBehaviour, IResearchTopicSupervisor
     {
         private IInventoryDeliver m_Inventory;
-        private List<Research> m_Researches = new();
+        [SerializeField] private List<Research> m_Researches = new();
 
         private void Start()
         {
@@ -64,10 +64,16 @@ namespace JumpeeIsland
         {
             return m_Researches;
         }
+
+        public void RemoveResearch(Research research)
+        {
+            m_Researches.Remove(research);
+        }
     }
 
     public interface IResearchTopicSupervisor
     {
         public IEnumerable<Research> GetTopics();
+        public void RemoveResearch(Research research);
     }
 }

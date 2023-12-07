@@ -51,6 +51,7 @@ namespace JumpeeIsland
         protected IEnvironmentLoader m_EnvLoader;
         private IHandleStorage m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
+        private IStoragesControl m_StorageController;
         private CurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
@@ -68,6 +69,7 @@ namespace JumpeeIsland
             m_EnvLoader = GetComponent<IEnvironmentLoader>();
             m_StorageHandler = GetComponent<IHandleStorage>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
+            m_StorageController = GetComponent<IStoragesControl>();
             m_CurrencyLoader = GetComponent<CurrencyLoader>();
             m_InventoryLoader = GetComponent<InventoryLoader>();
 
@@ -309,8 +311,6 @@ namespace JumpeeIsland
                 await m_CloudConnector.FetchEnvRelevantData(mainHall.CurrentLevel);
                 
                 m_EnvLoader.SetData(data);
-                await m_CloudConnector.OnSaveEnvData(); // Update cloud data
-                
                 m_EnvLoader.Init();
             }
         }
@@ -384,15 +384,14 @@ namespace JumpeeIsland
         }
 
         // Spawn from a reward, player pay nothing for it
-        public async Task<GameObject> OnPlaceABuilding(string buildingName, Vector3 position, bool isFromCollectable)
+        public async Task OnPlaceABuilding(string buildingName, Vector3 position, bool isFromCollectable)
         {
             var inventoryItem = GetInventoryItemByName(buildingName);
-            if (inventoryItem == null)
-                return null;
+            if (inventoryItem == null) return;
 
             if (isFromCollectable == false)
                 if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false)
-                    return null;
+                    return;
 
             // ...and get the building in place
             var newBuilding = new BuildingData
@@ -401,7 +400,7 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
-            return m_EnvLoader.PlaceABuilding(newBuilding);
+            m_EnvLoader.PlaceABuilding(newBuilding);
         }
 
         public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isWaitForPurchase)
@@ -492,6 +491,11 @@ namespace JumpeeIsland
         public async void OnSaveEnvById(string playerId)
         {
             await m_CloudConnector.OnSaveEnvById(m_EnvLoader.GetData(), playerId);
+        }
+
+        public async void OnSyncEnvData()
+        {
+            await m_CloudConnector.OnSaveEnvData();
         }
 
         #endregion
@@ -698,16 +702,6 @@ namespace JumpeeIsland
         {
             return m_CloudConnector.GetCurrencySprite(currencyId);
         }
-
-        // private MainHallTier GetCurrentTier()
-        // {
-        //     return m_MainHallTier.GetCurrentTier();
-        // }
-
-        // public MainHallTier GetUpcomingTier()
-        // {
-        //     return m_MainHallTier.GetUpcomingTier();
-        // }
 
         #endregion
 
@@ -992,6 +986,11 @@ namespace JumpeeIsland
             return m_ResearchSup.GetTopics();
         }
 
+        public void RemoveResearch(Research research)
+        {
+            m_ResearchSup.RemoveResearch(research);
+        }
+
         #endregion
 
         #region GET & SET
@@ -1023,6 +1022,11 @@ namespace JumpeeIsland
         public IEnvironmentLoader GetEnvLoader()
         {
             return m_EnvLoader;
+        }
+
+        public IStoragesControl GetStorageController()
+        {
+            return m_StorageController;
         }
 
         #endregion

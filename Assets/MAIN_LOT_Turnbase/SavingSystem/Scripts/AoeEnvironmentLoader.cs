@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage
+    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage, IStoragesControl
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
@@ -13,7 +14,8 @@ namespace JumpeeIsland
         [SerializeField] private CollectableObjectLoader collectableLoader;
         [SerializeField] protected EnvironmentData _environmentData;
 
-        [SerializeField] protected EnvironmentData _playerEnvCache;
+        protected EnvironmentData _playerEnvCache;
+        private List<IStoreResource> _resourceStorages = new();
 
         #region ENVIRONMENT LOADER
 
@@ -22,22 +24,23 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
             Debug.Log("Load data into managers...");
             tileManager.Init(_environmentData.mapSize);
-            
+
             // Save playerEnv into the cache that will be used for saving at the end of battle
             _playerEnvCache = _environmentData;
-            
+
             // Load EnemyEnv
             _environmentData = await SavingSystemManager.Instance.GetEnemyEnv();
-            
+
             // Customize battle env from enemy env and player env
             _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
-            
+
             // Update currency UI
             MainUI.Instance.OnUpdateCurrencies.Invoke();
-            
+
             ExecuteEnvData();
-            GetComponent<IEnvironmentCreator>().CreateEnvObjects(); // Create environment-relevant objects that not include in the saving data
-            
+            GetComponent<IEnvironmentCreator>()
+                .CreateEnvObjects(); // Create environment-relevant objects that not include in the saving data
+
             Debug.Log("----GAME START!!!----");
         }
 
@@ -94,13 +97,17 @@ namespace JumpeeIsland
             collectableLoader.PlaceNewObject(collectableData);
         }
 
-        public GameObject PlaceABuilding(BuildingData buildingData)
+        public void PlaceABuilding(BuildingData buildingData)
         {
             _environmentData.AddBuildingData(buildingData);
             if (buildingData.FactionType == FactionType.Enemy)
-                return enemyBuildingLoader.PlaceNewObject(buildingData);
-            
-            return playerBuildingLoader.PlaceNewObject(buildingData);
+                enemyBuildingLoader.PlaceNewObject(buildingData);
+            else
+            {
+                var storage = playerBuildingLoader.PlaceNewObject(buildingData);
+                if (storage.TryGetComponent(out IStoreResource storeResource))
+                    _resourceStorages.Add(storeResource);
+            }
         }
 
         public GameObject TrainACreature(CreatureData creatureData)
@@ -119,7 +126,7 @@ namespace JumpeeIsland
         {
             if (faction == FactionType.Player)
                 return playerBuildingLoader.GetBuildings();
-            
+
             return enemyBuildingLoader.GetBuildings();
         }
 
@@ -131,7 +138,7 @@ namespace JumpeeIsland
         #endregion
 
         #region HANDLE STORAGE
-        
+
         public void StoreRewardAtBuildings(string currencyId, int amount)
         {
             playerBuildingLoader.GetController().StoreRewardAtBuildings(currencyId, amount);
@@ -144,85 +151,40 @@ namespace JumpeeIsland
 
         #endregion
 
-        // #region MAIN HALL TIER
-        //
-        // public MainHallTier GetCurrentTier()
-        // {
-        //     return playerBuildingLoader.GetCurrentTier();
-        // }
-        //
-        // public MainHallTier GetUpcomingTier()
-        // {
-        //     return playerBuildingLoader.GetUpcomingTier();
-        // }
-        //
-        // #endregion
-        
-        // [SerializeField] protected EnvironmentData _playerEnvCache;
-        // [SerializeField] private BuildingLoader _playerBuildingLoader;
-        //
-        // public override async void Init()
-        // {
-        //     SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
-        //     Debug.Log("Load data into managers...");
-        //     tileManager.Init(_environmentData.mapSize);
-        //
-        //     // Save playerEnv into the cache that will be used for saving at the end of battle
-        //     _playerEnvCache = _environmentData;
-        //
-        //     // Load EnemyEnv
-        //     _environmentData = await SavingSystemManager.Instance.GetEnemyEnv();
-        //
-        //     // Customize battle env from enemy env and player env
-        //     _environmentData.PrepareForBattleMode(_playerEnvCache.PlayerData);
-        //
-        //     // Update currency UI
-        //     MainUI.Instance.OnUpdateCurrencies.Invoke();
-        //
-        //     ExecuteEnvData();
-        //     Debug.Log("----GAME START!!!----");
-        //     // SavingSystemManager.Instance.OnAskForShowingCreatureMenu();
-        // }
-        //
-        // public override EnvironmentData GetData()
-        // {
-        //     return _environmentData;
-        // }
-        //
-        // public override EnvironmentData GetDataForSave()
-        // {
-        //     _playerEnvCache.AbstractInBattleCreatures(_environmentData.PlayerData);
-        //     _playerEnvCache.RemoveZeroHpPlayerCreatures();
-        //     return _playerEnvCache;
-        // }
-        //
-        // public List<CreatureData> GetSpawnList()
-        // {
-        //     return _playerEnvCache.PlayerData;
-        // }
-        //
-        // protected override void ExecuteEnvData()
-        // {
-        //     buildingLoader.StartUpLoadData(_environmentData.BuildingData);
-        //     GameFlowManager.Instance.OnInitiateObjects.Invoke();
-        // }
-        //
-        // public override GameObject PlaceABuilding(BuildingData buildingData)
-        // {
-        //     _environmentData.AddBuildingData(buildingData);
-        //
-        //     if (buildingData.FactionType == FactionType.Enemy)
-        //         return buildingLoader.PlaceNewObject(buildingData);
-        //     
-        //     return _playerBuildingLoader.PlaceNewObject(buildingData);
-        // }
-        //
-        // public override IEnumerable<BuildingInGame> GetBuildings(FactionType faction)
-        // {
-        //     if (faction == FactionType.Player)
-        //         return _playerBuildingLoader.GetBuildings();
-        //     
-        //     return buildingLoader.GetBuildings();
-        // }
+        public IStoreResource GetRandomStorage()
+        {
+            if (_resourceStorages.Count == 0)
+                return null;
+            
+            float randomValue = Random.Range(0f, _resourceStorages.Sum(t => t.GetWeight()));
+
+            if (randomValue <= Mathf.Epsilon)
+                return _resourceStorages[Random.Range(0, _resourceStorages.Count)];
+            
+            float cumulativeWeight = 0f;
+
+            foreach (var storage in _resourceStorages)
+            {
+                cumulativeWeight += storage.GetWeight();
+
+                if (randomValue <= cumulativeWeight)
+                {
+                    return storage;
+                }
+            }
+
+            return null;
+        }
+
+        public IEnumerable<IStoreResource> GetStorages()
+        {
+            return _resourceStorages;
+        }
+    }
+
+    public interface IStoragesControl
+    {
+        public IStoreResource GetRandomStorage();
+        public IEnumerable<IStoreResource> GetStorages();
     }
 }

@@ -12,29 +12,14 @@ namespace JumpeeIsland
 
         public override bool PrePerform()
         {
-            var distanceToTarget = float.PositiveInfinity;
             if (m_GAgent.Inventory.IsEmpty())
             {
-                _currentPoint = null;
-                var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
-                foreach (var building in buildings)
+                var storage = SavingSystemManager.Instance.GetStorageController().GetRandomStorage();
+                if (storage.IsFullStock() == false)
                 {
-                    if (building.TryGetComponent(out IStoreResource checkableObject))
-                    {
-                        if (checkableObject.IsFullStock())
-                            continue;
-
-                        var curDis = Vector3.Distance(transform.position, building.transform.position);
-                        if (curDis < distanceToTarget)
-                        {
-                            distanceToTarget = curDis;
-                            _currentPoint = checkableObject;
-                        }
-                    }
+                    _currentPoint = storage;
+                    m_GAgent.Inventory.AddItem(storage.GetGameObject());
                 }
-
-                if (_currentPoint != null)
-                    m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
                 else
                 {
                     ResetGOAPState();

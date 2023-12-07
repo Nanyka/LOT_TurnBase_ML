@@ -95,6 +95,9 @@ namespace JumpeeIsland
                     break;
                 }
             }
+            
+            // Remove the research from research list
+            SavingSystemManager.Instance.RemoveResearch(m_Research);
         }
 
         public void RejectResearch()

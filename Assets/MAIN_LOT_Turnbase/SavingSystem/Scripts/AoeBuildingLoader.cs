@@ -9,12 +9,10 @@ namespace JumpeeIsland
             var buildingObj = _buildingPool.GetObject(building.EntityName);
             GameFlowManager.Instance.OnDomainRegister.Invoke(buildingObj, building.FactionType);
             
-            if (buildingObj.TryGetComponent(out BuildingInGame buildingEntity))
-            {
-                buildingEntity.gameObject.SetActive(true);
-                buildingEntity.Init(building, _buildingController);
-            }
+            if (buildingObj.TryGetComponent(out IBuildingDealer buildingEntity))
+                buildingEntity.Init(building);
 
+            buildingObj.SetActive(true);
             return buildingObj;
         }
     }

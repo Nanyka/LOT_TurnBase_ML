@@ -43,7 +43,7 @@ namespace JumpeeIsland
             playerLoader.StartUpLoadData(_environmentData.PlayerData);
             enemyLoader.StartUpLoadData(_environmentData.EnemyData);
             collectableLoader.StartUpLoadData(_environmentData.CollectableData);
-
+            SavingSystemManager.Instance.OnSyncEnvData();
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
@@ -98,10 +98,10 @@ namespace JumpeeIsland
 
         #region BUILDINGS
 
-        public virtual GameObject PlaceABuilding(BuildingData buildingData)
+        public virtual void PlaceABuilding(BuildingData buildingData)
         {
             _environmentData.AddBuildingData(buildingData);
-            return buildingLoader.PlaceNewObject(buildingData);
+            buildingLoader.PlaceNewObject(buildingData);
         }
 
         public void StoreRewardAtBuildings(string currencyId, int amount)
@@ -161,11 +161,9 @@ namespace JumpeeIsland
         public void ResetData();
         public void SpawnResource(ResourceData resourceData);
         public void SpawnCollectable(CollectableData collectableData);
-        public GameObject PlaceABuilding(BuildingData buildingData);
+        public void PlaceABuilding(BuildingData buildingData);
         public GameObject TrainACreature(CreatureData creatureData);
         public void SpawnAnEnemy(CreatureData creatureData);
-        
-        // TODO: GetBuilding return an abstract interface instead of a concrete object
         public IEnumerable<GameObject> GetBuildings(FactionType faction);
         public IEnumerable<GameObject> GetResources();
     }

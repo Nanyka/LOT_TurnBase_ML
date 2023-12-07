@@ -52,7 +52,7 @@ namespace JumpeeIsland
             if (target.TryGetComponent(out ICheckableObject checkableObject))
             {
                 var myData = m_Character.GetData() as CreatureData;
-                var myStrength = m_Character.GetStats().Strength * 12;
+                var myStrength = m_Character.GetStats().Strength;
                 myStrength = myData.TurnCount > 0 ? myStrength - myData.TurnCount : myStrength;
                 var remainResource = checkableObject.GetRemainAmount();
                 var collectedAmount = remainResource > myStrength ? myStrength : remainResource;

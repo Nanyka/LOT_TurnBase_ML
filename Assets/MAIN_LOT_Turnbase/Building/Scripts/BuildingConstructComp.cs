@@ -123,5 +123,6 @@ namespace JumpeeIsland
     public interface IBuildingConstruct
     {
         public UnityEvent GetCompletedEvent();
+        
     }
 }

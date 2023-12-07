@@ -1,25 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using GOAP;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class BuildingEntity : Entity, IAttackRelated, ISkillRelated
+    public class AoeBuildingEntity: Entity, IAttackRelated, ISkillRelated, IBuildingDealer
     {
         [SerializeField] private SkinComp m_SkinComp;
-        [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
-        [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private SkillComp m_SkillComp;
         [SerializeField] private FireComp m_FireComp;
-        [SerializeField] private AnimateComp m_AnimateComp;
         [SerializeField] private BuildingConstructComp m_Constructor;
-        [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
 
+        private IHealthComp m_HealthComp;
+        private IEntityUIUpdate m_UIUpdate;
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -27,6 +22,8 @@ namespace JumpeeIsland
 
         public void Init(BuildingData buildingData)
         {
+            m_HealthComp = GetComponent<IHealthComp>();
+            m_UIUpdate = GetComponent<IEntityUIUpdate>();
             m_BuildingData = buildingData;
             RefreshEntity();
         }
@@ -74,81 +71,7 @@ namespace JumpeeIsland
             return m_BuildingData.FactionType;
         }
 
-        public BuildingType GetBuildingType()
-        {
-            return m_BuildingData.BuildingType;
-        }
-
-        public void BuildingUpdate()
-        {
-            if (m_BuildingData.CurrentLevel + 1 >= m_BuildingStats.Count)
-                return;
-
-            m_BuildingData.CurrentLevel++;
-            m_BuildingData.TurnCount = 0;
-            OnThisBuildingUpgrade.Invoke();
-
-            // Reset stats and appearance
-            ResetEntity();
-        }
-
-        public CurrencyType GetUpgradeCurrency()
-        {
-            return m_BuildingStats[m_BuildingData.CurrentLevel].UpgradeCurrency;
-        }
-
-        public int GetUpgradePrice()
-        {
-            return m_BuildingStats[m_BuildingData.CurrentLevel].PriceToUpdate;
-        }
-
-        public int GetStorageSpace(CurrencyType currencyType, ref List<BuildingEntity> selectedBuildings)
-        {
-            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
-            {
-                selectedBuildings.Add(this);
-                return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
-            }
-
-            return 0;
-        }
-
-        public int GetStorageSpace(CurrencyType currencyType)
-        {
-            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
-                return m_BuildingData.StorageCapacity - m_BuildingData.CurrentStorage;
-
-            return 0;
-        }
-
-        public int GetCurrentStorage(CurrencyType currencyType, ref List<BuildingEntity> selectedBuildings)
-        {
-            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
-            {
-                selectedBuildings.Add(this);
-                return m_BuildingData.CurrentStorage;
-            }
-
-            return 0;
-        }
-
-        public int GetCurrentStorage(CurrencyType currencyType)
-        {
-            if (currencyType == m_CurrentStats.StoreCurrency || m_CurrentStats.StoreCurrency == CurrencyType.MULTI)
-                return m_BuildingData.CurrentStorage;
-
-            return 0;
-        }
-
-        public void StoreCurrency(int amount)
-        {
-            m_BuildingData.CurrentStorage +=
-                amount <= m_BuildingData.GetStoreSpace() ? amount : m_BuildingData.GetStoreSpace();
-            m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);
-            m_HealthComp.UpdatePriceText(CalculateSellingPrice());
-        }
-
-        public void DeductCurrency(int amount)
+        private void DeductCurrency(int amount)
         {
             m_BuildingData.CurrentStorage -= amount;
             SavingSystemManager.Instance.DeductCurrency(m_BuildingData.StorageCurrency.ToString(), amount);
@@ -157,17 +80,6 @@ namespace JumpeeIsland
         public int CalculateSellingPrice()
         {
             return Mathf.RoundToInt((1 + m_CurrentStats.Level) * m_BuildingData.CurrentStorage * 0.1f);
-        }
-
-        public int CalculateUpgradePrice()
-        {
-            return m_CurrentStats.PriceToUpdate;
-        }
-
-        public void DurationDeduct()
-        {
-            m_BuildingData.TurnCount = Mathf.Clamp(m_BuildingData.TurnCount - 1, 0, m_BuildingData.TurnCount - 1);
-            SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
         #endregion
@@ -239,37 +151,6 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public virtual void AttackSetup(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
-        {
-            if (m_BuildingData.TurnCount > 0)
-                return;
-
-            Attack(unitInfo, attackResponser);
-        }
-
-        private void Attack(IGetEntityInfo unitInfo, IAttackResponse attackResponser)
-        {
-            var currenState = unitInfo.GetCurrentState();
-            var attackRange = m_SkillComp.AttackPath(currenState.midPos, currenState.direction, currenState.jumpStep);
-
-            m_AttackComp.Attack(attackRange, this, this, currenState.jumpStep);
-
-            ShowAttackRange(attackRange);
-            attackResponser.AttackResponse();
-        }
-
-        private void ShowAttackRange(IEnumerable<Vector3> attackRange)
-        {
-            if (attackRange == null)
-                return;
-
-            if (attackRange.Any())
-            {
-                m_FireComp.PlayCurveFX(attackRange);
-                m_BuildingData.TurnCount = m_FireComp.GetReloadDuration();
-            }
-        }
-        
         public int GetAttackDamage()
         {
             return m_BuildingData.CurrentDamage;
@@ -327,8 +208,7 @@ namespace JumpeeIsland
 
             m_Transform.position = m_BuildingData.Position;
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
-            m_HealthComp.UpdatePriceText(CalculateSellingPrice());
-            m_HealthComp.UpdateStorage(m_BuildingData.CurrentStorage);
+            m_UIUpdate.ShowBars(false,true,true);
             m_SkillComp.Init(m_BuildingData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
 
@@ -364,5 +244,11 @@ namespace JumpeeIsland
         }
 
         #endregion
+    }
+
+    public interface IBuildingDealer
+    {
+        public void Init(BuildingData buildingData);
+        public IChangeWorldState GetWorldStateChanger();
     }
 }

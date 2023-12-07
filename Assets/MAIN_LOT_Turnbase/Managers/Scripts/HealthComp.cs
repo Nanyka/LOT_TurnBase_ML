@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
-    public class HealthComp : MonoBehaviour
+    public class HealthComp : MonoBehaviour, IHealthComp
     {
         [NonSerialized] public UnityEvent<float> TakeDamageEvent = new(); 
 
@@ -90,5 +90,12 @@ namespace JumpeeIsland
         {
             entityUI.TurnHealthSlider(isOn);
         }
+    }
+
+    // TODO: replace HealthComp in Entity by IHealthComp
+    public interface IHealthComp
+    {
+        public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData);
+        public void TakeDamage(int damage, EntityData entityData, IAttackRelated killedBy);
     }
 }

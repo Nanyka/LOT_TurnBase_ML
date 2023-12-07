@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
@@ -11,20 +12,30 @@ namespace JumpeeIsland
         [SerializeField] private int troopCount;
         [SerializeField] private int costPerTroop;
         [SerializeField] private Transform testAssemblyPoint;
+        [SerializeField] private Slider priorityBar;
 
         private int _curStorage;
-        private BuildingEntity m_Building;
+        private IBuildingDealer m_Building;
+        private IEntityUIUpdate m_UIUpdater;
         private Research m_Research;
+        private float _curWeight = 1f;
         private bool _isOnHolding;
 
         private void Start()
         {
-            m_Building = GetComponent<BuildingEntity>();
+            m_Building = GetComponent<IBuildingDealer>();
+            m_UIUpdater = GetComponent<IEntityUIUpdate>();
         }
 
         public void OnClick()
         {
-            Debug.Log($"Click on {name} to change priority");
+            // Increase one priority for this factory and decrease one for the rest factories
+            var factories = SavingSystemManager.Instance.GetStorageController().GetStorages();
+            foreach (var factory in factories)
+                factory.ReduceWeight(1);
+
+            _curWeight = Mathf.Clamp(_curWeight + 10, 0, 100);
+            m_UIUpdater.UpdateStorage(_curWeight);
         }
 
         public void OnHoldEnter()
@@ -89,7 +100,19 @@ namespace JumpeeIsland
 
         public void StoreResource(int amount)
         {
-            _curStorage += amount;
+            _curStorage = Mathf.Clamp(_curStorage + amount, 0, costPerTroop * troopCount);
+
+            // Show amount of ready troop
+            var spawnAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
+            if (spawnAmount > 0)
+            {
+                m_UIUpdater.UpdatePriceText(spawnAmount);
+                m_UIUpdater.ShowPriceTag(true);
+            }
+            else
+                m_UIUpdater.ShowPriceTag(false);
+
+            // Remove one "Factory" state when the factory is full of stock
             if (_curStorage >= costPerTroop * troopCount)
             {
                 _curStorage = costPerTroop * troopCount;
@@ -100,6 +123,17 @@ namespace JumpeeIsland
         public GameObject GetGameObject()
         {
             return gameObject;
+        }
+
+        public float GetWeight()
+        {
+            return _curWeight;
+        }
+
+        public void ReduceWeight(int amount)
+        {
+            _curWeight -= amount;
+            m_UIUpdater.UpdateStorage(Mathf.Clamp(_curWeight,0,100));
         }
 
         public bool CheckTarget(string targetName)
@@ -123,6 +157,8 @@ namespace JumpeeIsland
         public bool IsFullStock();
         public void StoreResource(int amount);
         public GameObject GetGameObject();
+        public float GetWeight();
+        public void ReduceWeight(int amount);
     }
 
     public interface IResearchDeliver
