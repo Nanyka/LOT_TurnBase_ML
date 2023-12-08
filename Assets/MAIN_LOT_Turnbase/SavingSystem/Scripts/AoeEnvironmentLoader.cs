@@ -52,7 +52,40 @@ namespace JumpeeIsland
 
         private void RemoveDestroyedEntity(IRemoveEntity removeInterface)
         {
-            removeInterface.Remove(_environmentData);
+            var entityData = removeInterface.GetEntityData();
+
+            switch (entityData.EntityType)
+            {
+                case EntityType.BUILDING:
+                {
+                    GetData().BuildingData.Remove(entityData as BuildingData);
+                    break;
+                }
+                case EntityType.PLAYER:
+                {
+                    GetData().PlayerData.Remove(entityData as CreatureData);
+                    break;
+                }
+                case EntityType.ENEMY:
+                {
+                    GetData().EnemyData.Remove(entityData as CreatureData);
+                    break;
+                }
+                case EntityType.RESOURCE:
+                {
+                    GetData().ResourceData.Remove(entityData as ResourceData);
+                    break;
+                }
+                case EntityType.COLLECTABLE:
+                {
+                    GetData().CollectableData.Remove(entityData as CollectableData);
+                    break;
+                }
+            }
+            
+            // TODO: Remove this from IStorage list
+            if (removeInterface.GetRemovedObject().TryGetComponent(out IStoreResource storeResource))
+                _resourceStorages.Remove(storeResource);
         }
 
         public void SetData(EnvironmentData environmentData)

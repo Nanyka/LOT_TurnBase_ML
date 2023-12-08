@@ -202,15 +202,20 @@ namespace JumpeeIsland
             gameObject.SetActive(false);
         }
 
-        public void Remove(EnvironmentData environmentData)
+        public void Remove(IEnvironmentLoader envLoader)
         {
             if (m_Entity.GetData().EntityName.Equals("King"))
                 return;
 
             if (m_FactionController.GetFaction() == FactionType.Player)
-                environmentData.PlayerData.Remove((CreatureData)m_Entity.GetData());
+                envLoader.GetData().PlayerData.Remove((CreatureData)m_Entity.GetData());
             if (m_FactionController.GetFaction() == FactionType.Enemy)
-                environmentData.EnemyData.Remove((CreatureData)m_Entity.GetData());
+                envLoader.GetData().EnemyData.Remove((CreatureData)m_Entity.GetData());
+        }
+
+        public GameObject GetRemovedObject()
+        {
+            return gameObject;
         }
 
         #endregion

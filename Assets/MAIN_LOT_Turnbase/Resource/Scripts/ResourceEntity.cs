@@ -97,7 +97,7 @@ namespace JumpeeIsland
 
         public void TakeDamage(int damage, IAttackRelated fromEntity)
         {
-            m_HealthComp.TakeDamage(damage, m_ResourceData, fromEntity);
+            m_HealthComp.TakeDamage(m_ResourceData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -110,25 +110,6 @@ namespace JumpeeIsland
         {
             // TODO add animation or effect here
         }
-
-        #endregion
-        
-        #region ATTACK
-        
-        public virtual void StartAttack(ICharacterAttack attack)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SuccessAttack(GameObject target)
-        {
-            throw new NotImplementedException();
-        }
-
-        // public override int GetAttackDamage()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
 
         #endregion
 

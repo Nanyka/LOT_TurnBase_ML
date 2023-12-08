@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    public class AoeBuildingEntity: Entity, IAttackRelated, ISkillRelated, IBuildingDealer
+    public class AoeBuildingEntity: Entity, IAttackRelated, ISkillRelated, IBuildingDealer, IGetEntityData<BuildingStats>
     {
         [SerializeField] private SkinComp m_SkinComp;
-        [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private SkillComp m_SkillComp;
-        [SerializeField] private FireComp m_FireComp;
 
         private IHealthComp m_HealthComp;
         private IBuildingConstruct m_Constructor;
@@ -19,7 +16,7 @@ namespace JumpeeIsland
         private BuildingStats m_CurrentStats;
         [SerializeField] private int _killAccumulation;
 
-        public void Init(BuildingData buildingData)
+        public void Init(BuildingData buildingData, BuildingController buildingController)
         {
             m_HealthComp = GetComponent<IHealthComp>();
             m_Constructor = GetComponent<IBuildingConstruct>();
@@ -93,7 +90,7 @@ namespace JumpeeIsland
                     EnemyRopeCurrency(damage);
 
                 if (m_BuildingData.BuildingType != BuildingType.MAINHALL)
-                    m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+                    m_HealthComp.TakeDamage(m_BuildingData, fromEntity);
             }
             else if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
             {
@@ -106,10 +103,10 @@ namespace JumpeeIsland
                         m_Transform.position);
                 }
 
-                m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+                m_HealthComp.TakeDamage(m_BuildingData, fromEntity);
             }
             else
-                m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+                m_HealthComp.TakeDamage(m_BuildingData, fromEntity);
 
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
@@ -144,11 +141,6 @@ namespace JumpeeIsland
         #endregion
 
         #region ATTACK
-
-        public override void SuccessAttack(GameObject target)
-        {
-            throw new NotImplementedException();
-        }
 
         public int GetAttackDamage()
         {
@@ -244,7 +236,7 @@ namespace JumpeeIsland
 
     public interface IBuildingDealer
     {
-        public void Init(BuildingData buildingData);
+        public void Init(BuildingData buildingData, BuildingController buildingController);
         public IChangeWorldState GetWorldStateChanger();
     }
 }

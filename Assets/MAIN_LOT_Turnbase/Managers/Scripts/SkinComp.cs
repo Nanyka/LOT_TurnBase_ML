@@ -30,7 +30,7 @@ namespace JumpeeIsland
             ResetMaterial();
         }
 
-        public void Init(string skinAddress, IInitWithGameObject animateComp)
+        public void Init(string skinAddress, IAnimateComp animateComp)
         {
             if (skinAddress.IsNullOrEmpty())
                 return;

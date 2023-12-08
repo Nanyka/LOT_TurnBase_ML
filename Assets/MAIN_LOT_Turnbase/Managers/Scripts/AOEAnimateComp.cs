@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AOEAnimateComp : MonoBehaviour, IInitWithGameObject, IMover
+    public class AOEAnimateComp : MonoBehaviour, IAnimateComp, IMover
     {
         [SerializeField] private Transform m_RotatePart;
         
@@ -74,5 +74,13 @@ namespace JumpeeIsland
     {
         public void StartWalk();
         public void StopWalk();
+    }
+
+    public interface IAnimateComp
+    {
+        public void Init(GameObject myGameObject);
+        public void SetAnimation(AnimateType animate);
+        public void SetAnimation(AnimateType animate, bool isActivate);
+        public void TriggerAttackAnim(int attackIndex);
     }
 }

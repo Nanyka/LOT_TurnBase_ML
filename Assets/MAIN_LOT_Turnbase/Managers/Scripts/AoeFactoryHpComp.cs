@@ -23,7 +23,7 @@ namespace JumpeeIsland
             m_MAXStorage = buildingData.StorageCapacity;
         }
 
-        public void TakeDamage(int damage, EntityData entityData, IAttackRelated killedBy)
+        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy)
         {
             throw new System.NotImplementedException();
         }

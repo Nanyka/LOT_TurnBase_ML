@@ -6,7 +6,7 @@ using UnityEngine;
 namespace JumpeeIsland
 {
     public class BuildingInGame : MonoBehaviour, IShowInfo, IConfirmFunction, IRemoveEntity, IGetEntityInfo,
-        IAttackResponse
+        IAttackResponse, IBuildingDealer
     {
         [SerializeField] private BuildingEntity m_Entity;
 
@@ -19,6 +19,11 @@ namespace JumpeeIsland
 
             _buildingController = buildingController;
             _buildingController.AddBuildingToList(this);
+        }
+
+        public IChangeWorldState GetWorldStateChanger()
+        {
+            throw new System.NotImplementedException();
         }
 
         public virtual void OnEnable()
@@ -89,9 +94,19 @@ namespace JumpeeIsland
             gameObject.SetActive(false);
         }
 
-        public void Remove(EnvironmentData environmentData)
+        // public void Remove(IEnvironmentLoader envLoader)
+        // {
+        //     envLoader.GetData().BuildingData.Remove((BuildingData)m_Entity.GetData());
+        // }
+
+        public GameObject GetRemovedObject()
         {
-            environmentData.BuildingData.Remove((BuildingData)m_Entity.GetData());
+            return gameObject;
+        }
+
+        public EntityData GetEntityData()
+        {
+            return m_Entity.GetData();
         }
 
         private void SellBuilding(EnvironmentData environmentData)

@@ -59,9 +59,19 @@ namespace JumpeeIsland
             gameObject.SetActive(false);
         }
 
-        public void Remove(EnvironmentData environmentData)
+        // public void Remove(IEnvironmentLoader envLoader)
+        // {
+        //     envLoader.GetData().CollectableData.Remove((CollectableData)m_Entity.GetData());
+        // }
+
+        public GameObject GetRemovedObject()
         {
-            environmentData.CollectableData.Remove((CollectableData)m_Entity.GetData());
+            return gameObject;
+        }
+
+        public EntityData GetEntityData()
+        {
+            return m_Entity.GetData();
         }
     }
 }

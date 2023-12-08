@@ -20,9 +20,4 @@ namespace JumpeeIsland
         public void UpdateTransform(Vector3 pos, Vector3 dir);
         public FactionType GetFaction();
     }
-
-    public interface IGetTransformData
-    {
-        public Vector3 GetPosition();
-    }
 }

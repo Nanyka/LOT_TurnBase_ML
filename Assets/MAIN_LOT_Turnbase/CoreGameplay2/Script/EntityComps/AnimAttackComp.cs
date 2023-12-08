@@ -14,11 +14,11 @@ namespace JumpeeIsland
         [SerializeField] private List<AnimAttackCollider> attackColliders;
         [SerializeField] private FactionType tempFaction;
 
-        private Entity m_Entity;
+        private IAttackComp _successAttack;
 
         private void Start()
         {
-            m_Entity = GetComponent<Entity>();
+            _successAttack = GetComponent<IAttackComp>();
             
             foreach (var attackCollider in attackColliders)
                 attackCollider.Init(this);
@@ -36,7 +36,7 @@ namespace JumpeeIsland
         
         public void ExecuteHitEffect(GameObject target)
         {
-            m_Entity.SuccessAttack(target);
+            _successAttack.SuccessAttack(target);
         }
         public void ExecuteHitEffect(int posIndex)
         {

@@ -44,6 +44,7 @@ namespace JumpeeIsland
         {
             var resourceObj = _resoucePool.GetObject(resourceData.EntityName);
             resourceData.FactionType = FactionType.Neutral; // assign Faction
+            resourceData.EntityType = EntityType.RESOURCE;
             GameFlowManager.Instance.OnDomainRegister.Invoke(resourceObj, resourceData.FactionType);
 
             if (resourceObj.TryGetComponent(out ResourceInGame resourceInGame))

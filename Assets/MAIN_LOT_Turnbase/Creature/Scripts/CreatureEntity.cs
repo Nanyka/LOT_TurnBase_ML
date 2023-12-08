@@ -175,7 +175,7 @@ namespace JumpeeIsland
                 return;
 
             m_AnimateComp.SetAnimation(AnimateType.TakeDamage);
-            m_HealthComp.TakeDamage(damage, m_CreatureData, fromEntity);
+            m_HealthComp.TakeDamage(m_CreatureData, fromEntity);
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
 
@@ -215,7 +215,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void SuccessAttack(GameObject target)
+        public virtual void SuccessAttack(GameObject target)
         {
             throw new NotImplementedException();
         }

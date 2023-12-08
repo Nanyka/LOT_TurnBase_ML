@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class EnemyAttack : GAction, ICharacterAttack
+    public class EnemyAttack : GAction
     {
         [SerializeField] private CharacterEntity m_Character;
         [SerializeField] private float _checkDistance = 1f;
@@ -29,7 +29,7 @@ namespace JumpeeIsland
                     // checkableObject.ReduceCheckableAmount(1);
                     var position = target.transform.position;
                     m_Character.transform.LookAt(new Vector3(position.x, m_Character.transform.position.y, position.z));
-                    m_Character.StartAttack(this);
+                    m_Character.StartAttack();
                     
                     if (checkableObject.IsCheckable() == false)
                         m_GAgent.Inventory.ClearInventory();
@@ -55,10 +55,10 @@ namespace JumpeeIsland
             return true;
         }
 
-        public void ExecuteAttack(GameObject target)
-        {
-            if (target.TryGetComponent(out ICheckableObject checkableObject))
-                checkableObject.ReduceCheckableAmount(1);
-        }
+        // public void ExecuteAttack(GameObject target)
+        // {
+        //     // if (target.TryGetComponent(out ICheckableObject checkableObject))
+        //     //     checkableObject.ReduceCheckableAmount(1);
+        // }
     }
 }

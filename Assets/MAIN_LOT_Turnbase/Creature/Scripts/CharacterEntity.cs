@@ -5,19 +5,20 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CharacterEntity : Entity, ISpecialAttackReceiver, ITroopAssembly
+    public class CharacterEntity : Entity, ISpecialSkillReceiver, ITroopAssembly, IGetEntityData<CreatureStats>
     {
         public Vector3 _assemblyPoint { get; set; }
 
         // control components
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private MovementComp m_MovementComp;
-        [SerializeField] private AOEAnimateComp m_AnimateComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private EnemyBrainComp m_Brain;
 
         private ISkillMonitor m_SkillMonitor;
         private IHealthComp m_HealthComp;
+        private IAnimateComp m_AnimateComp;
+        private IMover m_Mover;
 
         // loaded data
         private List<CreatureStats> m_CreatureStats;
@@ -25,7 +26,7 @@ namespace JumpeeIsland
         // in-game data
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
-        private ICharacterAttack _currentAttack;
+        // private ICharacterAttack _currentAttack;
         private int _attackIndex;
         private int _killAccumulation;
         private bool _isDie;
@@ -36,6 +37,8 @@ namespace JumpeeIsland
         {
             m_SkillMonitor = GetComponent<ISkillMonitor>();
             m_HealthComp = GetComponent<IHealthComp>();
+            m_AnimateComp = GetComponent<IAnimateComp>();
+            m_Mover = GetComponent<IMover>();
         }
 
         public void Init(CreatureData creatureData)
@@ -123,7 +126,7 @@ namespace JumpeeIsland
                 return;
             }
             
-            m_MovementComp.MoveTo(destination, processUpdate, m_AnimateComp);
+            m_MovementComp.MoveTo(destination, processUpdate, m_Mover);
             // m_AnimateComp.SetAnimation(AnimateType.Walk, true);
         }
 
@@ -141,19 +144,20 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public virtual void StartAttack(ICharacterAttack attack)
+        public virtual void StartAttack()
         {
-            _currentAttack = attack;
+            // _currentAttack = attack;
             m_AnimateComp.TriggerAttackAnim(_attackIndex);
             m_SkillMonitor.ResetPowerBar();
         }
 
         // TODO: Refactor it by splitting it into a separated component
-        public override void SuccessAttack(GameObject target)
-        {
-            _currentAttack.ExecuteAttack(target);
-            m_SkillMonitor.PowerUp();
-        }
+        // TODO: refactor animateComp
+        // public void SuccessAttack(GameObject target)
+        // {
+        //     _currentAttack.ExecuteAttack(target);
+        //     m_SkillMonitor.PowerUp();
+        // }
 
         #endregion
 
@@ -234,9 +238,14 @@ namespace JumpeeIsland
         public void SetAssemblyPoint(Vector3 assemblyPoint);
     }
     
-    public interface ISpecialAttackReceiver
+    public interface ISpecialSkillReceiver
     {
         public void EnablePowerBar(int index);
         public void SetAttackIndex(int index);
     }
+
+    // public interface ISuccessAttack
+    // {
+    //     public void SuccessAttack(GameObject target);
+    // }
 }

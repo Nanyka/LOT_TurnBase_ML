@@ -14,5 +14,6 @@ namespace JumpeeIsland
         public FactionType FactionType;
         public int CurrentHp;
         public int CurrentLevel;
+        public EntityType EntityType;
     }
 }

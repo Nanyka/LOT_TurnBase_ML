@@ -12,8 +12,6 @@ namespace JumpeeIsland
         [SerializeField] private float _angle;
         [SerializeField] private int _reloadDuration;
         [SerializeField] private bool _isInPlaceFire;
-        // [SerializeField] private bool _isSelfDecideTarget;
-        // [ShowIf("@_isSelfDecideTarget == true")] [SerializeField] private int skillIndex;
 
         private Vector3 _velocity;
 

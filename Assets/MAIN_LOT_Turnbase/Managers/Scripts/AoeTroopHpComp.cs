@@ -18,7 +18,7 @@ namespace JumpeeIsland
             _isDeath = false;
         }
 
-        public void TakeDamage(int damage, EntityData entityData, IAttackRelated killedBy)
+        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy)
         {
             throw new System.NotImplementedException();
         }

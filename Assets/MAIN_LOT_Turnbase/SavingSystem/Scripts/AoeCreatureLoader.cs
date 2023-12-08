@@ -11,6 +11,8 @@ namespace JumpeeIsland
         
         protected override GameObject TrainANewCreature(CreatureData creatureData)
         {
+            creatureData.EntityType =
+                creatureData.FactionType == FactionType.Player ? EntityType.PLAYER : EntityType.ENEMY;
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
                 return null;

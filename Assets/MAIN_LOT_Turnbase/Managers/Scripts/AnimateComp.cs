@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 namespace JumpeeIsland
 {
 
-    public class AnimateComp : MonoBehaviour, IInitWithGameObject, IMover
+    public class AnimateComp : MonoBehaviour, IAnimateComp, IMover
     {
         [SerializeField] private Transform m_RotatePart;
         [SerializeField] private Animator m_Animator;

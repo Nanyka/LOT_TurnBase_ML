@@ -38,22 +38,6 @@ namespace JumpeeIsland
             _buildingController.Init();
         }
 
-        // private async Task UpdateTierInfo(BuildingData building)
-        // {
-        //     _currentTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel);
-        //     _upcomingTier = await SavingSystemManager.Instance.GetMainHallTier(building.CurrentLevel+1);
-        // }
-
-        // public MainHallTier GetCurrentTier()
-        // {
-        //     return _currentTier;
-        // }
-        //
-        // public MainHallTier GetUpcomingTier()
-        // {
-        //     return _upcomingTier;
-        // }
-
         public GameObject PlaceNewObject<T>(T data)
         { 
             var buildingData = (BuildingData)Convert.ChangeType(data, typeof(BuildingData));
@@ -74,12 +58,14 @@ namespace JumpeeIsland
         
         protected virtual GameObject ConstructBuilding(BuildingData building)
         {
+            building.EntityType = EntityType.BUILDING;
             var buildingObj = _buildingPool.GetObject(building.EntityName);
             GameFlowManager.Instance.OnDomainRegister.Invoke(buildingObj, building.FactionType);
 
-            if (buildingObj.TryGetComponent(out BuildingInGame buildingInGame))
+            if (buildingObj.TryGetComponent(out IBuildingDealer buildingInGame))
             {
-                buildingInGame.gameObject.SetActive(true);
+                // buildingInGame.gameObject.SetActive(true);
+                buildingObj.SetActive(true);
                 buildingInGame.Init(building, _buildingController);
             }
 

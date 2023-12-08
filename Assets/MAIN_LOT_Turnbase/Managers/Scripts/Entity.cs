@@ -33,15 +33,7 @@ namespace JumpeeIsland
         // public abstract void TakeDamage(int damage, Entity fromEntity);
 
         #endregion
-        
-        #region ATTACK
 
-        public abstract void SuccessAttack(GameObject target);
-
-        // public abstract int GetAttackDamage();
-        
-        #endregion
-        
         #region SKIN
 
         public abstract SkinComp GetSkin();
@@ -59,5 +51,11 @@ namespace JumpeeIsland
         // public abstract EffectComp GetEffectComp();
 
         #endregion
+    }
+
+    public interface IGetEntityData<T>
+    {
+        public EntityData GetData();
+        public T GetStats();
     }
 }

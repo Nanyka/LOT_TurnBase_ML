@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CollectResource : GAction, ICharacterAttack, IProcessUpdate
+    public class CollectResource : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Character;
         [SerializeField] private float _checkDistance = 1f;
@@ -41,48 +41,48 @@ namespace JumpeeIsland
             return true;
         }
 
-        public void ExecuteAttack(GameObject target)
-        {
-            // Get capacity of the resource
-            // If the resource is empty --> clear the inventory
-            // Get strength data
-            // Execute harvesting animation
-            // and remaining resource amount
-            
-            if (target.TryGetComponent(out ICheckableObject checkableObject))
-            {
-                var myData = m_Character.GetData() as CreatureData;
-                var myStrength = m_Character.GetStats().Strength;
-                myStrength = myData.TurnCount > 0 ? myStrength - myData.TurnCount : myStrength;
-                var remainResource = checkableObject.GetRemainAmount();
-                var collectedAmount = remainResource > myStrength ? myStrength : remainResource;
-
-                if (remainResource > myStrength)
-                {
-                    m_GAgent.Beliefs.RemoveState("Empty");
-                    m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
-                }
-                myData.TurnCount += collectedAmount;
-                checkableObject.ReduceCheckableAmount(collectedAmount);
-            }
-        }
+        // public void ExecuteAttack(GameObject target)
+        // {
+        //     // Get capacity of the resource
+        //     // If the resource is empty --> clear the inventory
+        //     // Get strength data
+        //     // Execute harvesting animation
+        //     // and remaining resource amount
+        //     
+        //     if (target.TryGetComponent(out ICheckableObject checkableObject))
+        //     {
+        //         var myData = m_Character.GetData() as CreatureData;
+        //         var myStrength = m_Character.GetStats().Strength;
+        //         myStrength = myData.TurnCount > 0 ? myStrength - myData.TurnCount : myStrength;
+        //         var remainResource = checkableObject.GetRemainAmount();
+        //         var collectedAmount = remainResource > myStrength ? myStrength : remainResource;
+        //
+        //         if (remainResource > myStrength)
+        //         {
+        //             m_GAgent.Beliefs.RemoveState("Empty");
+        //             m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
+        //         }
+        //         myData.TurnCount += collectedAmount;
+        //         checkableObject.ReduceCheckableAmount(collectedAmount);
+        //     }
+        // }
 
         public async void StartProcess(Transform myTransform, Vector3 targetPos)
         {
             myTransform.LookAt(new Vector3(targetPos.x, myTransform.position.y, targetPos.z));
-            m_Character.StartAttack(this);
+            m_Character.StartAttack();
             await WaitToCompleteTheAction();
-        }
-
-        public void StopProcess()
-        {
-            m_GAgent.FinishFromOutside();
         }
         
         private async Task WaitToCompleteTheAction()
         {
             await Task.Delay(Mathf.RoundToInt(Duration * 1000));
             StopProcess();
+        }
+
+        public void StopProcess()
+        {
+            m_GAgent.FinishFromOutside();
         }
     }
 }

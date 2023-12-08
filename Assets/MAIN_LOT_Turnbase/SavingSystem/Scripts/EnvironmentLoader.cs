@@ -68,7 +68,38 @@ namespace JumpeeIsland
 
         protected void RemoveDestroyedEntity(IRemoveEntity removeInterface)
         {
-            removeInterface.Remove(_environmentData);
+            var entityData = removeInterface.GetEntityData();
+
+            switch (entityData.EntityType)
+            {
+                case EntityType.BUILDING:
+                {
+                    GetData().BuildingData.Remove(entityData as BuildingData);
+                    break;
+                }
+                case EntityType.PLAYER:
+                {
+                    GetData().PlayerData.Remove(entityData as CreatureData);
+                    break;
+                }
+                case EntityType.ENEMY:
+                {
+                    GetData().EnemyData.Remove(entityData as CreatureData);
+                    break;
+                }
+                case EntityType.RESOURCE:
+                {
+                    GetData().ResourceData.Remove(entityData as ResourceData);
+                    break;
+                }
+                case EntityType.COLLECTABLE:
+                {
+                    GetData().CollectableData.Remove(entityData as CollectableData);
+                    break;
+                }
+            }
+            
+            // removeInterface.Remove(this);
         }
 
         #region RESOURCE
@@ -172,11 +203,5 @@ namespace JumpeeIsland
     {
         public void StoreRewardAtBuildings(string currencyId, int amount);
         public void DeductCurrencyFromBuildings(string currencyId, int amount);
-    }
-
-    public interface IMainHallTier
-    {
-        public MainHallTier GetCurrentTier();
-        public MainHallTier GetUpcomingTier();
     }
 }

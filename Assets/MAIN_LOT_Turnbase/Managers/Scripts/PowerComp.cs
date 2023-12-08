@@ -5,7 +5,7 @@ namespace JumpeeIsland
 {
     public class PowerComp : MonoBehaviour, ISkillMonitor
     {
-        private ISpecialAttackReceiver _skillReceiver;
+        private ISpecialSkillReceiver _skillComp;
         private IEntityUIUpdate _entityUIUpdate;
         private int _attackIndex;
         private int maxPower = 4; // 3 normal attack allow 1 special attack
@@ -15,7 +15,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            _skillReceiver = GetComponent<ISpecialAttackReceiver>();
+            _skillComp = GetComponent<ISpecialSkillReceiver>();
             _entityUIUpdate = GetComponent<IEntityUIUpdate>();
         }
 
@@ -42,7 +42,7 @@ namespace JumpeeIsland
             if (_curPower >= maxPower)
             {
                 _isPowerFull = true;
-                _skillReceiver.SetAttackIndex(_attackIndex);
+                _skillComp.SetAttackIndex(_attackIndex);
                 Debug.Log("Full power");
             }
         }
@@ -52,7 +52,7 @@ namespace JumpeeIsland
             if (_isAvailable && _isPowerFull)
             {
                 _isPowerFull = false;
-                _skillReceiver.SetAttackIndex(0);
+                _skillComp.SetAttackIndex(0);
                 _curPower = 0;
                 Debug.Log("Reset power bar");
             }

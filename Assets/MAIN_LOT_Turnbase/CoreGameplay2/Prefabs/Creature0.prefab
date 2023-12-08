@@ -14112,7 +14112,7 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 10000
     maxKillSpeed: 10000
-    radiusScale: 2
+    radiusScale: 1
     collidesWith:
       serializedVersion: 2
       m_Bits: 0
@@ -25453,6 +25453,7 @@ GameObject:
   - component: {fileID: 709884986407854447}
   - component: {fileID: 5885100510956597714}
   - component: {fileID: 3940446836352498278}
+  - component: {fileID: 5522037992862593017}
   - component: {fileID: 4205555104683339302}
   - component: {fileID: 1908765743197202891}
   - component: {fileID: 5789546613445363659}
@@ -25570,7 +25571,6 @@ MonoBehaviour:
   m_Transform: {fileID: 2801276164568592138}
   m_SkinComp: {fileID: 4205555104683339302}
   m_MovementComp: {fileID: 709884986407854447}
-  m_AnimateComp: {fileID: 5118092334268078911}
   m_EffectComp: {fileID: 5789546613445363659}
   m_Brain: {fileID: 5360401474995351929}
 --- !u!114 &3821084573402412847
@@ -25633,6 +25633,18 @@ MonoBehaviour:
   attackColliders:
   - {fileID: 1343353996466344246}
   tempFaction: 0
+--- !u!114 &5522037992862593017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743037733719794493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f420e1a9f8f42dbb2c13d12cf731a8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4205555104683339302
 MonoBehaviour:
   m_ObjectHideFlags: 0

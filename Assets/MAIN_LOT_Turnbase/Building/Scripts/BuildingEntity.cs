@@ -182,7 +182,7 @@ namespace JumpeeIsland
                     EnemyRopeCurrency(damage);
 
                 if (m_BuildingData.BuildingType != BuildingType.MAINHALL)
-                    m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+                    m_HealthComp.TakeDamage(m_BuildingData, fromEntity);
             }
             else if (GameFlowManager.Instance.GameMode == GameMode.BATTLE)
             {
@@ -195,10 +195,10 @@ namespace JumpeeIsland
                         m_Transform.position);
                 }
 
-                m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+                m_HealthComp.TakeDamage(m_BuildingData, fromEntity);
             }
             else
-                m_HealthComp.TakeDamage(damage, m_BuildingData, fromEntity);
+                m_HealthComp.TakeDamage(m_BuildingData, fromEntity);
 
             SavingSystemManager.Instance.OnSavePlayerEnvData.Invoke();
         }
@@ -234,7 +234,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void SuccessAttack(GameObject target)
+        public virtual void SuccessAttack(GameObject target)
         {
             throw new NotImplementedException();
         }

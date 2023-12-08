@@ -72,7 +72,7 @@ namespace JumpeeIsland
                 if (troop.TryGetComponent(out ITroopAssembly character))
                     character.SetAssemblyPoint(assemblyPoint);
 
-                if (troop.TryGetComponent(out ISpecialAttackReceiver attackReceiver))
+                if (troop.TryGetComponent(out ISpecialSkillReceiver attackReceiver))
                 {
                     // Check if any storage research in the stock
                     // Plug the skill in the entity

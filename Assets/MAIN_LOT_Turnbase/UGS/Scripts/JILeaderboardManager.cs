@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -45,8 +46,17 @@ namespace JumpeeIsland
 
         public async Task<int> UpdatePlayerScore()
         {
-            var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(_battleScoreId);
-            return (int)scoreResponse.Score;
+            try
+            {
+                var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(_battleScoreId);
+                return (int)scoreResponse.Score;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Player still not on the Leaderboard");
+                await LeaderboardsService.Instance.AddPlayerScoreAsync(_battleScoreId, 0);
+                return 0;
+            }
         }
         
         public async Task<List<LeaderboardEntry>> GetPlayerRange()

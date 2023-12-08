@@ -15214,6 +15214,7 @@ GameObject:
   - component: {fileID: 2768966365666163441}
   - component: {fileID: 8427985570679263861}
   - component: {fileID: 7824031241978473255}
+  - component: {fileID: 530115300934904395}
   - component: {fileID: 2270302308847082769}
   - component: {fileID: 7719437454923713960}
   - component: {fileID: 3034851220945496829}
@@ -15331,7 +15332,6 @@ MonoBehaviour:
   m_Transform: {fileID: 765458664678213309}
   m_SkinComp: {fileID: 2270302308847082769}
   m_MovementComp: {fileID: 2768966365666163441}
-  m_AnimateComp: {fileID: -3228370107618924837}
   m_EffectComp: {fileID: 3034851220945496829}
   m_Brain: {fileID: 4952066524200732265}
 --- !u!114 &2768966365666163441
@@ -15377,6 +15377,19 @@ MonoBehaviour:
   attackColliders:
   - {fileID: 2471985645014142085}
   tempFaction: 0
+--- !u!114 &530115300934904395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480443274318773752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0415bd012b42490b948266fbf9ca1112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Brain: {fileID: 4952066524200732265}
 --- !u!114 &2270302308847082769
 MonoBehaviour:
   m_ObjectHideFlags: 0

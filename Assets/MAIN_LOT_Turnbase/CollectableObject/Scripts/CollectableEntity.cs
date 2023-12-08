@@ -87,7 +87,7 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public override void SuccessAttack(GameObject target)
+        public virtual void SuccessAttack(GameObject target)
         {
             throw new System.NotImplementedException();
         }

@@ -43,6 +43,7 @@ namespace JumpeeIsland
 
         private GameObject SpawnCollectableObject(CollectableData collectableData)
         {
+            collectableData.EntityType = EntityType.COLLECTABLE;
             var collectableObj = _collectablePool.GetObject(collectableData.EntityName);
             if (collectableObj == null)
                 return null;

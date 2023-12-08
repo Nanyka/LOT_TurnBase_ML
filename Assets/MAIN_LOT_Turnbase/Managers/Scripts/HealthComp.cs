@@ -49,17 +49,17 @@ namespace JumpeeIsland
             TakeDamageEvent.Invoke(entityData.CurrentHp * 1f / m_MAXHp);
         }
 
-        public void TakeDamage(int damage, EntityData entityData, IAttackRelated killedBy)
+        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy)
         {
             if (_isDeath)
                 return;
 
-            entityData.CurrentHp -= damage;
-            var healthPortion = entityData.CurrentHp * 1f / m_MAXHp;
+            mEntityData.CurrentHp -= killedBy.GetAttackDamage();
+            var healthPortion = mEntityData.CurrentHp * 1f / m_MAXHp;
             entityUI.UpdateHealthSlider(healthPortion);
             TakeDamageEvent.Invoke(healthPortion);
 
-            if (entityData.CurrentHp <= 0)
+            if (mEntityData.CurrentHp <= 0)
             {
                 // if (killedBy.TryGetComponent(out CreatureEntity creatureEntity))
                 //     creatureEntity.AccumulateKills();
@@ -96,6 +96,6 @@ namespace JumpeeIsland
     public interface IHealthComp
     {
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData);
-        public void TakeDamage(int damage, EntityData entityData, IAttackRelated killedBy);
+        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy);
     }
 }
