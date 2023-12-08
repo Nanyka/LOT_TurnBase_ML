@@ -70,10 +70,7 @@ namespace JumpeeIsland
                     continue;
 
                 if (troop.TryGetComponent(out ITroopAssembly character))
-                {
-                    Debug.Log("Set assembly point");
                     character.SetAssemblyPoint(assemblyPoint);
-                }
 
                 if (troop.TryGetComponent(out ISpecialAttackReceiver attackReceiver))
                 {

@@ -9,7 +9,6 @@ namespace JumpeeIsland
     {
         [SerializeField] private Transform _mainTranform;
         [SerializeField] private EnemyGoalManager m_GoalManager;
-        [SerializeField] private float _stopDistance = 5;
 
         private SubGoal _currentGoal;
         private bool _isActive;
@@ -29,10 +28,13 @@ namespace JumpeeIsland
 
         protected void OnDisable()
         {
+            CancelInvoke();
             _isActive = false;
         }
 
-        protected override void Start() { }
+        protected override void Start()
+        {
+        }
 
         private void SetActions()
         {
@@ -66,12 +68,6 @@ namespace JumpeeIsland
 
         #region SENSORs
 
-        protected void DetectTarget(GameObject target)
-        {
-            Beliefs.ModifyState("FoundPlayer", 1);
-            Inventory.AddItem(target);
-        }
-        
         public void AddBeliefs(string state)
         {
             Beliefs.ModifyState(state, 1);
@@ -83,25 +79,11 @@ namespace JumpeeIsland
 
         public override void APlusAlgorithm()
         {
-            // Debug.Log("Run APlusAlgorithm");
-
             if (_isActive == false)
                 return;
 
-            // Debug.Log("AStar algorithm");
             if (CurrentAction != null && CurrentAction.running)
-            {
-                if (CurrentAction.IsAutoComplete)
-                {
-                    if (!_isInvoke)
-                    {
-                        WaitForPostPerformance();
-                        _isInvoke = true;
-                    }
-                }
-            
                 return;
-            }
 
             if (_planner == null || _actionQueue == null)
             {
@@ -133,23 +115,27 @@ namespace JumpeeIsland
                 CurrentAction = _actionQueue.Dequeue();
                 if (CurrentAction.PrePerform())
                 {
-                    if (CurrentAction.Target != null)
+                    if (CurrentAction.Target != null || CurrentAction.IsChasePosition)
                     {
                         CurrentAction.running = true;
-                        _destination = CurrentAction.Target.transform;
-                    }
-                    else if (CurrentAction.IsAutoComplete || CurrentAction.IsChasePosition)
-                    {
-                        CurrentAction.running = true;
-                        APlusAlgorithm();
+                        WhenChaseTarget();
+                        // _destination = CurrentAction.Target.transform;
                     }
                     else
                     {
-                        WaitForPostPerformance();
-                    }
+                        if (CurrentAction.IsAutoComplete)
+                        {
+                            CurrentAction.running = true;
 
-                    // Debug.Log("APlus from PrePerform");
-                    // Invoke(nameof(APlusAlgorithm), CurrentAction.Duration);
+                            if (!_isInvoke)
+                            {
+                                WaitForPostPerformance();
+                                _isInvoke = true;
+                            }
+                        }
+                        else
+                            WaitForPostPerformance();
+                    }
                 }
                 else
                 {
@@ -161,14 +147,12 @@ namespace JumpeeIsland
                 WhenNoSelectedAction();
         }
 
-        protected override void WhenChaseTarget()
+        protected virtual void WhenChaseTarget()
         {
             if (m_ProcessUpdate != null)
             {
-                // TODO: Use a separate script to move object and return APlusAlgorithm when get destination
                 m_ProcessUpdate.StartProcess(_mainTranform,
                     CurrentAction.IsChasePosition ? _posDestination : CurrentAction.Target.transform.position);
-                // Invoke(nameof(APlusAlgorithm), RestInterval);
             }
             else
             {

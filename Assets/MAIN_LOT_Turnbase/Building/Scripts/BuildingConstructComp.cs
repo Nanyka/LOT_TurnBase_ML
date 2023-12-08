@@ -118,11 +118,17 @@ namespace JumpeeIsland
         {
             return _completed;
         }
+
+        public IChangeWorldState GetWorldStateChanger()
+        {
+            return this;
+        }
     }
     
     public interface IBuildingConstruct
     {
+        public void Init(FactionType factionType);
         public UnityEvent GetCompletedEvent();
-        
+        public IChangeWorldState GetWorldStateChanger();
     }
 }

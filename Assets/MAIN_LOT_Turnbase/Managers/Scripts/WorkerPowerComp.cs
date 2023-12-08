@@ -13,12 +13,12 @@ namespace JumpeeIsland
 
         public void PowerUp()
         {
-            Debug.Log("Worker power up");
+            // Debug.Log("Worker power up");
         }
 
         public void ResetPowerBar()
         {
-            Debug.Log("Worker reset powerBar");
+            // Debug.Log("Worker reset powerBar");
         }
 
         public void DisablePowerBar()

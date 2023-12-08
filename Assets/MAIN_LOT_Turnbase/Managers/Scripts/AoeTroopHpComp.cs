@@ -1,14 +1,12 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    public class AoeFactoryHpComp : MonoBehaviour, IHealthComp
+    public class AoeTroopHpComp : MonoBehaviour, IHealthComp
     {
         private IEntityUIUpdate entityUI;
         private int m_MAXHp;
-        private int m_MAXStorage;
         private bool _isDeath;
 
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData)
@@ -16,11 +14,8 @@ namespace JumpeeIsland
             entityUI = GetComponent<IEntityUIUpdate>();
             m_MAXHp = maxHp;
             entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
-            entityUI.ShowBars(false,true,true);
+            entityUI.ShowBars(false,true,false);
             _isDeath = false;
-
-            var buildingData = (BuildingData)entityData;
-            m_MAXStorage = buildingData.StorageCapacity;
         }
 
         public void TakeDamage(int damage, EntityData entityData, IAttackRelated killedBy)

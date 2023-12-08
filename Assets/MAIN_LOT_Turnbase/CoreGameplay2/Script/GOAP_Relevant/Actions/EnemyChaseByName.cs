@@ -9,25 +9,8 @@ namespace JumpeeIsland
     public class EnemyChaseByName : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
-        // [FormerlySerializedAs("TestTarget")] 
-        // [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")] 
-        // [SerializeField] private TowerComp[] _testTarget;
-        // private bool _isContributePhase;
-        //
-        // private readonly List<ICheckableObject> _targets = new();
 
         private ICheckableObject _currentPoint;
-
-        // private void Start()
-        // {
-        //     _testTarget = FindObjectsByType<TowerComp>(FindObjectsSortMode.None);
-        //     
-        //     foreach (var target in _testTarget)
-        //     {
-        //         if (target.TryGetComponent(out ICheckableObject checkableObject))
-        //             _targets.Add(checkableObject);
-        //     }
-        // }
 
         public override bool PrePerform()
         {
@@ -61,27 +44,10 @@ namespace JumpeeIsland
             m_GAgent.SetIProcessUpdate(this);
 
             return true;
-            
-            // var availableTarget = _targets.FindAll(t => t.IsCheckable());
-            // if (availableTarget.Count > 0)
-            // {
-            //     var selectedTarget = availableTarget[Random.Range(0, availableTarget.Count)].GetGameObject();
-            //     Target = selectedTarget;
-            //     m_GAgent.Inventory.AddItem(selectedTarget);
-            //     m_GAgent.SetIProcessUpdate(this);
-            // }
-            //
-            // return true;
         }
 
         public override bool PostPerform()
         {
-            // if (_isContributePhase)
-            // {
-            //     m_GAgent.Beliefs.RemoveState("targetAvailable");
-            //     m_GAgent.Beliefs.ModifyState("Empty", 1);
-            // }
-
             return true;
         }
 

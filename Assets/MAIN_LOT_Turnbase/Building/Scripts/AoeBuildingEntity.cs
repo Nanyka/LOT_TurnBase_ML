@@ -11,10 +11,9 @@ namespace JumpeeIsland
         [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private SkillComp m_SkillComp;
         [SerializeField] private FireComp m_FireComp;
-        [SerializeField] private BuildingConstructComp m_Constructor;
 
         private IHealthComp m_HealthComp;
-        private IEntityUIUpdate m_UIUpdate;
+        private IBuildingConstruct m_Constructor;
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -23,7 +22,7 @@ namespace JumpeeIsland
         public void Init(BuildingData buildingData)
         {
             m_HealthComp = GetComponent<IHealthComp>();
-            m_UIUpdate = GetComponent<IEntityUIUpdate>();
+            m_Constructor = GetComponent<IBuildingConstruct>();
             m_BuildingData = buildingData;
             RefreshEntity();
         }
@@ -195,7 +194,7 @@ namespace JumpeeIsland
 
         public IChangeWorldState GetWorldStateChanger()
         {
-            return m_Constructor;
+            return m_Constructor.GetWorldStateChanger();
         }
 
         #endregion
@@ -208,12 +207,9 @@ namespace JumpeeIsland
 
             m_Transform.position = m_BuildingData.Position;
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
-            m_UIUpdate.ShowBars(false,true,true);
             m_SkillComp.Init(m_BuildingData.EntityName);
             OnUnitDie.AddListener(DieIndividualProcess);
-
-            if (GameFlowManager.Instance.GameMode == GameMode.AOE)
-                m_Constructor?.Init(m_BuildingData.FactionType);
+            m_Constructor.Init(m_BuildingData.FactionType);
         }
 
         private void ResetEntity()

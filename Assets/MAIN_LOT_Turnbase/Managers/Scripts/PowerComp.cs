@@ -6,15 +6,17 @@ namespace JumpeeIsland
     public class PowerComp : MonoBehaviour, ISkillMonitor
     {
         private ISpecialAttackReceiver _skillReceiver;
-        [SerializeField] private int _attackIndex;
+        private IEntityUIUpdate _entityUIUpdate;
+        private int _attackIndex;
         private int maxPower = 4; // 3 normal attack allow 1 special attack
-        [SerializeField] private int _curPower;
+        private int _curPower;
         private bool _isAvailable;
         private bool _isPowerFull;
 
         private void Start()
         {
             _skillReceiver = GetComponent<ISpecialAttackReceiver>();
+            _entityUIUpdate = GetComponent<IEntityUIUpdate>();
         }
 
         // Enable powerBar when specialAttack is unlocked
@@ -26,6 +28,7 @@ namespace JumpeeIsland
         {
             _attackIndex = attackIndex;
             Debug.Log("Enable power bar");
+            _entityUIUpdate.ShowBars(false,true,true);
             _isAvailable = true;
             ResetPowerBar();
         }

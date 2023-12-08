@@ -10,14 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 7351982336936001907}
   - component: {fileID: 8468988529086565268}
-  - component: {fileID: 5008460312297062217}
-  - component: {fileID: 2238954791518035854}
+  - component: {fileID: -8067539671013329561}
   - component: {fileID: 6015422943590722227}
   - component: {fileID: 6289146406539845179}
   - component: {fileID: 4002886840912316199}
   - component: {fileID: 6405466737416276475}
   - component: {fileID: 7746303012626098451}
   - component: {fileID: 3942049679606706967}
+  - component: {fileID: 1526149848764086532}
   - component: {fileID: 2530247472171743618}
   - component: {fileID: 1614630934215542972}
   m_Layer: 9
@@ -65,7 +65,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9, y: 0.1, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5008460312297062217
+--- !u!114 &-8067539671013329561
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,34 +74,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1936349694109300059}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71612f626e244a3ba43e6702dddbb9dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Entity: {fileID: 2238954791518035854}
---- !u!114 &2238954791518035854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1936349694109300059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0986292ada94a8aacc2ed145142f037, type: 3}
+  m_Script: {fileID: 11500000, guid: 304fce1fe48e41f587e973e40eb53a07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 7351982336936001907}
   m_SkinComp: {fileID: 6015422943590722227}
-  m_HealthComp: {fileID: 4002886840912316199}
   m_AttackComp: {fileID: 6405466737416276475}
-  m_EffectComp: {fileID: 7746303012626098451}
   m_SkillComp: {fileID: 6289146406539845179}
   m_FireComp: {fileID: 0}
-  m_AnimateComp: {fileID: 3942049679606706967}
-  m_Constructor: {fileID: 2530247472171743618}
-  OnThisBuildingUpgrade:
-    m_PersistentCalls:
-      m_Calls: []
   _killAccumulation: 0
 --- !u!114 &6015422943590722227
 MonoBehaviour:
@@ -186,6 +166,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RotatePart: {fileID: 0}
   m_Animator: {fileID: 0}
+--- !u!114 &1526149848764086532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936349694109300059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f977e2fcf74ee48819f9c921740ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _priceTag: {fileID: 0}
+  _priceText: {fileID: 0}
+  _healthSlider: {fileID: 0}
+  _storageSlider: {fileID: 0}
+  _rotationConstraint: {fileID: 0}
 --- !u!114 &2530247472171743618
 MonoBehaviour:
   m_ObjectHideFlags: 0

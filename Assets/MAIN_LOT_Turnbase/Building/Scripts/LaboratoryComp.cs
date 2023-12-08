@@ -119,6 +119,9 @@ namespace JumpeeIsland
                 return;
 
             var topics = SavingSystemManager.Instance.GetResearchTopics();
+            if (!topics.Any())
+                return;
+            
             m_Research = topics.ElementAt(Random.Range(0, topics.Count()));
             topicPanel.SetActive(true);
             _isTopicLoaded = true;

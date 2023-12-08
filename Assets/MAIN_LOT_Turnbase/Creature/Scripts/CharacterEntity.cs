@@ -13,12 +13,12 @@ namespace JumpeeIsland
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private MovementComp m_MovementComp;
         [SerializeField] private AOEAnimateComp m_AnimateComp;
-        [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private EnemyBrainComp m_Brain;
 
         private ISkillMonitor m_SkillMonitor;
-        
+        private IHealthComp m_HealthComp;
+
         // loaded data
         private List<CreatureStats> m_CreatureStats;
         
@@ -26,7 +26,7 @@ namespace JumpeeIsland
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
         private ICharacterAttack _currentAttack;
-        [SerializeField] private int _attackIndex;
+        private int _attackIndex;
         private int _killAccumulation;
         private bool _isDie;
 
@@ -35,6 +35,7 @@ namespace JumpeeIsland
         private void Awake()
         {
             m_SkillMonitor = GetComponent<ISkillMonitor>();
+            m_HealthComp = GetComponent<IHealthComp>();
         }
 
         public void Init(CreatureData creatureData)

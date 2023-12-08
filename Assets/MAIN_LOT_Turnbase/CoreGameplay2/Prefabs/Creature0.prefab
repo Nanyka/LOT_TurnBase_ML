@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7953506924581439176}
   - component: {fileID: 6391753948932630721}
-  - component: {fileID: 7754498563205691366}
+  - component: {fileID: 5360401474995351929}
   - component: {fileID: 6338823738142293700}
   - component: {fileID: 6995176379571888333}
   - component: {fileID: 9030425684321107381}
@@ -59,7 +59,7 @@ MonoBehaviour:
   - GoalId: Assembly
     Remove: 0
     Weight: 5
---- !u!114 &7754498563205691366
+--- !u!114 &5360401474995351929
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7536283052105925}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 466795e9d0b5749c28a138377a22a766, type: 3}
+  m_Script: {fileID: 11500000, guid: 13cc2f75b38a545c2a41533df73ffe89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Actions: []
@@ -81,7 +81,6 @@ MonoBehaviour:
   _posDestination: {x: 0, y: 0, z: 0}
   _mainTranform: {fileID: 2801276164568592138}
   m_GoalManager: {fileID: 6391753948932630721}
-  _stopDistance: 20
 --- !u!114 &6338823738142293700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25450,11 +25449,12 @@ GameObject:
   - component: {fileID: 3083508078755268362}
   - component: {fileID: 3357401734583623910}
   - component: {fileID: 2488135038856907759}
+  - component: {fileID: 3821084573402412847}
   - component: {fileID: 709884986407854447}
   - component: {fileID: 5885100510956597714}
   - component: {fileID: 3940446836352498278}
   - component: {fileID: 4205555104683339302}
-  - component: {fileID: 4747186745563827743}
+  - component: {fileID: 1908765743197202891}
   - component: {fileID: 5789546613445363659}
   - component: {fileID: 5118092334268078911}
   - component: {fileID: -1232809098302774454}
@@ -25571,10 +25571,25 @@ MonoBehaviour:
   m_SkinComp: {fileID: 4205555104683339302}
   m_MovementComp: {fileID: 709884986407854447}
   m_AnimateComp: {fileID: 5118092334268078911}
-  m_HealthComp: {fileID: 4747186745563827743}
   m_EffectComp: {fileID: 5789546613445363659}
-  m_Brain: {fileID: 7754498563205691366}
-  _attackIndex: 0
+  m_Brain: {fileID: 5360401474995351929}
+--- !u!114 &3821084573402412847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743037733719794493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f977e2fcf74ee48819f9c921740ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _priceTag: {fileID: 7834963178329167312}
+  _priceText: {fileID: 87143979950037951}
+  _healthSlider: {fileID: 3345872112064992141}
+  _storageSlider: {fileID: 1106880065027826196}
+  _rotationConstraint: {fileID: 5431646013203022693}
 --- !u!114 &709884986407854447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25587,7 +25602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb479c1897d249b9af36dedf62bc46e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stopDistance: 3
+  _stopDistance: 2
 --- !u!114 &5885100510956597714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25635,7 +25650,7 @@ MonoBehaviour:
   _factionRenderers: []
   _activeMaterial: {fileID: 0}
   _disableMaterial: {fileID: 0}
---- !u!114 &4747186745563827743
+--- !u!114 &1908765743197202891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -25644,10 +25659,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3743037733719794493}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9d2ef52d0914d41ba4570437b257075, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d770306380b41cc9b3874cae2b4b279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityUI: {fileID: 5679242827691267396}
 --- !u!114 &5789546613445363659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25687,8 +25701,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08496803b83c43b1936acae0b2e8249e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackIndex: 0
-  _curPower: 0
 --- !u!1 &4152105319963392229
 GameObject:
   m_ObjectHideFlags: 0
@@ -45900,7 +45912,6 @@ GameObject:
   - component: {fileID: 8182920088961864977}
   - component: {fileID: 8007258460568693702}
   - component: {fileID: 5431646013203022693}
-  - component: {fileID: 5679242827691267396}
   m_Layer: 5
   m_Name: HealthCanvas
   m_TagString: Untagged
@@ -45996,23 +46007,6 @@ RotationConstraint:
   m_Sources:
   - sourceTransform: {fileID: 0}
     weight: 1
---- !u!114 &5679242827691267396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8583733497168261837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a58913ee4f6c4c89b628cf0ac85e8fd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _priceTag: {fileID: 7834963178329167312}
-  _priceText: {fileID: 87143979950037951}
-  _healthSlider: {fileID: 3345872112064992141}
-  _storageSlider: {fileID: 1106880065027826196}
-  _rotationConstraint: {fileID: 5431646013203022693}
 --- !u!1 &8827875933998669656
 GameObject:
   m_ObjectHideFlags: 0

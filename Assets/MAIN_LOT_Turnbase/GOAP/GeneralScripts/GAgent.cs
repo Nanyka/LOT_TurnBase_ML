@@ -125,7 +125,6 @@ namespace GOAP
         {
             CurrentAction.IsChasePosition = false;
             m_ProcessUpdate = processUpdate;
-            WhenChaseTarget();
         }
 
         // Use for position target only
@@ -134,12 +133,6 @@ namespace GOAP
             CurrentAction.IsChasePosition = true;
             _posDestination = positionTarget;
             m_ProcessUpdate = processUpdate;
-            WhenChaseTarget();
-        }
-
-        protected virtual void WhenChaseTarget()
-        {
-            Debug.Log("Start chase target");
         }
     }
 }
