@@ -87,7 +87,7 @@ namespace JumpeeIsland
             _isGameRunning = false;
         }
 
-        public EnvironmentManager GetEnvManager()
+        public virtual EnvironmentManager GetEnvManager()
         {
             return _environmentManager;
         }

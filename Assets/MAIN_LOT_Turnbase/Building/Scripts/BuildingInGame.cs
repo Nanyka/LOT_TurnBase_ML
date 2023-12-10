@@ -10,9 +10,9 @@ namespace JumpeeIsland
     {
         [SerializeField] private BuildingEntity m_Entity;
 
-        private BuildingController _buildingController;
+        private IBuildingController _buildingController;
 
-        public void Init(BuildingData buildingData, BuildingController buildingController)
+        public void Init(BuildingData buildingData, IBuildingController buildingController)
         {
             m_Entity.Init(buildingData);
             transform.position = buildingData.Position;

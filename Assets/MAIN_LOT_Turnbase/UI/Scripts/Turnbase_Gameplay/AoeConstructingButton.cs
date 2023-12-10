@@ -7,12 +7,13 @@ using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
-    public class AoeConstructingButton: MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction
+    public class AoeConstructingButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
+        IConfirmFunction
     {
         [SerializeField] private GameObject m_Container;
         [SerializeField] private Image m_ItemIcon;
         [SerializeField] private TextMeshProUGUI m_Price;
-        
+
         private AsyncOperationHandle m_UCDObjectLoadingHandle;
         private AoeConstructionMenu _mBuyBuildingMenu;
         private JIInventoryItem m_BuidlingItem;
@@ -35,7 +36,7 @@ namespace JumpeeIsland
             var costs = SavingSystemManager.Instance.GetPurchaseCost(buildingItem.virtualPurchaseId);
             if (costs.Count > 0)
                 m_Price.text = costs[0].amount.ToString();
-            
+
             m_Container.SetActive(true);
         }
 
@@ -54,23 +55,26 @@ namespace JumpeeIsland
             var ray = _camera.ScreenPointToRay(eventData.position);
             if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
                 return;
-            
-            _mBuyBuildingMenu.SelectLocation(collidedTile.transform.position);
+
+            _buildingPosition = collidedTile.point;
+            _buildingPosition = new Vector3(Mathf.RoundToInt(_buildingPosition.x),
+                Mathf.RoundToInt(_buildingPosition.y), Mathf.RoundToInt(_buildingPosition.z));
+            _mBuyBuildingMenu.SelectLocation(_buildingPosition);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            var ray = _camera.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
-                return;
-
-            _buildingPosition = collidedTile.transform.position;
+            // var ray = _camera.ScreenPointToRay(Input.mousePosition);
+            // if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
+            //     return;
+            // _buildingPosition = collidedTile.transform.position;
+            
             _mBuyBuildingMenu.EndSelectionPhase(this);
         }
 
         public virtual void ClickYes()
         {
-            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem,_buildingPosition, false);
+            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem, _buildingPosition, false);
         }
 
         public GameObject GetGameObject()

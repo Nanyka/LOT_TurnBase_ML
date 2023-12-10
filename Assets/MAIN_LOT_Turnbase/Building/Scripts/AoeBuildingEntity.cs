@@ -16,7 +16,7 @@ namespace JumpeeIsland
         private BuildingStats m_CurrentStats;
         [SerializeField] private int _killAccumulation;
 
-        public void Init(BuildingData buildingData, BuildingController buildingController)
+        public void Init(BuildingData buildingData, IBuildingController buildingController)
         {
             m_HealthComp = GetComponent<IHealthComp>();
             m_Constructor = GetComponent<IBuildingConstruct>();
@@ -185,7 +185,7 @@ namespace JumpeeIsland
 
     public interface IBuildingDealer
     {
-        public void Init(BuildingData buildingData, BuildingController buildingController);
+        public void Init(BuildingData buildingData, IBuildingController buildingController);
         public IChangeWorldState GetWorldStateChanger();
     }
 }

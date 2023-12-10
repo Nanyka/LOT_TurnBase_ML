@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class BuildingController : MonoBehaviour
+    public class BuildingController : MonoBehaviour, IBuildingController
     {
         [SerializeField] protected List<BuildingInGame> m_buildings = new();
         private EnvironmentManager m_Environment;
@@ -153,5 +153,14 @@ namespace JumpeeIsland
         {
             return m_buildings;
         }
+    }
+
+    public interface IBuildingController
+    {
+        public void Init();
+        public void StoreRewardAtBuildings(string currencyId, int amount);
+        public void DeductCurrencyFromBuildings(string currencyId, int amount);
+        public void AddBuildingToList(BuildingInGame building);
+        public void RemoveBuilding(BuildingInGame building);
     }
 }

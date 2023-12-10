@@ -7,17 +7,12 @@ namespace JumpeeIsland
 {
     [RequireComponent(typeof(IFactionController))]
     [RequireComponent(typeof(ObjectPool))]
-    public class CreatureLoader : MonoBehaviour, ILoadData
+    public class CreatureLoader : MonoBehaviour, ICreatureLoader
     {
         protected IFactionController _factionController;
-        protected ObjectPool _creaturePool;
+        private ObjectPool _creaturePool;
         protected List<CreatureData> _creatureDatas;
-
-        public void StartUpLoadData<T>(T data)
-        {
-            _creatureDatas = (List<CreatureData>)Convert.ChangeType(data, typeof(List<CreatureData>));
-        }
-
+        
         protected virtual void Start()
         {
             GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
@@ -25,18 +20,22 @@ namespace JumpeeIsland
             _creaturePool = GetComponent<ObjectPool>();
         }
 
-        protected virtual void Init()
+        public virtual void Init()
         {
             foreach (var creatureData in _creatureDatas)
                 TrainANewCreature(creatureData);
 
             _factionController.Init();
         }
-
-        public virtual GameObject PlaceNewObject<T>(T data)
+        
+        public void StartUpLoadData(List<CreatureData> data)
         {
-            var creatureData = (CreatureData)Convert.ChangeType(data, typeof(CreatureData));
-            return TrainANewCreature(creatureData);
+            _creatureDatas = data;
+        }
+
+        public virtual GameObject PlaceNewObject(CreatureData data)
+        {
+            return TrainANewCreature(data);
         }
 
         protected virtual GameObject TrainANewCreature(CreatureData creatureData)
@@ -66,5 +65,13 @@ namespace JumpeeIsland
             _creatureDatas = new();
             _factionController.ResetData();
         }
+    }
+
+    public interface ICreatureLoader
+    {
+        public void Init();
+        public void StartUpLoadData(List<CreatureData> data);
+        public GameObject PlaceNewObject(CreatureData data);
+        public void Reset();
     }
 }

@@ -25,7 +25,7 @@ namespace JumpeeIsland
         public List<LocalBalance> LocalBalances = new();
     }
 
-    public class CurrencyLoader : MonoBehaviour
+    public class CurrencyLoader : MonoBehaviour, ICurrencyLoader
     {
         private List<PlayerBalance> m_Currencies;
         private LocalBalancesData m_LocalBalances;
@@ -34,7 +34,6 @@ namespace JumpeeIsland
         public void SetLocalBalances(LocalBalancesData localBalancesData)
         {
             m_LocalBalances = localBalancesData;
-            
         }
 
         // Update cloud currency based on local currency
@@ -90,10 +89,10 @@ namespace JumpeeIsland
             return m_Currencies;
         }
 
-        public long GetMoveAmount()
-        {
-            return GetCurrency(m_MoveId);
-        }
+        // public long GetMoveAmount()
+        // {
+        //     return GetCurrency(m_MoveId);
+        // }
 
         public void ResetCurrencies(List<PlayerBalance> currencies)
         {
@@ -103,7 +102,7 @@ namespace JumpeeIsland
         }
 
         // Update local currencies to have it match with cloud data when the command is still not flushed up
-        public void IncrementCurrency(string currencyId, int currencyAmount)
+        public void GainCurrency(string currencyId, int currencyAmount)
         {
             var currency = m_Currencies.Find(t => t.CurrencyId == currencyId);
             currency.Balance += currencyAmount;
@@ -150,5 +149,19 @@ namespace JumpeeIsland
             foreach (var currency in m_Currencies)
                 m_LocalBalances.LocalBalances.Add(new LocalBalance(currency.CurrencyId, (int)currency.Balance));
         }
+    }
+
+    public interface ICurrencyLoader
+    {
+        public void SetLocalBalances(LocalBalancesData localBalancesData);
+        public long GetCurrency(string currencyId);
+        public void ResetCurrencies(List<PlayerBalance> currencies);
+        public void Init(List<PlayerBalance> currencies);
+        public void GrantMove(long moveAmount);
+        public void RefreshCurrencies(List<PlayerBalance> currencies);
+        public void GainCurrency(string currencyId, int currencyAmount);
+        public void DeductCurrency(string currencyId, int currencyAmount);
+        public bool CheckEnoughCurrency(string currencyId, int currencyAmount);
+        public IEnumerable<PlayerBalance> GetCurrencies();
     }
 }

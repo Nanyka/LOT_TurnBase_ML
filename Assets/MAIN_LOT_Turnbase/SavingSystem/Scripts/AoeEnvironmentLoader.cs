@@ -1,23 +1,40 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IResourceStock, IStoragesControl
+    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl
     {
         [SerializeField] protected TileManager tileManager;
-        [SerializeField] private ResourceLoader resourceLoader;
-        [SerializeField] protected BuildingLoader playerBuildingLoader;
-        [SerializeField] private BuildingLoader enemyBuildingLoader;
-        [SerializeField] private CreatureLoader playerLoader;
-        [SerializeField] private CollectableObjectLoader collectableLoader;
+        [SerializeField] private GameObject resources;
+        [SerializeField] protected GameObject playerBuildings;
+        [SerializeField] private GameObject enemyBuildings;
+        [SerializeField] private GameObject playerCreatures;
+        [SerializeField] private GameObject collectable;
         [SerializeField] protected EnvironmentData _environmentData;
 
         private EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
+        private IBuildingLoader playerBuildingLoader;
+        private IBuildingLoader enemyBuildingLoader;
+        private IResourceLoader resourceLoader;
+        private ICollectableLoader collectableLoader;
+        private ICreatureLoader playerLoader;
 
         #region ENVIRONMENT LOADER
+
+        private void Start()
+        {
+            playerBuildingLoader = playerBuildings.GetComponent<IBuildingLoader>();
+            enemyBuildingLoader = enemyBuildings.GetComponent<IBuildingLoader>();
+            resourceLoader = resources.GetComponent<IResourceLoader>();
+            collectableLoader = collectable.GetComponent<ICollectableLoader>();
+            playerLoader = playerCreatures.GetComponent<ICreatureLoader>();
+        }
 
         public async void Init()
         {
@@ -38,8 +55,7 @@ namespace JumpeeIsland
             MainUI.Instance.OnUpdateCurrencies.Invoke();
 
             ExecuteEnvData();
-            GetComponent<IEnvironmentCreator>()
-                .CreateEnvObjects(); // Create environment-relevant objects that not include in the saving data
+            GetComponent<IEnvironmentCreator>().CreateEnvObjects(); // Create environment-relevant objects that not include in the saving data
 
             Debug.Log("----GAME START!!!----");
         }
@@ -151,7 +167,7 @@ namespace JumpeeIsland
         public void SpawnAnEnemy(CreatureData creatureData)
         {
             _environmentData.AddEnemyData(creatureData);
-            enemyBuildingLoader.PlaceNewObject(creatureData);
+            // enemyBuildingLoader.PlaceNewObject(creatureData);
         }
 
         public IEnumerable<GameObject> GetBuildings(FactionType faction)
@@ -171,15 +187,15 @@ namespace JumpeeIsland
 
         #region HANDLE STORAGE
 
-        public void StoreRewardAtBuildings(string currencyId, int amount)
-        {
-            playerBuildingLoader.GetController().StoreRewardAtBuildings(currencyId, amount);
-        }
-
-        public void DeductCurrencyFromBuildings(string currencyId, int amount)
-        {
-            playerBuildingLoader.GetController().DeductCurrencyFromBuildings(currencyId, amount);
-        }
+        // public void StoreRewardAtBuildings(string currencyId, int amount)
+        // {
+        //     playerBuildingLoader.GetController().StoreRewardAtBuildings(currencyId, amount);
+        // }
+        //
+        // public void DeductCurrencyFromBuildings(string currencyId, int amount)
+        // {
+        //     playerBuildingLoader.GetController().DeductCurrencyFromBuildings(currencyId, amount);
+        // }
 
         #endregion
 

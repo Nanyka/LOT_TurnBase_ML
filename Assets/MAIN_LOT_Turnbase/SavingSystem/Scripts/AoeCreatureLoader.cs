@@ -1,15 +1,38 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeCreatureLoader : CreatureLoader
+    public class AoeCreatureLoader : MonoBehaviour, ICreatureLoader
     {
-        protected override void Init()
+        private IFactionController _factionController;
+        private ObjectPool _creaturePool;
+        protected List<CreatureData> _creatureDatas;
+
+        public void StartUpLoadData(List<CreatureData> data)
+        {
+            _creatureDatas = data;
+        }
+
+        protected virtual void Start()
+        {
+            GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
+            _factionController = GetComponent<IFactionController>();
+            _creaturePool = GetComponent<ObjectPool>();
+        }
+
+        public void Init()
         {
             _factionController.Init();
         }
-        
-        protected override GameObject TrainANewCreature(CreatureData creatureData)
+
+        public virtual GameObject PlaceNewObject(CreatureData data)
+        {
+            return TrainANewCreature(data);
+        }
+
+        private GameObject TrainANewCreature(CreatureData creatureData)
         {
             creatureData.EntityType =
                 creatureData.FactionType == FactionType.Player ? EntityType.PLAYER : EntityType.ENEMY;
@@ -27,6 +50,13 @@ namespace JumpeeIsland
             }
 
             return creatureObj;
+        }
+
+        public void Reset()
+        {
+            _creaturePool.ResetPool();
+            _creatureDatas = new();
+            _factionController.ResetData();
         }
     }
 }

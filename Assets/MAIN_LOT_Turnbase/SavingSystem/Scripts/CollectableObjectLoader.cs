@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CollectableObjectLoader : MonoBehaviour, ILoadData
+    public class CollectableObjectLoader : MonoBehaviour, ICollectableLoader
     {
         [SerializeField] private ObjectPool _collectablePool;
         private List<CollectableData> _collectableData = new();
@@ -17,9 +17,9 @@ namespace JumpeeIsland
             _collectableController = GetComponent<CollectableController>();
         }
 
-        public void StartUpLoadData<T>(T data)
+        public void StartUpLoadData(List<CollectableData> data)
         {
-            _collectableData = (List<CollectableData>)Convert.ChangeType(data, typeof(List<CollectableData>));
+            _collectableData = data;
         }
 
         private void Init()
@@ -35,10 +35,9 @@ namespace JumpeeIsland
             _collectableController.Init();
         }
 
-        public GameObject PlaceNewObject<T>(T data)
+        public GameObject PlaceNewObject(CollectableData data)
         {
-            var collectableData = (CollectableData)Convert.ChangeType(data, typeof(CollectableData));
-            return SpawnCollectableObject(collectableData);
+            return SpawnCollectableObject(data);
         }
 
         private GameObject SpawnCollectableObject(CollectableData collectableData)
@@ -62,5 +61,12 @@ namespace JumpeeIsland
             _collectablePool.ResetPool();
             _collectableData = new List<CollectableData>();
         }
+    }
+
+    public interface ICollectableLoader
+    {
+        public void StartUpLoadData(List<CollectableData> data);
+        public GameObject PlaceNewObject(CollectableData data);
+        public void Reset();
     }
 }

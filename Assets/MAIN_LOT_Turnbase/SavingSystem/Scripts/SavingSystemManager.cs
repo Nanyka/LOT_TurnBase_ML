@@ -52,7 +52,7 @@ namespace JumpeeIsland
         private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
         private IStoragesControl m_StorageController;
-        private CurrencyLoader m_CurrencyLoader;
+        private ICurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
         protected RuntimeMetadata m_RuntimeMetadata = new();
@@ -70,7 +70,7 @@ namespace JumpeeIsland
             m_StorageHandler = GetComponent<IResourceStock>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_StorageController = GetComponent<IStoragesControl>();
-            m_CurrencyLoader = GetComponent<CurrencyLoader>();
+            m_CurrencyLoader = GetComponent<ICurrencyLoader>();
             m_InventoryLoader = GetComponent<InventoryLoader>();
 
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
@@ -132,7 +132,7 @@ namespace JumpeeIsland
             SaveMetadata(); // set it as connected state when loaded all disconnected session's data
             SetInLoading(false); // Finish loading phase
 
-            GameFlowManager.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetMoveAmount());
+            GameFlowManager.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetCurrency("MOVE"));
         }
 
         public async void OnResetData()
@@ -363,7 +363,7 @@ namespace JumpeeIsland
         // Player pay some cost for constructing the building
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position, bool isCheckMax)
         {
-            // Debug.Log($"Place {inventoryItem.inventoryName}");
+            Debug.Log($"Place {inventoryItem.inventoryName}");
             
             if (isCheckMax && GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
             {
@@ -589,7 +589,7 @@ namespace JumpeeIsland
 
         public void IncrementLocalCurrency(string rewardID, int rewardAmount)
         {
-            m_CurrencyLoader.IncrementCurrency(rewardID, rewardAmount);
+            m_CurrencyLoader.GainCurrency(rewardID, rewardAmount);
         }
 
         public async void DeductCurrency(string currencyId, int amount)
@@ -679,7 +679,7 @@ namespace JumpeeIsland
         public void GrantCurrency(string currencyId, int amount)
         {
             m_CloudConnector.OnGrantCurrency(currencyId, amount);
-            m_CurrencyLoader.IncrementCurrency(currencyId, amount);
+            m_CurrencyLoader.GainCurrency(currencyId, amount);
         }
 
         public void GrantMoveForTest()

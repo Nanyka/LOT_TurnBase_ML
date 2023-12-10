@@ -7,7 +7,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private PlayerNpcLoader _playerNpcLoader;
 
-        protected override void Init()
+        public override void Init()
         {
             var playerFaction = (PlayerFactionController)_factionController;
             if (playerFaction._isAutomation)
@@ -29,7 +29,7 @@ namespace JumpeeIsland
             _factionController.Init();
         }
 
-        public override GameObject PlaceNewObject<T>(T data)
+        public override GameObject PlaceNewObject(CreatureData data)
         {
             var creatureData = (CreatureData)Convert.ChangeType(data, typeof(CreatureData));
             var playerFaction = (PlayerFactionController)_factionController;

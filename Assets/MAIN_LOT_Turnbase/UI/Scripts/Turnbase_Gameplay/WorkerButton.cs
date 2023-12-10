@@ -47,16 +47,20 @@ namespace JumpeeIsland
             if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
                 return;
             
-            _mAoeWorkerMenu.SelectLocation(collidedTile.transform.position);
+            _spawnPosition = collidedTile.point;
+            _spawnPosition = new Vector3(Mathf.RoundToInt(_spawnPosition.x),
+                Mathf.RoundToInt(_spawnPosition.y), Mathf.RoundToInt(_spawnPosition.z));
+            
+            _mAoeWorkerMenu.SelectLocation(_spawnPosition);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            var ray = _camera.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
-                return;
-
-            _spawnPosition = collidedTile.transform.position;
+            // var ray = _camera.ScreenPointToRay(Input.mousePosition);
+            // if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
+            //     return;
+            //
+            // _spawnPosition = collidedTile.transform.position;
             _mAoeWorkerMenu.EndDeal(this);
         }
 

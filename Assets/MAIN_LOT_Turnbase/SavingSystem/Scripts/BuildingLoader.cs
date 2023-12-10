@@ -6,28 +6,21 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class BuildingLoader : MonoBehaviour, ILoadData
+    public class BuildingLoader : MonoBehaviour, IBuildingLoader
     {
         [SerializeField] protected ObjectPool _buildingPool;
         [SerializeField] private FactionType _faction;
 
-        protected BuildingController _buildingController;
+        private IBuildingController _buildingController;
         private List<BuildingData> _buildingDatas = new();
-        // private MainHallTier _currentTier;
-        // private MainHallTier _upcomingTier;
-        
-        public void StartUpLoadData<T>(T data)
-        {
-            _buildingDatas = (List<BuildingData>)Convert.ChangeType(data, typeof(List<BuildingData>));
-        }
         
         private void Start()
         {
             GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
-            _buildingController = GetComponent<BuildingController>();
+            _buildingController = GetComponent<IBuildingController>();
         }
         
-        private void Init()
+        public void Init()
         {
             foreach (var building in _buildingDatas)
             {
@@ -37,11 +30,16 @@ namespace JumpeeIsland
 
             _buildingController.Init();
         }
+        
+        public void StartUpLoadData(List<BuildingData> data)
+        {
+            _buildingDatas = data;
+        }
 
-        public GameObject PlaceNewObject<T>(T data)
+        public GameObject PlaceNewObject(BuildingData data)
         { 
-            var buildingData = (BuildingData)Convert.ChangeType(data, typeof(BuildingData));
-            var building = ConstructBuilding(buildingData);
+            // var buildingData = (BuildingData)Convert.ChangeType(data, typeof(BuildingData));
+            var building = ConstructBuilding(data);
             return building;
         }
         
@@ -51,12 +49,12 @@ namespace JumpeeIsland
             _buildingDatas = new();
         }
 
-        public BuildingController GetController()
+        public IBuildingController GetController()
         {
             return _buildingController;
         }
         
-        protected virtual GameObject ConstructBuilding(BuildingData building)
+        public virtual GameObject ConstructBuilding(BuildingData building)
         {
             building.EntityType = EntityType.BUILDING;
             var buildingObj = _buildingPool.GetObject(building.EntityName);
@@ -77,5 +75,16 @@ namespace JumpeeIsland
             return _buildingPool.GetActiveItemList();
             // return _buildingController.GetBuildings();
         }
+    }
+
+    public interface IBuildingLoader
+    {
+        public void Init();
+        public void StartUpLoadData(List<BuildingData> data);
+        public IEnumerable<GameObject> GetBuildings();
+        public GameObject ConstructBuilding(BuildingData building);
+        public GameObject PlaceNewObject(BuildingData data);
+        public IBuildingController GetController();
+        public void Reset();
     }
 }

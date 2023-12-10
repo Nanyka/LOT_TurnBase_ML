@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ResourceLoader : MonoBehaviour, ILoadData
+    public class ResourceLoader : MonoBehaviour, IResourceLoader
     {
         [SerializeField] private ObjectPool _resoucePool;
 
@@ -19,12 +19,12 @@ namespace JumpeeIsland
         }
         
         // Prepare data for game session
-        public void StartUpLoadData<T>(T data)
+        public void StartUpLoadData(List<ResourceData> data)
         {
             _resourceDatas = (List<ResourceData>)Convert.ChangeType(data, typeof(List<ResourceData>));
         }
 
-        private void Init()
+        public void Init()
         {
             foreach (var resource in _resourceDatas)
             {
@@ -34,10 +34,10 @@ namespace JumpeeIsland
             _resourceController.Init();
         }
 
-        public GameObject PlaceNewObject<T>(T data)
+        public GameObject PlaceNewObject(ResourceData data)
         {
-            var resourceData = (ResourceData)Convert.ChangeType(data, typeof(ResourceData));
-            return SpawnResource(resourceData);
+            // var resourceData = (ResourceData)Convert.ChangeType(data, typeof(ResourceData));
+            return SpawnResource(data);
         }
 
         private GameObject SpawnResource(ResourceData resourceData)
@@ -67,5 +67,14 @@ namespace JumpeeIsland
             return _resoucePool.GetActiveItemList();
             // return _resourceController.GetResources();
         }
+    }
+
+    public interface IResourceLoader
+    {
+        public void Init();
+        public void StartUpLoadData(List<ResourceData> data);
+        public GameObject PlaceNewObject(ResourceData data);
+        public IEnumerable<GameObject> GetResources();
+        public void Reset();
     }
 }

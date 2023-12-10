@@ -108,8 +108,10 @@ namespace JumpeeIsland
 
         public void SelectLocation(Vector3 position)
         {
-            if (GameFlowManager.Instance.GetEnvManager().FreeToMove(position))
-                _settlePoint.position = position + Vector3.up * 0.5f;
+            _settlePoint.position = position;
+            
+            // if (GameFlowManager.Instance.GetEnvManager().FreeToMove(position))
+            //     _settlePoint.position = position + Vector3.up * 0.5f;
         }
 
         public void EndDeal(IConfirmFunction confirmFunction)
