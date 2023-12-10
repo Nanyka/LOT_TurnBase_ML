@@ -1,26 +1,81 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    public class AoeTroopHpComp : MonoBehaviour, IHealthComp
+    public class AoeTroopHpComp : MonoBehaviour, IHealthComp, IRemoveEntity
     {
         private IEntityUIUpdate entityUI;
+        private IAnimateComp m_AnimateComp;
+        private UnityEvent<IAttackRelated> _dieEvent;
         private int m_MAXHp;
+        private EntityData m_Data;
         private bool _isDeath;
 
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData)
         {
             entityUI = GetComponent<IEntityUIUpdate>();
+            m_AnimateComp = GetComponent<IAnimateComp>();
             m_MAXHp = maxHp;
-            entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
+            m_Data = entityData;
+            _dieEvent = dieEvent;
+            
+            entityUI.UpdateHealthSlider(m_Data.CurrentHp * 1f / m_MAXHp);
             entityUI.ShowBars(false,true,false);
             _isDeath = false;
         }
 
-        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy)
+        public void TakeDamage(IAttackRelated attackBy)
         {
-            throw new System.NotImplementedException();
+            if (_isDeath)
+                return;
+
+            m_Data.CurrentHp -= attackBy.GetAttackDamage();
+            entityUI.UpdateHealthSlider(m_Data.CurrentHp * 1f / m_MAXHp);
+
+            if (m_Data.CurrentHp <= 0)
+            {
+                attackBy.AccumulateKills();
+                m_AnimateComp.SetAnimation(AnimateType.Die);
+                Die(attackBy);
+            }
+            else
+                m_AnimateComp.SetAnimation(AnimateType.TakeDamage);
         }
+
+        public void Die(IAttackRelated killedByFaction)
+        {
+            _isDeath = true;
+            _dieEvent.Invoke(killedByFaction);
+
+            SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
+            StartCoroutine(DestroyVisual());
+        }
+        
+        private IEnumerator DestroyVisual()
+        {
+            // Add VFX
+            yield return new WaitForSeconds(2f);
+            Debug.Log("Remove troop");
+            gameObject.SetActive(false);
+        }
+
+        public GameObject GetRemovedObject()
+        {
+            return gameObject;
+        }
+
+        public EntityData GetEntityData()
+        {
+            return m_Data;
+        }
+    }
+    
+    public interface IHealthComp
+    {
+        public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData);
+        public void TakeDamage(IAttackRelated attackBy);
+        public void Die(IAttackRelated killedByFaction);
     }
 }

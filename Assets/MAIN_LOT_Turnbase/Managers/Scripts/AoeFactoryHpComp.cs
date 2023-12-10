@@ -8,7 +8,7 @@ namespace JumpeeIsland
     {
         private IEntityUIUpdate entityUI;
         private int m_MAXHp;
-        private int m_MAXStorage;
+        // private int m_MAXStorage; // TODO: move it to FactoryComp
         private bool _isDeath;
 
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData)
@@ -19,13 +19,18 @@ namespace JumpeeIsland
             entityUI.ShowBars(false,true,true);
             _isDeath = false;
 
-            var buildingData = (BuildingData)entityData;
-            m_MAXStorage = buildingData.StorageCapacity;
+            // var buildingData = (BuildingData)entityData;
+            // m_MAXStorage = buildingData.StorageCapacity;
         }
 
-        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy)
+        public void TakeDamage(IAttackRelated attackBy)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Die(IAttackRelated killedByFaction)
+        {
+            throw new NotImplementedException();
         }
     }
 }

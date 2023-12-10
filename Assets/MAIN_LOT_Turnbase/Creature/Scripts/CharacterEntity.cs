@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CharacterEntity : Entity, ISpecialSkillReceiver, ITroopAssembly, IGetEntityData<CreatureStats>
+    public class CharacterEntity : Entity, ISpecialSkillReceiver, IAttackRelated, ITroopAssembly, IGetEntityData<CreatureStats>
     {
         public Vector3 _assemblyPoint { get; set; }
 
@@ -62,15 +62,39 @@ namespace JumpeeIsland
             return m_CreatureData;
         }
 
-        public override FactionType GetFaction()
+        #region ATTACK RELATED
+
+        public void GainGoldValue()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        // public override void GainGoldValue()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
+        public override FactionType GetFaction()
+        {
+            return m_CreatureData.FactionType;
+        }
+
+        public int GetAttackDamage()
+        {
+            return m_CreatureData.CurrentDamage;
+        }
+
+        public IEnumerable<Skill_SO> GetSkills()
+        {
+            throw new NotImplementedException();
+        }
+
+        public EffectComp GetEffectComp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AccumulateKills()
+        {
+            _killAccumulation++;
+        }
+
+        #endregion
 
         public void SetAssemblyPoint(Vector3 assemblyPoint)
         {
@@ -101,17 +125,11 @@ namespace JumpeeIsland
 
         #region HEALTH
 
-        public void TakeDamage(int damage, IAttackRelated fromEntity)
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             _isDie = true;
-
-            // Set animation and effect when entity die here
-            m_AnimateComp.SetAnimation(AnimateType.Die);
+            
+            // Turn off the stuffs that are in running
         }
 
         #endregion
@@ -144,20 +162,11 @@ namespace JumpeeIsland
 
         #region ATTACK
 
-        public virtual void StartAttack()
+        public void StartAttack()
         {
-            // _currentAttack = attack;
             m_AnimateComp.TriggerAttackAnim(_attackIndex);
             m_SkillMonitor.ResetPowerBar();
         }
-
-        // TODO: Refactor it by splitting it into a separated component
-        // TODO: refactor animateComp
-        // public void SuccessAttack(GameObject target)
-        // {
-        //     _currentAttack.ExecuteAttack(target);
-        //     m_SkillMonitor.PowerUp();
-        // }
 
         #endregion
 
@@ -174,15 +183,6 @@ namespace JumpeeIsland
         {
             _attackIndex = index;
         }
-
-        #endregion
-
-        #region EFFECT
-
-        // public override EffectComp GetEffectComp()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
 
         #endregion
 
@@ -243,9 +243,4 @@ namespace JumpeeIsland
         public void EnablePowerBar(int index);
         public void SetAttackIndex(int index);
     }
-
-    // public interface ISuccessAttack
-    // {
-    //     public void SuccessAttack(GameObject target);
-    // }
 }

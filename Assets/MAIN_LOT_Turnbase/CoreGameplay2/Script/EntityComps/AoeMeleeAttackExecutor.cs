@@ -6,19 +6,18 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    // public interface IAnimAttack
-    
-    public class AnimAttackComp : MonoBehaviour, IAttackExecutor
+    public class AoeMeleeAttackExecutor : MonoBehaviour, IAttackExecutor
     {
         [SerializeField] private ParticleSystem attackVfx;
         [SerializeField] private List<AnimAttackCollider> attackColliders;
-        [SerializeField] private FactionType tempFaction;
-
-        private IAttackComp _successAttack;
+        
+        private IAttackComp _attackComp;
+        private IAttackRelated _attackRelated;
 
         private void Start()
         {
-            _successAttack = GetComponent<IAttackComp>();
+            _attackComp = GetComponent<IAttackComp>();
+            _attackRelated = GetComponent<IAttackRelated>();
             
             foreach (var attackCollider in attackColliders)
                 attackCollider.Init(this);
@@ -31,16 +30,12 @@ namespace JumpeeIsland
 
         public FactionType GetFaction()
         {
-            return tempFaction;
+            return _attackRelated.GetFaction();
         }
         
         public void ExecuteHitEffect(GameObject target)
         {
-            _successAttack.SuccessAttack(target);
-        }
-        public void ExecuteHitEffect(int posIndex)
-        {
-            Debug.Log("Use for multi attacks");
+            _attackComp.SuccessAttack(target);
         }
 
         public void ExecuteHitEffect(Vector3 atPos)

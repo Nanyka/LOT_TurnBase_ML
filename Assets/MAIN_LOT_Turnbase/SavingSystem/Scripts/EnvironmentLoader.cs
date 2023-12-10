@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class EnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage
+    public class EnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IResourceStock
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
@@ -199,7 +199,7 @@ namespace JumpeeIsland
         public IEnumerable<GameObject> GetResources();
     }
 
-    public interface IHandleStorage
+    public interface IResourceStock
     {
         public void StoreRewardAtBuildings(string currencyId, int amount);
         public void DeductCurrencyFromBuildings(string currencyId, int amount);

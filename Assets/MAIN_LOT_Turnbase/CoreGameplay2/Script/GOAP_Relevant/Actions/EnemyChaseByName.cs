@@ -40,6 +40,9 @@ namespace JumpeeIsland
                     m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
             }
 
+            if (m_GAgent.Inventory.items.Count == 0)
+                return false;
+            
             Target = m_GAgent.Inventory.items[0];
             m_GAgent.SetIProcessUpdate(this);
 

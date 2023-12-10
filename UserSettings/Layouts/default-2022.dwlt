@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1440
     height: 900
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Console
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 138
+  controlID: 140
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -323,8 +323,8 @@ MonoBehaviour:
     y: 0
     width: 370
     height: 850
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
@@ -1612,7 +1612,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: dafaffff529d0000
+      m_ExpandedIDs: dafaffff529d0000c49d0000dc9d0000d6a20000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -2163,7 +2163,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/MAIN_LOT_Turnbase/Building/Scripts
+    - Assets/MAIN_LOT_Turnbase/CoreGameplay2/Prefabs
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -2171,16 +2171,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 58
   m_LastFolders:
-  - Assets/MAIN_LOT_Turnbase/Building/Scripts
+  - Assets/MAIN_LOT_Turnbase/CoreGameplay2/Prefabs
   m_LastFoldersGridSize: 58
   m_LastProjectPath: /Users/admin/Desktop/GameProjects/TestMLAgents
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 82.00409}
-    m_SelectedIDs: 32bc0000
-    m_LastClickedID: 48178
-    m_ExpandedIDs: 00000000e6bb0000e8bb0000eabb0000ecbb0000eebb0000f0bb0000f2bb0000f4bb0000f6bb0000f8bb0000fabb0000fcbb0000febb000000bc000002bc000004bc000006bc000008bc00000abc0000
+    scrollPos: {x: 0, y: 61.000366}
+    m_SelectedIDs: 3cbc0000
+    m_LastClickedID: 48188
+    m_ExpandedIDs: 00000000e6bb0000e8bb0000eabb0000ecbb0000eebb0000f0bb0000f2bb0000f4bb0000f6bb0000f8bb0000fabb0000fcbb0000febb000000bc000002bc000004bc000006bc000008bc00000abc00000cbc000048bc00004abc000000c40200cccf0200e8cf0200
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2208,7 +2208,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000e6bb0000e8bb0000eabb0000ecbb0000eebb0000f0bb0000f2bb0000f4bb0000f6bb0000f8bb0000fabb0000fcbb0000febb000000bc000002bc000004bc000006bc000008bc00000abc0000
+    m_ExpandedIDs: 00000000e6bb0000e8bb0000eabb0000ecbb0000eebb0000f0bb0000f2bb0000f4bb0000f6bb0000f8bb0000fabb0000fcbb0000febb000000bc000002bc000004bc000006bc000008bc00000abc00000cbc0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2252,7 +2252,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 11}
+      m_ClientGUIView: {fileID: 0}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -2260,7 +2260,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 50}
     m_GridSize: 58
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 240
@@ -2342,6 +2342,8 @@ MonoBehaviour:
     - {fileID: 3426513453801236321, guid: d3ace2173c58949c2bec30cae9bc2812, type: 2}
     - {fileID: -7766172748331134732, guid: 072fcf74bca954beea72b07617b10eb0, type: 2}
     - {fileID: 3716664087125655973, guid: d3ace2173c58949c2bec30cae9bc2812, type: 2}
+    - {fileID: 3426513453801236321, guid: f7c6ead8d82b946e49c5e165149a86bf, type: 2}
+    - {fileID: 3716664087125655973, guid: f7c6ead8d82b946e49c5e165149a86bf, type: 2}
     m_ValueSerializationHelper:
     - e00: 0.38346457
       e01: 0
@@ -2423,10 +2425,44 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
+    - e00: 0.6304956
+      e01: 0
+      e02: 0
+      e03: 137.94482
+      e10: 0
+      e11: 0.6304956
+      e12: 0
+      e13: 89.30038
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 0.5920635
+      e01: 0
+      e02: 0
+      e03: 184.49207
+      e10: 0
+      e11: 0.5920635
+      e12: 0
+      e13: 3.1587372
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
   m_PreviewAnimator: {fileID: 0}
-  m_AnimatorController: {fileID: 9100000, guid: d3ace2173c58949c2bec30cae9bc2812, type: 2}
+  m_AnimatorController: {fileID: 9100000, guid: f7c6ead8d82b946e49c5e165149a86bf, type: 2}
   m_BreadCrumbs:
-  - m_Target: {fileID: 3426513453801236321, guid: d3ace2173c58949c2bec30cae9bc2812, type: 2}
+  - m_Target: {fileID: 3426513453801236321, guid: f7c6ead8d82b946e49c5e165149a86bf, type: 2}
+    m_ScrollPosition: {x: 0, y: 0}
+  - m_Target: {fileID: 3716664087125655973, guid: f7c6ead8d82b946e49c5e165149a86bf, type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
   stateMachineGraphGUI: {fileID: 0}

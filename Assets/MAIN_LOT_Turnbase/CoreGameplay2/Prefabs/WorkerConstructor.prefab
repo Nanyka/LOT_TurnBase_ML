@@ -1158,13 +1158,13 @@ GameObject:
   - component: {fileID: 2425714517419955472}
   - component: {fileID: 6205875999760304290}
   - component: {fileID: 1938594335514503327}
-  - component: {fileID: 4666780066213592028}
   - component: {fileID: 5925429049129339274}
   - component: {fileID: 6871338029056849902}
-  - component: {fileID: 5091222814065446467}
+  - component: {fileID: 5960658456352786687}
   - component: {fileID: 4836688417021469675}
+  - component: {fileID: 3772985581427138538}
   - component: {fileID: 5732889581715257826}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WorkerConstructor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1275,7 +1275,6 @@ MonoBehaviour:
   m_Transform: {fileID: 6150032494686333818}
   m_SkinComp: {fileID: 5925429049129339274}
   m_MovementComp: {fileID: 1938594335514503327}
-  m_AnimateComp: {fileID: 4836688417021469675}
   m_EffectComp: {fileID: 6871338029056849902}
   m_Brain: {fileID: 7954787930265543559}
 --- !u!114 &1938594335514503327
@@ -1291,20 +1290,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stopDistance: 2
---- !u!114 &4666780066213592028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5816986333661447145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bafb2436336484a6092c07a78ffc7605, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RotatePart: {fileID: 2225446430802401055}
-  m_Animator: {fileID: 2425714517419955472}
 --- !u!114 &5925429049129339274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1336,7 +1321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _remainTempJumpBoost: 0
   _magnitudeJumpBoost: 0
---- !u!114 &5091222814065446467
+--- !u!114 &5960658456352786687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1345,10 +1330,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5816986333661447145}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9d2ef52d0914d41ba4570437b257075, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d770306380b41cc9b3874cae2b4b279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityUI: {fileID: 4349036051583979022}
 --- !u!114 &4836688417021469675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1362,6 +1346,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RotatePart: {fileID: 2225446430802401055}
+--- !u!114 &3772985581427138538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816986333661447145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f977e2fcf74ee48819f9c921740ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _priceTag: {fileID: 6271541059344178410}
+  _priceText: {fileID: 2307723681992332180}
+  _healthSlider: {fileID: 5525447663936953676}
+  _storageSlider: {fileID: 8380981988974017535}
+  _rotationConstraint: {fileID: 3560817603572031025}
 --- !u!114 &5732889581715257826
 MonoBehaviour:
   m_ObjectHideFlags: 0

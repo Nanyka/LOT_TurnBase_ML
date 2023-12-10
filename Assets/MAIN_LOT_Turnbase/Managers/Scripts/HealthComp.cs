@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
-    public class HealthComp : MonoBehaviour, IHealthComp
+    public class HealthComp : MonoBehaviour
     {
         [NonSerialized] public UnityEvent<float> TakeDamageEvent = new(); 
 
@@ -49,12 +49,12 @@ namespace JumpeeIsland
             TakeDamageEvent.Invoke(entityData.CurrentHp * 1f / m_MAXHp);
         }
 
-        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy)
+        public void TakeDamage(EntityData mEntityData, IAttackRelated attackBy)
         {
             if (_isDeath)
                 return;
 
-            mEntityData.CurrentHp -= killedBy.GetAttackDamage();
+            mEntityData.CurrentHp -= attackBy.GetAttackDamage();
             var healthPortion = mEntityData.CurrentHp * 1f / m_MAXHp;
             entityUI.UpdateHealthSlider(healthPortion);
             TakeDamageEvent.Invoke(healthPortion);
@@ -64,9 +64,9 @@ namespace JumpeeIsland
                 // if (killedBy.TryGetComponent(out CreatureEntity creatureEntity))
                 //     creatureEntity.AccumulateKills();
                 
-                killedBy.AccumulateKills();
+                attackBy.AccumulateKills();
 
-                Die(killedBy);
+                Die(attackBy);
             }
         }
 
@@ -90,12 +90,5 @@ namespace JumpeeIsland
         {
             entityUI.TurnHealthSlider(isOn);
         }
-    }
-
-    // TODO: replace HealthComp in Entity by IHealthComp
-    public interface IHealthComp
-    {
-        public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData);
-        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy);
     }
 }

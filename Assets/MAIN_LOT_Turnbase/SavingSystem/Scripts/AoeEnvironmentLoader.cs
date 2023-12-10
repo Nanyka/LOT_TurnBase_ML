@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IHandleStorage, IStoragesControl
+    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IResourceStock, IStoragesControl
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
@@ -14,7 +14,7 @@ namespace JumpeeIsland
         [SerializeField] private CollectableObjectLoader collectableLoader;
         [SerializeField] protected EnvironmentData _environmentData;
 
-        protected EnvironmentData _playerEnvCache;
+        private EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
 
         #region ENVIRONMENT LOADER
@@ -83,7 +83,6 @@ namespace JumpeeIsland
                 }
             }
             
-            // TODO: Remove this from IStorage list
             if (removeInterface.GetRemovedObject().TryGetComponent(out IStoreResource storeResource))
                 _resourceStorages.Remove(storeResource);
         }

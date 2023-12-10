@@ -7,44 +7,42 @@ namespace JumpeeIsland
     public class AoeTowerHpComp : MonoBehaviour, IHealthComp, IRemoveEntity
     {
         private IEntityUIUpdate entityUI;
-
-        private IGetEntityData<BuildingStats> m_Data;
-
-        // private UnityEvent<IAttackRelated> _dieEvent;
+        private UnityEvent<IAttackRelated> _dieEvent;
         private int m_MAXHp;
+        private EntityData m_Data;
         private bool _isDeath;
 
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData)
         {
             entityUI = GetComponent<IEntityUIUpdate>();
-            m_Data = GetComponent<IGetEntityData<BuildingStats>>();
+            m_Data = entityData;
             m_MAXHp = maxHp;
+            _dieEvent = dieEvent;
+            
             entityUI.UpdateHealthSlider(entityData.CurrentHp * 1f / m_MAXHp);
             entityUI.ShowBars(false, true, true);
-            // _dieEvent = dieEvent;
             _isDeath = false;
         }
 
-        public void TakeDamage(EntityData mEntityData, IAttackRelated killedBy)
+        public void TakeDamage(IAttackRelated attackBy)
         {
             if (_isDeath)
                 return;
 
-            mEntityData.CurrentHp -= killedBy.GetAttackDamage();
-            var healthPortion = mEntityData.CurrentHp * 1f / m_MAXHp;
-            entityUI.UpdateHealthSlider(healthPortion);
+            m_Data.CurrentHp -= attackBy.GetAttackDamage();
+            entityUI.UpdateHealthSlider(m_Data.CurrentHp * 1f / m_MAXHp);
 
-            if (mEntityData.CurrentHp <= 0)
+            if (m_Data.CurrentHp <= 0)
             {
-                killedBy.AccumulateKills();
-                Die(killedBy);
+                attackBy.AccumulateKills();
+                Die(attackBy);
             }
         }
 
-        private void Die(IAttackRelated killedByFaction)
+        public void Die(IAttackRelated killedByFaction)
         {
             _isDeath = true;
-            // _dieEvent.Invoke(killedByFaction);
+            _dieEvent.Invoke(killedByFaction);
 
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             StartCoroutine(DestroyVisual());
@@ -58,11 +56,6 @@ namespace JumpeeIsland
             gameObject.SetActive(false);
         }
 
-        public void Remove(IEnvironmentLoader envLoader)
-        {
-            envLoader.GetData().BuildingData.Remove((BuildingData)m_Data.GetData());
-        }
-
         public GameObject GetRemovedObject()
         {
             return gameObject;
@@ -70,7 +63,7 @@ namespace JumpeeIsland
 
         public EntityData GetEntityData()
         {
-            return m_Data.GetData();
+            return m_Data;
         }
     }
 }

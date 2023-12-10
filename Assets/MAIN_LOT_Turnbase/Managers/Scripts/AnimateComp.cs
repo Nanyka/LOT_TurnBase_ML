@@ -159,11 +159,6 @@ namespace JumpeeIsland
             }
         }
 
-        public void SetAnimator(Animator animator)
-        {
-            m_Animator = animator;
-        }
-
         public void TriggerAttackAnim(int attackIndex)
         {
             m_Animator.SetInteger(AttackIndex, attackIndex);

@@ -44,8 +44,9 @@ namespace JumpeeIsland
 
                 if (targetEntity.GetFaction() != mEntity.GetFaction())
                 {
-                    // Debug.Log($"Take damage on {targetEntity.name} an amount: {mEntity.GetAttackDamage()}");
-                    targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
+                    if (target.TryGetComponent(out IHealthComp healthComp))
+                        healthComp.TakeDamage(mEntity);
+                    // targetEntity.TakeDamage(mEntity.GetAttackDamage(), mEntity);
                     mEntity.GainGoldValue();
                 }
             }

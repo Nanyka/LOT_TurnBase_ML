@@ -49,7 +49,7 @@ namespace JumpeeIsland
         [SerializeField] private string[] m_BasicInventory;
 
         protected IEnvironmentLoader m_EnvLoader;
-        private IHandleStorage m_StorageHandler;
+        private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
         private IStoragesControl m_StorageController;
         private CurrencyLoader m_CurrencyLoader;
@@ -67,7 +67,7 @@ namespace JumpeeIsland
             base.Awake();
             _gamePath = Application.persistentDataPath;
             m_EnvLoader = GetComponent<IEnvironmentLoader>();
-            m_StorageHandler = GetComponent<IHandleStorage>();
+            m_StorageHandler = GetComponent<IResourceStock>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_StorageController = GetComponent<IStoragesControl>();
             m_CurrencyLoader = GetComponent<CurrencyLoader>();
