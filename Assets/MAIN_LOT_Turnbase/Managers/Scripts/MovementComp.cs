@@ -7,10 +7,10 @@ using UnityEngine.Animations;
 
 namespace JumpeeIsland
 {
-    public class MovementComp : MonoBehaviour
+    public class MovementComp : MonoBehaviour, IMoveComp
     {
         [SerializeField] private float _stopDistance;
-        
+
         private Transform m_Transform;
         private NavMeshPath _path;
         private Rigidbody _rigidbody;
@@ -19,20 +19,44 @@ namespace JumpeeIsland
         private IProcessUpdate _currentProcessUpdate;
         private IMover _mover;
         private int _currentIndex;
+        private bool _isLastPath;
+
+        private void OnEnable()
+        {
+            _isLastPath = false;
+        }
+
+        private void OnDisable()
+        {
+            _isLastPath = false;
+        }
 
         private void Start()
         {
             m_Transform = transform;
             _path = new NavMeshPath();
             _rigidbody = GetComponent<Rigidbody>();
+            _mover = GetComponent<IMover>();
         }
 
-        public void MoveTo(Vector3 destination, IProcessUpdate processUpdate, IMover mover)
+        private void Update()
+        {
+            if (_isLastPath)
+            {
+                if (Vector3.Distance(m_Transform.position, _currentConner) < _stopDistance)
+                {
+                    _isLastPath = false;
+                    StopMovement();
+                }
+            }
+        }
+
+        public void MoveTo(Vector3 destination, IProcessUpdate processUpdate)
         {
             _currentDestination = destination;
             _currentProcessUpdate = processUpdate;
             _currentConner = m_Transform.position;
-            _mover = mover;
+            // _mover = mover;
             _mover.StartWalk();
             StartMove();
         }
@@ -56,13 +80,26 @@ namespace JumpeeIsland
             _currentIndex++;
             if (_currentIndex >= _path.corners.Length)
             {
-                _currentProcessUpdate.StopProcess();
-                _mover.StopWalk();
+                StopMovement();
                 return;
             }
 
+            // TODO: Check the distance by Update when it is the final corner
+            _isLastPath = _currentIndex == _path.corners.Length - 1;
+
+            RotateTowardCorner(_currentIndex);
+        }
+
+        private void StopMovement()
+        {
+            _currentProcessUpdate.StopProcess();
+            _mover.StopWalk();
+        }
+
+        private void RotateTowardCorner(int cornerIndex)
+        {
             var currentPos = m_Transform.position;
-            _currentConner = _path.corners.ElementAt(_currentIndex);
+            _currentConner = _path.corners.ElementAt(cornerIndex);
             _currentConner = new Vector3(_currentConner.x, currentPos.y, _currentConner.z);
 
             // Rotate object to the conner
@@ -70,14 +107,16 @@ namespace JumpeeIsland
             Quaternion offsetRotation = Quaternion.identity;
             if (currentVelocity != Vector3.zero)
                 offsetRotation = Quaternion.FromToRotation(currentVelocity, Vector3.zero);
-            m_Transform.rotation = Quaternion.LookRotation(_currentConner - m_Transform.position) * offsetRotation;
+            m_Transform.rotation = Quaternion.LookRotation(_currentConner - currentPos) * offsetRotation;
         }
 
         // Walking animation move the object 1 meter and check the distance to the target at the end of the animation
-        public void NewMovingLoop()
+        private void NewMovingLoop()
         {
-            if (Vector3.Distance(m_Transform.position,
-                    new Vector3(_currentConner.x, m_Transform.position.y, _currentConner.z)) < _stopDistance)
+            if (_isLastPath)
+                return;
+
+            if (Vector3.Distance(m_Transform.position,_currentConner) < _stopDistance)
                 SetCurrentConner();
         }
 
@@ -85,5 +124,11 @@ namespace JumpeeIsland
         {
             return _stopDistance;
         }
+    }
+
+    public interface IMoveComp
+    {
+        public void MoveTo(Vector3 destination, IProcessUpdate processUpdate);
+        public float GetStopDistance();
     }
 }

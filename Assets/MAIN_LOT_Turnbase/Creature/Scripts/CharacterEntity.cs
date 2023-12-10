@@ -11,14 +11,13 @@ namespace JumpeeIsland
 
         // control components
         [SerializeField] private SkinComp m_SkinComp;
-        [SerializeField] private MovementComp m_MovementComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private EnemyBrainComp m_Brain;
 
         private ISkillMonitor m_SkillMonitor;
         private IHealthComp m_HealthComp;
         private IAnimateComp m_AnimateComp;
-        private IMover m_Mover;
+        private IMoveComp m_MovementComp;
 
         // loaded data
         private List<CreatureStats> m_CreatureStats;
@@ -38,7 +37,7 @@ namespace JumpeeIsland
             m_SkillMonitor = GetComponent<ISkillMonitor>();
             m_HealthComp = GetComponent<IHealthComp>();
             m_AnimateComp = GetComponent<IAnimateComp>();
-            m_Mover = GetComponent<IMover>();
+            m_MovementComp = GetComponent<IMoveComp>();
         }
 
         public void Init(CreatureData creatureData)
@@ -144,13 +143,7 @@ namespace JumpeeIsland
                 return;
             }
             
-            m_MovementComp.MoveTo(destination, processUpdate, m_Mover);
-            // m_AnimateComp.SetAnimation(AnimateType.Walk, true);
-        }
-
-        public void StopMoving()
-        {
-            m_AnimateComp.SetAnimation(AnimateType.Walk, false);
+            m_MovementComp.MoveTo(destination, processUpdate);
         }
 
         public float GetStopDistance()

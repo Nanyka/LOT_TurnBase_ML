@@ -72,7 +72,6 @@ namespace JumpeeIsland
                 if (troop.TryGetComponent(out ITroopAssembly character))
                     character.SetAssemblyPoint(assemblyPoint);
 
-                Debug.Log($"{troop.name} has just been spawned");
                 if (troop.TryGetComponent(out ISpecialSkillReceiver attackReceiver))
                 {
                     // Check if any storage research in the stock

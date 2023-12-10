@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GOAP;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -195,20 +194,6 @@ namespace JumpeeIsland
         public void TurnHealthSlider(bool isOn)
         {
             m_HealthComp.TurnHealthSlider(isOn);
-        }
-
-        #endregion
-
-        #region MOVEMENT
-        
-        public void MoveTowards(Vector3 destination, IProcessUpdate processUpdate)
-        {
-            m_MovementComp.MoveTo(destination, processUpdate, m_AnimateComp);
-        }
-
-        public void StopMoving()
-        {
-            m_AnimateComp.SetAnimation(AnimateType.Walk,false);
         }
 
         #endregion
