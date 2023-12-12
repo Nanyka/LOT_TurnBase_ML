@@ -52,7 +52,12 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
             StartCoroutine(DestroyVisual());
         }
-        
+
+        public bool CheckAlive()
+        {
+            return !_isDeath;
+        }
+
         private IEnumerator DestroyVisual()
         {
             // Add VFX
@@ -77,5 +82,6 @@ namespace JumpeeIsland
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData);
         public void TakeDamage(IAttackRelated attackBy);
         public void Die(IAttackRelated killedByFaction);
+        public bool CheckAlive();
     }
 }

@@ -32,5 +32,10 @@ namespace JumpeeIsland
         {
             throw new NotImplementedException();
         }
+
+        public bool CheckAlive()
+        {
+            return !_isDeath;
+        }
     }
 }

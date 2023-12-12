@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class EnemyBrainComp : GAgent
+    public class EnemyBrainComp : GAgent, IBrain
     {
         [SerializeField] private Transform _mainTranform;
         [SerializeField] private EnemyGoalManager m_GoalManager;
@@ -198,5 +198,21 @@ namespace JumpeeIsland
         }
 
         #endregion
+
+        public GInventory GetInventory()
+        {
+            return Inventory;
+        }
+
+        public WorldStates GetBeliefStates()
+        {
+            return Beliefs;
+        }
+    }
+
+    public interface IBrain
+    {
+        public GInventory GetInventory();
+        public WorldStates GetBeliefStates();
     }
 }

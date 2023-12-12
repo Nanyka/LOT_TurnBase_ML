@@ -15,7 +15,7 @@ namespace JumpeeIsland
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
-        [SerializeField] private int _killAccumulation;
+        private int _killAccumulation;
 
         public void Init(BuildingData buildingData, IBuildingController buildingController)
         {
@@ -57,6 +57,11 @@ namespace JumpeeIsland
         public BuildingStats GetStats()
         {
             return m_CurrentStats;
+        }
+
+        public bool CheckAvailable()
+        {
+            return m_HealthComp.CheckAlive();
         }
 
         public void GainGoldValue()

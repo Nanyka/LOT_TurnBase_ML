@@ -10,43 +10,48 @@ namespace JumpeeIsland
     public class EnemyChase : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
-        [SerializeField] private GameObject[] TestTarget;
-        [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")] [SerializeField]
-        private bool _isContibutePhase;
 
-        private readonly List<ICheckableObject> _targets = new(); // TODO: move this list to a distinct manager
-
-        private void Start()
-        {
-            foreach (var target in TestTarget)
-            {
-                if (target.TryGetComponent(out ICheckableObject checkableObject))
-                    _targets.Add(checkableObject);
-            }
-        }
+        private ICheckableObject _currentPoint;
 
         public override bool PrePerform()
         {
-            var availableTarget = _targets.FindAll(t => t.IsCheckable());
-            if (availableTarget.Count > 0)
+            if (m_GAgent.Inventory.IsEmpty())
             {
-                var selectedTarget = availableTarget[Random.Range(0, availableTarget.Count)].GetGameObject();
-                Target = selectedTarget;
-                m_GAgent.Inventory.AddItem(selectedTarget);
-                m_GAgent.SetIProcessUpdate(this);
+                _currentPoint = null;
+                var distanceToTarget = float.PositiveInfinity;
+                var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Enemy);
+                
+                foreach (var building in buildings)
+                {
+                    if (building.TryGetComponent(out ICheckableObject checkableObject))
+                    {
+                        if (checkableObject.IsCheckable() == false)
+                            continue;
+
+                        var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
+                        if (curDis < distanceToTarget)
+                        {
+                            distanceToTarget = curDis;
+                            _currentPoint = checkableObject;
+                        }
+                    }
+                }
+
+                if (_currentPoint != null)
+                    m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
             }
+
+            if (m_GAgent.Inventory.items.Count == 0)
+                return false;
+            
+            Target = m_GAgent.Inventory.items[0];
+            m_GAgent.SetIProcessUpdate(this);
 
             return true;
         }
 
         public override bool PostPerform()
         {
-            if (_isContibutePhase)
-            {
-                m_GAgent.Beliefs.RemoveState("targetAvailable");
-                m_GAgent.Beliefs.ModifyState("Empty", 1);
-            }
-
             return true;
         }
 
@@ -60,8 +65,63 @@ namespace JumpeeIsland
 
         public void StopProcess()
         {
-            // m_Entity.StopMoving();
             m_GAgent.FinishFromOutside();
         }
+
+        // [SerializeField] private CharacterEntity m_Entity;
+        // [SerializeField] private GameObject[] TestTarget;
+        //
+        // [Tooltip("Remove (\")targetAvailable(\") state which is add from collecting phase")] [SerializeField]
+        // private bool _isContibutePhase;
+        //
+        // private readonly List<ICheckableObject> _targets = new(); // TODO: move this list to a distinct manager
+        //
+        // private void Start()
+        // {
+        //     foreach (var target in TestTarget)
+        //     {
+        //         if (target.TryGetComponent(out ICheckableObject checkableObject))
+        //             _targets.Add(checkableObject);
+        //     }
+        // }
+        //
+        // public override bool PrePerform()
+        // {
+        //     var availableTarget = _targets.FindAll(t => t.IsCheckable());
+        //     if (availableTarget.Count > 0)
+        //     {
+        //         var selectedTarget = availableTarget[Random.Range(0, availableTarget.Count)].GetGameObject();
+        //         Target = selectedTarget;
+        //         m_GAgent.Inventory.AddItem(selectedTarget);
+        //         m_GAgent.SetIProcessUpdate(this);
+        //     }
+        //
+        //     return true;
+        // }
+        //
+        // public override bool PostPerform()
+        // {
+        //     if (_isContibutePhase)
+        //     {
+        //         m_GAgent.Beliefs.RemoveState("targetAvailable");
+        //         m_GAgent.Beliefs.ModifyState("Empty", 1);
+        //     }
+        //
+        //     return true;
+        // }
+        //
+        // public void StartProcess(Transform myTransform, Vector3 targetPos)
+        // {
+        //     if (Vector3.Distance(myTransform.position, targetPos) < m_Entity.GetStopDistance())
+        //         m_GAgent.FinishFromOutside();
+        //     else
+        //         m_Entity.MoveTowards(targetPos, this);
+        // }
+        //
+        // public void StopProcess()
+        // {
+        //     // m_Entity.StopMoving();
+        //     m_GAgent.FinishFromOutside();
+        // }
     }
 }

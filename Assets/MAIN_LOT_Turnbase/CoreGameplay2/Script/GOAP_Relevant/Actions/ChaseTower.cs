@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class EnemyChaseByName : GAction, IProcessUpdate
+    public class ChaseTower : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
 
@@ -14,10 +14,10 @@ namespace JumpeeIsland
 
         public override bool PrePerform()
         {
-            var distanceToTarget = float.PositiveInfinity;
             if (m_GAgent.Inventory.IsEmpty())
             {
                 _currentPoint = null;
+                var distanceToTarget = float.PositiveInfinity;
                 var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Enemy);
                 
                 foreach (var building in buildings)
@@ -64,7 +64,6 @@ namespace JumpeeIsland
 
         public void StopProcess()
         {
-            // m_Entity.StopMoving();
             m_GAgent.FinishFromOutside();
         }
     }

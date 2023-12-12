@@ -7,16 +7,15 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class EnemyAttack : GAction
+    public class AttackCheckableObj : GAction
     {
         [SerializeField] private CharacterEntity m_Character;
         [SerializeField] private float _checkDistance = 1f;
-        [SerializeField] private bool _isModifyBeliefs;
 
         public override bool PrePerform()
         {
             if (m_GAgent.Inventory.IsEmpty())
-                return true;
+                return false;
 
             var target = m_GAgent.Inventory.items[0];
 
@@ -26,7 +25,6 @@ namespace JumpeeIsland
 
                 if (distanceToTarget < _checkDistance)
                 {
-                    // checkableObject.ReduceCheckableAmount(1);
                     var position = target.transform.position;
                     m_Character.transform.LookAt(new Vector3(position.x, m_Character.transform.position.y, position.z));
                     m_Character.StartAttack();
@@ -34,12 +32,6 @@ namespace JumpeeIsland
                     if (checkableObject.IsCheckable() == false)
                         m_GAgent.Inventory.ClearInventory();
 
-                    if (_isModifyBeliefs)
-                    {
-                        m_GAgent.Beliefs.RemoveState("Empty");
-                        m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
-                    }
-                    
                     Duration = 1f;
                 }
                 else
@@ -51,14 +43,8 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            m_GAgent.Inventory.ClearInventory();
+            // m_GAgent.Inventory.ClearInventory();
             return true;
         }
-
-        // public void ExecuteAttack(GameObject target)
-        // {
-        //     // if (target.TryGetComponent(out ICheckableObject checkableObject))
-        //     //     checkableObject.ReduceCheckableAmount(1);
-        // }
     }
 }

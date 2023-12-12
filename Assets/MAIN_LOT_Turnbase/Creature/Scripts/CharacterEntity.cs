@@ -108,6 +108,11 @@ namespace JumpeeIsland
             return m_CurrentStat;
         }
 
+        public bool CheckAvailable()
+        {
+            return m_HealthComp.CheckAlive();
+        }
+
         #endregion
 
         #region SKIN

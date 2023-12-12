@@ -172,10 +172,10 @@ namespace JumpeeIsland
 
         #region ENEMY
 
-        public void SpawnAnEnemy(CreatureData creatureData)
+        public GameObject SpawnAnEnemy(CreatureData creatureData)
         {
             _environmentData.AddEnemyData(creatureData);
-            enemyLoader.PlaceNewObject(creatureData);
+            return enemyLoader.PlaceNewObject(creatureData);
         }
 
         #endregion
@@ -194,7 +194,7 @@ namespace JumpeeIsland
         public void SpawnCollectable(CollectableData collectableData);
         public void PlaceABuilding(BuildingData buildingData);
         public GameObject TrainACreature(CreatureData creatureData);
-        public void SpawnAnEnemy(CreatureData creatureData);
+        public GameObject SpawnAnEnemy(CreatureData creatureData);
         public IEnumerable<GameObject> GetBuildings(FactionType faction);
         public IEnumerable<GameObject> GetResources();
     }

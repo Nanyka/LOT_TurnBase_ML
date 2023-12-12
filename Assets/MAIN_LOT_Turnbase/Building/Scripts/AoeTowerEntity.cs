@@ -59,6 +59,11 @@ namespace JumpeeIsland
             return m_CurrentStats;
         }
 
+        public bool CheckAvailable()
+        {
+            return m_HealthComp.CheckAlive();
+        }
+
         public void GainGoldValue()
         {
             throw new NotImplementedException();

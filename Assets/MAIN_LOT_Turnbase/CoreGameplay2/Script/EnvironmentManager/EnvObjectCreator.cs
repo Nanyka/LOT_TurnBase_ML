@@ -19,9 +19,25 @@ namespace JumpeeIsland
                 SavingSystemManager.Instance.OnSpawnResource("Tree1", stone);
             }
 
-            foreach (var enemy in _enemies)
+            foreach (var enemyPos in _enemies)
             {
-                SavingSystemManager.Instance.OnSpawnMovableEntity("Creature0", enemy);
+                var enemyObj = SavingSystemManager.Instance.OnSpawnMovableEntity("Boss0", enemyPos);
+
+                if (enemyObj.TryGetComponent(out CharacterEntity characterEntity))
+                {
+                    var creatureData = new CreatureData()
+                    {
+                        EntityName = "Boss0",
+                        Position = enemyPos,
+                        FactionType = FactionType.Enemy,
+                        CurrentLevel = 0
+                    };
+                    
+                    characterEntity.Init(creatureData);
+                }
+                
+                if (enemyObj.TryGetComponent(out ITroopAssembly character))
+                    character.SetAssemblyPoint(enemyPos);
             }
         }
     }

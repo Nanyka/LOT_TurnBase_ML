@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl
+    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl //, IPlayerTroopControler
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private GameObject resources;
@@ -20,6 +20,7 @@ namespace JumpeeIsland
 
         private EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
+        private List<IGetEntityData<CreatureData>> _playerTroops = new();
         private IBuildingLoader playerBuildingLoader;
         private IBuildingLoader enemyBuildingLoader;
         private IResourceLoader resourceLoader;
@@ -58,7 +59,8 @@ namespace JumpeeIsland
             MainUI.Instance.OnUpdateCurrencies.Invoke();
 
             ExecuteEnvData();
-            GetComponent<IEnvironmentCreator>().CreateEnvObjects(); // Create environment-relevant objects that not include in the saving data
+            // Create environment-relevant objects that not include in the saving data
+            GetComponent<IEnvironmentCreator>().CreateEnvObjects();
 
             Debug.Log("----GAME START!!!----");
         }
@@ -77,7 +79,11 @@ namespace JumpeeIsland
             {
                 case EntityType.BUILDING:
                 {
-                    GetData().BuildingData.Remove(entityData as BuildingData);
+                    {
+                        GetData().BuildingData.Remove(entityData as BuildingData);
+                        if (removeInterface.GetRemovedObject().TryGetComponent(out IStoreResource storeResource))
+                            _resourceStorages.Remove(storeResource);
+                    }
                     break;
                 }
                 case EntityType.PLAYER:
@@ -101,9 +107,6 @@ namespace JumpeeIsland
                     break;
                 }
             }
-            
-            if (removeInterface.GetRemovedObject().TryGetComponent(out IStoreResource storeResource))
-                _resourceStorages.Remove(storeResource);
         }
 
         public void SetData(EnvironmentData environmentData)
@@ -164,13 +167,17 @@ namespace JumpeeIsland
         public GameObject TrainACreature(CreatureData creatureData)
         {
             _environmentData.AddPlayerData(creatureData);
-            return playerLoader.PlaceNewObject(creatureData);
+            var playerTroop = playerLoader.PlaceNewObject(creatureData);
+            if (playerTroop.TryGetComponent(out IGetEntityData<CreatureData> troop))
+                _playerTroops.Add(troop);
+
+            return playerTroop;
         }
 
-        public void SpawnAnEnemy(CreatureData creatureData)
+        public GameObject SpawnAnEnemy(CreatureData creatureData)
         {
             _environmentData.AddEnemyData(creatureData);
-            monsterLoader.PlaceNewObject(creatureData);
+            return monsterLoader.PlaceNewObject(creatureData);
         }
 
         public IEnumerable<GameObject> GetBuildings(FactionType faction)
@@ -188,30 +195,16 @@ namespace JumpeeIsland
 
         #endregion
 
-        #region HANDLE STORAGE
-
-        // public void StoreRewardAtBuildings(string currencyId, int amount)
-        // {
-        //     playerBuildingLoader.GetController().StoreRewardAtBuildings(currencyId, amount);
-        // }
-        //
-        // public void DeductCurrencyFromBuildings(string currencyId, int amount)
-        // {
-        //     playerBuildingLoader.GetController().DeductCurrencyFromBuildings(currencyId, amount);
-        // }
-
-        #endregion
-
         public IStoreResource GetRandomStorage()
         {
             if (_resourceStorages.Count == 0)
                 return null;
-            
+
             float randomValue = Random.Range(0f, _resourceStorages.Sum(t => t.GetWeight()));
 
             if (randomValue <= Mathf.Epsilon)
                 return _resourceStorages[Random.Range(0, _resourceStorages.Count)];
-            
+
             float cumulativeWeight = 0f;
 
             foreach (var storage in _resourceStorages)
@@ -231,6 +224,11 @@ namespace JumpeeIsland
         {
             return _resourceStorages;
         }
+
+        // public IEnumerable<IGetEntityData<CreatureData>> GetPlayerTroops()
+        // {
+        //     return _playerTroops;
+        // }
     }
 
     public interface IStoragesControl
@@ -238,4 +236,9 @@ namespace JumpeeIsland
         public IStoreResource GetRandomStorage();
         public IEnumerable<IStoreResource> GetStorages();
     }
+
+    // public interface IPlayerTroopControler
+    // {
+    //     public IEnumerable<IGetEntityData<CreatureData>> GetPlayerTroops();
+    // }
 }

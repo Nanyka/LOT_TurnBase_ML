@@ -57,5 +57,6 @@ namespace JumpeeIsland
     {
         public EntityData GetData();
         public T GetStats();
+        public bool CheckAvailable();
     }
 }

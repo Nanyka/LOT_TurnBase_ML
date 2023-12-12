@@ -52,6 +52,7 @@ namespace JumpeeIsland
         private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
         private IStoragesControl m_StorageController;
+        // private IPlayerTroopControler m_PlayerTroop;
         private ICurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
@@ -70,6 +71,7 @@ namespace JumpeeIsland
             m_StorageHandler = GetComponent<IResourceStock>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_StorageController = GetComponent<IStoragesControl>();
+            // m_PlayerTroop = GetComponent<IPlayerTroopControler>();
             m_CurrencyLoader = GetComponent<ICurrencyLoader>();
             m_InventoryLoader = GetComponent<InventoryLoader>();
 
@@ -475,7 +477,7 @@ namespace JumpeeIsland
             m_EnvLoader.TrainACreature(creatureData);
         }
 
-        public void OnSpawnMovableEntity(string itemId, Vector3 position)
+        public GameObject OnSpawnMovableEntity(string itemId, Vector3 position)
         {
             var item = GetInventoryItemByName(itemId);
 
@@ -485,7 +487,7 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
-            m_EnvLoader.SpawnAnEnemy(newEntity);
+            return m_EnvLoader.SpawnAnEnemy(newEntity);
         }
 
         public async void OnSaveEnvById(string playerId)
@@ -1028,6 +1030,11 @@ namespace JumpeeIsland
         {
             return m_StorageController;
         }
+
+        // public IPlayerTroopControler GetPlayerTroopController()
+        // {
+        //     return m_PlayerTroop;
+        // }
 
         #endregion
     }

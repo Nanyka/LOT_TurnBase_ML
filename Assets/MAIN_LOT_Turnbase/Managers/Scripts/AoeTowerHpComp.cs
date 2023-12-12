@@ -48,6 +48,11 @@ namespace JumpeeIsland
             StartCoroutine(DestroyVisual());
         }
 
+        public bool CheckAlive()
+        {
+            return !_isDeath;
+        }
+
         private IEnumerator DestroyVisual()
         {
             // Add VFX

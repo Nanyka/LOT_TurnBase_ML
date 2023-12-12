@@ -27,5 +27,10 @@ namespace JumpeeIsland
         {
             throw new System.NotImplementedException();
         }
+
+        public bool CheckAlive()
+        {
+            return !_isDeath;
+        }
     }
 }
