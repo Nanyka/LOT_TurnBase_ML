@@ -5224,6 +5224,7 @@ GameObject:
   - component: {fileID: 3273053181892382135}
   - component: {fileID: 3253465452974377585}
   - component: {fileID: 5291644107459238696}
+  - component: {fileID: 3742033896946952208}
   m_Layer: 0
   m_Name: Brain
   m_TagString: Untagged
@@ -5422,6 +5423,19 @@ MonoBehaviour:
   running: 0
   m_Character: {fileID: 2444046035839859495}
   _checkDistance: 3
+--- !u!114 &3742033896946952208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025628312714924022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc26d35c3de2646da9d4dee12fd157d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisAgent: {fileID: 7152341061682387977}
 --- !u!1 &2186418981514174787
 GameObject:
   m_ObjectHideFlags: 0
@@ -45506,8 +45520,8 @@ GameObject:
   - component: {fileID: 7867971632626685022}
   - component: {fileID: 4672464286195792516}
   - component: {fileID: 6668289761125534558}
-  - component: {fileID: 6343110896783520350}
-  - component: {fileID: 6161906100081104102}
+  - component: {fileID: 5802141212267917936}
+  - component: {fileID: 1104145712340692421}
   - component: {fileID: 598645820987203686}
   m_Layer: 11
   m_Name: Boss0
@@ -45710,7 +45724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RotatePart: {fileID: 8582610628505331700}
---- !u!114 &6343110896783520350
+--- !u!114 &5802141212267917936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45722,7 +45736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d770306380b41cc9b3874cae2b4b279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6161906100081104102
+--- !u!114 &1104145712340692421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45731,7 +45745,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8043020866906539562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f420e1a9f8f42dbb2c13d12cf731a8f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6777f227067b435b9efeaaf1a590ae9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &598645820987203686

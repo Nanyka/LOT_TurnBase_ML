@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ChasePlayerTroop : GAction, IProcessUpdate
+    public class ChaseMonster : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
         [SerializeField] private float distanceFromAssembly;
@@ -16,7 +16,7 @@ namespace JumpeeIsland
                 Vector3.Distance(m_Entity._assemblyPoint, m_GAgent.Inventory.items[0].transform.position) >
                 distanceFromAssembly)
             {
-                m_GAgent.Beliefs.ModifyState("SeePlayer", -1);
+                m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
                 return false;
             }
 
@@ -28,7 +28,7 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            m_GAgent.Beliefs.ModifyState("SeePlayer", -1);
+            m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
             m_GAgent.Inventory.ClearInventory();
 
             return true;

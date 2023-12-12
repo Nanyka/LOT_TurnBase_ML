@@ -7,7 +7,7 @@ namespace JumpeeIsland
     public class AttackMovableObj : GAction
     {
         [SerializeField] private CharacterEntity m_Character;
-        [SerializeField] private float _checkDistance = 1f;
+        [SerializeField] private float _checkDistance = 3f;
 
         private ISensor _detectPlayerTroop;
 
@@ -19,10 +19,18 @@ namespace JumpeeIsland
         public override bool PrePerform()
         {
             var target = _detectPlayerTroop.ExecuteSensor();
+            Debug.Log($"Attack monster: {target.name}");
+
             if (target == null)
+            {
+                
                 return false;
+            }
 
             var position = target.transform.position;
+            if (Vector3.Distance(transform.position, position) > _checkDistance)
+                return false;
+
             m_Character.transform.LookAt(new Vector3(position.x, m_Character.transform.position.y, position.z));
             m_Character.StartAttack();
 

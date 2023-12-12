@@ -8,7 +8,6 @@ namespace JumpeeIsland
         public void GainGoldValue();
         public FactionType GetFaction();
         public int GetAttackDamage();
-        // public void TakeDamage(int damage, IAttackRelated fromEntity);
         public IEnumerable<Skill_SO> GetSkills();
         public EffectComp GetEffectComp();
         public void AccumulateKills();

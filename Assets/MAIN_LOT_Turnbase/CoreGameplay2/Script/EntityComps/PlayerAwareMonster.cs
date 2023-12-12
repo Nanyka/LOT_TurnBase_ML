@@ -1,35 +1,35 @@
-using GOAP;
+using System.Linq;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    // It is a sensor of a monster which detects the nearby enemies.
-    public class MonsterDetectPlayer : MonoBehaviour, ISensor
+    public class PlayerAwareMonster : MonoBehaviour, ISensor
     {
+        [SerializeField] private GameObject mainEntity;
         [SerializeField] private float detectRange;
         [SerializeField] private string detectedState;
-
-        private IBrain brain;
-        private LayerMask layerMask = 1 << 7;
+        
+        private IBrain m_Brain;
+        private IMover m_Mover;
+        private LayerMask layerMask = 1 << 11;
 
         private void Start()
         {
-            brain = GetComponent<IBrain>();
-            InvokeRepeating(nameof(CheckTroopInRange),3f,3f);
+            m_Brain = GetComponent<IBrain>();
+            m_Mover = mainEntity.GetComponent<IMover>();
+            GameFlowManager.Instance.OnMonsterAttack.AddListener(AwareMonsterAttack);
         }
-        
-        private void CheckTroopInRange()
-        {
-            brain.GetInventory().ClearInventory();
-            // Check if the inventory is any.
-            // If the inventory is empty, adding the nearby enemy into the Inventory, and set the belief that it is an enemy in range
 
+        private void AwareMonsterAttack()
+        {
             var target = ExecuteSensor();
 
             if (target != null)
             {
-                brain.GetInventory().AddItem(target);
-                brain.GetBeliefStates().ModifyState(detectedState,1);
+                m_Mover.StopWalk();
+                m_Brain.RefreshBrain();
+                m_Brain.GetInventory().AddItem(target);
+                m_Brain.GetBeliefStates().ModifyState(detectedState,1);
             }
         }
 
@@ -40,7 +40,7 @@ namespace JumpeeIsland
 
             if (numColliders > 0)
             {
-                var target = hitColliders[0].gameObject;
+                GameObject target = null;
                 var distanceToTarget = float.PositiveInfinity;
 
                 for (int i = 0; i < numColliders; i++)
@@ -58,10 +58,5 @@ namespace JumpeeIsland
 
             return null;
         }
-    }
-
-    public interface ISensor
-    {
-        public GameObject ExecuteSensor();
     }
 }

@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl //, IPlayerTroopControler
+    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl //, IMonsterControler
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private GameObject resources;
@@ -20,7 +20,7 @@ namespace JumpeeIsland
 
         private EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
-        private List<IGetEntityData<CreatureData>> _playerTroops = new();
+        // private List<IMonster> _monsters = new();
         private IBuildingLoader playerBuildingLoader;
         private IBuildingLoader enemyBuildingLoader;
         private IResourceLoader resourceLoader;
@@ -167,17 +167,17 @@ namespace JumpeeIsland
         public GameObject TrainACreature(CreatureData creatureData)
         {
             _environmentData.AddPlayerData(creatureData);
-            var playerTroop = playerLoader.PlaceNewObject(creatureData);
-            if (playerTroop.TryGetComponent(out IGetEntityData<CreatureData> troop))
-                _playerTroops.Add(troop);
-
-            return playerTroop;
+            return playerLoader.PlaceNewObject(creatureData);
         }
 
         public GameObject SpawnAnEnemy(CreatureData creatureData)
         {
             _environmentData.AddEnemyData(creatureData);
-            return monsterLoader.PlaceNewObject(creatureData);
+            var spawnedTroop = monsterLoader.PlaceNewObject(creatureData);
+            // if (spawnedTroop.TryGetComponent(out IMonster monster))
+            //     _monsters.Add(monster);
+            
+            return spawnedTroop;
         }
 
         public IEnumerable<GameObject> GetBuildings(FactionType faction)
@@ -225,9 +225,17 @@ namespace JumpeeIsland
             return _resourceStorages;
         }
 
-        // public IEnumerable<IGetEntityData<CreatureData>> GetPlayerTroops()
+        // public void AddMonster(IGetEntityData<CreatureData> monster)
         // {
-        //     return _playerTroops;
+        //     if (_monsters.Contains(monster))
+        //         return;
+        //         
+        //     _monsters.Add(monster);
+        // }
+
+        // public IEnumerable<IMonster> GetMonsters()
+        // {
+        //     return _monsters;
         // }
     }
 
@@ -237,8 +245,9 @@ namespace JumpeeIsland
         public IEnumerable<IStoreResource> GetStorages();
     }
 
-    // public interface IPlayerTroopControler
+    // public interface IMonsterControler
     // {
-    //     public IEnumerable<IGetEntityData<CreatureData>> GetPlayerTroops();
+    //     // public void AddMonster(IGetEntityData<CreatureData> monster);
+    //     public IEnumerable<IMonster> GetMonsters();
     // }
 }

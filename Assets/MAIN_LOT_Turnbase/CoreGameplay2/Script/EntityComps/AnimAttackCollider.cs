@@ -5,6 +5,8 @@ namespace JumpeeIsland
 {
     public class AnimAttackCollider : MonoBehaviour
     {
+        [SerializeField] private LayerMask collideLayer;
+        
         private IAttackExecutor _attackExecutor;
         private ParticleSystem m_AttackVfx;
 
@@ -13,6 +15,12 @@ namespace JumpeeIsland
             _attackExecutor = attackVisual;
             m_AttackVfx = GetComponent<ParticleSystem>();
             var collision = m_AttackVfx.collision;
+
+            if (collideLayer.value != 0)
+            {
+                collision.collidesWith = collideLayer;
+                return;
+            }
 
             if (_attackExecutor.GetFaction() == FactionType.Player)
                 collision.collidesWith = 1 << 9 | 1 << 11;

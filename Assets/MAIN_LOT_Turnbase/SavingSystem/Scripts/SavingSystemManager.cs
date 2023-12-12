@@ -52,7 +52,7 @@ namespace JumpeeIsland
         private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
         private IStoragesControl m_StorageController;
-        // private IPlayerTroopControler m_PlayerTroop;
+        // private IMonsterControler m_MonsterController;
         private ICurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
 
@@ -71,7 +71,7 @@ namespace JumpeeIsland
             m_StorageHandler = GetComponent<IResourceStock>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_StorageController = GetComponent<IStoragesControl>();
-            // m_PlayerTroop = GetComponent<IPlayerTroopControler>();
+            // m_MonsterController = GetComponent<IMonsterControler>();
             m_CurrencyLoader = GetComponent<ICurrencyLoader>();
             m_InventoryLoader = GetComponent<InventoryLoader>();
 
@@ -533,11 +533,6 @@ namespace JumpeeIsland
         {
             return m_CloudConnector.GetNextTier();
         }
-
-        // public async Task<MainHallTier> GetMainHallTier(int mainhallLevel)
-        // {
-        //     return await m_CloudConnector.GetMainHallTier(mainhallLevel);
-        // }
 
         #endregion
 
@@ -1031,9 +1026,9 @@ namespace JumpeeIsland
             return m_StorageController;
         }
 
-        // public IPlayerTroopControler GetPlayerTroopController()
+        // public IMonsterControler GetMonsterController()
         // {
-        //     return m_PlayerTroop;
+        //     return m_MonsterController;
         // }
 
         #endregion

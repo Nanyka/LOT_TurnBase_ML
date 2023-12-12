@@ -41,6 +41,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent OnOpenBattlePass = new(); // send to BattlePassSceneManager; invoke at BattleButton
 
         [NonSerialized] public UnityEvent<bool> OnChangeAutomationMode = new(); // sent to PlayerFactionController; invoke at 
+        
+        [NonSerialized] public UnityEvent OnMonsterAttack = new(); // send to ...; invoke at AoeMonsterAttackComp
 
         public GameMode GameMode = GameMode.NONE;
         public bool _isGameRunning;

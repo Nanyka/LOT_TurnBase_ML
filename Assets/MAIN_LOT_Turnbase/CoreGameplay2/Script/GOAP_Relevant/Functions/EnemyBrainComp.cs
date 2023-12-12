@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using GOAP;
 using UnityEngine;
@@ -147,7 +148,7 @@ namespace JumpeeIsland
                 WhenNoSelectedAction();
         }
 
-        protected virtual void WhenChaseTarget()
+        private void WhenChaseTarget()
         {
             if (m_ProcessUpdate != null)
             {
@@ -185,6 +186,9 @@ namespace JumpeeIsland
         {
             await Task.Delay(Mathf.RoundToInt(CurrentAction.Duration) * 1000);
 
+            if (CurrentAction == null)
+                return;
+
             if (CurrentAction.IsWaitAndStop)
                 m_ProcessUpdate?.StopProcess();
 
@@ -208,11 +212,28 @@ namespace JumpeeIsland
         {
             return Beliefs;
         }
+
+        public void RefreshBrain()
+        {
+            ResetBrain();
+            _isActive = true;
+            WhenNoSelectedAction();
+        }
+
+
+        public void ResetBrain()
+        {
+            Beliefs.ClearStates();
+            Inventory.ClearInventory();
+            CurrentAction = null;
+            // APlusAlgorithm();
+        }
     }
 
     public interface IBrain
     {
         public GInventory GetInventory();
         public WorldStates GetBeliefStates();
+        public void RefreshBrain();
     }
 }

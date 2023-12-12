@@ -9,12 +9,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7953506924581439176}
+  - component: {fileID: 2834528761128054758}
   - component: {fileID: 6391753948932630721}
   - component: {fileID: 5360401474995351929}
   - component: {fileID: 6338823738142293700}
   - component: {fileID: 6995176379571888333}
   - component: {fileID: 9030425684321107381}
   - component: {fileID: 8936939303646171187}
+  - component: {fileID: 4559645313178815657}
+  - component: {fileID: 8869941319984783699}
   m_Layer: 0
   m_Name: Brain
   m_TagString: Untagged
@@ -37,6 +40,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2801276164568592138}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2834528761128054758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7536283052105925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fcde0981064f5989886019955ee959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainEntity: {fileID: 3743037733719794493}
+  detectRange: 7
+  detectedState: SeeMonster
 --- !u!114 &6391753948932630721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,6 +77,9 @@ MonoBehaviour:
   - GoalId: Assembly
     Remove: 0
     Weight: 5
+  - GoalId: AttackMonster
+    Remove: 0
+    Weight: 7
 --- !u!114 &5360401474995351929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +221,66 @@ MonoBehaviour:
   running: 0
   m_Character: {fileID: 7294848800825930421}
   _checkDistance: 5
-  _isModifyBeliefs: 0
+--- !u!114 &4559645313178815657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7536283052105925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b05e77b53b4530953cdb536fef6e7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Chase Monster
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  IsAutoComplete: 0
+  IsWaitAndStop: 0
+  PreConditions:
+  - key: Refresh
+    value: 0
+  - key: SeeMonster
+    value: 0
+  AfterEffects:
+  - key: ReachMonster
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
+  m_Entity: {fileID: 7294848800825930421}
+  distanceFromAssembly: 5
+--- !u!114 &8869941319984783699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7536283052105925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6169c218f7a455f9008c9cdd7cc7cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: AttackMonster
+  Cost: 1
+  Target: {fileID: 0}
+  TargetTag: 
+  Duration: 0
+  IsAutoComplete: 0
+  IsWaitAndStop: 0
+  PreConditions:
+  - key: ReachMonster
+    value: 0
+  AfterEffects:
+  - key: AttackMonster
+    value: 0
+  mNavMeshAgent: {fileID: 0}
+  running: 0
+  m_Character: {fileID: 7294848800825930421}
+  _checkDistance: 3
 --- !u!1 &1179032999949272793
 GameObject:
   m_ObjectHideFlags: 0
@@ -25648,7 +25728,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 2801276164568592138}
-  m_SkinComp: {fileID: 4205555104683339302}
   m_EffectComp: {fileID: 8698095827965634366}
   m_Brain: {fileID: 5360401474995351929}
 --- !u!114 &4205555104683339302
