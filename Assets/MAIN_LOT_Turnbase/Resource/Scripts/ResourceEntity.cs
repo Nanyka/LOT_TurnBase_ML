@@ -124,7 +124,7 @@ namespace JumpeeIsland
 
         #region SKIN
 
-        public override SkinComp GetSkin()
+        public override ISkinComp GetSkin()
         {
             return m_SkinComp;
         }

@@ -14,6 +14,7 @@ namespace JumpeeIsland
         [SerializeField] protected GameObject playerBuildings;
         [SerializeField] private GameObject enemyBuildings;
         [SerializeField] private GameObject playerCreatures;
+        [SerializeField] private GameObject neutralCreatures;
         [SerializeField] private GameObject collectable;
         [SerializeField] protected EnvironmentData _environmentData;
 
@@ -24,6 +25,7 @@ namespace JumpeeIsland
         private IResourceLoader resourceLoader;
         private ICollectableLoader collectableLoader;
         private ICreatureLoader playerLoader;
+        private ICreatureLoader monsterLoader;
 
         #region ENVIRONMENT LOADER
 
@@ -34,6 +36,7 @@ namespace JumpeeIsland
             resourceLoader = resources.GetComponent<IResourceLoader>();
             collectableLoader = collectable.GetComponent<ICollectableLoader>();
             playerLoader = playerCreatures.GetComponent<ICreatureLoader>();
+            monsterLoader = neutralCreatures.GetComponent<ICreatureLoader>();
         }
 
         public async void Init()
@@ -167,7 +170,7 @@ namespace JumpeeIsland
         public void SpawnAnEnemy(CreatureData creatureData)
         {
             _environmentData.AddEnemyData(creatureData);
-            // enemyBuildingLoader.PlaceNewObject(creatureData);
+            monsterLoader.PlaceNewObject(creatureData);
         }
 
         public IEnumerable<GameObject> GetBuildings(FactionType faction)

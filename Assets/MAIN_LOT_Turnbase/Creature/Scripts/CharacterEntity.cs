@@ -10,7 +10,7 @@ namespace JumpeeIsland
         public Vector3 _assemblyPoint { get; set; }
 
         // control components
-        [SerializeField] private SkinComp m_SkinComp;
+        // [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private EnemyBrainComp m_Brain;
 
@@ -18,6 +18,7 @@ namespace JumpeeIsland
         private IHealthComp m_HealthComp;
         private IAnimateComp m_AnimateComp;
         private IMoveComp m_MovementComp;
+        private ISkinComp m_SkinComp;
 
         // loaded data
         private List<CreatureStats> m_CreatureStats;
@@ -38,6 +39,7 @@ namespace JumpeeIsland
             m_HealthComp = GetComponent<IHealthComp>();
             m_AnimateComp = GetComponent<IAnimateComp>();
             m_MovementComp = GetComponent<IMoveComp>();
+            m_SkinComp = GetComponent<ISkinComp>();
         }
 
         public void Init(CreatureData creatureData)
@@ -110,14 +112,9 @@ namespace JumpeeIsland
 
         #region SKIN
 
-        public override SkinComp GetSkin()
+        public override ISkinComp GetSkin()
         {
             return m_SkinComp;
-        }
-
-        private void SetActiveMaterial()
-        {
-            m_SkinComp.SetActiveMaterial();
         }
 
         #endregion
@@ -214,13 +211,6 @@ namespace JumpeeIsland
             m_EffectComp.Init(this);
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
-        }
-
-        public void RefreshCreature()
-        {
-            m_EffectComp.EffectCountDown();
-            SetActiveMaterial();
-            _killAccumulation = 0;
         }
 
         #endregion

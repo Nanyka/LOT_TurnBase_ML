@@ -6,11 +6,12 @@ namespace JumpeeIsland
 {
     public class AoeTowerEntity: Entity, IAttackRelated, ISkillRelated, IBuildingDealer, IGetEntityData<BuildingStats>
     {
-        [SerializeField] private SkinComp m_SkinComp;
+        // [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private SkillComp m_SkillComp;
 
         private IHealthComp m_HealthComp;
         private IBuildingConstruct m_Constructor;
+        private ISkinComp m_SkinComp;
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -20,6 +21,7 @@ namespace JumpeeIsland
         {
             m_HealthComp = GetComponent<IHealthComp>();
             m_Constructor = GetComponent<IBuildingConstruct>();
+            m_SkinComp = GetComponent<ISkinComp>();
             m_BuildingData = buildingData;
             RefreshEntity();
         }
@@ -103,7 +105,7 @@ namespace JumpeeIsland
 
         #region SKIN
 
-        public override SkinComp GetSkin()
+        public override ISkinComp GetSkin()
         {
             return m_SkinComp;
         }

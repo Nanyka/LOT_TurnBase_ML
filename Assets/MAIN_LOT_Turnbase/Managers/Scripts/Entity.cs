@@ -36,7 +36,7 @@ namespace JumpeeIsland
 
         #region SKIN
 
-        public abstract SkinComp GetSkin();
+        public abstract ISkinComp GetSkin();
 
         #endregion
         

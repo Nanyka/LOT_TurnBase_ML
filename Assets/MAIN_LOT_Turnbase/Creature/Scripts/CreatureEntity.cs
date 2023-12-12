@@ -16,7 +16,6 @@ namespace JumpeeIsland
         [SerializeField] private SkillComp m_SkillComp;
         [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
-        [SerializeField] private MovementComp m_MovementComp;
 
         private List<CreatureStats> m_CreatureStats;
         private CreatureData m_CreatureData;
@@ -105,11 +104,6 @@ namespace JumpeeIsland
             return m_CreatureData.CurrentDamage;
         }
 
-        public Vector3 GetPosition()
-        {
-            return m_CreatureData.Position;
-        }
-
         public void GainGoldValue()
         {
             // Accumulate Exp as the amount of collected gold at the end of Battle
@@ -149,7 +143,7 @@ namespace JumpeeIsland
 
         #region SKIN
 
-        public override SkinComp GetSkin()
+        public override ISkinComp GetSkin()
         {
             return m_SkinComp;
         }

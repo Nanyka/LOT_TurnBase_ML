@@ -8,7 +8,7 @@ using WebSocketSharp;
 
 namespace JumpeeIsland
 {
-    public class SkinComp : MonoBehaviour
+    public class SkinComp : MonoBehaviour, ISkinComp
     {
         [SerializeField] private Transform m_SkinAnchor;
         [SerializeField] private ParticleSystem _appearVfx;
@@ -18,6 +18,7 @@ namespace JumpeeIsland
 
         private Material _activeCache;
         private Material _disableCache;
+        private IAnimateComp _curAnimComp;
 
         public void Init(string skinAddress)
         {
@@ -36,7 +37,8 @@ namespace JumpeeIsland
                 return;
 
             _factionRenderers.Clear();
-            AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this, animateComp);
+            _curAnimComp = animateComp;
+            AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this);
         }
 
         public void SetFactionRenderer(Renderer renderer)
@@ -66,6 +68,11 @@ namespace JumpeeIsland
             _disableMaterial = material;
         }
 
+        public void ReturnSkin(GameObject skinObject)
+        {
+            _curAnimComp.Init(skinObject);
+        }
+
         private void SetMaterial(Material material)
         {
             foreach (var item in _factionRenderers)
@@ -77,5 +84,14 @@ namespace JumpeeIsland
             _activeCache = _activeMaterial;
             _disableCache = _disableMaterial;
         }
+    }
+
+    public interface ISkinComp
+    {
+        public void Init(string skinAddress);
+        public void Init(string skinAddress, IAnimateComp animateComp);
+        public void SetActiveMaterial();
+        public void SetCustomMaterial(Material material);
+        public void ReturnSkin(GameObject skinObject);
     }
 }

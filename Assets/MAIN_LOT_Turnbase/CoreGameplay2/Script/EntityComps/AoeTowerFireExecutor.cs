@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using FOW;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeTowerFireExecutor : MonoBehaviour, IAttackExecutor
+    public class AoeTowerFireExecutor : MonoBehaviour, IAttackExecutor, IHiderDisable
     {
         [SerializeField] private float detectRange;
         [SerializeField] private FireComp m_FireComp;
@@ -11,8 +12,9 @@ namespace JumpeeIsland
         
         private IAttackComp _attackComp;
         private IAttackRelated _attackRelated;
-        
+        [SerializeField] private FogOfWarHider m_Hider;
         private LayerMask layerMask = 1 << 7; // Enemy layer is 5
+        private bool _isDisableHider;
         
         private void Start()
         {
@@ -34,6 +36,13 @@ namespace JumpeeIsland
         {
             Collider[] hitColliders = new Collider[10];
             int numColliders = Physics.OverlapSphereNonAlloc(transform.position, detectRange, hitColliders, layerMask);
+            
+            // Disable hider from the any first fire
+            if (numColliders > 0 && _isDisableHider==false)
+            {
+                _isDisableHider = true;
+                m_Hider.OnDisable();
+            }
             
             // TODO: fire the closest one
 
@@ -57,5 +66,15 @@ namespace JumpeeIsland
         {
             _attackComp.SuccessAttack(target);
         }
+
+        public void SetHider(FogOfWarHider hider)
+        {
+            m_Hider = hider;
+        }
+    }
+
+    public interface IHiderDisable
+    {
+        public void SetHider(FogOfWarHider hider);
     }
 }

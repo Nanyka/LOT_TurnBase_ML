@@ -10,7 +10,7 @@ namespace JumpeeIsland
 {
     public class BuildingEntity : Entity, IAttackRelated, ISkillRelated
     {
-        [SerializeField] private SkinComp m_SkinComp;
+        // [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private EffectComp m_EffectComp;
@@ -20,6 +20,8 @@ namespace JumpeeIsland
         [SerializeField] private BuildingConstructComp m_Constructor;
         [SerializeField] private UnityEvent OnThisBuildingUpgrade = new();
 
+        private ISkinComp m_SkinComp;
+        
         private BuildingData m_BuildingData { get; set; }
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -27,6 +29,8 @@ namespace JumpeeIsland
 
         public void Init(BuildingData buildingData)
         {
+            m_SkinComp = GetComponent<ISkinComp>();
+
             m_BuildingData = buildingData;
             RefreshEntity();
         }
@@ -288,7 +292,7 @@ namespace JumpeeIsland
 
         #region SKIN
 
-        public override SkinComp GetSkin()
+        public override ISkinComp GetSkin()
         {
             return m_SkinComp;
         }

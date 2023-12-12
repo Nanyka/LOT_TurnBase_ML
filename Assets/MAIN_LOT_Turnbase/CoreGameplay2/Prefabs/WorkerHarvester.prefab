@@ -10349,6 +10349,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 549bd5725d594f1aa6d3e21df9f22204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3486663452576992720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1777132962414122771}
+  - component: {fileID: 6336619045901740176}
+  m_Layer: 7
+  m_Name: FogOfWarRevealer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1777132962414122771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486663452576992720}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 765458664678213309}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6336619045901740176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486663452576992720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8c92e8943a9914ba89720ba5fcf806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ViewRadius: 2
+  AdditionalSoftenDistance: 0
+  ViewAngle: 360
+  UnobscuredRadius: 1
+  AddCorners: 0
+  RevealHiderInFadeOutZonePercentage: 0.5
+  EyeOffset: 0
+  VisionHeight: 3
+  VisionHeightSoftenDistance: 1.5
+  ObstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  RaycastResolution: 0.5
+  MaxEdgeResolveIterations: 10
+  NumExtraIterations: 4
+  NumExtraRaysOnIteration: 5
+  StartRevealerAsStatic: 0
+  StaticRevealer: 0
+  FogOfWarID: 0
+  IndexID: 0
+  NumberOfPoints: 0
+  Angles: []
+  Radii: []
+  AreHits: 
+  MaxAcceptableEdgeAngleDifference: 0.005
+  EdgeDstThreshold: 0.1
+  DoubleHitMaxDelta: 0.1
+  DoubleHitMaxAngleDelta: 15
+  DebugMode: 0
+  LogNumRaycasts: 0
+  NumRayCasts: 0
+  DrawRayNoise: 0
+  DrawExtraCastLines: 0
+  DrawIteritiveLines: 0
+  hidersSeen: []
 --- !u!1 &4274946180901190708
 GameObject:
   m_ObjectHideFlags: 0
@@ -15244,6 +15323,7 @@ Transform:
   - {fileID: 2013509190373015732}
   - {fileID: 3384358701735276047}
   - {fileID: 7470668165957659540}
+  - {fileID: 1777132962414122771}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &5914546679692528061
@@ -15331,7 +15411,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 765458664678213309}
   m_SkinComp: {fileID: 2270302308847082769}
-  m_MovementComp: {fileID: 2768966365666163441}
   m_EffectComp: {fileID: 3034851220945496829}
   m_Brain: {fileID: 4952066524200732265}
 --- !u!114 &2768966365666163441

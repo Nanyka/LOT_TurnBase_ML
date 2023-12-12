@@ -18,7 +18,7 @@ namespace FOW
             CalculateSamplePointData();
             RegisterHider();
         }
-        private void OnDisable()
+        public void OnDisable()
         {
             SetActive(true);
             DeregisterHider();

@@ -58,7 +58,7 @@ namespace JumpeeIsland
         }
 
         // Get skin for animated objects
-        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, SkinComp skinComp, IAnimateComp animateComp)
+        public void GetAddressableGameObject(string objectKey, Transform spawnTransform, ISkinComp skinComp)
         {
             m_LogPrefab = objectKey;
 
@@ -73,14 +73,19 @@ namespace JumpeeIsland
 
             var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
             var skin = handle.WaitForCompletion();
-            handle.Completed += delegate { if (handle.Status == AsyncOperationStatus.Succeeded) animateComp.Init(skin); };
-            // animateComp.SetAnimator(skin.GetComponent<Animator>());
+            handle.Completed += delegate
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    skinComp.ReturnSkin(skin);
+                }
+            };
 
-            var factionPart = skin.transform.Find("FactionPart");
-            if (factionPart != null)
-                for (int i = 0; i < factionPart.childCount; i++)
-                    if (factionPart.GetChild(i).TryGetComponent(out Renderer part))
-                        skinComp.SetFactionRenderer(part);
+            // var factionPart = skin.transform.Find("FactionPart");
+            // if (factionPart != null)
+            //     for (int i = 0; i < factionPart.childCount; i++)
+            //         if (factionPart.GetChild(i).TryGetComponent(out Renderer part))
+            //             skinComp.SetFactionRenderer(part);
         }
 
         private void AddPrivateToken(UnityWebRequest request)

@@ -7,16 +7,19 @@ namespace JumpeeIsland
     public class CollectableEntity : Entity, IAttackRelated, ISkillRelated
     {
         [SerializeField] private CollectableStats[] m_CollectableStats;
-        [SerializeField] private SkinComp m_SkinComp;
+        // [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private CollectComp m_CollectComp;
         [SerializeField] private AnimateComp m_AnimComp;
         [SerializeField] private SelfAttackComp m_SelfAttackComp;
 
+        private ISkinComp m_SkinComp;
         private CollectableData m_CollectableData;
         private CollectableStats m_CurrentStat;
 
         public void Init(CollectableData collectableData)
         {
+            m_SkinComp = GetComponent<ISkinComp>();
+
             m_CollectableData = collectableData;
             RefreshEntity();
         }
@@ -126,7 +129,7 @@ namespace JumpeeIsland
         
         #region SKIN
 
-        public override SkinComp GetSkin()
+        public override ISkinComp GetSkin()
         {
             return m_SkinComp;
         }

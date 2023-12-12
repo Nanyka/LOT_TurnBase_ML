@@ -6,6 +6,8 @@ namespace JumpeeIsland
 {
     public class AoeCreatureLoader : MonoBehaviour, ICreatureLoader
     {
+        [SerializeField] private FactionType _factionType;
+        
         private IFactionController _factionController;
         private ObjectPool _creaturePool;
         protected List<CreatureData> _creatureDatas;
@@ -34,8 +36,8 @@ namespace JumpeeIsland
 
         private GameObject TrainANewCreature(CreatureData creatureData)
         {
-            creatureData.EntityType =
-                creatureData.FactionType == FactionType.Player ? EntityType.PLAYER : EntityType.ENEMY;
+            creatureData.FactionType = _factionType;
+            creatureData.EntityType = _factionType == FactionType.Player ? EntityType.PLAYER : EntityType.ENEMY;
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
                 return null;
