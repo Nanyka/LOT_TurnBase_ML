@@ -1,3 +1,4 @@
+using System;
 using GOAP;
 using UnityEngine;
 
@@ -9,18 +10,28 @@ namespace JumpeeIsland
         [SerializeField] private float distanceFromAssembly;
 
         private ICheckableObject _currentPoint;
+        private ISensor _sensor;
+
+        private void Start()
+        {
+            _sensor = GetComponent<ISensor>();
+        }
 
         public override bool PrePerform()
         {
-            if (m_GAgent.Inventory.IsEmpty() ||
-                Vector3.Distance(m_Entity._assemblyPoint, m_GAgent.Inventory.items[0].transform.position) >
-                distanceFromAssembly)
-            {
-                m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
+            var target = _sensor.ExecuteSensor();
+            if (target == null)
                 return false;
-            }
 
-            Target = m_GAgent.Inventory.items[0];
+            // if (m_GAgent.Inventory.IsEmpty() ||
+            //     Vector3.Distance(m_Entity._assemblyPoint, m_GAgent.Inventory.items[0].transform.position) >
+            //     distanceFromAssembly)
+            // {
+            //     m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
+            //     return false;
+            // }
+
+            Target = target;
             m_GAgent.SetIProcessUpdate(this);
 
             return true;
@@ -28,7 +39,7 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
+            // m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
             m_GAgent.Inventory.ClearInventory();
 
             return true;

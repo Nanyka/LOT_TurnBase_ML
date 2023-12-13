@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using GOAP;
 using UnityEngine;
 
@@ -9,27 +12,53 @@ namespace JumpeeIsland
         [SerializeField] private float detectRange;
         [SerializeField] private string detectedState;
 
-        private IBrain brain;
+        private IBrain m_Brain;
         private LayerMask layerMask = 1 << 7;
+        private CancellationTokenSource _cancellation = new();
+        private bool isDetected;
 
         private void Start()
         {
-            brain = GetComponent<IBrain>();
+            m_Brain = GetComponent<IBrain>();
             InvokeRepeating(nameof(CheckTroopInRange),3f,3f);
         }
         
-        private void CheckTroopInRange()
+        private async void CheckTroopInRange()
         {
-            brain.GetInventory().ClearInventory();
             // Check if the inventory is any.
             // If the inventory is empty, adding the nearby enemy into the Inventory, and set the belief that it is an enemy in range
 
+            if (isDetected)
+                return;
+            
             var target = ExecuteSensor();
 
             if (target != null)
             {
-                brain.GetInventory().AddItem(target);
-                brain.GetBeliefStates().ModifyState(detectedState,1);
+                m_Brain.RefreshBrain();
+                m_Brain.GetBeliefStates().ModifyState(detectedState,1);
+                isDetected = true;
+                await RecheckTarget();
+            }
+        }
+        
+        private async Task RecheckTarget()
+        {
+            try
+            {
+                _cancellation = new CancellationTokenSource();
+                await Task.Delay(3000, _cancellation.Token);
+                if (ExecuteSensor() == null)
+                {
+                    isDetected = false;
+                    m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
+                }
+                else
+                    await RecheckTarget();
+            }
+            catch (Exception e)
+            {
+                // ignored
             }
         }
 

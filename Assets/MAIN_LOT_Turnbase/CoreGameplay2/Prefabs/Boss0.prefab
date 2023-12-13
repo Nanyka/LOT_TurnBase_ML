@@ -5208,6 +5208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 549bd5725d594f1aa6d3e21df9f22204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collideLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2025628312714924022
 GameObject:
   m_ObjectHideFlags: 0
@@ -5410,7 +5413,7 @@ MonoBehaviour:
   Cost: 1
   Target: {fileID: 0}
   TargetTag: 
-  Duration: 0
+  Duration: 2
   IsAutoComplete: 0
   IsWaitAndStop: 0
   PreConditions:
@@ -45520,7 +45523,7 @@ GameObject:
   - component: {fileID: 7867971632626685022}
   - component: {fileID: 4672464286195792516}
   - component: {fileID: 6668289761125534558}
-  - component: {fileID: 5802141212267917936}
+  - component: {fileID: 6204086858840349137}
   - component: {fileID: 1104145712340692421}
   - component: {fileID: 598645820987203686}
   m_Layer: 11
@@ -45724,7 +45727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RotatePart: {fileID: 8582610628505331700}
---- !u!114 &5802141212267917936
+--- !u!114 &6204086858840349137
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45733,9 +45736,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8043020866906539562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d770306380b41cc9b3874cae2b4b279, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fc2d0fbae1d4069b324c703fa37788b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reward:
+    currencyId: WOOD
+    amount: 5
 --- !u!114 &1104145712340692421
 MonoBehaviour:
   m_ObjectHideFlags: 0

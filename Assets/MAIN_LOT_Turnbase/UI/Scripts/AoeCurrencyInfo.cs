@@ -24,6 +24,10 @@ namespace JumpeeIsland
             // Update player's troop amount
             
             // Update collected mana
+            var manaCurrency = SavingSystemManager.Instance.GetCurrencies().First(t => t.CurrencyId.Equals("WOOD"));
+
+            var manaButton = _currencyButtons.Find(t => t.m_Currency.Equals("WOOD"));
+            manaButton.UpdateCurrency(manaCurrency.Balance.ToString(), SavingSystemManager.Instance.GetCurrencySprite("WOOD"));
 
         }
     }

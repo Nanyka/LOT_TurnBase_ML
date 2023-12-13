@@ -85,7 +85,7 @@ namespace JumpeeIsland
 
         public async void OnMakeTheDeal()
         {
-            await SavingSystemManager.Instance.RefreshEconomy();
+            // await SavingSystemManager.Instance.RefreshEconomy();
             _currentConfirm.ClickYes();
             CleanGhostBuilding();
         }

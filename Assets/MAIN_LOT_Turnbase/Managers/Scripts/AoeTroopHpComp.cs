@@ -44,7 +44,7 @@ namespace JumpeeIsland
                 m_AnimateComp.SetAnimation(AnimateType.TakeDamage);
         }
 
-        public void Die(IAttackRelated killedByFaction)
+        public virtual void Die(IAttackRelated killedByFaction)
         {
             _isDeath = true;
             _dieEvent.Invoke(killedByFaction);

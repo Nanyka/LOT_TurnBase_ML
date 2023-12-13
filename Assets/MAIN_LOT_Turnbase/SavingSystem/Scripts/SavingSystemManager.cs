@@ -18,7 +18,7 @@ namespace JumpeeIsland
         QuestData
     }
 
-    [RequireComponent(typeof(CurrencyLoader))]
+    [RequireComponent(typeof(ICurrencyLoader))]
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
         // invoke at TileManager
@@ -365,8 +365,6 @@ namespace JumpeeIsland
         // Player pay some cost for constructing the building
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position, bool isCheckMax)
         {
-            Debug.Log($"Place {inventoryItem.inventoryName}");
-            
             if (isCheckMax && GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
             {
                 MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
@@ -374,6 +372,30 @@ namespace JumpeeIsland
             }
 
             if (await OnConductVirtualPurchase(inventoryItem.virtualPurchaseId) == false) return;
+
+            // ...and get the building in place
+            var newBuilding = new BuildingData
+            {
+                EntityName = inventoryItem.inventoryName,
+                Position = position,
+                CurrentLevel = 0
+            };
+            m_EnvLoader.PlaceABuilding(newBuilding);
+        }
+        
+        // Player pay something for construction locally
+        public void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position, CurrencyUnit cost)
+        {
+            Debug.Log($"Place {inventoryItem.inventoryName}");
+            
+            if (GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
+            {
+                MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
+                return;
+            }
+
+            if (m_CurrencyLoader.CheckEnoughCurrency(cost.currencyId,cost.amount) == false)
+                return;
 
             // ...and get the building in place
             var newBuilding = new BuildingData

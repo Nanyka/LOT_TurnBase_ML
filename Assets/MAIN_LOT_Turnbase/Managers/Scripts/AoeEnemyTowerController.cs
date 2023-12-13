@@ -11,7 +11,7 @@ namespace JumpeeIsland
 
         public void AddBuildingToList(BuildingInGame building)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void RemoveBuilding(BuildingInGame building)

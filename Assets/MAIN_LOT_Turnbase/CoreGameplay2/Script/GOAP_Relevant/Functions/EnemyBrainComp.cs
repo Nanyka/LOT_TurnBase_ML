@@ -184,10 +184,10 @@ namespace JumpeeIsland
 
         private new async Task CompleteAction()
         {
-            await Task.Delay(Mathf.RoundToInt(CurrentAction.Duration) * 1000);
-
             if (CurrentAction == null)
                 return;
+            
+            await Task.Delay(Mathf.RoundToInt(CurrentAction.Duration) * 1000);
 
             if (CurrentAction.IsWaitAndStop)
                 m_ProcessUpdate?.StopProcess();
@@ -215,11 +215,10 @@ namespace JumpeeIsland
 
         public void RefreshBrain()
         {
-            ResetBrain();
             _isActive = true;
-            WhenNoSelectedAction();
+            ResetBrain();
+            APlusAlgorithm();
         }
-
 
         public void ResetBrain()
         {

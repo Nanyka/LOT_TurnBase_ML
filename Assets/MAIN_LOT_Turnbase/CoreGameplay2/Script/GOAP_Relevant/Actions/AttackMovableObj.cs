@@ -19,13 +19,9 @@ namespace JumpeeIsland
         public override bool PrePerform()
         {
             var target = _detectPlayerTroop.ExecuteSensor();
-            Debug.Log($"Attack monster: {target.name}");
 
             if (target == null)
-            {
-                
                 return false;
-            }
 
             var position = target.transform.position;
             if (Vector3.Distance(transform.position, position) > _checkDistance)

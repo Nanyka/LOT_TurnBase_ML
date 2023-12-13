@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8936939303646171187}
   - component: {fileID: 4559645313178815657}
   - component: {fileID: 8869941319984783699}
+  - component: {fileID: 6843700301260865435}
   m_Layer: 0
   m_Name: Brain
   m_TagString: Untagged
@@ -53,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainEntity: {fileID: 3743037733719794493}
-  detectRange: 7
+  detectRange: 50
   detectedState: SeeMonster
 --- !u!114 &6391753948932630721
 MonoBehaviour:
@@ -251,7 +252,7 @@ MonoBehaviour:
   mNavMeshAgent: {fileID: 0}
   running: 0
   m_Entity: {fileID: 7294848800825930421}
-  distanceFromAssembly: 5
+  distanceFromAssembly: 50
 --- !u!114 &8869941319984783699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,7 +269,7 @@ MonoBehaviour:
   Cost: 1
   Target: {fileID: 0}
   TargetTag: 
-  Duration: 0
+  Duration: 2
   IsAutoComplete: 0
   IsWaitAndStop: 0
   PreConditions:
@@ -281,6 +282,19 @@ MonoBehaviour:
   running: 0
   m_Character: {fileID: 7294848800825930421}
   _checkDistance: 3
+--- !u!114 &6843700301260865435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7536283052105925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc26d35c3de2646da9d4dee12fd157d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisAgent: {fileID: 0}
 --- !u!1 &1179032999949272793
 GameObject:
   m_ObjectHideFlags: 0
@@ -15243,6 +15257,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 549bd5725d594f1aa6d3e21df9f22204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collideLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2282955976316284036
 GameObject:
   m_ObjectHideFlags: 0

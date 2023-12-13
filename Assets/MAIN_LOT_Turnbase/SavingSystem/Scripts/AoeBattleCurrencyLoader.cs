@@ -19,23 +19,26 @@ namespace JumpeeIsland
             Debug.Log("Load currencies...");
 
             m_Currencies = currencies;
+            
+            // Wood is used as MANA in the AoeBattleMode
+            m_Currencies.Find(t => t.CurrencyId == "WOOD").Balance = 0;
 
-            foreach (var localBalance in m_LocalBalances.LocalBalances)
-            {
-                var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
-                if (localBalance.Balance != currency.Balance)
-                {
-                    currency.Balance = localBalance.Balance;
-                    SavingSystemManager.Instance.OnSetCloudCurrency(localBalance.CurrencyId, localBalance.Balance);
-                }
-            }
+            // foreach (var localBalance in m_LocalBalances.LocalBalances)
+            // {
+            //     var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
+            //     if (localBalance.Balance != currency.Balance)
+            //     {
+            //         currency.Balance = localBalance.Balance;
+            //         SavingSystemManager.Instance.OnSetCloudCurrency(localBalance.CurrencyId, localBalance.Balance);
+            //     }
+            // }
 
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
         public long GetCurrency(string currencyId)
         {
-            throw new System.NotImplementedException();
+            return 0;
         }
 
         public void ResetCurrencies(List<PlayerBalance> currencies)
@@ -45,7 +48,7 @@ namespace JumpeeIsland
 
         public void GrantMove(long moveAmount)
         {
-            throw new System.NotImplementedException();
+            Debug.Log($"Battle not grant MOVE");
         }
 
         public void RefreshCurrencies(List<PlayerBalance> currencies)
@@ -55,7 +58,8 @@ namespace JumpeeIsland
 
         public void GainCurrency(string currencyId, int currencyAmount)
         {
-            throw new System.NotImplementedException();
+            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
         public void DeductCurrency(string currencyId, int currencyAmount)
@@ -65,12 +69,12 @@ namespace JumpeeIsland
 
         public bool CheckEnoughCurrency(string currencyId, int currencyAmount)
         {
-            throw new System.NotImplementedException();
+            return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance >= currencyAmount;
         }
 
         public IEnumerable<PlayerBalance> GetCurrencies()
         {
-            throw new System.NotImplementedException();
+            return m_Currencies;
         }
     }
 }

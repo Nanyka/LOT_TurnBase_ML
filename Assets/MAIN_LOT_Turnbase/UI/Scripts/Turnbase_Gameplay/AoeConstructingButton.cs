@@ -13,6 +13,7 @@ namespace JumpeeIsland
         [SerializeField] private GameObject m_Container;
         [SerializeField] private Image m_ItemIcon;
         [SerializeField] private TextMeshProUGUI m_Price;
+        [SerializeField] private CurrencyUnit _constructingCost;
 
         private AsyncOperationHandle m_UCDObjectLoadingHandle;
         private AoeConstructionMenu _mBuyBuildingMenu;
@@ -74,7 +75,7 @@ namespace JumpeeIsland
 
         public virtual void ClickYes()
         {
-            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem, _buildingPosition, false);
+            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem, _buildingPosition, _constructingCost);
         }
 
         public GameObject GetGameObject()
