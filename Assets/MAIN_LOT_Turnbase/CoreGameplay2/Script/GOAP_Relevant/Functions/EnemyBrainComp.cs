@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace JumpeeIsland
         [SerializeField] private EnemyGoalManager m_GoalManager;
 
         private SubGoal _currentGoal;
+        private CancellationTokenSource _cancellation = new();
         private bool _isActive;
 
         #region INITIATE
@@ -19,7 +21,6 @@ namespace JumpeeIsland
         protected virtual void OnEnable()
         {
             _isActive = true;
-
             SetActions();
             SetGoal();
             // APlusAlgorithm();
@@ -30,7 +31,7 @@ namespace JumpeeIsland
         protected void OnDisable()
         {
             CancelInvoke();
-            _isActive = false;
+            SetBrainDisable();
         }
 
         protected override void Start()
@@ -45,17 +46,18 @@ namespace JumpeeIsland
                 Actions.Add(action);
         }
 
-        public void SetBrainDisable()
+        private void SetBrainDisable()
         {
-            Beliefs.ClearStates();
             _isActive = false;
+            _cancellation.Cancel();
+            ResetBrain();
         }
 
         #endregion
 
         #region GOAL MANAGER
 
-        protected void SetGoal()
+        private void SetGoal()
         {
             Goals.Clear();
             var subGoals = m_GoalManager.GetCurrentGoal();
@@ -186,19 +188,30 @@ namespace JumpeeIsland
         {
             if (CurrentAction == null)
                 return;
-            
-            await Task.Delay(Mathf.RoundToInt(CurrentAction.Duration) * 1000);
 
-            if (CurrentAction.IsWaitAndStop)
-                m_ProcessUpdate?.StopProcess();
+            try
+            {
+                _cancellation = new CancellationTokenSource();
+                await Task.Delay(Mathf.RoundToInt(CurrentAction.Duration) * 1000, _cancellation.Token);
 
-            CurrentAction.running = false;
-            CurrentAction.PostPerform();
-            m_ProcessUpdate = null;
-            _isInvoke = false;
+                // if (CurrentAction == null)
+                //     return;
 
-            // Debug.Log("APlus from CompleteAction");
-            APlusAlgorithm();
+                if (CurrentAction.IsWaitAndStop)
+                    m_ProcessUpdate?.StopProcess();
+
+                CurrentAction.running = false;
+                CurrentAction.PostPerform();
+                m_ProcessUpdate = null;
+                _isInvoke = false;
+
+                // Debug.Log("APlus from CompleteAction");
+                APlusAlgorithm();
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
         }
 
         #endregion
@@ -220,12 +233,12 @@ namespace JumpeeIsland
             APlusAlgorithm();
         }
 
-        public void ResetBrain()
+        private void ResetBrain()
         {
             Beliefs.ClearStates();
             Inventory.ClearInventory();
             CurrentAction = null;
-            // APlusAlgorithm();
+            _actionQueue.Clear();
         }
     }
 

@@ -35,15 +35,14 @@ namespace JumpeeIsland
         {
             if (skinAddress.IsNullOrEmpty())
                 return;
+            
+            // Reset spawnTransform
+            for (int i = 0; i < m_SkinAnchor.childCount; i++)
+                Destroy(m_SkinAnchor.GetChild(i).gameObject);
 
             _factionRenderers.Clear();
             _curAnimComp = animateComp;
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this);
-        }
-
-        public void SetFactionRenderer(Renderer renderer)
-        {
-            _factionRenderers.Add(renderer);
         }
 
         public void SetActiveMaterial()
@@ -79,7 +78,7 @@ namespace JumpeeIsland
                 item.material = material;
         }
 
-        public void ResetMaterial()
+        private void ResetMaterial()
         {
             _activeCache = _activeMaterial;
             _disableCache = _disableMaterial;

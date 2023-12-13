@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainEntity: {fileID: 3743037733719794493}
-  detectRange: 50
+  detectRange: 10
   detectedState: SeeMonster
 --- !u!114 &6391753948932630721
 MonoBehaviour:
@@ -252,7 +252,7 @@ MonoBehaviour:
   mNavMeshAgent: {fileID: 0}
   running: 0
   m_Entity: {fileID: 7294848800825930421}
-  distanceFromAssembly: 50
+  distanceFromAssembly: 12
 --- !u!114 &8869941319984783699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc26d35c3de2646da9d4dee12fd157d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisAgent: {fileID: 0}
+  thisAgent: {fileID: 5360401474995351929}
 --- !u!1 &1179032999949272793
 GameObject:
   m_ObjectHideFlags: 0
@@ -25722,7 +25722,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e6f8c6b4cd0c5d24fbefebd224edfdb5, type: 3}
   m_Controller: {fileID: 22100000, guid: 83eb688510bce4b4bac05f26a5fa3bdd, type: 2}
-  m_CullingMode: 2
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0

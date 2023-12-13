@@ -67,7 +67,7 @@ namespace JumpeeIsland
 
         public bool IsCheckable()
         {
-            return IsAvailable;
+            return IsAvailable && gameObject.activeInHierarchy;
         }
 
         public Vector3 GetPosition()

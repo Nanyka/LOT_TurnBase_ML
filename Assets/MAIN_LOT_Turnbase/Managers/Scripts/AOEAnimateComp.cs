@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -15,14 +16,24 @@ namespace JumpeeIsland
         private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
         private static readonly int TakeDamage = Animator.StringToHash("TakeDamage");
 
+        private void Awake()
+        {
+            m_Animator = GetComponent<Animator>();
+        }
+
         public void Init(GameObject skin)
         {
             if (m_RotatePart == null)
                 m_RotatePart = transform;
 
-            m_Animator = GetComponent<Animator>();
             m_Animator.Rebind();
+            Invoke(nameof(TestRebind),1f);
             isReady = true;
+        }
+
+        private void TestRebind()
+        {
+            m_Animator.Rebind();
         }
 
         public void StartWalk()

@@ -67,10 +67,6 @@ namespace JumpeeIsland
             Addressables.WebRequestOverride = AddPrivateToken;
 #endif
 
-            // Reset spawnTransform
-            foreach (Transform child in spawnTransform)
-                Destroy(child.gameObject);
-
             var handle = Addressables.InstantiateAsync(m_LogPrefab, spawnTransform);
             var skin = handle.WaitForCompletion();
             handle.Completed += delegate
@@ -80,12 +76,6 @@ namespace JumpeeIsland
                     skinComp.ReturnSkin(skin);
                 }
             };
-
-            // var factionPart = skin.transform.Find("FactionPart");
-            // if (factionPart != null)
-            //     for (int i = 0; i < factionPart.childCount; i++)
-            //         if (factionPart.GetChild(i).TryGetComponent(out Renderer part))
-            //             skinComp.SetFactionRenderer(part);
         }
 
         private void AddPrivateToken(UnityWebRequest request)

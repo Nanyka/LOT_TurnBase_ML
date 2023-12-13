@@ -17,7 +17,7 @@ namespace GOAP
         public WorldStates Beliefs = new();
 
         protected GPlanner _planner;
-        protected Queue<GAction> _actionQueue;
+        protected Queue<GAction> _actionQueue = new();
 
         public float RestInterval = 1f;
         private float _finishDistance = 3f;
