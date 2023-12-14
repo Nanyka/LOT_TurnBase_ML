@@ -19,7 +19,7 @@ namespace JumpeeIsland
 
         protected override void Start()
         {
-            GameFlowManager.Instance.OnStartGame.AddListener(Init);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(Init);
             AddActions();
             SetGoal();
         }

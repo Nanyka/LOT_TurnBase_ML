@@ -17,7 +17,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            GameFlowManager.Instance.OnStartGame.AddListener(InitiateAStar);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(InitiateAStar);
         }
 
         public void UpdateTileArea(MovableTile tilePos)

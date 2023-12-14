@@ -15,7 +15,7 @@ namespace JumpeeIsland
             _dropConstruction = GetComponent<AoeConstructionMenu>();
             _mainCamera = Camera.main;
 
-            GameFlowManager.Instance.OnStartGame.AddListener(EnableInteract);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(EnableInteract);
         }
         
         protected override void Update()

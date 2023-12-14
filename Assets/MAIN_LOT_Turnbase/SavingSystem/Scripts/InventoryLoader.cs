@@ -12,7 +12,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            GameFlowManager.Instance.OnStartGame.AddListener(SetupBuildingMenu);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(SetupBuildingMenu);
         }
 
         public void SetData(List<PlayersInventoryItem> inventories)

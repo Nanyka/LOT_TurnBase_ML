@@ -9,12 +9,12 @@ namespace JumpeeIsland
         [SerializeField] private GameObject _clock;
         [SerializeField] private TextMeshProUGUI _clockText;
 
-        private static readonly int _battleDuration = 120;
+        private static readonly int _battleDuration = 180;
         private static int _countDown;
 
         private void Start()
         {
-            MainUI.Instance.OnEnableInteract.AddListener(StartCountDown);
+            GameFlowManager.Instance.OnKickOffEnv.AddListener(StartCountDown);
         }
 
         private void StartCountDown()
@@ -24,7 +24,6 @@ namespace JumpeeIsland
             // Start count down clock
             _countDown = _battleDuration;
             InvokeRepeating(nameof(UpdateClock), 1f, 1f);
-
         }
 
         private void UpdateClock()

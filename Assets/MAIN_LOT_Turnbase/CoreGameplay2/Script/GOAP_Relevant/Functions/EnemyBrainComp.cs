@@ -238,7 +238,7 @@ namespace JumpeeIsland
             Beliefs.ClearStates();
             Inventory.ClearInventory();
             CurrentAction = null;
-            _actionQueue.Clear();
+            _actionQueue?.Clear();
         }
     }
 

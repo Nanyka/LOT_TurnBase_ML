@@ -22,5 +22,10 @@ namespace JumpeeIsland
 
             m_Balance.text = balance;
         }
+
+        public void UpdateCurrency(string balance)
+        {
+            m_Balance.text = balance;
+        }
     }
 }

@@ -16,11 +16,10 @@ namespace JumpeeIsland
         [SerializeField] private GameObject playerCreatures;
         [SerializeField] private GameObject neutralCreatures;
         [SerializeField] private GameObject collectable;
-        [SerializeField] protected EnvironmentData _environmentData;
 
+        [SerializeField] private EnvironmentData _environmentData;
         private EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
-        // private List<IMonster> _monsters = new();
         private IBuildingLoader playerBuildingLoader;
         private IBuildingLoader enemyBuildingLoader;
         private IResourceLoader resourceLoader;
@@ -62,6 +61,7 @@ namespace JumpeeIsland
             // Create environment-relevant objects that not include in the saving data
             GetComponent<IEnvironmentCreator>().CreateEnvObjects();
 
+            GameFlowManager.Instance.OnKickOffEnv.Invoke();
             Debug.Log("----GAME START!!!----");
         }
 
@@ -107,6 +107,9 @@ namespace JumpeeIsland
                     break;
                 }
             }
+
+            if (entityData.FactionType == FactionType.Enemy)
+                MainUI.Instance.OnUpdateResult.Invoke();
         }
 
         public void SetData(EnvironmentData environmentData)

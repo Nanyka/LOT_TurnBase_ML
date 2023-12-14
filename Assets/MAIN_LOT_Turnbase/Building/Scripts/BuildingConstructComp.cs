@@ -8,8 +8,7 @@ namespace JumpeeIsland
 {
     public class BuildingConstructComp : MonoBehaviour, ICheckableObject, IChangeWorldState, IBuildingConstruct
     {
-        [NonSerialized] public UnityEvent _completed = new();
-        
+        [NonSerialized] private readonly UnityEvent _completed = new();
         [SerializeField] private int _cost;
         [SerializeField] private string m_InProcessState;
         [SerializeField] private string m_FinishState;
@@ -32,13 +31,14 @@ namespace JumpeeIsland
                 SetResourceScale();
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
             }
-            
         }
 
         private void OnDisable()
         {
             if (GWorld.Instance != null && _isInit)
                 GWorld.Instance.GetWorld().ModifyState(_isFinishConstructed ? m_FinishState : m_InProcessState, -1);
+            
+            
         }
 
         private void Completion()
@@ -52,16 +52,16 @@ namespace JumpeeIsland
             }
         }
 
-        private void Destroyed()
-        {
-            if (IsAvailable && GWorld.Instance != null)
-            {
-                _curProcess = 0;
-                SetResourceScale();
-                GWorld.Instance.GetWorld().ModifyState(m_FinishState, -1);
-                IsAvailable = false;
-            }
-        }
+        // private void Destroyed()
+        // {
+        //     if (IsAvailable && GWorld.Instance != null)
+        //     {
+        //         _curProcess = 0;
+        //         SetResourceScale();
+        //         GWorld.Instance.GetWorld().ModifyState(m_FinishState, -1);
+        //         IsAvailable = false;
+        //     }
+        // }
 
         #region EXPLOITING
 

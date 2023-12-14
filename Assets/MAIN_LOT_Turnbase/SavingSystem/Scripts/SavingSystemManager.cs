@@ -134,7 +134,7 @@ namespace JumpeeIsland
             SaveMetadata(); // set it as connected state when loaded all disconnected session's data
             SetInLoading(false); // Finish loading phase
 
-            GameFlowManager.Instance.OnStartGame.Invoke(m_CurrencyLoader.GetCurrency("MOVE"));
+            GameFlowManager.Instance.OnDataLoaded.Invoke(m_CurrencyLoader.GetCurrency("MOVE"));
         }
 
         public async void OnResetData()
@@ -284,6 +284,7 @@ namespace JumpeeIsland
 
         private void DataWasSaved(SaveResult result, string message)
         {
+            Debug.Log("Save player environment locally");
             if (result == SaveResult.Error)
             {
                 Debug.LogError($"Error saving data:\n{result}\n{message}");
@@ -310,6 +311,7 @@ namespace JumpeeIsland
             {
                 // Fetch mainHallTier after receive envData
                 var mainHall = data.BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL);
+                
                 await m_CloudConnector.FetchEnvRelevantData(mainHall.CurrentLevel);
                 
                 m_EnvLoader.SetData(data);
@@ -950,15 +952,15 @@ namespace JumpeeIsland
             m_GameProcess.battleCount++;
             m_GameProcess.score = Mathf.Clamp(m_GameProcess.score + score, 0, m_GameProcess.score + score);
 
-            var battleRecord = GetComponent<BattleRecorder>().GetBattleRecord();
-            battleRecord.winStar = starAmount;
-            battleRecord.winStack = m_GameProcess.winStack;
-            battleRecord.winRate = winRate;
-            battleRecord.score = score;
-            battleRecord.isRecorded = true;
+            // var battleRecord = GetComponent<BattleRecorder>().GetBattleRecord();
+            // battleRecord.winStar = starAmount;
+            // battleRecord.winStack = m_GameProcess.winStack;
+            // battleRecord.winRate = winRate;
+            // battleRecord.score = score;
+            // battleRecord.isRecorded = true;
 
             // Send an email to enemy
-            m_CloudConnector.AddBattleEmail(enemyId ,battleRecord);
+            // m_CloudConnector.AddBattleEmail(enemyId ,battleRecord);
             
             m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);

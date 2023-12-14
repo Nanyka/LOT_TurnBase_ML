@@ -53,6 +53,9 @@ namespace JumpeeIsland
 
             if (Input.GetMouseButtonUp(0))
             {
+                if (_isSelectEntity == false)
+                    return;
+                
                 _isSelectEntity = false;
                 MainUI.Instance.IsInRelocating = _isSelectEntity;
                 var mTransform = transform;

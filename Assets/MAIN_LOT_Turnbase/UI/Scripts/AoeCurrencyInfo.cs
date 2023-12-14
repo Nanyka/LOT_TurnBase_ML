@@ -10,10 +10,10 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            MainUI.Instance.OnUpdateCurrencies.AddListener(Show);
+            MainUI.Instance.OnUpdateCurrencies.AddListener(UpdateCurrencies);
         }
 
-        private void Show()
+        private void UpdateCurrencies()
         {
             // Update player's coin
             var coinCurrency = SavingSystemManager.Instance.GetCurrencies().First(t => t.CurrencyId.Equals("COIN"));
@@ -22,13 +22,16 @@ namespace JumpeeIsland
             coinButton.UpdateCurrency(coinCurrency.Balance.ToString(), SavingSystemManager.Instance.GetCurrencySprite("COIN"));
             
             // Update player's troop amount
+            var troopAmount = SavingSystemManager.Instance.GetStorageController().GetStorages()
+                .Sum(t => t.GetSpawnableAmount());
+            var troopButton = _currencyButtons.Find(t => t.m_Currency.Equals("TROOP"));
+            troopButton.UpdateCurrency(troopAmount.ToString());
             
             // Update collected mana
             var manaCurrency = SavingSystemManager.Instance.GetCurrencies().First(t => t.CurrencyId.Equals("WOOD"));
 
-            var manaButton = _currencyButtons.Find(t => t.m_Currency.Equals("WOOD"));
-            manaButton.UpdateCurrency(manaCurrency.Balance.ToString(), SavingSystemManager.Instance.GetCurrencySprite("WOOD"));
-
+            var manaButton = _currencyButtons.Find(t => t.m_Currency.Equals("MANA"));
+            manaButton.UpdateCurrency(manaCurrency.Balance.ToString());
         }
     }
 }

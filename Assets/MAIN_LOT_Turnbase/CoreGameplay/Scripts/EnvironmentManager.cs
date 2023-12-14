@@ -47,7 +47,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            GameFlowManager.Instance.OnStartGame.AddListener(Init);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(Init);
             GameFlowManager.Instance.OnUpdateTilePos.AddListener(UpdateTileArea);
             GameFlowManager.Instance.OnDomainRegister.AddListener(DomainRegister);
             GameFlowManager.Instance.OnDomainRemover.AddListener(DomainRemover);

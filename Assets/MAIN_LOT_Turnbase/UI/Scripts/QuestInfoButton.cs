@@ -14,10 +14,10 @@ namespace JumpeeIsland
         {
             MainUI.Instance.OnStarGuide.AddListener(ShowGuide);
 
-            _currentQuest = GameFlowManager.Instance.GetQuest();
-            
-            if (_currentQuest != null && _currentQuest.isFinalBoss)
-                _infoPanel.SetActive(false);
+            // _currentQuest = GameFlowManager.Instance.GetQuest();
+            //
+            // if (_currentQuest != null && _currentQuest.isFinalBoss)
+            //     _infoPanel.SetActive(false);
             // else
             //     MainUI.Instance.OnEnableInteract.AddListener(EnableGuidePanel);
         }
@@ -37,16 +37,17 @@ namespace JumpeeIsland
             if (MainUI.Instance.IsInteractable == false)
                 return;
             
+            _infoPanel.SetActive(!_infoPanel.activeInHierarchy);
             
-            if (_currentQuest.isFinalBoss)
-            {
-                MainUI.Instance.OnConversationUI.Invoke(
-                    $"Defeat the boss in {_currentQuest.maxMovingTurn} steps to UNLOCK NEW CHARACTER", true);
-            }
-            else
-            {
-                _infoPanel.SetActive(!_infoPanel.activeInHierarchy);
-            }
+            // if (_currentQuest.isFinalBoss)
+            // {
+            //     MainUI.Instance.OnConversationUI.Invoke(
+            //         $"Defeat the boss in {_currentQuest.maxMovingTurn} steps to UNLOCK NEW CHARACTER", true);
+            // }
+            // else
+            // {
+            //     _infoPanel.SetActive(!_infoPanel.activeInHierarchy);
+            // }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace JumpeeIsland
         private void Start()
         {
             m_Inventory = GetComponent<IInventoryDeliver>();
-            GameFlowManager.Instance.OnStartGame.AddListener(LoadResearchTopics);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(LoadResearchTopics);
         }
 
         private async void LoadResearchTopics(long arg0)

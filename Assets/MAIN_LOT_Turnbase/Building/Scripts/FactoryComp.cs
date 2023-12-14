@@ -15,6 +15,7 @@ namespace JumpeeIsland
         [SerializeField] private Slider priorityBar;
 
         private int _curStorage;
+        private int _spawnableAmount;
         private IBuildingDealer m_Building;
         private IEntityUIUpdate m_UIUpdater;
         private Research m_Research;
@@ -62,8 +63,8 @@ namespace JumpeeIsland
                 m_Building.GetWorldStateChanger()
                     .ChangeState(1); // restart the factory after release a part of its storage
 
-            var spawnAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
-            for (int i = 0; i < spawnAmount; i++)
+            _spawnableAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
+            for (int i = 0; i < _spawnableAmount; i++)
             {
                 var troop = await SavingSystemManager.Instance.OnTrainACreature(troopName, transform.position, false);
                 if (troop == null)
@@ -82,7 +83,9 @@ namespace JumpeeIsland
                 }
             }
 
-            _curStorage -= spawnAmount * costPerTroop;
+            _curStorage -= _spawnableAmount * costPerTroop;
+            _spawnableAmount = 0;
+            UpdateTroopAmountUI();
         }
 
         public void OnDoubleTaps()
@@ -100,14 +103,8 @@ namespace JumpeeIsland
             _curStorage = Mathf.Clamp(_curStorage + amount, 0, costPerTroop * troopCount);
 
             // Show amount of ready troop
-            var spawnAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
-            if (spawnAmount > 0)
-            {
-                m_UIUpdater.UpdatePriceText(spawnAmount);
-                m_UIUpdater.ShowPriceTag(true);
-            }
-            else
-                m_UIUpdater.ShowPriceTag(false);
+            _spawnableAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
+            UpdateTroopAmountUI();
 
             // Remove one "Factory" state when the factory is full of stock
             if (_curStorage >= costPerTroop * troopCount)
@@ -115,6 +112,19 @@ namespace JumpeeIsland
                 _curStorage = costPerTroop * troopCount;
                 m_Building.GetWorldStateChanger().ChangeState(-1); // decrease one unit of available factory
             }
+        }
+
+        private void UpdateTroopAmountUI()
+        {
+            if (_spawnableAmount > 0)
+            {
+                m_UIUpdater.UpdatePriceText(_spawnableAmount);
+                m_UIUpdater.ShowPriceTag(true);
+            }
+            else
+                m_UIUpdater.ShowPriceTag(false);
+            
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
         public GameObject GetGameObject()
@@ -131,6 +141,11 @@ namespace JumpeeIsland
         {
             _curWeight -= amount;
             m_UIUpdater.UpdateStorage(Mathf.Clamp(_curWeight,0,100));
+        }
+
+        public int GetSpawnableAmount()
+        {
+            return _spawnableAmount;
         }
 
         public bool CheckTarget(string targetName)
@@ -156,6 +171,7 @@ namespace JumpeeIsland
         public GameObject GetGameObject();
         public float GetWeight();
         public void ReduceWeight(int amount);
+        public int GetSpawnableAmount();
     }
 
     public interface IResearchDeliver

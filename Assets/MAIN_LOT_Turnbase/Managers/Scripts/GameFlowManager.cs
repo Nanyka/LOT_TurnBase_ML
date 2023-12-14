@@ -20,7 +20,7 @@ namespace JumpeeIsland
     public class GameFlowManager : Singleton<GameFlowManager>
     {
         // [NonSerialized] public UnityEvent OnLoadData = new(); // send to SavingSystemManager
-        [NonSerialized] public UnityEvent<long> OnStartGame = new(); // send to EnvironmentManager, invoke at SavingSystemManager
+        [NonSerialized] public UnityEvent<long> OnDataLoaded = new(); // send to EnvironmentManager, invoke at SavingSystemManager
 
         [NonSerialized] public UnityEvent OnInitiateObjects = new(); // send to Managers; invoke from TileManager
 
@@ -60,7 +60,7 @@ namespace JumpeeIsland
             _gameSpawner = FindObjectOfType<GameSpawner>();
             _globalVfx = GetComponent<GlobalVfx>();
 
-            OnStartGame.AddListener(RecordStartedState);
+            OnDataLoaded.AddListener(RecordStartedState);
             OnKickOffEnv.AddListener(ConfirmGameStarted);
             OnGameOver.AddListener(GameOverState);
         }

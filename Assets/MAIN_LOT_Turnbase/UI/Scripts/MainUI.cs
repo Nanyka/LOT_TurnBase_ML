@@ -13,7 +13,7 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController, NpcInGame
 
-        [NonSerialized] public UnityEvent<float> OnEcoBossInfo = new(); // send to EcoBossInfoUI; invoke at PlayerFactionController
+        [NonSerialized] public UnityEvent<float> OnEcoBossUI = new(); // send to EcoBossInfoUI ; invoke at PlayerFactionController
 
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
 
@@ -43,7 +43,9 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent OnHideAllMenu = new(); // send to BuildingMenu
 
-        [NonSerialized] public UnityEvent OnShowAnUI = new(); // send to TutorialController, invoke at CreatureInfoUI, BossSelector;
+        [NonSerialized] public UnityEvent OnShowAnUI = new(); // send to TutorialController, AoeResultCalculator; invoke at CreatureInfoUI, BossSelector, AoeEnvironmentLoader;
+
+        [NonSerialized] public UnityEvent OnUpdateResult = new(); // send to AoeResultCalculator; invoke at AoeEnvironmentLoader;
 
         [NonSerialized] public UnityEvent<string, int, Vector3> OnShowCurrencyVfx = new(); // send to CollectCurrencyEffects; invoke at SavingSystemManager
 
@@ -74,7 +76,7 @@ namespace JumpeeIsland
             _ecoBossInfo = GetComponent<EcoBossInfoUI>();
             _mainCamera = Camera.main;
 
-            GameFlowManager.Instance.OnStartGame.AddListener(EnableInteract);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(EnableInteract);
         }
 
         protected void EnableInteract(long arg0)

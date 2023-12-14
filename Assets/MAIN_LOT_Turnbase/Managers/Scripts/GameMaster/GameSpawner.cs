@@ -26,7 +26,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            GameFlowManager.Instance.OnStartGame.AddListener(Init);
+            GameFlowManager.Instance.OnDataLoaded.AddListener(Init);
         }
 
         private void Init(long arg0)

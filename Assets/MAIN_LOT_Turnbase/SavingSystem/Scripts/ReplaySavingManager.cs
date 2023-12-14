@@ -38,7 +38,7 @@ namespace JumpeeIsland
             m_EnvLoader.SetData(m_RuntimeMetadata.BattleRecord.environmentData);
             m_EnvLoader.Init();
 
-            GameFlowManager.Instance.OnStartGame.Invoke(0);
+            GameFlowManager.Instance.OnDataLoaded.Invoke(0);
             Debug.Log("Completed loading process");
 
             if (m_RuntimeMetadata.BattleRecord.actions.Count > 0)

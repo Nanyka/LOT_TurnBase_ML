@@ -14,7 +14,6 @@ namespace JumpeeIsland
 
         public override bool PrePerform()
         {
-            Debug.Log("Chase tower");
             if (m_GAgent.Inventory.IsEmpty())
             {
                 _currentPoint = null;
