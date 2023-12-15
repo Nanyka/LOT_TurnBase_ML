@@ -27,7 +27,7 @@ namespace JumpeeIsland
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
         // private ICharacterAttack _currentAttack;
-        private int _attackIndex;
+        [SerializeField] private int _attackIndex;
         private int _killAccumulation;
         private bool _isDie;
 
@@ -160,7 +160,7 @@ namespace JumpeeIsland
         public void StartAttack()
         {
             m_AnimateComp.TriggerAttackAnim(_attackIndex);
-            m_SkillMonitor.ResetPowerBar();
+            // m_SkillMonitor.ResetPowerBar();
         }
 
         #endregion
@@ -177,6 +177,11 @@ namespace JumpeeIsland
         public void SetAttackIndex(int index)
         {
             _attackIndex = index;
+        }
+
+        public int GetAttackIndex()
+        {
+            return _attackIndex;
         }
 
         #endregion
@@ -230,5 +235,6 @@ namespace JumpeeIsland
     {
         public void EnablePowerBar(int index);
         public void SetAttackIndex(int index);
+        public int GetAttackIndex();
     }
 }

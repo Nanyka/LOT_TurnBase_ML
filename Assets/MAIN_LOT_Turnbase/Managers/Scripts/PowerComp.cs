@@ -8,7 +8,7 @@ namespace JumpeeIsland
         private ISpecialSkillReceiver _skillComp;
         private IEntityUIUpdate _entityUIUpdate;
         private int _attackIndex;
-        private int maxPower = 4; // 3 normal attack allow 1 special attack
+        private readonly int _maxPower = 3; // 3 normal attack allow 1 special attack
         private int _curPower;
         private bool _isAvailable;
         private bool _isPowerFull;
@@ -26,11 +26,13 @@ namespace JumpeeIsland
 
         public void SetSpecialAttack(int attackIndex)
         {
-            Debug.Log("Enable power bar");
+            // Debug.Log("Enable power bar");
             _attackIndex = attackIndex;
             _entityUIUpdate.ShowBars(false,true,true);
             _isAvailable = true;
-            ResetPowerBar();
+            _isPowerFull = false;
+            _skillComp.SetAttackIndex(0);
+            _curPower = 0;
         }
 
         public void PowerUp()
@@ -39,11 +41,12 @@ namespace JumpeeIsland
                 return;
 
             _curPower++;
-            if (_curPower >= maxPower)
+            if (_curPower >= _maxPower)
             {
+                _curPower = 0;
                 _isPowerFull = true;
                 _skillComp.SetAttackIndex(_attackIndex);
-                Debug.Log("Full power");
+                // Debug.Log("Full power");
             }
         }
 
@@ -54,13 +57,13 @@ namespace JumpeeIsland
                 _isPowerFull = false;
                 _skillComp.SetAttackIndex(0);
                 _curPower = 0;
-                Debug.Log("Reset power bar");
+                // Debug.Log("Reset power bar");
             }
         }
 
         public void DisablePowerBar()
         {
-            Debug.Log("Disable power bar");
+            // Debug.Log("Disable power bar");
             _isAvailable = false;
         }
     }

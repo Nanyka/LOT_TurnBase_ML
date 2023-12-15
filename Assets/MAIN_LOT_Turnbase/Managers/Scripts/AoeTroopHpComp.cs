@@ -62,7 +62,6 @@ namespace JumpeeIsland
         {
             // Add VFX
             yield return new WaitForSeconds(2f);
-            Debug.Log("Remove troop");
             gameObject.SetActive(false);
         }
 

@@ -17,8 +17,10 @@ namespace JumpeeIsland
         public void SuccessAttack(GameObject target)
         {
             if (target.TryGetComponent(out IHealthComp targetHp))
+            {
                 targetHp.TakeDamage(m_AttackRelated);
-            m_SkillMonitor.PowerUp();
+                m_SkillMonitor.PowerUp();
+            }
         }
     }
 

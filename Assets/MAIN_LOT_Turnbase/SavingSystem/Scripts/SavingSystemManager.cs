@@ -388,8 +388,6 @@ namespace JumpeeIsland
         // Player pay something for construction locally
         public void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position, CurrencyUnit cost)
         {
-            Debug.Log($"Place {inventoryItem.inventoryName}");
-            
             if (GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
             {
                 MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);

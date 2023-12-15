@@ -15415,6 +15415,7 @@ MonoBehaviour:
   m_Transform: {fileID: 765458664678213309}
   m_EffectComp: {fileID: 3034851220945496829}
   m_Brain: {fileID: 4952066524200732265}
+  _attackIndex: 0
 --- !u!114 &2768966365666163441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15440,7 +15441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a4620cc874b4e4e981d1746e688971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackVfx: {fileID: 5732674347296101242}
+  attackVfx:
+  - {fileID: 5732674347296101242}
   attackColliders:
   - {fileID: 2471985645014142085}
 --- !u!114 &2270302308847082769

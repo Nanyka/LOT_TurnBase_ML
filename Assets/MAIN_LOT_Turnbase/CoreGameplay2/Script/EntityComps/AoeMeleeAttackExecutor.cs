@@ -8,16 +8,20 @@ namespace JumpeeIsland
 {
     public class AoeMeleeAttackExecutor : MonoBehaviour, IAttackExecutor
     {
-        [SerializeField] private ParticleSystem attackVfx;
+        [SerializeField] private ParticleSystem[] attackVfx;
         [SerializeField] private List<AnimAttackCollider> attackColliders;
         
         private IAttackComp _attackComp;
         private IAttackRelated _attackRelated;
+        private ISpecialSkillReceiver _specialSkill;
+        private ISkillMonitor _skillMonitor;
 
         private void Start()
         {
             _attackComp = GetComponent<IAttackComp>();
             _attackRelated = GetComponent<IAttackRelated>();
+            _specialSkill = GetComponent<ISpecialSkillReceiver>();
+            _skillMonitor = GetComponent<ISkillMonitor>();
             
             foreach (var attackCollider in attackColliders)
                 attackCollider.Init(this);
@@ -25,7 +29,8 @@ namespace JumpeeIsland
 
         public void PlayAttackVfx()
         {
-            attackVfx.Play();
+            attackVfx[_specialSkill.GetAttackIndex()].Play();
+            _skillMonitor.ResetPowerBar();
         }
 
         public FactionType GetFaction()
