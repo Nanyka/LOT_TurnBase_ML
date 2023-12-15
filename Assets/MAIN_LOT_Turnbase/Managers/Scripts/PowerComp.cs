@@ -13,7 +13,7 @@ namespace JumpeeIsland
         private bool _isAvailable;
         private bool _isPowerFull;
 
-        private void Start()
+        private void Awake()
         {
             _skillComp = GetComponent<ISpecialSkillReceiver>();
             _entityUIUpdate = GetComponent<IEntityUIUpdate>();
@@ -26,8 +26,8 @@ namespace JumpeeIsland
 
         public void SetSpecialAttack(int attackIndex)
         {
-            _attackIndex = attackIndex;
             Debug.Log("Enable power bar");
+            _attackIndex = attackIndex;
             _entityUIUpdate.ShowBars(false,true,true);
             _isAvailable = true;
             ResetPowerBar();

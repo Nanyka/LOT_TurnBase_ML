@@ -17,7 +17,7 @@ namespace JumpeeIsland
         [SerializeField] private GameObject neutralCreatures;
         [SerializeField] private GameObject collectable;
 
-        [SerializeField] private EnvironmentData _environmentData;
+        private EnvironmentData _environmentData;
         private EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
         private IBuildingLoader playerBuildingLoader;

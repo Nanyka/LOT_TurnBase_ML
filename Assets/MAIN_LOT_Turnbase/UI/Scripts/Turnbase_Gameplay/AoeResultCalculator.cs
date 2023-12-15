@@ -26,8 +26,6 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnKickOffEnv.AddListener(BattleStatsCache);
             MainUI.Instance.OnUpdateResult.AddListener(UpdateStarGuide);
             GameFlowManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
-
-            // m_CollectedLoot = GetComponent<CollectedLoot>();
         }
 
         private void BattleStatsCache()
@@ -35,12 +33,6 @@ namespace JumpeeIsland
             _startGameEnemyCount = SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
             UpdateStarGuide();
         }
-
-        // private void CalculateWinStars()
-        // {
-        //     if (GameFlowManager.Instance.GetEnvManager().GetCurrFaction() == FactionType.Enemy)
-        //         UpdateStarGuide();
-        // }
 
         private void UpdateStarGuide()
         {
@@ -85,13 +77,11 @@ namespace JumpeeIsland
             if (Math.Abs(winRate - 1f) < Mathf.Epsilon)
                 winStar++;
 
-            Debug.Log(
-                $"Win rate: {winRate}, Demolishing mainHall: {SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall()}, star count: {winStar}");
+            Debug.Log($"Win rate: {winRate}, Demolishing mainHall: {SavingSystemManager.Instance.GetEnvironmentData().IsDemolishMainHall()}, star count: {winStar}");
 
             if (winStar > 0)
             {
                 // Record battle loot right after get amount of stars
-
                 var battleLoot = await SavingSystemManager.Instance.GetBattleLootByStar(winStar);
 
                 // Get reward data to show off on resultPanel
@@ -111,14 +101,6 @@ namespace JumpeeIsland
                     }
                 }
 
-                // Add collected lot from CollectedLoot
-                // var collectedLoot = m_CollectedLoot.GetCollectedLoot();
-                // foreach (var item in collectedLoot)
-                // {
-                //     rewardDictionary.TryAdd(item.Key, 0);
-                //     rewardDictionary[item.Key] += item.Value;
-                // }
-
                 int currentRewardItemUI = 0;
                 foreach (var rewardItem in rewardDictionary)
                 {
@@ -137,7 +119,7 @@ namespace JumpeeIsland
                 }
 
                 // 10% player have a chance to gather a creature
-                if (battleLoot.CreatureLoot.Count > 0 && Random.Range(0, 100) < 100)
+                if (battleLoot.CreatureLoot.Count > 0 && Random.Range(0, 100) < 10)
                 {
                     var creatureLoot = battleLoot.CreatureLoot[Random.Range(0, battleLoot.CreatureLoot.Count)];
                     var creatureData = SavingSystemManager.Instance.GetInventoryItemByName(creatureLoot);
@@ -147,6 +129,7 @@ namespace JumpeeIsland
                     rewardItemUI.ShowReward(creatureData.spriteAddress, "1", true);
                     rewardItemUI.gameObject.SetActive(true);
 
+                    // TODO: Stock the creature in a separated storage
                     SavingSystemManager.Instance.GetEnvDataForSave().GatherCreature(creatureLoot);
                 }
 

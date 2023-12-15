@@ -25,7 +25,7 @@ MonoBehaviour:
       IsIKElement: 0
       HumanoidBodyBone: 0
       wasInitializing: 1
-      BoneBakePathName: root
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root
       HumanoidBoneDefined: 0
       BakePosition: 0
@@ -38,14 +38,14 @@ MonoBehaviour:
     - BoneName: pelvis
       ID: 1
       ParentBoneName: root
-      Depth: 1
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 0
       wasInitializing: 1
-      BoneBakePathName: Hips
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -56,14 +56,14 @@ MonoBehaviour:
     - BoneName: spine_01
       ID: 2
       ParentBoneName: pelvis
-      Depth: 2
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 7
       wasInitializing: 1
-      BoneBakePathName: Spine
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -74,14 +74,14 @@ MonoBehaviour:
     - BoneName: thigh_l
       ID: 27
       ParentBoneName: pelvis
-      Depth: 2
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 1
       wasInitializing: 1
-      BoneBakePathName: LeftUpperLeg
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -92,14 +92,14 @@ MonoBehaviour:
     - BoneName: thigh_r
       ID: 32
       ParentBoneName: pelvis
-      Depth: 2
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 2
       wasInitializing: 1
-      BoneBakePathName: RightUpperLeg
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -110,14 +110,14 @@ MonoBehaviour:
     - BoneName: spine_02
       ID: 3
       ParentBoneName: spine_01
-      Depth: 3
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 8
       wasInitializing: 1
-      BoneBakePathName: Chest
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -128,14 +128,14 @@ MonoBehaviour:
     - BoneName: calf_l
       ID: 28
       ParentBoneName: thigh_l
-      Depth: 3
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 3
       wasInitializing: 1
-      BoneBakePathName: LeftLowerLeg
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_l/calf_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -146,14 +146,14 @@ MonoBehaviour:
     - BoneName: calf_r
       ID: 33
       ParentBoneName: thigh_r
-      Depth: 3
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 4
       wasInitializing: 1
-      BoneBakePathName: RightLowerLeg
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_r/calf_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -164,14 +164,14 @@ MonoBehaviour:
     - BoneName: spine_03
       ID: 4
       ParentBoneName: spine_02
-      Depth: 4
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 54
       wasInitializing: 1
-      BoneBakePathName: UpperChest
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -182,14 +182,14 @@ MonoBehaviour:
     - BoneName: foot_l
       ID: 29
       ParentBoneName: calf_l
-      Depth: 4
+      Depth: 0
       BakeBone: 1
       IsIKElement: 1
       HumanoidBodyBone: 5
       wasInitializing: 1
-      BoneBakePathName: LeftFoot
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_l/calf_l/foot_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 1
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -200,14 +200,14 @@ MonoBehaviour:
     - BoneName: foot_r
       ID: 34
       ParentBoneName: calf_r
-      Depth: 4
+      Depth: 0
       BakeBone: 1
       IsIKElement: 1
       HumanoidBodyBone: 6
       wasInitializing: 1
-      BoneBakePathName: RightFoot
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_r/calf_r/foot_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 1
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -218,14 +218,14 @@ MonoBehaviour:
     - BoneName: clavicle_l
       ID: 5
       ParentBoneName: spine_03
-      Depth: 5
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 11
       wasInitializing: 1
-      BoneBakePathName: LeftShoulder
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -236,14 +236,14 @@ MonoBehaviour:
     - BoneName: clavicle_r
       ID: 14
       ParentBoneName: spine_03
-      Depth: 5
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 12
       wasInitializing: 1
-      BoneBakePathName: RightShoulder
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -254,14 +254,14 @@ MonoBehaviour:
     - BoneName: neck_01
       ID: 23
       ParentBoneName: spine_03
-      Depth: 5
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 9
       wasInitializing: 1
-      BoneBakePathName: Neck
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/neck_01
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -272,14 +272,14 @@ MonoBehaviour:
     - BoneName: ball_l
       ID: 30
       ParentBoneName: foot_l
-      Depth: 5
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 19
       wasInitializing: 1
-      BoneBakePathName: LeftToes
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_l/calf_l/foot_l/ball_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -290,14 +290,14 @@ MonoBehaviour:
     - BoneName: ball_r
       ID: 35
       ParentBoneName: foot_r
-      Depth: 5
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 20
       wasInitializing: 1
-      BoneBakePathName: RightToes
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_r/calf_r/foot_r/ball_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -308,14 +308,14 @@ MonoBehaviour:
     - BoneName: upperarm_l
       ID: 6
       ParentBoneName: clavicle_l
-      Depth: 6
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 13
       wasInitializing: 1
-      BoneBakePathName: LeftUpperArm
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -326,14 +326,14 @@ MonoBehaviour:
     - BoneName: upperarm_r
       ID: 15
       ParentBoneName: clavicle_r
-      Depth: 6
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 14
       wasInitializing: 1
-      BoneBakePathName: RightUpperArm
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -344,14 +344,14 @@ MonoBehaviour:
     - BoneName: head
       ID: 24
       ParentBoneName: neck_01
-      Depth: 6
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 10
       wasInitializing: 1
-      BoneBakePathName: Head
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/neck_01/head
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -362,12 +362,12 @@ MonoBehaviour:
     - BoneName: toes_l
       ID: 31
       ParentBoneName: ball_l
-      Depth: 6
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 0
       wasInitializing: 1
-      BoneBakePathName: root/pelvis/thigh_l/calf_l/foot_l/ball_l/toes_l
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_l/calf_l/foot_l/ball_l/toes_l
       HumanoidBoneDefined: 0
       BakePosition: 0
@@ -380,12 +380,12 @@ MonoBehaviour:
     - BoneName: toes_r
       ID: 36
       ParentBoneName: ball_r
-      Depth: 6
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 0
       wasInitializing: 1
-      BoneBakePathName: root/pelvis/thigh_r/calf_r/foot_r/ball_r/toes_r
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/thigh_r/calf_r/foot_r/ball_r/toes_r
       HumanoidBoneDefined: 0
       BakePosition: 0
@@ -398,14 +398,14 @@ MonoBehaviour:
     - BoneName: lowerarm_l
       ID: 7
       ParentBoneName: upperarm_l
-      Depth: 7
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 15
       wasInitializing: 1
-      BoneBakePathName: LeftLowerArm
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -416,14 +416,14 @@ MonoBehaviour:
     - BoneName: lowerarm_r
       ID: 16
       ParentBoneName: upperarm_r
-      Depth: 7
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 16
       wasInitializing: 1
-      BoneBakePathName: RightLowerArm
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -434,12 +434,12 @@ MonoBehaviour:
     - BoneName: eyes
       ID: 25
       ParentBoneName: head
-      Depth: 7
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 0
       wasInitializing: 1
-      BoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/eyes
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/eyes
       HumanoidBoneDefined: 0
       BakePosition: 0
@@ -452,12 +452,12 @@ MonoBehaviour:
     - BoneName: eyebrows
       ID: 26
       ParentBoneName: head
-      Depth: 7
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 0
       wasInitializing: 1
-      BoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/eyebrows
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/eyebrows
       HumanoidBoneDefined: 0
       BakePosition: 0
@@ -470,14 +470,14 @@ MonoBehaviour:
     - BoneName: hand_l
       ID: 8
       ParentBoneName: lowerarm_l
-      Depth: 8
+      Depth: 0
       BakeBone: 1
       IsIKElement: 1
       HumanoidBodyBone: 17
       wasInitializing: 1
-      BoneBakePathName: LeftHand
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 1
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -488,14 +488,14 @@ MonoBehaviour:
     - BoneName: hand_r
       ID: 17
       ParentBoneName: lowerarm_r
-      Depth: 8
+      Depth: 0
       BakeBone: 1
       IsIKElement: 1
       HumanoidBodyBone: 18
       wasInitializing: 1
-      BoneBakePathName: RightHand
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 1
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -506,14 +506,14 @@ MonoBehaviour:
     - BoneName: thumb_01_l
       ID: 9
       ParentBoneName: hand_l
-      Depth: 9
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 24
       wasInitializing: 1
-      BoneBakePathName: LeftThumbProximal
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -524,14 +524,14 @@ MonoBehaviour:
     - BoneName: middle_01_l
       ID: 12
       ParentBoneName: hand_l
-      Depth: 9
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 30
       wasInitializing: 1
-      BoneBakePathName: LeftMiddleProximal
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -542,14 +542,14 @@ MonoBehaviour:
     - BoneName: thumb_01_r
       ID: 18
       ParentBoneName: hand_r
-      Depth: 9
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 39
       wasInitializing: 1
-      BoneBakePathName: RightThumbProximal
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -560,14 +560,14 @@ MonoBehaviour:
     - BoneName: middle_01_r
       ID: 21
       ParentBoneName: hand_r
-      Depth: 9
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 45
       wasInitializing: 1
-      BoneBakePathName: RightMiddleProximal
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -578,14 +578,14 @@ MonoBehaviour:
     - BoneName: thumb_02_l
       ID: 10
       ParentBoneName: thumb_01_l
-      Depth: 10
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 25
       wasInitializing: 1
-      BoneBakePathName: LeftThumbIntermediate
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -596,14 +596,14 @@ MonoBehaviour:
     - BoneName: middle_02_l
       ID: 13
       ParentBoneName: middle_01_l
-      Depth: 10
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 31
       wasInitializing: 1
-      BoneBakePathName: LeftMiddleIntermediate
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l/middle_02_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -614,14 +614,14 @@ MonoBehaviour:
     - BoneName: thumb_02_r
       ID: 19
       ParentBoneName: thumb_01_r
-      Depth: 10
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 40
       wasInitializing: 1
-      BoneBakePathName: RightThumbIntermediate
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -632,14 +632,14 @@ MonoBehaviour:
     - BoneName: middle_02_r
       ID: 22
       ParentBoneName: middle_01_r
-      Depth: 10
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 46
       wasInitializing: 1
-      BoneBakePathName: RightMiddleIntermediate
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r/middle_02_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -650,14 +650,14 @@ MonoBehaviour:
     - BoneName: thumb_03_l
       ID: 11
       ParentBoneName: thumb_02_l
-      Depth: 11
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 26
       wasInitializing: 1
-      BoneBakePathName: LeftThumbDistal
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l/thumb_03_l
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -668,14 +668,14 @@ MonoBehaviour:
     - BoneName: thumb_03_r
       ID: 20
       ParentBoneName: thumb_02_r
-      Depth: 11
+      Depth: 0
       BakeBone: 0
       IsIKElement: 0
       HumanoidBodyBone: 41
       wasInitializing: 1
-      BoneBakePathName: RightThumbDistal
+      BoneBakePathName: 
       HumToGenericBoneBakePathName: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r/thumb_03_r
-      HumanoidBoneDefined: 1
+      HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
       _Bake_PivotSpace: 0
@@ -712,7 +712,7 @@ MonoBehaviour:
       HumanoidBodyBone: 0
       wasInitializing: 0
       BoneBakePathName: 
-      HumToGenericBoneBakePathName: root/pelvis
+      HumToGenericBoneBakePathName: 
       HumanoidBoneDefined: 0
       BakePosition: 0
       BakeScale: 0
@@ -720,7 +720,7 @@ MonoBehaviour:
       _Bake_IsRoot: 0
       _Bake_PivotPosition: {x: 0, y: 0, z: 0}
       _Bake_PivotRotation: {x: 0, y: 0, z: 0, w: 1}
-      DontDoInitialFramesWrap: 1
+      DontDoInitialFramesWrap: 0
     PelvisAdditionalRef:
       BoneName: 
       ID: -1
