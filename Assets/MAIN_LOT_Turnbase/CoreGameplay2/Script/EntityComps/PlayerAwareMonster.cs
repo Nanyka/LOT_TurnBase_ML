@@ -98,5 +98,10 @@ namespace JumpeeIsland
 
             return null;
         }
+
+        public float DetectRange()
+        {
+            return detectRange;
+        }
     }
 }

@@ -8,18 +8,18 @@ namespace JumpeeIsland
     public class FireComp : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _bulletFX;
-        [SerializeField] private Vector3 _targetPos;
         [SerializeField] private float _angle;
         [SerializeField] private int _reloadDuration;
         [SerializeField] private bool _isInPlaceFire;
-
+        
+        private Vector3 _targetPos;
         private Vector3 _velocity;
 
         public void PlayCurveFX(Vector3 targetPos)
         {
             if (_bulletFX != null)
             {
-                _targetPos = targetPos;
+                _targetPos = targetPos + Vector3.up*0.5f;
                 var position = _bulletFX.transform.position;
                 _velocity = CalcBallisticVelocityVector(position, _targetPos, _angle);
                 _bulletFX.transform.LookAt(new Vector3(_targetPos.x, position.y, _targetPos.z));

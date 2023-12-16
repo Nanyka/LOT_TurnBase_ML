@@ -30,8 +30,8 @@ namespace JumpeeIsland
 
         protected void OnDisable()
         {
-            CancelInvoke();
-            SetBrainDisable();
+            _isActive = false;
+            ResetBrain();
         }
 
         protected override void Start()
@@ -46,12 +46,11 @@ namespace JumpeeIsland
                 Actions.Add(action);
         }
 
-        private void SetBrainDisable()
-        {
-            _isActive = false;
-            _cancellation.Cancel();
-            ResetBrain();
-        }
+        // private void SetBrainDisable()
+        // {
+        //     _isActive = false;
+        //     ResetBrain();
+        // }
 
         #endregion
 
@@ -238,7 +237,8 @@ namespace JumpeeIsland
             Beliefs.ClearStates();
             Inventory.ClearInventory();
             CurrentAction = null;
-            _actionQueue?.Clear();
+            CancelInvoke();
+            _cancellation.Cancel();
         }
     }
 

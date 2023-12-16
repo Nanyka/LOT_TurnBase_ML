@@ -53,9 +53,28 @@ namespace JumpeeIsland
 
         public void MoveTo(Vector3 destination, IProcessUpdate processUpdate)
         {
-            _currentDestination = destination;
             _currentProcessUpdate = processUpdate;
             _currentConner = m_Transform.position;
+            
+            // Check if currentDestination and m_Transform.position is in NavMesh range
+            // If not, select a nearest NavMesh point
+            
+            if (NavMesh.SamplePosition(destination, out NavMeshHit destinationHit, 2f, NavMesh.AllAreas))
+            {
+                if (destinationHit.hit)
+                    _currentDestination = destinationHit.position;
+                else
+                    Debug.Log("MoveComp can't find a walkable destination");
+            }
+            
+            if (NavMesh.SamplePosition(_currentConner, out NavMeshHit curPosHit, 2f, NavMesh.AllAreas))
+            {
+                if (curPosHit.hit)
+                    _currentConner = curPosHit.position;
+                else
+                    Debug.Log("MoveComp can't find a walkable starting point");
+            }
+            
             // _mover = mover;
             _mover.StartWalk();
             StartMove();

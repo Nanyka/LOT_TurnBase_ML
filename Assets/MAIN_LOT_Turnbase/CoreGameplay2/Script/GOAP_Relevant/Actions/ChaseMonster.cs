@@ -1,13 +1,13 @@
 using System;
 using GOAP;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
     public class ChaseMonster : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
-        [SerializeField] private float distanceFromAssembly;
 
         private ICheckableObject _currentPoint;
         private ISensor _sensor;
@@ -23,14 +23,6 @@ namespace JumpeeIsland
             if (target == null)
                 return false;
 
-            // if (m_GAgent.Inventory.IsEmpty() ||
-            //     Vector3.Distance(m_Entity._assemblyPoint, m_GAgent.Inventory.items[0].transform.position) >
-            //     distanceFromAssembly)
-            // {
-            //     m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
-            //     return false;
-            // }
-
             Target = target;
             m_GAgent.SetIProcessUpdate(this);
 
@@ -39,7 +31,6 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            // m_GAgent.Beliefs.ModifyState("SeeMonster", -1);
             m_GAgent.Inventory.ClearInventory();
 
             return true;

@@ -87,10 +87,16 @@ namespace JumpeeIsland
 
             return null;
         }
+
+        public float DetectRange()
+        {
+            return detectRange;
+        }
     }
 
     public interface ISensor
     {
         public GameObject ExecuteSensor();
+        public float DetectRange();
     }
 }

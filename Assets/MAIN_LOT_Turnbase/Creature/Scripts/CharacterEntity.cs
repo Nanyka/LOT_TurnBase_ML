@@ -159,7 +159,11 @@ namespace JumpeeIsland
         public void StartAttack()
         {
             m_AnimateComp.TriggerAttackAnim(_attackIndex);
-            // m_SkillMonitor.ResetPowerBar();
+        }
+        
+        public void StartAttack(Vector3 attackPos)
+        {
+            m_AnimateComp.TriggerAttackAnim(_attackIndex);
         }
 
         #endregion

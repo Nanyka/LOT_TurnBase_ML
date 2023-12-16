@@ -17,15 +17,14 @@ namespace JumpeeIsland
             var collision = m_AttackVfx.collision;
 
             if (collideLayer.value != 0)
-            {
                 collision.collidesWith = collideLayer;
-                return;
-            }
-
-            if (_attackExecutor.GetFaction() == FactionType.Player)
-                collision.collidesWith = 1 << 9 | 1 << 11;
             else
-                collision.collidesWith = 1 << 9 | 1 << 7;
+            {
+                if (_attackExecutor.GetFaction() == FactionType.Player)
+                    collision.collidesWith = 1 << 9 | 1 << 11;
+                else
+                    collision.collidesWith = 1 << 9 | 1 << 7;
+            }
         }
 
         private void OnParticleCollision(GameObject other)

@@ -12,14 +12,17 @@ namespace JumpeeIsland
 
         private IAttackComp _attackComp;
         private IAttackRelated _attackRelated;
-        [SerializeField] private FogOfWarHider m_Hider;
+        private IAnimateComp _animateComp;
+        private FogOfWarHider m_Hider;
         private LayerMask layerMask = 1 << 7; // Enemy layer is 5
+        private Vector3 _firePos;
         private bool _isDisableHider;
 
         private void Start()
         {
             _attackComp = GetComponent<IAttackComp>();
             _attackRelated = GetComponent<IAttackRelated>();
+            _animateComp = GetComponent<IAnimateComp>();
 
             foreach (var attackCollider in attackColliders)
                 attackCollider.Init(this);
@@ -45,7 +48,6 @@ namespace JumpeeIsland
             }
 
             var distanceToTarget = float.PositiveInfinity;
-            Vector3 firePoint = Vector3.zero;
 
             for (int i = 0; i < numColliders; i++)
             {
@@ -53,12 +55,17 @@ namespace JumpeeIsland
                 if (curDis < distanceToTarget)
                 {
                     distanceToTarget = curDis;
-                    firePoint = hitColliders[i].transform.position;
+                    _firePos = hitColliders[i].transform.position;
                 }
             }
 
             if (distanceToTarget < float.PositiveInfinity)
-                m_FireComp.PlayCurveFX(firePoint);
+                _animateComp.TriggerAttackAnim(0); // TODO: use attackIndex from PowerComp
+        }
+
+        public void Fire()
+        {
+            m_FireComp.PlayCurveFX(_firePos);
         }
 
         public void ExecuteHitEffect(Vector3 atPos)
