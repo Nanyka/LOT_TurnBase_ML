@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244e5b64425b4803adfee0290d408aaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActionName: Chase
+  ActionName: Chase Tower
   Cost: 1
   Target: {fileID: 0}
   TargetTag: 
@@ -183,9 +183,9 @@ MonoBehaviour:
   IsAutoComplete: 0
   IsWaitAndStop: 0
   PreConditions:
-  - key: Refresh
-    value: 0
   - key: Tower
+    value: 0
+  - key: Refresh
     value: 0
   AfterEffects:
   - key: Gather
@@ -242,9 +242,9 @@ MonoBehaviour:
   IsAutoComplete: 0
   IsWaitAndStop: 0
   PreConditions:
-  - key: Refresh
-    value: 0
   - key: SeeMonster
+    value: 0
+  - key: Refresh
     value: 0
   AfterEffects:
   - key: ReachMonster
@@ -15832,7 +15832,6 @@ MonoBehaviour:
   m_Transform: {fileID: 2801276164568592138}
   m_EffectComp: {fileID: 8698095827965634366}
   m_Brain: {fileID: 5360401474995351929}
-  _attackIndex: 0
 --- !u!114 &4205555104683339302
 MonoBehaviour:
   m_ObjectHideFlags: 0

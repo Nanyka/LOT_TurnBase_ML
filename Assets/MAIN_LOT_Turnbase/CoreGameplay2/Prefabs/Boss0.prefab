@@ -69043,7 +69043,6 @@ GameObject:
   - component: {fileID: 148706944219172766}
   - component: {fileID: 8604661562731163509}
   - component: {fileID: 1413501366910047315}
-  - component: {fileID: 2905588640431541441}
   m_Layer: 0
   m_Name: HeavyHitPoint
   m_TagString: Untagged
@@ -73920,21 +73919,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2905588640431541441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6464070919927211524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 549bd5725d594f1aa6d3e21df9f22204, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collideLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &6603605376718388949
 GameObject:
   m_ObjectHideFlags: 0
@@ -79075,7 +79059,7 @@ GameObject:
   - component: {fileID: 2522696339547867952}
   - component: {fileID: 5116071755732296199}
   - component: {fileID: 7867971632626685022}
-  - component: {fileID: 4672464286195792516}
+  - component: {fileID: 1658560041581228780}
   - component: {fileID: 6668289761125534558}
   - component: {fileID: 6204086858840349137}
   - component: {fileID: 1104145712340692421}
@@ -79192,7 +79176,6 @@ MonoBehaviour:
   m_Transform: {fileID: 7340992537261062243}
   m_EffectComp: {fileID: 5116071755732296199}
   m_Brain: {fileID: 7152341061682387977}
-  _attackIndex: 0
 --- !u!114 &8968948140005251844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79254,7 +79237,7 @@ MonoBehaviour:
   _healthSlider: {fileID: 4239903019636154004}
   _storageSlider: {fileID: 539977272170736849}
   _rotationConstraint: {fileID: 6546691873356213165}
---- !u!114 &4672464286195792516
+--- !u!114 &1658560041581228780
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79263,15 +79246,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8043020866906539562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08a4620cc874b4e4e981d1746e688971, type: 3}
+  m_Script: {fileID: 11500000, guid: 2be48d5af35b46ee93d99da5f6f8f3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 2
   attackVfx:
   - {fileID: 4598028156394304550}
   - {fileID: 8604661562731163509}
-  attackColliders:
-  - {fileID: 2670974478844097763}
-  - {fileID: 2905588640431541441}
+  attackCollider: {fileID: 2670974478844097763}
+  specialAttackPos: {fileID: 148706944219172766}
 --- !u!114 &6668289761125534558
 MonoBehaviour:
   m_ObjectHideFlags: 0

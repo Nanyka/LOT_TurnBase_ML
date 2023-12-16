@@ -25,7 +25,7 @@ namespace JumpeeIsland
             SetGoal();
             // APlusAlgorithm();
             // TODO: After restructure GWorld as the fist loading, call APlusAlgorithm directly instead of Invoke
-            Invoke(nameof(APlusAlgorithm), 1f);
+            Invoke(nameof(APlusAlgorithm), 2f);
         }
 
         protected void OnDisable()

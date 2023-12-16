@@ -9,8 +9,8 @@ namespace GOAP
     {
         public string ActionName = "Action";
         public float Cost = 1.0f;
-        public GameObject Target;
-        public string TargetTag;
+        [HideInInspector] public GameObject Target;
+        [HideInInspector] public string TargetTag;
         public float Duration;
         
         [Tooltip("If it is for an in-place action, turn off IsChasePosition")]

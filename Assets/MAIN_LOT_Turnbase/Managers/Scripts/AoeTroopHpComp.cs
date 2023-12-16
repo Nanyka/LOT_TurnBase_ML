@@ -6,6 +6,7 @@ namespace JumpeeIsland
 {
     public class AoeTroopHpComp : MonoBehaviour, IHealthComp, IRemoveEntity
     {
+        private Collider m_Collider;
         private IEntityUIUpdate entityUI;
         private IAnimateComp m_AnimateComp;
         private UnityEvent<IAttackRelated> _dieEvent;
@@ -15,12 +16,14 @@ namespace JumpeeIsland
 
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData)
         {
+            m_Collider = GetComponent<Collider>();
             entityUI = GetComponent<IEntityUIUpdate>();
             m_AnimateComp = GetComponent<IAnimateComp>();
             m_MAXHp = maxHp;
             m_Data = entityData;
             _dieEvent = dieEvent;
-            
+
+            m_Collider.enabled = true;
             entityUI.UpdateHealthSlider(m_Data.CurrentHp * 1f / m_MAXHp);
             entityUI.ShowBars(false,true,false);
             _isDeath = false;
@@ -47,6 +50,7 @@ namespace JumpeeIsland
         public virtual void Die(IAttackRelated killedByFaction)
         {
             _isDeath = true;
+            m_Collider.enabled = false;
             _dieEvent.Invoke(killedByFaction);
 
             SavingSystemManager.Instance.OnRemoveEntityData.Invoke(this);
