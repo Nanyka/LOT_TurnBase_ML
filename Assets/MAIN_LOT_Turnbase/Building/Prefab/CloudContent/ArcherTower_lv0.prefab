@@ -41,8 +41,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4410939257639952502}
-  - component: {fileID: 2951439534433985035}
-  - component: {fileID: 2622136810642494422}
   m_Layer: 0
   m_Name: ArcherTower_lv0
   m_TagString: Untagged
@@ -66,36 +64,6 @@ Transform:
   - {fileID: 8766475672562652769}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2951439534433985035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5128903925985391374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06c78af948052824d93c22c84c08dd65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  samplePoints: []
-  maxDistBetweenPoints: 0
-  seenCount: 0
-  seenBy: []
---- !u!114 &2622136810642494422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5128903925985391374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bd2966c16df4fa4cba52ea99b2698d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectsToHide:
-  - {fileID: 3541468062782999101}
 --- !u!1001 &3564550055318227929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,11 +133,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dc256dae1ca2eb4eb02bc2f8b894a1b, type: 3}
---- !u!23 &3541468062782999101 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 23082130259427812, guid: 5dc256dae1ca2eb4eb02bc2f8b894a1b, type: 3}
-  m_PrefabInstance: {fileID: 3564550055318227929}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3560025903281395381 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4525391403375980, guid: 5dc256dae1ca2eb4eb02bc2f8b894a1b, type: 3}

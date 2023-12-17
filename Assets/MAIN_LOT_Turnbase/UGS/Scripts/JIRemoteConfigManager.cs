@@ -221,14 +221,11 @@ namespace JumpeeIsland
         {
             try
             {
-                Debug.Log($"Get tier for level {curMainHallLevel}");
                 var userAttribute = new MainHallTierUserAttribute { currentLevel = curMainHallLevel };
-
                 await RemoteConfigService.Instance.FetchConfigsAsync(userAttribute, new MainHallTierAppAttribute());
 
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return null;
-
                 return GetTierConfig();
             }
             catch (Exception e)

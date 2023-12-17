@@ -14,7 +14,7 @@ namespace JumpeeIsland
         private IInputExecutor _currentExecutor;
         private Camera _mainCamera;
         private bool _isDropTroop;
-        private bool _isCameraMove;
+        [SerializeField] private bool _isCameraMove;
 
         private void Start()
         {
@@ -98,7 +98,7 @@ namespace JumpeeIsland
 
         public void PlayerDetectTouch(InputAction.CallbackContext context)
         {
-            // TODO Select object from selectLayer and drop pont at dropLayer
+            // TODO Select object from selectLayer and drop point at dropLayer
             if (_isDropTroop)
             {
                 if (PointingChecker.IsPointerOverUIObject())

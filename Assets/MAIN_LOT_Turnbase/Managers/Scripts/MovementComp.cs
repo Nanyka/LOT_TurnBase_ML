@@ -20,6 +20,7 @@ namespace JumpeeIsland
         private IMover _mover;
         private int _currentIndex;
         private bool _isLastPath;
+        private bool _isMoving;
 
         private void OnEnable()
         {
@@ -55,10 +56,10 @@ namespace JumpeeIsland
         {
             _currentProcessUpdate = processUpdate;
             _currentConner = m_Transform.position;
-            
+
             // Check if currentDestination and m_Transform.position is in NavMesh range
             // If not, select a nearest NavMesh point
-            
+
             if (NavMesh.SamplePosition(destination, out NavMeshHit destinationHit, 2f, NavMesh.AllAreas))
             {
                 if (destinationHit.hit)
@@ -66,7 +67,7 @@ namespace JumpeeIsland
                 else
                     Debug.Log("MoveComp can't find a walkable destination");
             }
-            
+
             if (NavMesh.SamplePosition(_currentConner, out NavMeshHit curPosHit, 2f, NavMesh.AllAreas))
             {
                 if (curPosHit.hit)
@@ -74,7 +75,7 @@ namespace JumpeeIsland
                 else
                     Debug.Log("MoveComp can't find a walkable starting point");
             }
-            
+
             // _mover = mover;
             _mover.StartWalk();
             StartMove();
@@ -91,6 +92,7 @@ namespace JumpeeIsland
             NavMesh.CalculatePath(currentPos, _currentDestination, NavMesh.AllAreas, _path);
             _path.corners.OrderBy(t => Vector3.Distance(currentPos, t));
             _currentIndex = 0;
+            _isMoving = true;
             SetCurrentConner();
         }
 
@@ -111,8 +113,12 @@ namespace JumpeeIsland
 
         private void StopMovement()
         {
-            _currentProcessUpdate.StopProcess();
+            if (_isMoving == false)
+                return;
+
+            _isMoving = false;
             _mover.StopWalk();
+            _currentProcessUpdate.StopProcess();
         }
 
         private void RotateTowardCorner(int cornerIndex)
@@ -135,7 +141,7 @@ namespace JumpeeIsland
             if (_isLastPath)
                 return;
 
-            if (Vector3.Distance(m_Transform.position,_currentConner) < _stopDistance)
+            if (Vector3.Distance(m_Transform.position, _currentConner) < _stopDistance)
                 SetCurrentConner();
         }
 

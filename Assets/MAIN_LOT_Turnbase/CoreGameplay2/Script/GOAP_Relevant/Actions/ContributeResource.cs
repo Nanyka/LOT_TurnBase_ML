@@ -12,23 +12,29 @@ namespace JumpeeIsland
 
         public override bool PrePerform()
         {
-            if (m_GAgent.Inventory.IsEmpty())
+            // if (m_GAgent.Inventory.IsEmpty())
+            // {
+            //     if (storage.IsFullStock() == false)
+            //     {
+            //         _currentPoint = storage;
+            //         m_GAgent.Inventory.AddItem(storage.GetGameObject());
+            //     }
+            //     else
+            //     {
+            //         ResetGOAPState();
+            //         return true;
+            //     }
+            // }
+            
+            _currentPoint = SavingSystemManager.Instance.GetStorageController().GetRandomStorage();
+            if (_currentPoint == null)
             {
-                var storage = SavingSystemManager.Instance.GetStorageController().GetRandomStorage();
-                if (storage.IsFullStock() == false)
-                {
-                    _currentPoint = storage;
-                    m_GAgent.Inventory.AddItem(storage.GetGameObject());
-                }
-                else
-                {
-                    ResetGOAPState();
-                    return true;
-                }
+                ResetGOAPState();
+                return false;
             }
 
-            Target = m_GAgent.Inventory.items[0];
-            m_GAgent.SetIProcessUpdate(this);
+            // Target = m_GAgent.Inventory.items[0];
+            m_GAgent.SetIProcessUpdate(this, _currentPoint.GetGameObject().transform.position);
 
             return true;
         }
@@ -60,7 +66,7 @@ namespace JumpeeIsland
         {
             m_GAgent.Beliefs.ModifyState("Empty", 1);
             m_GAgent.Beliefs.RemoveState("targetAvailable");
-            m_GAgent.Inventory.ClearInventory();
+            // m_GAgent.Inventory.ClearInventory();
         }
     }
 }

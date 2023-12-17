@@ -286,7 +286,7 @@ namespace JumpeeIsland
 
         private void DataWasSaved(SaveResult result, string message)
         {
-            Debug.Log("Save player environment locally");
+            // Debug.Log("Save player environment locally");
             if (result == SaveResult.Error)
             {
                 Debug.LogError($"Error saving data:\n{result}\n{message}");

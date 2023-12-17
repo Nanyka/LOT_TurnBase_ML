@@ -9,7 +9,7 @@ namespace JumpeeIsland
 {
     public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl //, IMonsterControler
     {
-        [SerializeField] protected TileManager tileManager;
+        // [SerializeField] protected TileManager tileManager;
         [SerializeField] private GameObject resources;
         [SerializeField] protected GameObject playerBuildings;
         [SerializeField] private GameObject enemyBuildings;
@@ -43,7 +43,7 @@ namespace JumpeeIsland
         {
             SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
             Debug.Log("Load data into managers...");
-            tileManager.Init(_environmentData.mapSize);
+            // tileManager.Init(_environmentData.mapSize);
 
             // Save playerEnv into the cache that will be used for saving at the end of battle
             _playerEnvCache = _environmentData;
@@ -134,7 +134,7 @@ namespace JumpeeIsland
         public void ResetData()
         {
             Debug.Log("Remove all environment to reset...");
-            tileManager.Reset();
+            // tileManager.Reset();
             resourceLoader.Reset();
             playerBuildingLoader.Reset();
             playerLoader.Reset();
@@ -179,7 +179,7 @@ namespace JumpeeIsland
             var spawnedTroop = monsterLoader.PlaceNewObject(creatureData);
             // if (spawnedTroop.TryGetComponent(out IMonster monster))
             //     _monsters.Add(monster);
-            
+
             return spawnedTroop;
         }
 
@@ -200,17 +200,19 @@ namespace JumpeeIsland
 
         public IStoreResource GetRandomStorage()
         {
-            if (_resourceStorages.Count == 0)
+            var availableStorages = _resourceStorages.FindAll(t => t.IsFullStock() == false);
+
+            if (availableStorages.Count == 0)
                 return null;
 
-            float randomValue = Random.Range(0f, _resourceStorages.Sum(t => t.GetWeight()));
+            float randomValue = Random.Range(0f, availableStorages.Sum(t => t.GetWeight()));
 
             if (randomValue <= Mathf.Epsilon)
-                return _resourceStorages[Random.Range(0, _resourceStorages.Count)];
+                return availableStorages[Random.Range(0, availableStorages.Count)];
 
             float cumulativeWeight = 0f;
 
-            foreach (var storage in _resourceStorages)
+            foreach (var storage in availableStorages)
             {
                 cumulativeWeight += storage.GetWeight();
 
@@ -227,19 +229,6 @@ namespace JumpeeIsland
         {
             return _resourceStorages;
         }
-
-        // public void AddMonster(IGetEntityData<CreatureData> monster)
-        // {
-        //     if (_monsters.Contains(monster))
-        //         return;
-        //         
-        //     _monsters.Add(monster);
-        // }
-
-        // public IEnumerable<IMonster> GetMonsters()
-        // {
-        //     return _monsters;
-        // }
     }
 
     public interface IStoragesControl
@@ -247,10 +236,4 @@ namespace JumpeeIsland
         public IStoreResource GetRandomStorage();
         public IEnumerable<IStoreResource> GetStorages();
     }
-
-    // public interface IMonsterControler
-    // {
-    //     // public void AddMonster(IGetEntityData<CreatureData> monster);
-    //     public IEnumerable<IMonster> GetMonsters();
-    // }
 }

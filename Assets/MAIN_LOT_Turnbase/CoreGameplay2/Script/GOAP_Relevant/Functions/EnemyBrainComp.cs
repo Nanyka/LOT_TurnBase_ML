@@ -29,7 +29,7 @@ namespace JumpeeIsland
             _isActive = true;
             ResetBrain();
             // TODO: After restructure GWorld as the fist loading, call APlusAlgorithm directly instead of Invoke
-            Invoke(nameof(APlusAlgorithm), 2f);
+            Invoke(nameof(APlusAlgorithm), 1f);
         }
 
         protected void OnDisable()

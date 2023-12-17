@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
@@ -12,13 +12,12 @@ namespace JumpeeIsland
         [SerializeField] private int troopCount;
         [SerializeField] private int costPerTroop;
         [SerializeField] private Transform testAssemblyPoint;
-        [SerializeField] private Slider priorityBar;
 
         private int _curStorage;
         private int _spawnableAmount;
         private IBuildingDealer m_Building;
         private IEntityUIUpdate m_UIUpdater;
-        private Research m_Research;
+        private List<Research> _researches = new();
         private float _curWeight = 1f;
         private bool _isOnHolding;
 
@@ -78,8 +77,15 @@ namespace JumpeeIsland
                     // Check if any storage research in the stock
                     // Plug the skill in the entity
 
-                    if (m_Research != null)
-                        attackReceiver.EnablePowerBar(m_Research.Magnitude);
+                    foreach (var research in _researches)
+                    {
+                        switch (research.ResearchType)
+                        {
+                            case ResearchType.TROOP_TRANSFORM:
+                                attackReceiver.EnablePowerBar(research.Magnitude);
+                                break;
+                        }
+                    }
                 }
             }
 
@@ -123,7 +129,7 @@ namespace JumpeeIsland
             }
             else
                 m_UIUpdater.ShowPriceTag(false);
-            
+
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
@@ -140,7 +146,7 @@ namespace JumpeeIsland
         public void ReduceWeight(int amount)
         {
             _curWeight -= amount;
-            m_UIUpdater.UpdateStorage(Mathf.Clamp(_curWeight,0,100));
+            m_UIUpdater.UpdateStorage(Mathf.Clamp(_curWeight, 0, 100));
         }
 
         public int GetSpawnableAmount()
@@ -160,7 +166,7 @@ namespace JumpeeIsland
 
         public void LoadResearch(Research research)
         {
-            m_Research = research;
+            _researches.Add(research);
         }
     }
 
