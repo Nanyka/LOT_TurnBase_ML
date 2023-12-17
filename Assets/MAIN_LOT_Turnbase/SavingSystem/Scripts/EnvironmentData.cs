@@ -50,6 +50,8 @@ namespace JumpeeIsland
             return new EnvironmentData(this);
         }
 
+        #region EDIT ENVIRONMENT
+
         public void AddBuildingData(BuildingData data)
         {
             BuildingData.Add(data);
@@ -73,6 +75,12 @@ namespace JumpeeIsland
         public void AddEnemyData(CreatureData data)
         {
             EnemyData.Add(data);
+        }
+
+        // Check if the current building amount is lower than the allowed amount for the current tier
+        public bool CheckBuildingLimitAmount(string buildingName, int amount)
+        {
+            return BuildingData.FindAll(t => t.EntityName.Equals(buildingName)).Count >= amount;
         }
 
         public bool CheckStorable()
@@ -122,6 +130,8 @@ namespace JumpeeIsland
         {
             return ResourceData.Any(t => Vector3.Distance(t.Position, atPos) < 0.1f);
         }
+
+        #endregion
 
         #region BATTLE MODE
 
@@ -174,24 +184,6 @@ namespace JumpeeIsland
                 amount -= storeAmount;
             }
         }
-
-        #endregion
-
-        #region SCORE
-
-        // public int CalculateScore()
-        // {
-        //     int totalScore = 0;
-        //     foreach (var building in BuildingData)
-        //         totalScore += (building.CurrentHp + building.CurrentDamage + building.CurrentShield) *
-        //                       (1 + building.CurrentLevel);
-        //
-        //     foreach (var creature in PlayerData)
-        //         totalScore += (creature.CurrentHp + creature.CurrentDamage + creature.CurrentShield) *
-        //                       (1 + creature.CurrentLevel);
-        //
-        //     return totalScore;
-        // }
 
         #endregion
 

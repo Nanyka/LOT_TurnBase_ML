@@ -83,7 +83,7 @@ namespace JumpeeIsland
             _confirmPanel.SetActive(true);
         }
 
-        public async void OnMakeTheDeal()
+        public void OnMakeTheDeal()
         {
             // await SavingSystemManager.Instance.RefreshEconomy();
             _currentConfirm.ClickYes();

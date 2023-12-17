@@ -11,9 +11,6 @@ namespace JumpeeIsland
 
         public void CreateEnvObjects()
         {
-            // for (int i = 0; i < _stoneAmount; i++)
-            //     SavingSystemManager.Instance.OnSpawnResource("Tree1", GameFlowManager.Instance.GetEnvManager().GetRandomAvailableTile());
-
             foreach (var stone in _stones)
             {
                 SavingSystemManager.Instance.OnSpawnResource("Tree1", stone);

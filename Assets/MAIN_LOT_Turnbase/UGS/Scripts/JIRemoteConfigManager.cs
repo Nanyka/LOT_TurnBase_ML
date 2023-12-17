@@ -14,7 +14,7 @@ namespace JumpeeIsland
         public Dictionary<string, List<Reward>> commandRewards = new(5);
         public Dictionary<string, int> numericConfig = new();
         private Dictionary<string, BattleLoot> BattleLoots = new();
-        public MainHallTier curTier { get; private set; }
+        public MainHallTier curTier{ get; private set; }
         public MainHallTier nextTier{ get; private set; }
 
         void Awake()
@@ -216,11 +216,12 @@ namespace JumpeeIsland
             curTier = await GetMainHallTierConfigs(mainHallLevel);
             nextTier = await GetMainHallTierConfigs(mainHallLevel+1);
         }
-        
-        public async Task<MainHallTier> GetMainHallTierConfigs(int curMainHallLevel)
+
+        private async Task<MainHallTier> GetMainHallTierConfigs(int curMainHallLevel)
         {
             try
             {
+                Debug.Log($"Get tier for level {curMainHallLevel}");
                 var userAttribute = new MainHallTierUserAttribute { currentLevel = curMainHallLevel };
 
                 await RemoteConfigService.Instance.FetchConfigsAsync(userAttribute, new MainHallTierAppAttribute());

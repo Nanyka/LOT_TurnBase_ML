@@ -41,7 +41,7 @@ namespace JumpeeIsland
 
         // invoke at ???
         [NonSerialized] public UnityEvent OnSaveQuestData = new();
-        
+
         // invoke at CreatureInGame, BuildingInGame
         [NonSerialized] public UnityEvent<RecordAction> OnRecordAction = new();
 
@@ -51,7 +51,9 @@ namespace JumpeeIsland
         protected IEnvironmentLoader m_EnvLoader;
         private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
+
         private IStoragesControl m_StorageController;
+
         // private IMonsterControler m_MonsterController;
         private ICurrencyLoader m_CurrencyLoader;
         private InventoryLoader m_InventoryLoader;
@@ -311,9 +313,8 @@ namespace JumpeeIsland
             {
                 // Fetch mainHallTier after receive envData
                 var mainHall = data.BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL);
-                
                 await m_CloudConnector.FetchEnvRelevantData(mainHall.CurrentLevel);
-                
+
                 m_EnvLoader.SetData(data);
                 m_EnvLoader.Init();
             }
@@ -384,17 +385,24 @@ namespace JumpeeIsland
             };
             m_EnvLoader.PlaceABuilding(newBuilding);
         }
-        
+
         // Player pay something for construction locally
         public void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position, CurrencyUnit cost)
         {
-            if (GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
+            var buildingLimitation =
+                GetCurrentTier().TierItems.Find(t => t.itemName.Equals(inventoryItem.inventoryName));
+
+            if (buildingLimitation == null)
+                return;
+            
+            var checkedAmount = buildingLimitation.amount;
+            if (GetEnvironmentData().CheckBuildingLimitAmount(inventoryItem.inventoryName,checkedAmount))
             {
-                MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
+                MainUI.Instance.OnConversationUI.Invoke($"{inventoryItem.inventoryName} reach limited construction", true);
                 return;
             }
 
-            if (m_CurrencyLoader.CheckEnoughCurrency(cost.currencyId,cost.amount) == false)
+            if (m_CurrencyLoader.CheckEnoughCurrency(cost.currencyId, cost.amount) == false)
                 return;
 
             // ...and get the building in place
@@ -465,7 +473,7 @@ namespace JumpeeIsland
                 Debug.Log($"No any inventory name {creatureName}");
                 return null;
             }
-            
+
             // if (m_EnvLoader.GetData().CheckFullCapacity())
             // {
             //     MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
@@ -927,7 +935,7 @@ namespace JumpeeIsland
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
-        public async void SaveBattleResult(string enemyId , int starAmount, int score, float winRate)
+        public async void SaveBattleResult(string enemyId, int starAmount, int score, float winRate)
         {
             if (starAmount == 0)
                 m_GameProcess.winStack = 0;
@@ -959,7 +967,7 @@ namespace JumpeeIsland
 
             // Send an email to enemy
             // m_CloudConnector.AddBattleEmail(enemyId ,battleRecord);
-            
+
             m_CloudConnector.PlayerRecordScore(m_GameProcess.score);
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }

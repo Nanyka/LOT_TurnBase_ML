@@ -22,13 +22,15 @@ namespace JumpeeIsland
             
             foreach (var item in inventories)
             {
-                var troopLevel = SavingSystemManager.Instance.GetInventoryLevel(item.inventoryName);
+                // var troopLevel = SavingSystemManager.Instance.GetInventoryLevel(item.inventoryName);
 
-                for (int i = 1; i <= troopLevel+1; i++)
+                // Add 2 research for each available troop because of setting animators with 2 special skills
+                for (int i = 1; i <= 2; i++)
                 {
-                    var newTopic = new Research()
+                    var newTopic = new Research
                     {
                         ResearchType = ResearchType.TROOP_TRANSFORM,
+                        ResearchIcon = item.spriteAddress,
                         TroopType = TroopType.NONE,
                         TroopStats = TroopStats.NONE,
                         Target = item.inventoryName,

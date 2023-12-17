@@ -35,8 +35,8 @@ namespace JumpeeIsland
 
             if (target != null)
             {
-                m_Brain.RefreshBrain();
-                m_Brain.GetBeliefStates().ModifyState(detectedState,1);
+                m_Brain.RefreshBrain(detectedState);
+                // m_Brain.GetBeliefStates().ModifyState(detectedState,1);
                 isDetected = true;
                 await RecheckTarget();
             }

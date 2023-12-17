@@ -18,12 +18,16 @@ namespace JumpeeIsland
 
         #region INITIATE
 
+        private void Awake()
+        {
+            SetActions();
+            SetGoal();
+        }
+
         protected virtual void OnEnable()
         {
             _isActive = true;
-            SetActions();
-            SetGoal();
-            // APlusAlgorithm();
+            ResetBrain();
             // TODO: After restructure GWorld as the fist loading, call APlusAlgorithm directly instead of Invoke
             Invoke(nameof(APlusAlgorithm), 2f);
         }
@@ -45,16 +49,6 @@ namespace JumpeeIsland
             foreach (var action in actions)
                 Actions.Add(action);
         }
-
-        // private void SetBrainDisable()
-        // {
-        //     _isActive = false;
-        //     ResetBrain();
-        // }
-
-        #endregion
-
-        #region GOAL MANAGER
 
         private void SetGoal()
         {
@@ -225,10 +219,12 @@ namespace JumpeeIsland
             return Beliefs;
         }
 
-        public void RefreshBrain()
+        public void RefreshBrain(string addedState)
         {
-            _isActive = true;
+            // _isActive = true;
             ResetBrain();
+            Beliefs.ModifyState("Idle",1);
+            Beliefs.ModifyState(addedState,1);
             APlusAlgorithm();
         }
 
@@ -237,6 +233,7 @@ namespace JumpeeIsland
             Beliefs.ClearStates();
             Inventory.ClearInventory();
             CurrentAction = null;
+            _actionQueue?.Clear();
             CancelInvoke();
             _cancellation.Cancel();
         }
@@ -246,6 +243,6 @@ namespace JumpeeIsland
     {
         public GInventory GetInventory();
         public WorldStates GetBeliefStates();
-        public void RefreshBrain();
+        public void RefreshBrain(string addedState);
     }
 }
