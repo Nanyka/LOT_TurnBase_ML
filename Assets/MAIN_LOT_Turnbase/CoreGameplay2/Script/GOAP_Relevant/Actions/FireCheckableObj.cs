@@ -15,7 +15,7 @@ namespace JumpeeIsland
         private void Start()
         {
             m_AttackExecutor = m_Character.GetComponent<IAttackExecutor>();
-            _checkDistance = m_GAgent.GetComponent<ISensor>().DetectRange() + 2f;
+            _checkDistance = m_GAgent.GetComponent<ISensor>().DetectRange() + 1f;
         }
 
         public override bool PrePerform()
@@ -40,7 +40,7 @@ namespace JumpeeIsland
                 }
             }
 
-            if (_currentPoint == null)
+            if (_currentPoint == null || distanceToTarget > _checkDistance)
             {
                 return false;
             }

@@ -1,5 +1,6 @@
 using GOAP;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -8,13 +9,12 @@ namespace JumpeeIsland
         [SerializeField] private CharacterEntity m_Entity;
 
         private ICheckableObject _currentPoint;
-        private ISensor _sensor;
         private float _distanceToAttack;
-        
+        private float _distanceToTower;
+
         private void Start()
         {
-            _sensor = GetComponent<ISensor>();
-            _distanceToAttack = _sensor.DetectRange() + 1f;
+            _distanceToAttack = m_GAgent.GetComponent<ISensor>().DetectRange() + 1f;
         }
 
         public override bool PrePerform()
@@ -47,14 +47,14 @@ namespace JumpeeIsland
             //
             // if (m_GAgent.Inventory.items.Count == 0)
             //     return false;
-            
+
             // Target = m_GAgent.Inventory.items[0];
             // m_GAgent.SetIProcessUpdate(this);
-            
+
             _currentPoint = null;
             var distanceToTarget = float.PositiveInfinity;
             var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Enemy);
-                
+
             foreach (var building in buildings)
             {
                 if (building.TryGetComponent(out ICheckableObject checkableObject))
@@ -73,20 +73,18 @@ namespace JumpeeIsland
 
             if (_currentPoint == null)
                 return false;
-            
+
             var pointB = _currentPoint.GetPosition();
             var pointA = transform.position;
-            var distanceToTower = Vector3.Distance(pointA, pointB);
+            _distanceToTower = Vector3.Distance(pointA, pointB);
 
-            if (distanceToTower > _distanceToAttack)
+            if (_distanceToTower > _distanceToAttack)
             {
                 Vector3 vectorAB = pointB - pointA;
                 Vector3 scaledDirection = vectorAB.normalized * _distanceToAttack;
                 Vector3 midpoint = pointA + scaledDirection;
                 m_GAgent.SetIProcessUpdate(this, midpoint);
             }
-            else
-                m_GAgent.SetIProcessUpdate(this, transform.position);
 
             return true;
         }
@@ -98,10 +96,7 @@ namespace JumpeeIsland
 
         public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
-            if (Vector3.Distance(myTransform.position, targetPos) < m_Entity.GetStopDistance())
-                m_GAgent.FinishFromOutside();
-            else
-                m_Entity.MoveTowards(targetPos, this);
+            m_Entity.MoveTowards(targetPos, this);
         }
 
         public void StopProcess()

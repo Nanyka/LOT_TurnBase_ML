@@ -13,37 +13,63 @@ namespace JumpeeIsland
         public override bool PrePerform()
         {
             var distanceToTarget = float.PositiveInfinity;
-            if (m_GAgent.Inventory.IsEmpty())
+            _currentPoint = null;
+            var resources = SavingSystemManager.Instance.GetEnvLoader().GetResources();
+            foreach (var resource in resources)
             {
-                _currentPoint = null;
-                var resources = SavingSystemManager.Instance.GetEnvLoader().GetResources();
-                foreach (var resource in resources)
+                if (resource.TryGetComponent(out ICheckableObject checkableObject))
                 {
-                    if (resource.TryGetComponent(out ICheckableObject checkableObject))
-                    {
-                        if (checkableObject.IsCheckable() == false)
-                            continue;
+                    if (checkableObject.IsCheckable() == false)
+                        continue;
 
-                        var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
-                        if (curDis < distanceToTarget)
-                        {
-                            distanceToTarget = curDis;
-                            _currentPoint = checkableObject;
-                        }
+                    var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
+                    if (curDis < distanceToTarget)
+                    {
+                        distanceToTarget = curDis;
+                        _currentPoint = checkableObject;
                     }
                 }
-
-                if (_currentPoint != null)
-                    m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
             }
 
-            if (m_GAgent.Inventory.items.Count == 0)
+            if (_currentPoint == null)
                 return false;
-                
-            Target = m_GAgent.Inventory.items[0];
-            m_GAgent.SetIProcessUpdate(this);
+
+            m_GAgent.SetIProcessUpdate(this, _currentPoint.GetPosition());
             
             return true;
+            
+            // var distanceToTarget = float.PositiveInfinity;
+            // if (m_GAgent.Inventory.IsEmpty())
+            // {
+            //     _currentPoint = null;
+            //     var resources = SavingSystemManager.Instance.GetEnvLoader().GetResources();
+            //     foreach (var resource in resources)
+            //     {
+            //         if (resource.TryGetComponent(out ICheckableObject checkableObject))
+            //         {
+            //             if (checkableObject.IsCheckable() == false)
+            //                 continue;
+            //
+            //             var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
+            //             if (curDis < distanceToTarget)
+            //             {
+            //                 distanceToTarget = curDis;
+            //                 _currentPoint = checkableObject;
+            //             }
+            //         }
+            //     }
+            //
+            //     if (_currentPoint != null)
+            //         m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
+            // }
+            //
+            // if (m_GAgent.Inventory.items.Count == 0)
+            //     return false;
+            //     
+            // Target = m_GAgent.Inventory.items[0];
+            // m_GAgent.SetIProcessUpdate(this);
+            //
+            // return true;
         }
 
         public override bool PostPerform()

@@ -42,8 +42,6 @@ namespace JumpeeIsland
                 Vector3 midpoint = pointA + scaledDirection;
                 m_GAgent.SetIProcessUpdate(this, midpoint);
             }
-            else
-                m_GAgent.SetIProcessUpdate(this, transform.position);
 
             return true;
         }
@@ -57,10 +55,7 @@ namespace JumpeeIsland
 
         public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
-            if (Vector3.Distance(myTransform.position, targetPos) < m_Entity.GetStopDistance())
-                m_GAgent.FinishFromOutside();
-            else
-                m_Entity.MoveTowards(targetPos, this);
+            m_Entity.MoveTowards(targetPos, this);
         }
 
         public void StopProcess()

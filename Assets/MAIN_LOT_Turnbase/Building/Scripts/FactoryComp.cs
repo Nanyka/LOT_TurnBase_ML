@@ -17,14 +17,22 @@ namespace JumpeeIsland
         private int _spawnableAmount;
         private IBuildingDealer m_Building;
         private IEntityUIUpdate m_UIUpdater;
+        private ICheckableObject m_CheckableObj;
         private List<Research> _researches = new();
         private float _curWeight = 1f;
         private bool _isOnHolding;
+
+        private void OnEnable()
+        {
+            _curWeight = 1f;
+            _curStorage = 0;
+        }
 
         private void Start()
         {
             m_Building = GetComponent<IBuildingDealer>();
             m_UIUpdater = GetComponent<IEntityUIUpdate>();
+            m_CheckableObj = GetComponent<ICheckableObject>();
         }
 
         public void OnClick()
@@ -101,7 +109,7 @@ namespace JumpeeIsland
 
         public bool IsFullStock()
         {
-            return _curStorage >= costPerTroop * troopCount;
+            return _curStorage >= costPerTroop * troopCount || m_CheckableObj.IsCheckable() == false;
         }
 
         public void StoreResource(int amount)

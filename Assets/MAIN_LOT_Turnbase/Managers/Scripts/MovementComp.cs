@@ -27,11 +27,6 @@ namespace JumpeeIsland
             _isLastPath = false;
         }
 
-        private void OnDisable()
-        {
-            _isLastPath = false;
-        }
-
         private void Start()
         {
             m_Transform = transform;

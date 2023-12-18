@@ -10,7 +10,6 @@ namespace JumpeeIsland
         protected override void OnEnable()
         {
             base.OnEnable();
-
             AddInitStates();
         }
 

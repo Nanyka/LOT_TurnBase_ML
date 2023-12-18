@@ -9,7 +9,7 @@ namespace JumpeeIsland
         [SerializeField] private GameObject _clock;
         [SerializeField] private TextMeshProUGUI _clockText;
 
-        private static readonly int _battleDuration = 180;
+        private static readonly int _battleDuration = 360;
         private static int _countDown;
 
         private void Start()

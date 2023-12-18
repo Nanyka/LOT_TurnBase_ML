@@ -17,33 +17,57 @@ namespace JumpeeIsland
 
         public override bool PrePerform()
         {
+            // var distanceToTarget = float.PositiveInfinity;
+            // if (m_GAgent.Inventory.IsEmpty())
+            // {
+            //     _currentPoint = null;
+            //     var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
+            //     foreach (var building in buildings)
+            //     {
+            //         if (building.TryGetComponent(out ICheckableObject checkableObject))
+            //         {
+            //             if (checkableObject.IsCheckable() == _isConstructor)
+            //                 continue;
+            //
+            //             var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
+            //             if (curDis < distanceToTarget)
+            //             {
+            //                 distanceToTarget = curDis;
+            //                 _currentPoint = checkableObject;
+            //             }
+            //         }
+            //     }
+            //
+            //     if (_currentPoint != null)
+            //         m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
+            // }
+            //
+            // Target = m_GAgent.Inventory.items[0];
+            // m_GAgent.SetIProcessUpdate(this);
+            
             var distanceToTarget = float.PositiveInfinity;
-            if (m_GAgent.Inventory.IsEmpty())
+            _currentPoint = null;
+            var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
+            foreach (var building in buildings)
             {
-                _currentPoint = null;
-                var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
-                foreach (var building in buildings)
+                if (building.TryGetComponent(out ICheckableObject checkableObject))
                 {
-                    if (building.TryGetComponent(out ICheckableObject checkableObject))
-                    {
-                        if (checkableObject.IsCheckable() == _isConstructor)
-                            continue;
+                    if (checkableObject.IsCheckable() == _isConstructor)
+                        continue;
 
-                        var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
-                        if (curDis < distanceToTarget)
-                        {
-                            distanceToTarget = curDis;
-                            _currentPoint = checkableObject;
-                        }
+                    var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
+                    if (curDis < distanceToTarget)
+                    {
+                        distanceToTarget = curDis;
+                        _currentPoint = checkableObject;
                     }
                 }
-
-                if (_currentPoint != null)
-                    m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
             }
 
-            Target = m_GAgent.Inventory.items[0];
-            m_GAgent.SetIProcessUpdate(this);
+            if (_currentPoint == null)
+                return false;
+
+            m_GAgent.SetIProcessUpdate(this, _currentPoint.GetPosition());
 
             return true;
         }
@@ -57,8 +81,8 @@ namespace JumpeeIsland
                 m_GAgent.Beliefs.RemoveState(_removeState);
 
             // If this is a constructor, its moveToBuilding is actually moveToInProcessArea
-            if (_isConstructor == false)
-                m_GAgent.Inventory.ClearInventory();
+            // if (_isConstructor == false)
+            //     m_GAgent.Inventory.ClearInventory();
             
             return true;
         }

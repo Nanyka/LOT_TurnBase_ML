@@ -241,7 +241,6 @@ namespace JumpeeIsland
 
     public interface IBrain
     {
-        public GInventory GetInventory();
         public WorldStates GetBeliefStates();
         public void RefreshBrain(string addedState);
     }

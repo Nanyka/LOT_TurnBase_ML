@@ -14,14 +14,15 @@ namespace JumpeeIsland
         [SerializeField] private string m_FinishState;
         
         private bool _isFinishConstructed;
-        private int _curProcess;
-        private bool IsAvailable { get; set; }
+        [SerializeField] private int _curProcess;
+        [SerializeField] private bool IsAvailable;
         private bool _isInit;
 
         public void Init(FactionType factionType)
         {
             _isInit = true;
             _isFinishConstructed = factionType != FactionType.Player;
+            IsAvailable = false;
             
             if (_isFinishConstructed)
                 Completion();
@@ -37,8 +38,6 @@ namespace JumpeeIsland
         {
             if (GWorld.Instance != null && _isInit)
                 GWorld.Instance.GetWorld().ModifyState(_isFinishConstructed ? m_FinishState : m_InProcessState, -1);
-            
-            
         }
 
         private void Completion()
