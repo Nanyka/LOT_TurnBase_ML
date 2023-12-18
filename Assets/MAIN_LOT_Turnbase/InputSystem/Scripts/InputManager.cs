@@ -14,7 +14,7 @@ namespace JumpeeIsland
         private IInputExecutor _currentExecutor;
         private Camera _mainCamera;
         private bool _isDropTroop;
-        [SerializeField] private bool _isCameraMove;
+        private bool _isCameraMove;
 
         private void Start()
         {
@@ -36,6 +36,10 @@ namespace JumpeeIsland
                         _currentExecutor = executor;
                         _currentExecutor.OnClick();
                     }
+                }
+                else
+                {
+                    MainUI.Instance.OnHideAllMenu.Invoke();
                 }
             }
         }

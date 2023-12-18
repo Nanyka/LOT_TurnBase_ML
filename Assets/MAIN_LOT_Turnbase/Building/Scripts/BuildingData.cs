@@ -10,7 +10,7 @@ namespace JumpeeIsland
         public int CurrentDamage;
         public int CurrentShield;
         public int CurrentExp;
-        public int CurrentStorage;
+        public int CurrentStorage; // it is used as map index of guardian area in Aoe gameplay
         public int StorageCapacity;
         public int TurnCount;
         public CurrencyType StorageCurrency;

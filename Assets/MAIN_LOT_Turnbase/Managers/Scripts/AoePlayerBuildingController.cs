@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
     public class AoePlayerBuildingController : MonoBehaviour, IBuildingController
     {
+        private List<BuildingInGame> _buildingInGames = new();
         private Camera _camera;
         private int _layerMask = 1 << 9;
         
@@ -14,7 +16,7 @@ namespace JumpeeIsland
 
         public void AddBuildingToList(BuildingInGame building)
         {
-            throw new System.NotImplementedException();
+            _buildingInGames.Add(building);
         }
 
         public void RemoveBuilding(BuildingInGame building)

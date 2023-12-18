@@ -17,6 +17,6 @@ namespace JumpeeIsland
         public int winStack;
         public int bossUnlock;
         public int score;
-        [FormerlySerializedAs("ecoChapter")] [FormerlySerializedAs("chapter")] public int ecoBoss;
+        public int ecoBoss;
     }
 }

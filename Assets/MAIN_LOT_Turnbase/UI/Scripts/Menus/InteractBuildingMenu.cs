@@ -9,9 +9,9 @@ namespace JumpeeIsland
 {
     public class FastUpgrade : IConfirmFunction
     {
-        private BuildingEntity _buildingEntity;
+        private IBuildingUpgrade _buildingEntity;
 
-        public FastUpgrade(BuildingEntity buildingEntity)
+        public FastUpgrade(IBuildingUpgrade buildingEntity)
         {
             _buildingEntity = buildingEntity;
         }
@@ -57,13 +57,13 @@ namespace JumpeeIsland
             }
             else
             {
-                Debug.Log($"SHOW panel: Not enough {_buildingEntity.GetUpgradeCurrency().ToString()} to upgrade {_buildingEntity.GetData().EntityName}");
+                Debug.Log($"SHOW panel: Not enough {_buildingEntity.GetUpgradeCurrency().ToString()} to upgrade");
             }
         }
 
         public GameObject GetGameObject()
         {
-            return _buildingEntity.gameObject;
+            return _buildingEntity.GetGameObject();
         }
     }
 
@@ -96,7 +96,7 @@ namespace JumpeeIsland
 
         public void OnClickFastUpgrade()
         {
-            if (_currentConfirm.GetGameObject().TryGetComponent(out BuildingEntity buildingEntity))
+            if (_currentConfirm.GetGameObject().TryGetComponent(out IBuildingUpgrade buildingEntity))
             {
                 var fastUpgrade = new FastUpgrade(buildingEntity);
                 _currentConfirm = fastUpgrade;
@@ -119,7 +119,7 @@ namespace JumpeeIsland
         public void OnClickSell()
         {
             _confirmMessage.text = "Sell it at this price?";
-            if (_currentConfirm.GetGameObject().TryGetComponent(out BuildingEntity buildingEntity))
+            if (_currentConfirm.GetGameObject().TryGetComponent(out IBuildingSale buildingEntity))
             {
                 MainUI.Instance.OnHideAllMenu.Invoke();
                 ShowConfirmPanel(buildingEntity.CalculateSellingPrice());
@@ -133,7 +133,7 @@ namespace JumpeeIsland
 
         private void ShowConfirmPanel(int amount)
         {
-            if (_currentConfirm.GetGameObject().TryGetComponent(out BuildingEntity buildingEntity))
+            if (_currentConfirm.GetGameObject().TryGetComponent(out IBuildingUpgrade buildingEntity))
             {
                 _interactBuildingMenu.SetActive(false);
                 _confirmPanel.SetActive(true);

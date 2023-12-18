@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CharacterEntity : Entity, ISpecialSkillReceiver, IAttackRelated, ITroopAssembly, IGetEntityData<CreatureStats>
+    public class CharacterEntity : Entity, ISpecialSkillReceiver, IAttackRelated, ITroopAssembly,
+        IGetEntityData<CreatureStats>, ICreatureInit
     {
         public Vector3 _assemblyPoint { get; set; }
 
@@ -22,7 +23,7 @@ namespace JumpeeIsland
 
         // loaded data
         private List<CreatureStats> m_CreatureStats;
-        
+
         // in-game data
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
@@ -50,7 +51,9 @@ namespace JumpeeIsland
             RefreshEntity();
         }
 
-        public override void Relocate(Vector3 position) { }
+        public override void Relocate(Vector3 position)
+        {
+        }
 
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
@@ -128,7 +131,7 @@ namespace JumpeeIsland
         protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             _isDie = true;
-            
+
             // Turn off the stuffs that are in running
         }
 
@@ -143,7 +146,7 @@ namespace JumpeeIsland
                 processUpdate.StopProcess();
                 return;
             }
-            
+
             m_MovementComp.MoveTo(destination, processUpdate);
         }
 
@@ -160,7 +163,7 @@ namespace JumpeeIsland
         {
             m_AnimateComp.TriggerAttackAnim(_attackIndex);
         }
-        
+
         public void StartAttack(Vector3 attackPos)
         {
             m_AnimateComp.TriggerAttackAnim(_attackIndex);
@@ -169,7 +172,7 @@ namespace JumpeeIsland
         #endregion
 
         #region SKILL
-        
+
         // Is set from the FactoryComp
         public void EnablePowerBar(int index)
         {
@@ -203,7 +206,8 @@ namespace JumpeeIsland
             // Initiate entity data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
             m_CreatureData.SkinAddress =
-                inventoryItem.skinAddress[Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventoryItem.skinAddress.Count - 1)];
+                inventoryItem.skinAddress[
+                    Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventoryItem.skinAddress.Count - 1)];
             m_CreatureData.CreatureType = m_CurrentStat.CreatureType;
             m_CreatureData.CurrentExp = 0;
             if (m_CreatureData.CurrentHp <= 0)
@@ -233,11 +237,16 @@ namespace JumpeeIsland
     {
         public void SetAssemblyPoint(Vector3 assemblyPoint);
     }
-    
+
     public interface ISpecialSkillReceiver
     {
         public void EnablePowerBar(int index);
         public void SetAttackIndex(int index);
         public int GetAttackIndex();
+    }
+
+    public interface ICreatureInit
+    {
+        public void Init(CreatureData creatureData);
     }
 }

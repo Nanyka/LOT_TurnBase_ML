@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class BuildingEntity : Entity, IAttackRelated, ISkillRelated
+    public class BuildingEntity : Entity, IAttackRelated, ISkillRelated, IBuildingUpgrade, IBuildingSale
     {
         // [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
@@ -94,6 +94,11 @@ namespace JumpeeIsland
 
             // Reset stats and appearance
             ResetEntity();
+        }
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
         }
 
         public CurrencyType GetUpgradeCurrency()
@@ -368,5 +373,20 @@ namespace JumpeeIsland
         }
 
         #endregion
+    }
+
+    public interface IBuildingUpgrade
+    {
+        public BuildingType GetBuildingType();
+        public int GetUpgradePrice();
+        public CurrencyType GetUpgradeCurrency();
+        public int CalculateUpgradePrice();
+        public void BuildingUpdate();
+        public GameObject GetGameObject();
+    }
+
+    public interface IBuildingSale
+    {
+        public int CalculateSellingPrice();
     }
 }

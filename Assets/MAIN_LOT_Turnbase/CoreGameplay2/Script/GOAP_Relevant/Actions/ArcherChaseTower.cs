@@ -84,7 +84,6 @@ namespace JumpeeIsland
                 Vector3 scaledDirection = vectorAB.normalized * _distanceToAttack;
                 Vector3 midpoint = pointA + scaledDirection;
                 m_GAgent.SetIProcessUpdate(this, midpoint);
-                Debug.Log($"Archer move to {midpoint} to attack tower");
             }
             else
                 m_GAgent.SetIProcessUpdate(this, transform.position);

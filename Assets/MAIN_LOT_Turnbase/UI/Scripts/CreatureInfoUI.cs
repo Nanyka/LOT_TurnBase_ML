@@ -27,6 +27,7 @@ namespace JumpeeIsland
 
         private void HideInfoMenu()
         {
+            Debug.Log("Hide entity info");
             infoMenu.SetActive(false);
         }
 
@@ -68,7 +69,21 @@ namespace JumpeeIsland
 
                 infoMenu.SetActive(true);
 
-                var buildingInGame = buildingEntity.GetComponent<BuildingInGame>();
+                var buildingInGame = buildingEntity.GetComponent<IConfirmFunction>();
+                MainUI.Instance.OnInteractBuildingMenu.Invoke(buildingInGame);
+            }
+            
+            if (info.entity.TryGetComponent(out AoeGuardianAreaEntity guardianAreaEntity))
+            {
+                Debug.Log("Show guardian area info");
+                var buildingItem =
+                    SavingSystemManager.Instance.GetInventoryItemByName(guardianAreaEntity.GetData().EntityName);
+                entityIcon.sprite = AddressableManager.Instance.GetAddressableSprite(buildingItem.spriteAddress);
+                hpSlider.value = guardianAreaEntity.GetData().CurrentHp;
+
+                infoMenu.SetActive(true);
+
+                var buildingInGame = guardianAreaEntity.GetComponent<IConfirmFunction>();
                 MainUI.Instance.OnInteractBuildingMenu.Invoke(buildingInGame);
             }
 

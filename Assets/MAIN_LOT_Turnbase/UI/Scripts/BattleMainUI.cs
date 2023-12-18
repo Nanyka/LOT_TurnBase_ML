@@ -25,17 +25,17 @@ namespace JumpeeIsland
             IsInteractable = false;
         }
 
-        protected override void Update()
-        {
-            if (Input.GetMouseButton(0))
-            {
-                var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
-                {
-                    if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
-                        OnSelectDirection.Invoke(selectionCircle);
-                }
-            }
-        }
+        // protected override void Update()
+        // {
+        //     if (Input.GetMouseButton(0))
+        //     {
+        //         var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        //         if (Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
+        //         {
+        //             if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
+        //                 OnSelectDirection.Invoke(selectionCircle);
+        //         }
+        //     }
+        // }
     }
 }

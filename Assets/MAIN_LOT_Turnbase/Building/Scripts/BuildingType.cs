@@ -8,6 +8,7 @@ namespace JumpeeIsland
         TECHLAB,
         TOWNHOUSE,
         TOWER,
-        TRAP
+        TRAP,
+        GUARDIANAREA
     }
 }

@@ -85,26 +85,26 @@ namespace JumpeeIsland
             IsInteractable = true;
         }
 
-        protected virtual void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (PointingChecker.IsPointerOverUIObject() || _buyBuildingMenu.IsInADeal() ||
-                    _creatureMenu.IsInADeal() || IsInRelocating)
-                    return;
-
-                var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
-                {
-                    if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
-                        OnSelectDirection.Invoke(selectionCircle);
-                        
-                    return;
-                }
-                
-                OnHideAllMenu.Invoke();
-            }
-        }
+        // protected virtual void Update()
+        // {
+        //     if (Input.GetMouseButtonDown(0))
+        //     {
+        //         if (PointingChecker.IsPointerOverUIObject() || _buyBuildingMenu.IsInADeal() ||
+        //             _creatureMenu.IsInADeal() || IsInRelocating)
+        //             return;
+        //
+        //         var moveRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        //         if (Physics.Raycast(moveRay, out var moveHit, 100f, _layerMask))
+        //         {
+        //             if (moveHit.collider.TryGetComponent(out SelectionCircle selectionCircle))
+        //                 OnSelectDirection.Invoke(selectionCircle);
+        //                 
+        //             return;
+        //         }
+        //         
+        //         OnHideAllMenu.Invoke();
+        //     }
+        // }
 
         public bool CheckUIActive(string UIName)
         {

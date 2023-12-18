@@ -501,10 +501,10 @@ namespace JumpeeIsland
             return m_EnvLoader.TrainACreature(newCreature);
         }
 
-        public void OnTrainACreature(CreatureData creatureData, Vector3 position)
+        public GameObject OnTrainACreature(CreatureData creatureData, Vector3 position)
         {
             creatureData.Position = position;
-            m_EnvLoader.TrainACreature(creatureData);
+            return m_EnvLoader.TrainACreature(creatureData);
         }
 
         public GameObject OnSpawnMovableEntity(string itemId, Vector3 position)
@@ -680,12 +680,14 @@ namespace JumpeeIsland
         /// </summary>
         public void DeductCurrencyFromBuildings(string currencyId, int amount)
         {
-            if (currencyId.Equals(CurrencyType.GOLD.ToString()) ||
-                currencyId.Equals(CurrencyType.GEM.ToString()) ||
-                currencyId.Equals(CurrencyType.MOVE.ToString()))
-                DeductCurrency(currencyId, amount);
-            else
-                m_StorageHandler.DeductCurrencyFromBuildings(currencyId, amount);
+            DeductCurrency(currencyId, amount);
+            
+            // if (currencyId.Equals(CurrencyType.GOLD.ToString()) ||
+            //     currencyId.Equals(CurrencyType.GEM.ToString()) ||
+            //     currencyId.Equals(CurrencyType.MOVE.ToString()))
+            //     DeductCurrency(currencyId, amount);
+            // else
+            //     m_StorageHandler.DeductCurrencyFromBuildings(currencyId, amount);
         }
 
         public IEnumerable<PlayerBalance> GetCurrencies()

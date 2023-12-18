@@ -19,13 +19,16 @@ namespace JumpeeIsland
         
         public void Init()
         {
+            var mapIndex = SavingSystemManager.Instance.GetEnvironmentData().mapSize;
+            
             foreach (var building in _buildingDatas)
             {
+                if (building.BuildingType == BuildingType.GUARDIANAREA && building.CurrentStorage != mapIndex)
+                    continue;
+                
                 building.FactionType = _faction;
                 ConstructBuilding(building);
             }
-
-            // _buildingController.Init();
         }
         
         public void StartUpLoadData(List<BuildingData> data)

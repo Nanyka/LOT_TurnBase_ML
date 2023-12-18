@@ -5,18 +5,23 @@ namespace JumpeeIsland
 {
     public class AoeEcoEnvironmentLoader : MonoBehaviour, IEnvironmentLoader
     {
-        [SerializeField] protected BuildingLoader buildingLoader;
-        [SerializeField] private CreatureLoader playerLoader;
+        [SerializeField] protected GameObject buildingLoader;
+        [SerializeField] private GameObject playerLoader;
         [SerializeField] protected EnvironmentData _environmentData;
+
+        private IBuildingLoader m_BuildingLoader;
+        private ICreatureLoader m_GuardianLoader;
 
         public void Init()
         {
+            m_BuildingLoader = buildingLoader.GetComponent<IBuildingLoader>();
+            m_GuardianLoader = playerLoader.GetComponent<ICreatureLoader>();
             SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
             Debug.Log("Load data into managers...");
             ExecuteEnvData();
         }
-        
-        protected void RemoveDestroyedEntity(IRemoveEntity removeInterface)
+
+        private void RemoveDestroyedEntity(IRemoveEntity removeInterface)
         {
             var entityData = removeInterface.GetEntityData();
 
@@ -52,8 +57,8 @@ namespace JumpeeIsland
 
         private void ExecuteEnvData()
         {
-            buildingLoader.StartUpLoadData(_environmentData.BuildingData);
-            playerLoader.StartUpLoadData(new List<CreatureData>());
+            m_BuildingLoader.StartUpLoadData(_environmentData.BuildingData);
+            m_GuardianLoader.StartUpLoadData(new List<CreatureData>());
             SavingSystemManager.Instance.OnSyncEnvData();
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
@@ -72,14 +77,14 @@ namespace JumpeeIsland
 
         public EnvironmentData GetDataForSave()
         {
-            _environmentData.RemoveZeroHpPlayerCreatures();
+            _environmentData.PlayerData.Clear();
             return _environmentData;
         }
 
         public void ResetData()
         {
             Debug.Log("Remove all environment to reset...");
-            buildingLoader.Reset();
+            m_BuildingLoader.Reset();
         }
 
         public void SpawnResource(ResourceData resourceData)
@@ -95,13 +100,13 @@ namespace JumpeeIsland
         public void PlaceABuilding(BuildingData buildingData)
         {
             _environmentData.AddBuildingData(buildingData);
-            buildingLoader.PlaceNewObject(buildingData);
+            m_BuildingLoader.PlaceNewObject(buildingData);
         }
 
         public GameObject TrainACreature(CreatureData creatureData)
         {
             _environmentData.AddPlayerData(creatureData);
-            return playerLoader.PlaceNewObject(creatureData);
+            return m_GuardianLoader.PlaceNewObject(creatureData);
         }
 
         public GameObject SpawnAnEnemy(CreatureData creatureData)
@@ -111,7 +116,7 @@ namespace JumpeeIsland
 
         public IEnumerable<GameObject> GetBuildings(FactionType faction)
         {
-            return buildingLoader.GetBuildings();
+            return m_BuildingLoader.GetBuildings();
         }
 
         public IEnumerable<GameObject> GetResources()

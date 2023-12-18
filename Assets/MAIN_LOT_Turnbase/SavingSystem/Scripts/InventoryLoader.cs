@@ -59,6 +59,7 @@ namespace JumpeeIsland
         public List<string> statsAddress;
         public List<BuildingStats> buildingStats;
         public List<CreatureStats> creatureStats;
+        public List<GuardianAreaStat> areaStats;
     }
 
     public enum InventoryType

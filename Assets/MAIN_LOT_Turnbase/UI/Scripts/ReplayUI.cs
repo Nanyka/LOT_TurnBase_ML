@@ -10,12 +10,12 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnDataLoaded.AddListener(EnableInteract);
         }
 
-        protected override void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("Do something when touch on the screen");
-            }
-        }
+        // protected override void Update()
+        // {
+        //     if (Input.GetMouseButtonDown(0))
+        //     {
+        //         Debug.Log("Do something when touch on the screen");
+        //     }
+        // }
     }
 }
