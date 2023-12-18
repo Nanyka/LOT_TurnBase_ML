@@ -43,6 +43,7 @@ namespace JumpeeIsland
             // Win rate condition
             var enemyBuildingCount =
                 SavingSystemManager.Instance.GetEnvironmentData().CountEnemyBuilding(FactionType.Enemy);
+            
             if (enemyBuildingCount == 0)
                 GameFlowManager.Instance.OnGameOver.Invoke(2);
 

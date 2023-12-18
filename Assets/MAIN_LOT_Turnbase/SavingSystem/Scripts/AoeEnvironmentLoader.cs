@@ -17,7 +17,7 @@ namespace JumpeeIsland
         [SerializeField] private GameObject neutralCreatures;
         [SerializeField] private GameObject collectable;
 
-        private EnvironmentData _environmentData;
+        [SerializeField] private EnvironmentData _environmentData;
         private EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
         private IBuildingLoader playerBuildingLoader;
@@ -79,11 +79,10 @@ namespace JumpeeIsland
             {
                 case EntityType.BUILDING:
                 {
-                    {
-                        GetData().BuildingData.Remove(entityData as BuildingData);
-                        if (removeInterface.GetRemovedObject().TryGetComponent(out IStoreResource storeResource))
-                            _resourceStorages.Remove(storeResource);
-                    }
+                    GetData().BuildingData.Remove(entityData as BuildingData);
+                    if (removeInterface.GetRemovedObject().TryGetComponent(out IStoreResource storeResource))
+                        _resourceStorages.Remove(storeResource);
+                    
                     break;
                 }
                 case EntityType.PLAYER:
@@ -177,8 +176,6 @@ namespace JumpeeIsland
         {
             _environmentData.AddEnemyData(creatureData);
             var spawnedTroop = monsterLoader.PlaceNewObject(creatureData);
-            // if (spawnedTroop.TryGetComponent(out IMonster monster))
-            //     _monsters.Add(monster);
 
             return spawnedTroop;
         }

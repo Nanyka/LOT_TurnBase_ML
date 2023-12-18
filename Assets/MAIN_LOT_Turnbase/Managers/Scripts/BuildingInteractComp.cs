@@ -16,9 +16,7 @@ namespace JumpeeIsland
 
         public void OnClick()
         {
-            // Debug.Log($"Show {name} info");
             MainUI.Instance.OnShowInfo.Invoke(this);
-            // MainUI.Instance.OnInteractBuildingMenu.Invoke(this);
         }
 
         public void OnHoldEnter()
@@ -40,6 +38,9 @@ namespace JumpeeIsland
 
         public void OnHolding(Vector3 position)
         {
+            if (_isOnRelocating == false)
+                return;
+            
             position = new Vector3(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y), Mathf.RoundToInt(position.z));
             m_Entity.Relocate(position);
         }

@@ -196,7 +196,7 @@ namespace JumpeeIsland
 
         public int CountEnemyBuilding(FactionType enemyFaction)
         {
-            return BuildingData.Count(t => t.FactionType == enemyFaction);
+            return BuildingData.Count(t => t.FactionType == enemyFaction && t.BuildingType != BuildingType.GUARDIANAREA);
         }
 
         public void GatherCreature(string creatureName)

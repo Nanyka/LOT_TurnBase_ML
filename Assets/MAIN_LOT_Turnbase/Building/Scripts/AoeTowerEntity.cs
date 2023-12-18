@@ -12,10 +12,10 @@ namespace JumpeeIsland
         private IHealthComp m_HealthComp;
         private IBuildingConstruct m_Constructor;
         private ISkinComp m_SkinComp;
-        private BuildingData m_BuildingData { get; set; }
+        private BuildingData m_BuildingData;
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
-        [SerializeField] private int _killAccumulation;
+        private int _killAccumulation;
 
         public void Init(BuildingData buildingData, IBuildingController buildingController)
         {
@@ -168,6 +168,8 @@ namespace JumpeeIsland
             m_BuildingData.CurrentDamage = m_CurrentStats.AttackDamage;
             m_BuildingData.CurrentShield = m_CurrentStats.Shield;
             m_BuildingData.CurrentHp = m_CurrentStats.MaxHp;
+
+            // Debug.Log($"Building type of {m_BuildingData.EntityName}: {m_BuildingData.BuildingType}");
 
             // Set initiate data if it's new
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);

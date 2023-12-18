@@ -13,7 +13,7 @@ namespace JumpeeIsland
         private IAttackComp _attackComp;
         private IAttackRelated _attackRelated;
         private IAnimateComp _animateComp;
-        private FogOfWarHider m_Hider;
+        // private FogOfWarHider m_Hider;
         private LayerMask layerMask = 1 << 7; // Enemy layer is 5
         private Vector3 _firePos;
         private bool _isDisableHider;
@@ -41,11 +41,11 @@ namespace JumpeeIsland
             int numColliders = Physics.OverlapSphereNonAlloc(transform.position, detectRange, hitColliders, layerMask);
 
             // Disable hider from the any first fire
-            if (numColliders > 0 && _isDisableHider == false)
-            {
-                _isDisableHider = true;
-                m_Hider.OnDisable();
-            }
+            // if (numColliders > 0 && _isDisableHider == false)
+            // {
+            //     _isDisableHider = true;
+            //     m_Hider.OnDisable();
+            // }
 
             var distanceToTarget = float.PositiveInfinity;
 
@@ -85,7 +85,7 @@ namespace JumpeeIsland
 
         public void SetHider(FogOfWarHider hider)
         {
-            m_Hider = hider;
+            // m_Hider = hider;
         }
     }
 

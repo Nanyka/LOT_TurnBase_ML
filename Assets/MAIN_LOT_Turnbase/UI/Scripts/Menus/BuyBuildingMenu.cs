@@ -13,7 +13,7 @@ namespace JumpeeIsland
         [SerializeField] private GameObject _tabHolder;
         [SerializeField] private GameObject _confirmPanel;
         [FormerlySerializedAs("_buildingTas")] [SerializeField] private TabButton[] _buildingTab;
-        [SerializeField] private List<BuildingBuyButton> _functionBuildings;
+        // [SerializeField] private List<BuildingBuyButton> _functionBuildings;
         [SerializeField] private List<BuildingBuyButton> _towers;
         [SerializeField] private List<BuildingBuyButton> _trap;
         [SerializeField] private List<BuildingBuyButton> _decoration;
@@ -33,8 +33,8 @@ namespace JumpeeIsland
 
         private void Init(List<JIInventoryItem> inventories)
         {
-            foreach (var buyButton in _functionBuildings)
-                buyButton.TurnOff();
+            // foreach (var buyButton in _functionBuildings)
+            //     buyButton.TurnOff();
             foreach (var buyButton in _towers)
                 buyButton.TurnOff();
             foreach (var buyButton in _trap)
@@ -46,12 +46,12 @@ namespace JumpeeIsland
             
             var orderedInventories = inventories.OrderBy(t => t.inventoryName);
             
-            var index = 0;
-            foreach (var inventory in orderedInventories)
-                if (inventory.inventoryType == InventoryType.Building)
-                    _functionBuildings[index++].TurnOn(inventory, this);
+            // var index = 0;
+            // foreach (var inventory in orderedInventories)
+            //     if (inventory.inventoryType == InventoryType.Building)
+            //         _functionBuildings[index++].TurnOn(inventory, this);
 
-            index = 0;
+            var index = 0;
             foreach (var inventory in orderedInventories)
                 if (inventory.inventoryType == InventoryType.Tower)
                     _towers[index++].TurnOn(inventory, this);

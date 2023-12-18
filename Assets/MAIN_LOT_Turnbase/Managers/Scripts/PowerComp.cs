@@ -9,7 +9,7 @@ namespace JumpeeIsland
         private IEntityUIUpdate _entityUIUpdate;
         private int _attackIndex;
         private readonly int _maxPower = 3; // 3 normal attack allow 1 special attack
-        private int _curPower;
+        [SerializeField] private int _curPower;
         private bool _isAvailable;
         private bool _isPowerFull;
 
