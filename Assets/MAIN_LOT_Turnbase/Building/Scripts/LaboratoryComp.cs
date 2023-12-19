@@ -64,40 +64,7 @@ namespace JumpeeIsland
 
         private void ApplyResearchOnEntities()
         {
-            var factories = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
-
-            switch (m_Research.ResearchType)
-            {
-                case ResearchType.TROOP_TRANSFORM:
-                {
-                    foreach (var factory in factories)
-                    {
-                        if (factory.TryGetComponent(out IResearchDeliver deliver))
-                        {
-                            if (deliver.CheckTarget(m_Research.Target))
-                                deliver.LoadResearch(m_Research);
-                        }
-                    }
-                    
-                    break;
-                }
-                case ResearchType.TROOP_STATS:
-                {
-                    foreach (var laboratory in factories)
-                    {
-                        if (laboratory.TryGetComponent(out IResearchDeliver deliver))
-                        {
-                            if (deliver.CheckTroopType(m_Research.TroopType))
-                                deliver.LoadResearch(m_Research);
-                        }
-                    }
-                    
-                    break;
-                }
-            }
-            
-            // Remove the research from research list
-            SavingSystemManager.Instance.RemoveResearch(m_Research);
+            m_Research.IsUnlocked = true;
         }
 
         public void RejectResearch()

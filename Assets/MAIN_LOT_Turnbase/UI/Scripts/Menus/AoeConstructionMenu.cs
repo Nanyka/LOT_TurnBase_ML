@@ -24,7 +24,7 @@ namespace JumpeeIsland
         {
             SavingSystemManager.Instance.OnSetUpBuildingMenus.AddListener(Init);
             MainUI.Instance.OnBuyBuildingMenu.AddListener(ShowBuildingMenu);
-            // MainUI.Instance.OnHideAllMenu.AddListener(HideBuildingMenu);
+            MainUI.Instance.OnHideAllMenu.AddListener(HideBuildingMenu);
         }
 
         private void Init(List<JIInventoryItem> inventories)
@@ -35,14 +35,14 @@ namespace JumpeeIsland
                 buyButton.TurnOff();
 
             // Split building into categories
-            
+
             var orderedInventories = inventories.OrderBy(t => t.inventoryName);
-            
+
             var index = 0;
             foreach (var inventory in orderedInventories)
                 if (inventory.inventoryType == InventoryType.Building)
                     _troopBuildings[index++].TurnOn(inventory, this);
-            
+
             index = 0;
             foreach (var inventory in orderedInventories)
                 if (inventory.inventoryType == InventoryType.Research)
@@ -58,6 +58,9 @@ namespace JumpeeIsland
 
         public void HideBuildingMenu()
         {
+            if (_isInADeal)
+                return;
+
             _tabHolder.SetActive(false);
             foreach (var tabButton in _buildingTab)
                 tabButton.OnDeactiveTab();
@@ -75,19 +78,18 @@ namespace JumpeeIsland
         {
             _buildPoint.position = position;
         }
-        
+
         public void EndSelectionPhase(IConfirmFunction confirmFunction)
         {
-            _isInADeal = false;
             _currentConfirm = confirmFunction;
             _confirmPanel.SetActive(true);
         }
 
         public void OnMakeTheDeal()
         {
-            // await SavingSystemManager.Instance.RefreshEconomy();
             _currentConfirm.ClickYes();
             CleanGhostBuilding();
+            _isInADeal = false;
         }
 
         public void OnCancelTheDeal()
@@ -100,7 +102,7 @@ namespace JumpeeIsland
         {
             foreach (Transform child in _buildPoint)
                 Destroy(child.gameObject);
-            
+
             MainUI.Instance.OnHideAllMenu.Invoke();
         }
 

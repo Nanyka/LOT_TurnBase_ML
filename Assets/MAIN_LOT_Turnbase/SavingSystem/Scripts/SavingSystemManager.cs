@@ -51,7 +51,6 @@ namespace JumpeeIsland
         protected IEnvironmentLoader m_EnvLoader;
         private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
-
         private IStoragesControl m_StorageController;
 
         // private IMonsterControler m_MonsterController;

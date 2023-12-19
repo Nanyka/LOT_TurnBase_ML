@@ -27,6 +27,7 @@ namespace JumpeeIsland
         public int Magnitude;
         public int Difficulty; // Difficulty of the research show cost to conduct this research
         public string Explaination;
+        public bool IsUnlocked;
     }
 
     public enum ResearchType

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class FactoryComp : MonoBehaviour, IInputExecutor, IStoreResource, IResearchDeliver
+    public class FactoryComp : MonoBehaviour, IInputExecutor, IStoreResource
     {
         [SerializeField] private Vector3 assemblyPoint;
         [SerializeField] private TroopType troopType;
@@ -16,7 +17,6 @@ namespace JumpeeIsland
         private IBuildingDealer m_Building;
         private IEntityUIUpdate m_UIUpdater;
         private ICheckableObject m_CheckableObj;
-        private List<Research> _researches = new();
         private int _curStorage;
         private int _spawnableAmount;
         private float _curWeight = 1f;
@@ -88,16 +88,30 @@ namespace JumpeeIsland
 
                 if (troop.TryGetComponent(out ISpecialSkillReceiver attackReceiver))
                 {
-                    // Check if any storage research in the stock
-                    // Plug the skill in the entity
+                    // Retrieve all researches
+                    // Check if any research is relevant to the training troop
+                    // Apply the feasible research on the troop
 
-                    foreach (var research in _researches)
+                    var researches = SavingSystemManager.Instance.GetResearchTopics();
+                    researches = researches.Where(t => t.IsUnlocked);
+                    foreach (var research in researches)
                     {
                         switch (research.ResearchType)
                         {
                             case ResearchType.TROOP_TRANSFORM:
-                                attackReceiver.EnablePowerBar(research.Magnitude);
+                            {
+                                if (troopName.Equals(research.Target))
+                                    attackReceiver.EnablePowerBar(research.Magnitude);
+                                
                                 break;
+                            }
+                            case ResearchType.TROOP_STATS:
+                            {
+                                if (research.TroopType == TroopType.NONE || research.TroopType == troopType)
+                                    Debug.Log("Do some stats changing");
+                                
+                                break;
+                            }
                         }
                     }
                 }
@@ -170,21 +184,6 @@ namespace JumpeeIsland
         {
             return _spawnableAmount;
         }
-
-        public bool CheckTarget(string targetName)
-        {
-            return troopName.Equals(targetName);
-        }
-
-        public bool CheckTroopType(TroopType checkType)
-        {
-            return checkType == TroopType.NONE || checkType == troopType;
-        }
-
-        public void LoadResearch(Research research)
-        {
-            _researches.Add(research);
-        }
     }
 
     public interface IStoreResource
@@ -195,12 +194,5 @@ namespace JumpeeIsland
         public float GetWeight();
         public void ReduceWeight(int amount);
         public int GetSpawnableAmount();
-    }
-
-    public interface IResearchDeliver
-    {
-        public bool CheckTarget(string targetName);
-        public bool CheckTroopType(TroopType checkType);
-        public void LoadResearch(Research research);
     }
 }
