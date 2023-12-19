@@ -18,11 +18,11 @@ namespace JumpeeIsland
                         CreatureData guardianData = new CreatureData
                         {
                             EntityName = guardian.EntityName,
-                            CurrentLevel = guardian.Level
+                            CurrentLevel = guardian.Level,
+                            Position = transform.position + GenerateRandomVector()
                         };
 
-                        var troop = SavingSystemManager.Instance.OnTrainACreature(guardianData,
-                            transform.position + GenerateRandomVector());
+                        var troop = SavingSystemManager.Instance.OnTrainACreature(guardianData);
                     }
                     
                     break;

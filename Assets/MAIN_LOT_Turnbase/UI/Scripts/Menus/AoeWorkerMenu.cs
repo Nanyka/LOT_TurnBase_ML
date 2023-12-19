@@ -24,7 +24,7 @@ namespace JumpeeIsland
         protected virtual void Start()
         {
             MainUI.Instance.OnShowCreatureMenu.AddListener(ShowWorkerMenu);
-            // MainUI.Instance.OnHideAllMenu.AddListener(HideCreatureMenu);
+            MainUI.Instance.OnHideAllMenu.AddListener(HideCreatureMenu);
             // MainUI.Instance.OnShowDropTroopMenu.AddListener(ShowMenu);
         }
 
@@ -57,21 +57,6 @@ namespace JumpeeIsland
 
             _creatureMenu.SetActive(true);
         }
-
-        // private void ShowMenu(List<CreatureData> troops)
-        // {
-        //     m_Troops = troops;
-        //     foreach (var troopDropButton in _workerButtons)
-        //         troopDropButton.TurnOff();
-        //
-        //     for (int i = 0; i < m_Troops.Count; i++)
-        //     {
-        //         _workerButtons[i].TurnOn(m_Troops[i], this);
-        //         _workerButtons[i].gameObject.SetActive(true);
-        //     }
-        //
-        //     _creatureMenu.SetActive(true);
-        // }
 
         public void HideCreatureMenu()
         {

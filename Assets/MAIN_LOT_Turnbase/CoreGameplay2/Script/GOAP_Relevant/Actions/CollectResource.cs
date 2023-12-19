@@ -40,28 +40,6 @@ namespace JumpeeIsland
             m_GAgent.SetIProcessUpdate(this);
 
             return true;
-            
-            // if (m_GAgent.Inventory.IsEmpty())
-            //     return false;
-            //
-            // var target = m_GAgent.Inventory.items[0];
-            //
-            // if (target.TryGetComponent(out ICheckableObject checkableObject))
-            // {
-            //     var distanceToTarget = Vector3.Distance(checkableObject.GetPosition(), transform.position);
-            //
-            //     if (distanceToTarget < _checkDistance)
-            //     {
-            //         Target = target;
-            //         m_GAgent.SetIProcessUpdate(this);
-            //         
-            //         Duration = 1f;
-            //     }
-            //     else
-            //         Duration = 0f;
-            // }
-            //
-            // return true;
         }
 
         public override bool PostPerform()

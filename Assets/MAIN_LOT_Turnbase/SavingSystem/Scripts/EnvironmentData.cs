@@ -90,8 +90,10 @@ namespace JumpeeIsland
 
         public bool CheckFullCapacity()
         {
-            var totalSpace = BuildingData.Count(t => t.BuildingType == BuildingType.TOWNHOUSE);
-            return (1 + totalSpace) * SavingSystemManager.Instance.GetTownhouseSpace() <= PlayerData.Count;
+            // var totalSpace = BuildingData.Count(t => t.BuildingType == BuildingType.TOWNHOUSE);
+            var mailHallLevel = BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL).CurrentLevel;
+            var workerAmount = PlayerData.Count(t => t.CreatureType == CreatureType.WORKER);
+            return (1 + mailHallLevel) * SavingSystemManager.Instance.GetTownhouseSpace() <= workerAmount;
         }
 
         public int GetTownhouseSpace()

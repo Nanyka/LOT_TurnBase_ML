@@ -56,17 +56,19 @@ namespace JumpeeIsland
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            // var ray = _camera.ScreenPointToRay(Input.mousePosition);
-            // if (!Physics.Raycast(ray, out var collidedTile, 100f, _layerMask))
-            //     return;
-            //
-            // _spawnPosition = collidedTile.transform.position;
             _mAoeWorkerMenu.EndDeal(this);
         }
 
         public void ClickYes()
         {
-            SavingSystemManager.Instance.OnTrainACreature(_inventoryItem ,_spawnPosition, false);
+            var newWorker = new CreatureData
+            {
+                EntityName = _inventoryItem.inventoryName,
+                Position = _spawnPosition,
+                CurrentLevel = 0,
+                CreatureType = CreatureType.WORKER
+            };
+            SavingSystemManager.Instance.OnTrainACreature(newWorker);
         }
 
         public GameObject GetGameObject()

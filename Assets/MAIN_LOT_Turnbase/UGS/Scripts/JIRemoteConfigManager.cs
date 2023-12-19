@@ -40,7 +40,7 @@ namespace JumpeeIsland
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
 
-                GetEconomyConfigValues();
+                // GetEconomyConfigValues(); // TODO: check removing the Command system
                 GetNumericConfigValues();
             }
             catch (Exception e)

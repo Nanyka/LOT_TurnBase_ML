@@ -7,6 +7,7 @@ namespace JumpeeIsland
         PLAYER,
         ENEMY,
         BOSS,
-        ECOBOSS
+        ECOBOSS,
+        WORKER
     }
 }

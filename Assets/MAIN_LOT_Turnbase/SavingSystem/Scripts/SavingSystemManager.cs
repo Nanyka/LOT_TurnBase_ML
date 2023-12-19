@@ -501,9 +501,17 @@ namespace JumpeeIsland
             return m_EnvLoader.TrainACreature(newCreature);
         }
 
-        public GameObject OnTrainACreature(CreatureData creatureData, Vector3 position)
+        public GameObject OnTrainACreature(CreatureData creatureData)
         {
-            creatureData.Position = position;
+            if (creatureData.CreatureType == CreatureType.WORKER)
+            {
+                if (m_EnvLoader.GetData().CheckFullCapacity())
+                {
+                    MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
+                    return null;
+                }
+            }
+            
             return m_EnvLoader.TrainACreature(creatureData);
         }
 

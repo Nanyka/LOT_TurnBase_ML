@@ -66,7 +66,8 @@ namespace JumpeeIsland
 
         public void ClickYes()
         {
-            SavingSystemManager.Instance.OnTrainACreature(m_CreatureItem,_spawnPosition);
+            m_CreatureItem.Position = _spawnPosition;
+            SavingSystemManager.Instance.OnTrainACreature(m_CreatureItem);
             
             // Remove item from CreatureMenu
             TurnOff();

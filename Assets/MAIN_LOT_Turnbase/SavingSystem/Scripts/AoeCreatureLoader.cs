@@ -10,11 +10,11 @@ namespace JumpeeIsland
         
         private IFactionController _factionController;
         private ObjectPool _creaturePool;
-        protected List<CreatureData> _creatureDatas;
+        // protected List<CreatureData> _creatureDatas;
 
         public void StartUpLoadData(List<CreatureData> data)
         {
-            _creatureDatas = data;
+            // _creatureDatas = data;
         }
 
         protected virtual void Start()
@@ -57,7 +57,7 @@ namespace JumpeeIsland
         public void Reset()
         {
             _creaturePool.ResetPool();
-            _creatureDatas = new();
+            // _creatureDatas = new();
             _factionController.ResetData();
         }
     }

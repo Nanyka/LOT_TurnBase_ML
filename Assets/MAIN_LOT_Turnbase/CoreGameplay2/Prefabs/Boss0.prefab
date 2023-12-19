@@ -67846,10 +67846,25 @@ ParticleSystem:
     - {fileID: 0}
   SubModule:
     serializedVersion: 2
-    enabled: 0
+    enabled: 1
     subEmitters:
     - serializedVersion: 3
-      emitter: {fileID: 0}
+      emitter: {fileID: 314328242056042601}
+      type: 0
+      properties: 0
+      emitProbability: 1
+    - serializedVersion: 3
+      emitter: {fileID: 3881098340545794993}
+      type: 0
+      properties: 0
+      emitProbability: 1
+    - serializedVersion: 3
+      emitter: {fileID: 937993104214870170}
+      type: 0
+      properties: 0
+      emitProbability: 1
+    - serializedVersion: 3
+      emitter: {fileID: 5107644857028298260}
       type: 0
       properties: 0
       emitProbability: 1
@@ -79307,6 +79322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a0f995d2b14707be009023a39ea2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _curPower: 0
 --- !u!1 &8049599688953105148
 GameObject:
   m_ObjectHideFlags: 0

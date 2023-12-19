@@ -13,19 +13,26 @@ namespace JumpeeIsland
         [SerializeField] private int costPerTroop;
         [SerializeField] private Transform testAssemblyPoint;
 
-        private int _curStorage;
-        private int _spawnableAmount;
         private IBuildingDealer m_Building;
         private IEntityUIUpdate m_UIUpdater;
         private ICheckableObject m_CheckableObj;
         private List<Research> _researches = new();
+        private int _curStorage;
+        private int _spawnableAmount;
         private float _curWeight = 1f;
         private bool _isOnHolding;
 
-        private void OnEnable()
+        private void OnDisable()
+        {
+            ResetVariables();
+        }
+
+        private void ResetVariables()
         {
             _curWeight = 1f;
             _curStorage = 0;
+            _spawnableAmount = 0;
+            _isOnHolding = false;
         }
 
         private void Start()
@@ -66,9 +73,8 @@ namespace JumpeeIsland
             if (_curStorage < costPerTroop)
                 return;
 
-            if (_curStorage >= costPerTroop * troopCount)
-                m_Building.GetWorldStateChanger()
-                    .ChangeState(1); // restart the factory after release a part of its storage
+            if (IsFullStock())
+                m_Building.GetWorldStateChanger().ChangeState(1); // restart the factory after release a part of its storage
 
             _spawnableAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
             for (int i = 0; i < _spawnableAmount; i++)
@@ -114,6 +120,9 @@ namespace JumpeeIsland
 
         public void StoreResource(int amount)
         {
+            if (IsFullStock())
+                return;
+            
             _curStorage = Mathf.Clamp(_curStorage + amount, 0, costPerTroop * troopCount);
 
             // Show amount of ready troop
@@ -121,7 +130,7 @@ namespace JumpeeIsland
             UpdateTroopAmountUI();
 
             // Remove one "Factory" state when the factory is full of stock
-            if (_curStorage >= costPerTroop * troopCount)
+            if (IsFullStock())
             {
                 _curStorage = costPerTroop * troopCount;
                 m_Building.GetWorldStateChanger().ChangeState(-1); // decrease one unit of available factory

@@ -51,6 +51,7 @@ namespace JumpeeIsland
         {
             _currentProcessUpdate = processUpdate;
             _currentConner = m_Transform.position;
+            _currentDestination = destination;
 
             // Check if currentDestination and m_Transform.position is in NavMesh range
             // If not, select a nearest NavMesh point
@@ -71,7 +72,6 @@ namespace JumpeeIsland
                     Debug.Log("MoveComp can't find a walkable starting point");
             }
 
-            // _mover = mover;
             _mover.StartWalk();
             StartMove();
         }
@@ -83,9 +83,9 @@ namespace JumpeeIsland
             // Move to the closet conner
             // Wait for entity reach the conner
 
-            var currentPos = m_Transform.position;
-            NavMesh.CalculatePath(currentPos, _currentDestination, NavMesh.AllAreas, _path);
-            _path.corners.OrderBy(t => Vector3.Distance(currentPos, t));
+            // var currentPos = m_Transform.position;
+            NavMesh.CalculatePath(_currentConner, _currentDestination, NavMesh.AllAreas, _path);
+            _path.corners.OrderBy(t => Vector3.Distance(_currentConner, t));
             _currentIndex = 0;
             _isMoving = true;
             SetCurrentConner();
