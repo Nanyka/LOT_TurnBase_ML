@@ -5,21 +5,23 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CharacterEntity : Entity, ISpecialSkillReceiver, IAttackRelated, ITroopAssembly,
-        IGetEntityData<CreatureStats>, ICreatureInit
+    public class CharacterEntity : Entity, IComboReceiver, IAttackRelated, ITroopAssembly,
+        IGetEntityData<CreatureStats>, ICreatureInit, ISkillCaster
     {
         public Vector3 _assemblyPoint { get; set; }
 
         // control components
         // [SerializeField] private SkinComp m_SkinComp;
-        [SerializeField] private EffectComp m_EffectComp;
+        // [SerializeField] private EffectComp m_EffectComp;
         [SerializeField] private EnemyBrainComp m_Brain;
 
-        private ISkillMonitor m_SkillMonitor;
+        private IComboMonitor _mComboMonitor;
         private IHealthComp m_HealthComp;
         private IAnimateComp m_AnimateComp;
         private IMoveComp m_MovementComp;
         private ISkinComp m_SkinComp;
+        private ISkillComp m_SkillComp;
+        private IEffectComp m_EffectComp;
 
         // loaded data
         private List<CreatureStats> m_CreatureStats;
@@ -35,11 +37,13 @@ namespace JumpeeIsland
 
         private void Awake()
         {
-            m_SkillMonitor = GetComponent<ISkillMonitor>();
+            _mComboMonitor = GetComponent<IComboMonitor>();
             m_HealthComp = GetComponent<IHealthComp>();
             m_AnimateComp = GetComponent<IAnimateComp>();
             m_MovementComp = GetComponent<IMoveComp>();
             m_SkinComp = GetComponent<ISkinComp>();
+            m_SkillComp = GetComponent<ISkillComp>();
+            m_EffectComp = GetComponent<IEffectComp>();
         }
 
         public void Init(CreatureData creatureData)
@@ -53,11 +57,16 @@ namespace JumpeeIsland
 
         public override void Relocate(Vector3 position)
         {
+            m_Transform.position = position;
+            m_CreatureData.Position = position;
         }
 
         public override void UpdateTransform(Vector3 position, Vector3 rotation)
         {
-            throw new System.NotImplementedException();
+            m_Transform.position = position;
+            m_Transform.eulerAngles = rotation;
+            m_CreatureData.Position = position;
+            m_CreatureData.Rotation = rotation;
         }
 
         public override EntityData GetData()
@@ -87,9 +96,9 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public EffectComp GetEffectComp()
+        public IEffectComp GetEffectComp()
         {
-            throw new NotImplementedException();
+            return m_EffectComp;
         }
 
         public void AccumulateKills()
@@ -176,7 +185,7 @@ namespace JumpeeIsland
         // Is set from the FactoryComp
         public void EnablePowerBar(int index)
         {
-            m_SkillMonitor.SetSpecialAttack(index);
+            _mComboMonitor.SetSpecialAttack(index);
         }
 
         // PowerComp use this function to reset attackIndex
@@ -223,9 +232,12 @@ namespace JumpeeIsland
             // Retrieve entity data
             if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode != GameMode.ECONOMY)
                 m_CreatureData.CurrentHp = m_CurrentStat.HealthPoint;
+            
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
             m_EffectComp.Init(this);
+            m_SkillComp?.Init(m_CreatureData.EntityName,m_CreatureData.CurrentLevel);
+
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
         }
@@ -238,7 +250,7 @@ namespace JumpeeIsland
         public void SetAssemblyPoint(Vector3 assemblyPoint);
     }
 
-    public interface ISpecialSkillReceiver
+    public interface IComboReceiver
     {
         public void EnablePowerBar(int index);
         public void SetAttackIndex(int index);

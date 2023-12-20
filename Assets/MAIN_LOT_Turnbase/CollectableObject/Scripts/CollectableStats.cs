@@ -33,9 +33,9 @@ namespace JumpeeIsland
         [VerticalGroup("SkillEffect", VisibleIf = "@_skillEffectType != SkillEffectType.None")]
         [VerticalGroup("SkillEffect/Row2")] [SerializeField] private int _duration;
         [VerticalGroup("SkillEffect/Row3")] [SerializeField] private int _magnitude;
-        private SkillEffect _skillEffect;
+        private ISkillEffect _skillEffect;
 
-        public SkillEffect GetSkillEffect()
+        public ISkillEffect GetSkillEffect()
         {
             if (_skillEffect == null)
                 SetEffectType();

@@ -7,14 +7,14 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class CreatureEntity : Entity, IStatsProvider<CreatureStats>, IAttackRelated, ISkillRelated
+    public class CreatureEntity : Entity, IStatsProvider<CreatureStats>, IAttackRelated, ISkillCaster
     {
         [SerializeField] private Transform m_RotatePart;
         [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
         [SerializeField] private AttackComp m_AttackComp;
         [SerializeField] private SkillComp m_SkillComp;
-        [SerializeField] private EffectComp m_EffectComp;
+        [SerializeField] private IEffectComp m_EffectComp;
         [SerializeField] private AnimateComp m_AnimateComp;
 
         private List<CreatureStats> m_CreatureStats;
@@ -150,7 +150,7 @@ namespace JumpeeIsland
 
         public void SetActiveMaterial()
         {
-            m_SkinComp.SetActiveMaterial();
+            m_SkinComp.SetDefaultMaterial();
         }
 
         public void SetDisableMaterial()
@@ -397,7 +397,7 @@ namespace JumpeeIsland
         //     return m_EffectComp;
         // }
         
-        public EffectComp GetEffectComp()
+        public IEffectComp GetEffectComp()
         {
             return m_EffectComp;
         }

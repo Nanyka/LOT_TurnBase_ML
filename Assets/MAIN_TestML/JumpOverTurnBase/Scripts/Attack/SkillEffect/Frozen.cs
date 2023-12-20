@@ -1,7 +1,7 @@
 using JumpeeIsland;
 using UnityEngine;
 
-public class Frozen : SkillEffect
+public class Frozen : ISkillEffect
 {
     private readonly int _duration;
     private readonly Material _effectMaterial;
@@ -12,10 +12,9 @@ public class Frozen : SkillEffect
         _effectMaterial = material;
     }
     
-    public void TakeEffectOn(ISkillRelated attackEntity, IAttackRelated sufferEntity)
+    public void TakeEffectOn(ISkillCaster attackEntity, IAttackRelated sufferEntity)
     {
         if (attackEntity.GetFaction() != sufferEntity.GetFaction())
-            if (sufferEntity.GetType() == typeof(CreatureEntity))
-                sufferEntity.GetEffectComp().RecordFrozen(_duration, _effectMaterial);
+            sufferEntity.GetEffectComp().RecordFrozen(_duration, _effectMaterial);
     }
 }

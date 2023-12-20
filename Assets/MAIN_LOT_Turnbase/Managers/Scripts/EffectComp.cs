@@ -3,12 +3,11 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class EffectComp : MonoBehaviour
+    public class EffectComp : MonoBehaviour, IEffectComp
     {
         private Entity m_Entity;
         private CreatureData m_CreatureData;
         [SerializeField] private int _remainTempJumpBoost;
-
         [SerializeField] private int _magnitudeJumpBoost;
 
         public void Init(Entity entity)
@@ -116,7 +115,7 @@ namespace JumpeeIsland
 
         private void RecoverFromFrozenState()
         {
-            m_Entity.GetSkin().SetActiveMaterial();
+            m_Entity.GetSkin().SetDefaultMaterial();
         }
 
         #endregion
@@ -137,5 +136,17 @@ namespace JumpeeIsland
 
             return effectCache;
         }
+    }
+    
+    public interface IEffectComp
+    {
+        public void Init(Entity entity);
+        public bool CheckSkipTurn();
+        public int GetJumpBoost();
+        public bool UseJumpBoost();
+        public void EffectCountDown();
+        public void JumpBoost(int duration, int magnitude);
+        public void AdjustStrength(int magnitude, int duration);
+        public void RecordFrozen(int duration, Material effectMaterial);
     }
 }

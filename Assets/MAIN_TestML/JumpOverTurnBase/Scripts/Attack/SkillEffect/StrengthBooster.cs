@@ -1,7 +1,7 @@
 using JumpeeIsland;
 using UnityEngine;
 
-public class StrengthBooster : SkillEffect
+public class StrengthBooster : ISkillEffect
 {
     private int _duration;
     private int _magnitude;
@@ -12,7 +12,7 @@ public class StrengthBooster : SkillEffect
         _magnitude = magnitude;
     }
     
-    public void TakeEffectOn(ISkillRelated attackEntity,IAttackRelated sufferEntity)
+    public void TakeEffectOn(ISkillCaster attackEntity,IAttackRelated sufferEntity)
     {
         if (attackEntity.GetFaction() == sufferEntity.GetFaction())
         {

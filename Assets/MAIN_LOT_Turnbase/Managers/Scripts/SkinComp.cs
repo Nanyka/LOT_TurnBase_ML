@@ -13,8 +13,8 @@ namespace JumpeeIsland
         [SerializeField] private Transform m_SkinAnchor;
         [SerializeField] private ParticleSystem _appearVfx;
         [SerializeField] private List<Renderer> _factionRenderers = new();
-        [SerializeField] private Material _activeMaterial;
-        [SerializeField] private Material _disableMaterial;
+        private Material _activeMaterial;
+        private Material _disableMaterial;
 
         private Material _activeCache;
         private Material _disableCache;
@@ -45,7 +45,7 @@ namespace JumpeeIsland
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this);
         }
 
-        public void SetActiveMaterial()
+        public void SetDefaultMaterial()
         {
             if (_factionRenderers == null || _activeCache == null)
                 return;
@@ -89,7 +89,7 @@ namespace JumpeeIsland
     {
         public void Init(string skinAddress);
         public void Init(string skinAddress, IAnimateComp animateComp);
-        public void SetActiveMaterial();
+        public void SetDefaultMaterial();
         public void SetCustomMaterial(Material material);
         public void ReturnSkin(GameObject skinObject);
     }

@@ -5,9 +5,12 @@ namespace JumpeeIsland
 {
     public class DefenseSensor : ISensorExecute
     {
+        [SerializeField] private Skill_SO enemySkill;
+        
         public (int,int) DecideDirection(CreatureData m_CreatureData, Transform m_Transform, EnvironmentManager _envManager,
             CreatureEntity m_Entity, SkillComp skillComp)
         {
+            
             // Get enemy list
             // Get each enemy potential attack points
             // Check if any attack hit me
@@ -25,8 +28,8 @@ namespace JumpeeIsland
                     if (movement.jumpCount > 0)
                     {
                         var enemyInventory = SavingSystemManager.Instance.GetInventoryItemByName(enemy.EntityName);
-                        var enemySkill = (Skill_SO)AddressableManager.Instance.GetAddressableSO(
-                            enemyInventory.skillsAddress[movement.jumpCount - 1]);
+                        // var enemySkill = (Skill_SO)AddressableManager.Instance.GetAddressableSO(
+                        //     enemyInventory.skillsAddress[movement.jumpCount - 1]);
 
                         var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i), enemySkill);
                         if (attackPoints == null)

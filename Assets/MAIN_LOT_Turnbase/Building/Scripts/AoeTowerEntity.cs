@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeTowerEntity: Entity, IAttackRelated, ISkillRelated, IBuildingDealer, IGetEntityData<BuildingStats>
+    public class AoeTowerEntity: Entity, IAttackRelated, ISkillCaster, IBuildingDealer, IGetEntityData<BuildingStats>
     {
         // [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private SkillComp m_SkillComp;
@@ -119,7 +119,7 @@ namespace JumpeeIsland
 
         #region EFFECT
 
-        public EffectComp GetEffectComp()
+        public IEffectComp GetEffectComp()
         {
             throw new NotImplementedException();
         }

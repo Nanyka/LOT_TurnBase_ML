@@ -1,7 +1,7 @@
 using JumpeeIsland;
 using UnityEngine;
 
-public class JumpBoost : SkillEffect
+public class JumpBoost : ISkillEffect
 {
     private int _duration;
     private int _magnitude;
@@ -12,7 +12,7 @@ public class JumpBoost : SkillEffect
         _magnitude = magnitude;
     }
 
-    public void TakeEffectOn(ISkillRelated attackEntity, IAttackRelated sufferEntity)
+    public void TakeEffectOn(ISkillCaster attackEntity, IAttackRelated sufferEntity)
     {
         if (sufferEntity.GetType() == typeof(CreatureEntity))
             sufferEntity.GetEffectComp().JumpBoost(_duration, _magnitude);

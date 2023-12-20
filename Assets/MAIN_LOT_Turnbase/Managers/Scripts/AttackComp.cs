@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class AttackComp : MonoBehaviour
     {
-        public void Attack(IEnumerable<Vector3> attackPoints, IAttackRelated mEntity, ISkillRelated mSkill,
+        public void Attack(IEnumerable<Vector3> attackPoints, IAttackRelated mEntity, ISkillCaster mSkill,
             int jumpStep)
         {
             if (attackPoints == null)
@@ -42,7 +42,7 @@ namespace JumpeeIsland
             }
         }
 
-        public void Attack(Vector3 attackPoint, IAttackRelated mEntity, ISkillRelated mSkill, int jumpStep)
+        public void Attack(Vector3 attackPoint, IAttackRelated mEntity, ISkillCaster mSkill, int jumpStep)
         {
             var mEnvironment = GameFlowManager.Instance.GetEnvManager();
             var attackFaction = mEnvironment.CheckFaction(attackPoint);

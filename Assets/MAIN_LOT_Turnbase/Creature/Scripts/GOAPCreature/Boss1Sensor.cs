@@ -11,6 +11,7 @@ namespace JumpeeIsland
         [SerializeField] private CreatureEntity m_Entity;
         [SerializeField] private SkillComp m_Skills;
         [SerializeField] private int detectRange;
+        [SerializeField] private Skill_SO enemySkill;
         private EnvironmentData _envData;
         private EnvironmentManager _envManager;
         private CreatureData m_CreatureData;
@@ -101,8 +102,8 @@ namespace JumpeeIsland
                     if (movement.jumpCount > 0)
                     {
                         var enemyInventory = SavingSystemManager.Instance.GetInventoryItemByName(enemy.EntityName);
-                        var enemySkill = (Skill_SO)AddressableManager.Instance.GetAddressableSO(
-                            enemyInventory.skillsAddress[movement.jumpCount - 1]);
+                        // var enemySkill = (Skill_SO)AddressableManager.Instance.GetAddressableSO(
+                        //     enemyInventory.skillsAddress[movement.jumpCount - 1]);
 
                         var attackPoints = AttackPoints(movement.returnPos, JIGeneralUtils.DirectionTo(i), enemySkill);
                         if (attackPoints == null)

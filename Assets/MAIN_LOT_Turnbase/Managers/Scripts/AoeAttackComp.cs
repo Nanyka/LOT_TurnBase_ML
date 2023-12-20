@@ -5,12 +5,12 @@ namespace JumpeeIsland
 {
     public class AoeAttackComp : MonoBehaviour, IAttackComp
     {
-        private ISkillMonitor m_SkillMonitor;
+        private IComboMonitor _mComboMonitor;
         private IAttackRelated m_AttackRelated;
 
         private void Start()
         {
-            m_SkillMonitor = GetComponent<ISkillMonitor>();
+            _mComboMonitor = GetComponent<IComboMonitor>();
             m_AttackRelated = GetComponent<IAttackRelated>();
         }
 
@@ -19,7 +19,7 @@ namespace JumpeeIsland
             if (target.TryGetComponent(out IHealthComp targetHp))
             {
                 targetHp.TakeDamage(m_AttackRelated);
-                m_SkillMonitor.PowerUp();
+                _mComboMonitor.PowerUp();
             }
         }
     }

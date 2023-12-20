@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class WorkerPowerComp : MonoBehaviour, ISkillMonitor
+    public class WorkerPowerComp : MonoBehaviour, IComboMonitor
     {
         [SerializeField] private int _attackIndex;
 

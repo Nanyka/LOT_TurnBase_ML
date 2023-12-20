@@ -13,16 +13,16 @@ namespace JumpeeIsland
 
         private IAttackComp _attackComp;
         private IAttackRelated _attackRelated;
-        private ISpecialSkillReceiver _specialSkill;
-        private ISkillMonitor _skillMonitor;
+        private IComboReceiver _combo;
+        private IComboMonitor _comboMonitor;
         private LayerMask layerMask = 1 << 7;
 
         private void Start()
         {
             _attackComp = GetComponent<IAttackComp>();
             _attackRelated = GetComponent<IAttackRelated>();
-            _specialSkill = GetComponent<ISpecialSkillReceiver>();
-            _skillMonitor = GetComponent<ISkillMonitor>();
+            _combo = GetComponent<IComboReceiver>();
+            _comboMonitor = GetComponent<IComboMonitor>();
 
             SetAttackLayer();
         }
@@ -38,9 +38,9 @@ namespace JumpeeIsland
 
         public void PlayAttackVfx()
         {
-            attackVfx[_specialSkill.GetAttackIndex()].Play();
+            attackVfx[_combo.GetAttackIndex()].Play();
 
-            if (_specialSkill.GetAttackIndex() > 0)
+            if (_combo.GetAttackIndex() > 0)
             {
                 Collider[] hitColliders = new Collider[10];
                 int numColliders =
@@ -57,7 +57,7 @@ namespace JumpeeIsland
                 }
             }
 
-            _skillMonitor.ResetPowerBar();
+            _comboMonitor.ResetPowerBar();
         }
 
         public FactionType GetFaction()

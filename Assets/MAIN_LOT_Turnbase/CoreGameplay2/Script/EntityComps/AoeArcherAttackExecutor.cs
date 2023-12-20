@@ -5,23 +5,25 @@ namespace JumpeeIsland
 {
     public class AoeArcherAttackExecutor : MonoBehaviour, IAttackExecutor
     {
-        [SerializeField] private FireComp m_FireComp;
+        
         [SerializeField] private AnimAttackCollider[] attackColliders;
         
         private IAttackComp _attackComp;
         private IAttackRelated _attackRelated;
-        private ISkillMonitor _skillMonitor;
-        private ISpecialSkillReceiver _skillReceiver;
+        private IComboMonitor _comboMonitor;
+        private IComboReceiver _comboReceiver;
         private IAnimateComp _animateComp;
         private Vector3 _attackPos;
+        private IFireComp _fireComp;
 
         private void Start()
         {
             _attackComp = GetComponent<IAttackComp>();
             _attackRelated = GetComponent<IAttackRelated>();
-            _skillMonitor = GetComponent<ISkillMonitor>();
-            _skillReceiver = GetComponent<ISpecialSkillReceiver>();
+            _comboMonitor = GetComponent<IComboMonitor>();
+            _comboReceiver = GetComponent<IComboReceiver>();
             _animateComp = GetComponent<IAnimateComp>();
+            _fireComp = GetComponent<IFireComp>();
             
             foreach (var attackCollider in attackColliders)
                 attackCollider.Init(this);
@@ -29,8 +31,8 @@ namespace JumpeeIsland
 
         public void PlayAttackVfx()
         {
-            m_FireComp.PlayCurveFX(_attackPos);
-            _skillMonitor.ResetPowerBar();
+            _fireComp.PlayCurveFX(_attackPos);
+            _comboMonitor.ResetPowerBar();
         }
 
         public FactionType GetFaction()
@@ -47,7 +49,7 @@ namespace JumpeeIsland
         public void ExecuteHitEffect(Vector3 atPos)
         {
             _attackPos = atPos;
-            _animateComp.TriggerAttackAnim(_skillReceiver.GetAttackIndex());
+            _animateComp.TriggerAttackAnim(_comboReceiver.GetAttackIndex());
         }
 
         public void ExecuteHitEffect(Vector3 atPos, int skillIndex)

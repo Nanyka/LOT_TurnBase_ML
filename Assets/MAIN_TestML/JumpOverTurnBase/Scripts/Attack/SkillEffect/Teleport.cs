@@ -3,9 +3,9 @@ using System.Linq;
 using JumpeeIsland;
 using UnityEngine;
 
-public class Teleport : SkillEffect
+public class Teleport : ISkillEffect
 {
-    public void TakeEffectOn(ISkillRelated attackEntity, IAttackRelated sufferEntity)
+    public void TakeEffectOn(ISkillCaster attackEntity, IAttackRelated sufferEntity)
     {
         var envManager = GameFlowManager.Instance.GetEnvManager();
 

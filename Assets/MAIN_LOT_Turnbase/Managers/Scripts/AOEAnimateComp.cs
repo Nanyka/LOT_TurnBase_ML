@@ -64,7 +64,7 @@ namespace JumpeeIsland
         }
 
         // Use for bool animation
-        public void SetAnimation(AnimateType animate, bool isActivate)
+        private void SetAnimation(AnimateType animate, bool isActivate)
         {
             switch (animate)
             {
@@ -79,6 +79,11 @@ namespace JumpeeIsland
             m_Animator.SetInteger(AttackIndex, attackIndex);
             m_Animator.SetTrigger(Attack);
         }
+
+        public void SetAnimatorSpeed(float speed)
+        {
+            m_Animator.speed = speed;
+        }
     }
     
     public interface IMover
@@ -91,7 +96,7 @@ namespace JumpeeIsland
     {
         public void Init(GameObject myGameObject);
         public void SetAnimation(AnimateType animate);
-        public void SetAnimation(AnimateType animate, bool isActivate);
         public void TriggerAttackAnim(int attackIndex);
+        public void SetAnimatorSpeed(float speed);
     }
 }

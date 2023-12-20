@@ -20,7 +20,7 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public void SetActiveMaterial()
+        public void SetDefaultMaterial()
         {
             throw new System.NotImplementedException();
         }

@@ -1,10 +1,9 @@
-using System;
 using GOAP;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ChasePlayerTroop : GAction, IProcessUpdate
+    public class RangeUnitChasePlayerTroop : GAction, IProcessUpdate
     {
         [SerializeField] private CharacterEntity m_Entity;
         
@@ -25,8 +24,14 @@ namespace JumpeeIsland
             if (target == null)
                 return false;
 
-            Target = target;
-            m_GAgent.SetIProcessUpdate(this);
+            var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+
+            if (distanceToTarget > distanceToAttack)
+            {
+                float offset = distanceToAttack / distanceToTarget;
+                var interpolatePos = Vector3.Lerp(target.transform.position, transform.position, offset);
+                m_GAgent.SetIProcessUpdate(this,interpolatePos);
+            }
 
             return true;
         }

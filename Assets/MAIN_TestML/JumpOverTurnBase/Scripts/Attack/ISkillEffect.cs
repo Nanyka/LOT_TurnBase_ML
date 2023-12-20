@@ -9,7 +9,7 @@ public enum SkillEffectType
     Frozen
 }
 
-public interface SkillEffect
+public interface ISkillEffect
 {
-    public void TakeEffectOn(ISkillRelated attackEntity,IAttackRelated sufferEntity);
+    public void TakeEffectOn(ISkillCaster attackEntity,IAttackRelated sufferEntity);
 }

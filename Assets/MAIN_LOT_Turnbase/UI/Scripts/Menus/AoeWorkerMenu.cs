@@ -94,9 +94,6 @@ namespace JumpeeIsland
         public void SelectLocation(Vector3 position)
         {
             _settlePoint.position = position;
-            
-            // if (GameFlowManager.Instance.GetEnvManager().FreeToMove(position))
-            //     _settlePoint.position = position + Vector3.up * 0.5f;
         }
 
         public void EndDeal(IConfirmFunction confirmFunction)
@@ -109,6 +106,13 @@ namespace JumpeeIsland
         public void MakeTheDeal()
         {
             _currentConfirm.ClickYes();
+            CleanGhostCreature();
+        }
+        
+        public void OnCancelTheDeal()
+        {
+            _confirmPanel.SetActive(false);
+            _isInADeal = false;
             CleanGhostCreature();
         }
 

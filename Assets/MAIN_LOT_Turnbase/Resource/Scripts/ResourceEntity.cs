@@ -79,7 +79,7 @@ namespace JumpeeIsland
             throw new NotImplementedException();
         }
 
-        public EffectComp GetEffectComp()
+        public IEffectComp GetEffectComp()
         {
             throw new NotImplementedException();
         }

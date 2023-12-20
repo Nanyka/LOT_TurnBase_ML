@@ -24,7 +24,7 @@ public class Skill_SO : ScriptableObject
     [Tooltip("GlobalTarget mean the unit just keep attacking and don't care about hitting target or not")]
     [SerializeField] private bool _isGlobalTarget;
     [SerializeField] private bool _isPreAttack;
-    private SkillEffect _skillEffect;
+    private ISkillEffect _skillEffect;
     
     [Header("ML property")]
     [SerializeField] private NNModel MLModel;
@@ -50,7 +50,7 @@ public class Skill_SO : ScriptableObject
 
     #region Skill Effect
 
-    public SkillEffect GetSkillEffect()
+    public ISkillEffect GetSkillEffect()
     {
         if (_skillEffect == null)
             SetEffectType();

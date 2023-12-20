@@ -5385,16 +5385,16 @@ GameObject:
   - component: {fileID: 5943310281542940191}
   - component: {fileID: 648469137829458623}
   - component: {fileID: 5032430482281592247}
-  - component: {fileID: 2534886734108230109}
+  - component: {fileID: 4260325841047348610}
   - component: {fileID: 1674395279582198463}
-  - component: {fileID: 7180216387173409922}
+  - component: {fileID: -862217306094952641}
   - component: {fileID: 939949847850917876}
   - component: {fileID: 6538362564718939453}
   - component: {fileID: 3850346868095958773}
   - component: {fileID: 3104227245255950145}
   - component: {fileID: 4882543107858193293}
   - component: {fileID: 8072287873898714555}
-  - component: {fileID: 2397628416751011521}
+  - component: {fileID: 1369667050437701121}
   m_Layer: 11
   m_Name: Monster1
   m_TagString: Untagged
@@ -5505,10 +5505,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 278453547359960977}
-  m_EffectComp: {fileID: 7180216387173409922}
   m_Brain: {fileID: 1941643107714130268}
   _attackIndex: 0
---- !u!114 &2534886734108230109
+--- !u!114 &4260325841047348610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5517,14 +5516,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3306079661984002765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f980495a2f874f22a583003b5575a7b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 4606b3e20dbe49cc9434fc0a592904be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkinAnchor: {fileID: 9154478482385414422}
-  _appearVfx: {fileID: 0}
-  _factionRenderers: []
-  _activeMaterial: {fileID: 0}
-  _disableMaterial: {fileID: 0}
 --- !u!114 &1674395279582198463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5538,7 +5533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stopDistance: 1.5
---- !u!114 &7180216387173409922
+--- !u!114 &-862217306094952641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5547,11 +5542,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3306079661984002765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
+  m_Script: {fileID: 11500000, guid: b80e5f67c08e41998668657dc99d3675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _remainTempJumpBoost: 0
-  _magnitudeJumpBoost: 0
 --- !u!114 &939949847850917876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5594,7 +5587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6310e4be211541d587a96e7a78520bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FireComp: {fileID: 2397628416751011521}
   attackColliders:
   - {fileID: 6301269263307655604}
 --- !u!114 &3104227245255950145
@@ -5637,7 +5629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curPower: 0
---- !u!114 &2397628416751011521
+--- !u!114 &1369667050437701121
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5646,13 +5638,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3306079661984002765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d45bf48ee4a4f11a160cf791836416c, type: 3}
+  m_Script: {fileID: 11500000, guid: d2ca05c530f44490874e0712916b10a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletFX: {fileID: 8630119214938861126}
+  _bulletFXs:
+  - {fileID: 8630119214938861126}
+  - {fileID: 8630119214938861126}
   _angle: 45
-  _reloadDuration: 0
-  _isInPlaceFire: 0
 --- !u!1 &3372896596077442634
 GameObject:
   m_ObjectHideFlags: 0
@@ -5975,8 +5967,8 @@ GameObject:
   - component: {fileID: 1941643107714130268}
   - component: {fileID: 6006528335880442415}
   - component: {fileID: 2004111680655385299}
-  - component: {fileID: 518631379098722078}
-  - component: {fileID: 5440623587001250698}
+  - component: {fileID: 5192422581503570901}
+  - component: {fileID: 7343791677442663083}
   - component: {fileID: 3499317702509617098}
   m_Layer: 0
   m_Name: Brain
@@ -6116,7 +6108,7 @@ MonoBehaviour:
   running: 0
   m_Entity: {fileID: 5032430482281592247}
   randomRadius: 1
---- !u!114 &518631379098722078
+--- !u!114 &5192422581503570901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6125,7 +6117,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5163736899083391706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb3abff3abc6413d8e8e83be0053d429, type: 3}
+  m_Script: {fileID: 11500000, guid: a4f89136d9a44dd3ae00e7257c6622ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ActionName: Chase player troop
@@ -6146,8 +6138,7 @@ MonoBehaviour:
   mNavMeshAgent: {fileID: 0}
   running: 0
   m_Entity: {fileID: 5032430482281592247}
-  distanceFromAssembly: 6
---- !u!114 &5440623587001250698
+--- !u!114 &7343791677442663083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6156,7 +6147,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5163736899083391706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6169c218f7a455f9008c9cdd7cc7cc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 76602bfbd2b849f6b737deb2ecf2f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ActionName: Attack player troop
@@ -6174,8 +6165,7 @@ MonoBehaviour:
     value: 0
   mNavMeshAgent: {fileID: 0}
   running: 0
-  m_Character: {fileID: 5032430482281592247}
-  _checkDistance: 7
+  m_Character: {fileID: 3306079661984002765}
 --- !u!114 &3499317702509617098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10057,7 +10047,7 @@ ParticleSystem:
     radiusScale: 0.0001
     collidesWith:
       serializedVersion: 2
-      m_Bits: 2624
+      m_Bits: 0
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -11136,7 +11126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collideLayer:
     serializedVersion: 2
-    m_Bits: 2624
+    m_Bits: 704
 --- !u!1 &5353776315297188753
 GameObject:
   m_ObjectHideFlags: 0

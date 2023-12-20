@@ -11,7 +11,7 @@ namespace JumpeeIsland
         [Tooltip("It might be strength multiplier or available range of attack")]
         [SerializeField] private int _magnitude;
         
-        private SkillEffect _skillEffect;
+        private ISkillEffect _skillEffect;
 
         private void Start()
         {
@@ -29,7 +29,7 @@ namespace JumpeeIsland
             }
         }
 
-        public void Attack(Vector3 attackPoint, IAttackRelated mEntity, ISkillRelated mSkill)
+        public void Attack(Vector3 attackPoint, IAttackRelated mEntity, ISkillCaster mSkill)
         {
             var mEnvironment = GameFlowManager.Instance.GetEnvManager();
             var attackFaction = mEnvironment.CheckFaction(attackPoint);

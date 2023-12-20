@@ -46,8 +46,6 @@ namespace JumpeeIsland
             {
                 m_Mover.StopWalk();
                 m_Brain.RefreshBrain(detectedState);
-                // m_Brain.GetBeliefStates().ModifyState("Idle",1);
-                // m_Brain.GetBeliefStates().ModifyState(detectedState,1);
                 isDetected = true;
                 await RecheckTarget();
             }

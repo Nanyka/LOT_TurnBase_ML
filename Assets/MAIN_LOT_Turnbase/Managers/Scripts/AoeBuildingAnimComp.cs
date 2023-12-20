@@ -31,5 +31,10 @@ namespace JumpeeIsland
             m_Animator.SetInteger(AttackIndex, attackIndex);
             m_Animator.SetTrigger(Attack);
         }
+
+        public void SetAnimatorSpeed(float speed)
+        {
+            m_Animator.speed = speed;
+        }
     }
 }

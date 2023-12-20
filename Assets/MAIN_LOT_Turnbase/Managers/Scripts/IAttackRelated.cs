@@ -9,11 +9,11 @@ namespace JumpeeIsland
         public FactionType GetFaction();
         public int GetAttackDamage();
         public IEnumerable<Skill_SO> GetSkills();
-        public EffectComp GetEffectComp();
+        public IEffectComp GetEffectComp();
         public void AccumulateKills();
     }
 
-    public interface ISkillRelated
+    public interface ISkillCaster
     {
         public void UpdateTransform(Vector3 pos, Vector3 dir);
         public FactionType GetFaction();

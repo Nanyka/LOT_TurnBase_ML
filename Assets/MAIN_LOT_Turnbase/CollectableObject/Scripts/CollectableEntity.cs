@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class CollectableEntity : Entity, IAttackRelated, ISkillRelated
+    public class CollectableEntity : Entity, IAttackRelated, ISkillCaster
     {
         [SerializeField] private CollectableStats[] m_CollectableStats;
         // [SerializeField] private SkinComp m_SkinComp;
@@ -110,7 +110,7 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public EffectComp GetEffectComp()
+        public IEffectComp GetEffectComp()
         {
             throw new System.NotImplementedException();
         }

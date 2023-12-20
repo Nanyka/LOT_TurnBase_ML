@@ -15296,7 +15296,7 @@ GameObject:
   - component: {fileID: 2768966365666163441}
   - component: {fileID: 7824031241978473255}
   - component: {fileID: 2270302308847082769}
-  - component: {fileID: 3034851220945496829}
+  - component: {fileID: -355993685606130800}
   - component: {fileID: -3228370107618924837}
   - component: {fileID: -4915522173204434805}
   - component: {fileID: 530115300934904395}
@@ -15413,8 +15413,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 765458664678213309}
-  m_EffectComp: {fileID: 3034851220945496829}
   m_Brain: {fileID: 4952066524200732265}
+  _attackIndex: 0
 --- !u!114 &2768966365666163441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15459,9 +15459,7 @@ MonoBehaviour:
   m_SkinAnchor: {fileID: 8770322582849444645}
   _appearVfx: {fileID: 0}
   _factionRenderers: []
-  _activeMaterial: {fileID: 0}
-  _disableMaterial: {fileID: 0}
---- !u!114 &3034851220945496829
+--- !u!114 &-355993685606130800
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15470,11 +15468,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4480443274318773752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a52a2fd66144ab960dc1857fe99234, type: 3}
+  m_Script: {fileID: 11500000, guid: b80e5f67c08e41998668657dc99d3675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _remainTempJumpBoost: 0
-  _magnitudeJumpBoost: 0
 --- !u!114 &-3228370107618924837
 MonoBehaviour:
   m_ObjectHideFlags: 0

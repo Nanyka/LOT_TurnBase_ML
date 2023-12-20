@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class BuildingEntity : Entity, IAttackRelated, ISkillRelated, IBuildingUpgrade, IBuildingSale
+    public class BuildingEntity : Entity, IAttackRelated, ISkillCaster, IBuildingUpgrade, IBuildingSale
     {
         // [SerializeField] private SkinComp m_SkinComp;
         [SerializeField] private HealthComp m_HealthComp;
@@ -306,7 +306,7 @@ namespace JumpeeIsland
 
         #region EFFECT
 
-        public EffectComp GetEffectComp()
+        public IEffectComp GetEffectComp()
         {
             throw new NotImplementedException();
         }

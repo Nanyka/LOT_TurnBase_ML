@@ -86,7 +86,7 @@ namespace JumpeeIsland
                 if (troop.TryGetComponent(out ITroopAssembly character))
                     character.SetAssemblyPoint(assemblyPoint);
 
-                if (troop.TryGetComponent(out ISpecialSkillReceiver attackReceiver))
+                if (troop.TryGetComponent(out IComboReceiver attackReceiver))
                 {
                     // Retrieve all researches
                     // Check if any research is relevant to the training troop
