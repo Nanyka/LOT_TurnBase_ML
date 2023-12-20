@@ -15,7 +15,7 @@ namespace JumpeeIsland
         {
             _detectPlayerTroop = GetComponent<ISensor>();
             m_AttackExecutor = m_Character.GetComponent<IAttackExecutor>();
-            _checkDistance = _detectPlayerTroop.DetectRange() + 2f;
+            _checkDistance = _detectPlayerTroop.DetectRange() + 1f;
         }
 
         public override bool PrePerform()

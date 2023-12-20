@@ -67,15 +67,15 @@ namespace JumpeeIsland
             return m_Researches;
         }
 
-        public void RemoveResearch(Research research)
-        {
-            m_Researches.Remove(research);
-        }
+        // public void RemoveResearch(Research research)
+        // {
+        //     m_Researches.Remove(research);
+        // }
     }
 
     public interface IResearchTopicSupervisor
     {
         public IEnumerable<Research> GetTopics();
-        public void RemoveResearch(Research research);
+        // public void RemoveResearch(Research research);
     }
 }

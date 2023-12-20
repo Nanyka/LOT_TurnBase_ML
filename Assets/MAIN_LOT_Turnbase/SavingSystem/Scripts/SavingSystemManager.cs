@@ -1022,10 +1022,10 @@ namespace JumpeeIsland
             return m_ResearchSup.GetTopics();
         }
 
-        public void RemoveResearch(Research research)
-        {
-            m_ResearchSup.RemoveResearch(research);
-        }
+        // public void RemoveResearch(Research research)
+        // {
+        //     m_ResearchSup.RemoveResearch(research);
+        // }
 
         #endregion
 

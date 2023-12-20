@@ -1,5 +1,6 @@
 using GOAP;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Serialization;
 
 namespace JumpeeIsland
@@ -11,46 +12,90 @@ namespace JumpeeIsland
         private ICheckableObject _currentPoint;
         private float _distanceToAttack;
         private float _distanceToTower;
+        private NavMeshPath _path;
 
         private void Start()
         {
-            _distanceToAttack = m_GAgent.GetComponent<ISensor>().DetectRange() + 1f;
+            _distanceToAttack = m_GAgent.GetComponent<ISensor>().DetectRange();
+            _path = new NavMeshPath();
         }
 
         public override bool PrePerform()
         {
-            // if (m_GAgent.Inventory.IsEmpty())
-            // {
-            //     _currentPoint = null;
-            //     var distanceToTarget = float.PositiveInfinity;
-            //     var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Enemy);
-            //     
-            //     foreach (var building in buildings)
-            //     {
-            //         if (building.TryGetComponent(out ICheckableObject checkableObject))
-            //         {
-            //             if (checkableObject.IsCheckable() == false)
-            //                 continue;
-            //
-            //             var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
-            //             if (curDis < distanceToTarget)
-            //             {
-            //                 distanceToTarget = curDis;
-            //                 _currentPoint = checkableObject;
-            //             }
-            //         }
-            //     }
-            //
-            //     if (_currentPoint != null)
-            //         m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
-            // }
-            //
-            // if (m_GAgent.Inventory.items.Count == 0)
-            //     return false;
+            // Get the closet tower
+            // Calculate the NavMesh path from the object to the tower
+            // Check the length of the path
+            // If the path is longer than distanceToAttack
+            // Then, calculate a position along the path that is far from the tower a distanceToAttack miter
+            
+            CheckNearestTower();
 
-            // Target = m_GAgent.Inventory.items[0];
-            // m_GAgent.SetIProcessUpdate(this);
+            if (_currentPoint == null)
+                return false;
 
+            var myPos = transform.position;
+            if (NavMesh.SamplePosition(myPos, out NavMeshHit curPosHit, 2f, NavMesh.AllAreas))
+            {
+                if (curPosHit.hit)
+                    myPos = curPosHit.position;
+            }
+            
+            NavMesh.CalculatePath(myPos, _currentPoint.GetPosition(), NavMesh.AllAreas, _path);
+
+            // VisualDebug.Instance.DrawLine(_path.corners);
+
+            float totalDistance = 0.0f;
+
+            for (int i = 0; i < _path.corners.Length - 1; i++) {
+                Vector3 currentWaypoint = _path.corners[i];
+                Vector3 nextWaypoint = _path.corners[i + 1];
+                float distance = Vector3.Distance(currentWaypoint, nextWaypoint);
+
+                totalDistance += distance;
+            }
+            
+            // Debug.Log($"Total distance: {totalDistance}");
+
+            if (totalDistance > _distanceToAttack)
+            {
+                int closestWaypointIndex = -1;
+                float partialDistance = 0.0f;
+
+                for (int i = 0; i < _path.corners.Length - 1; i++) {
+                    partialDistance = 0.0f;
+
+                    for (int j = i; j < _path.corners.Length - 1; j++) {
+                        Vector3 currentWaypoint = _path.corners[j];
+                        Vector3 nextWaypoint = _path.corners[j + 1];
+                        float distance = Vector3.Distance(currentWaypoint, nextWaypoint);
+
+                        partialDistance += distance;
+                    }
+
+                    // Debug.Log($"Partial distance at corner {i} is {partialDistance}");
+                    if (partialDistance < _distanceToAttack)
+                    {
+                        closestWaypointIndex = i;
+                        break;
+                    }
+                }
+                
+                float offset = (_distanceToAttack - partialDistance) / Vector3.Distance(_path.corners[closestWaypointIndex], _path.corners[closestWaypointIndex - 1]);
+                // Debug.Log($"We are at corner {closestWaypointIndex} with partialDistance is {partialDistance}");
+                // Debug.Log($"The offset ratio is {offset}");
+
+                Vector3 interpolatedPoint = Vector3.Lerp(_path.corners[closestWaypointIndex], _path.corners[closestWaypointIndex - 1], offset);
+                m_GAgent.SetIProcessUpdate(this, interpolatedPoint);
+                
+                // VisualDebug.Instance.ShowPointAt(interpolatedPoint);
+                // Debug.Log($"Distance {totalDistance} compare to {_distanceToAttack}. Moving point: {interpolatedPoint}");
+            }
+
+            return true;
+        }
+
+        private void CheckNearestTower()
+        {
             _currentPoint = null;
             var distanceToTarget = float.PositiveInfinity;
             var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Enemy);
@@ -70,23 +115,6 @@ namespace JumpeeIsland
                     }
                 }
             }
-
-            if (_currentPoint == null)
-                return false;
-
-            var pointB = _currentPoint.GetPosition();
-            var pointA = transform.position;
-            _distanceToTower = Vector3.Distance(pointA, pointB);
-
-            if (_distanceToTower > _distanceToAttack)
-            {
-                Vector3 vectorAB = pointB - pointA;
-                Vector3 scaledDirection = vectorAB.normalized * _distanceToAttack;
-                Vector3 midpoint = pointA + scaledDirection;
-                m_GAgent.SetIProcessUpdate(this, midpoint);
-            }
-
-            return true;
         }
 
         public override bool PostPerform()

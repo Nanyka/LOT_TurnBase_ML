@@ -27,7 +27,7 @@ namespace JumpeeIsland
         // in-game data
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
-        private int _attackIndex;
+        [SerializeField] private int _attackIndex;
         private int _killAccumulation;
         private bool _isDie;
 

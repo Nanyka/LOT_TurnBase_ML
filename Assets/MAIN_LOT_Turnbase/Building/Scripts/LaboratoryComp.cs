@@ -86,6 +86,7 @@ namespace JumpeeIsland
                 return;
 
             var topics = SavingSystemManager.Instance.GetResearchTopics();
+            topics = topics.Where(t => t.IsUnlocked == false);
             if (!topics.Any())
                 return;
             

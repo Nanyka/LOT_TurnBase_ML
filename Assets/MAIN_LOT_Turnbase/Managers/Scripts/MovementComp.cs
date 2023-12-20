@@ -85,7 +85,7 @@ namespace JumpeeIsland
 
             // var currentPos = m_Transform.position;
             NavMesh.CalculatePath(_currentConner, _currentDestination, NavMesh.AllAreas, _path);
-            _path.corners.OrderBy(t => Vector3.Distance(_currentConner, t));
+            // _path.corners.OrderBy(t => Vector3.Distance(_currentConner, t));
             _currentIndex = 0;
             _isMoving = true;
             SetCurrentConner();

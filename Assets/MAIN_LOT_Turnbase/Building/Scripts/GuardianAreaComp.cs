@@ -7,6 +7,8 @@ namespace JumpeeIsland
 {
     public class GuardianAreaComp : MonoBehaviour, IGuardianArea
     {
+        [SerializeField] private float _spawnArea = 1f;
+        
         public void SpawnGuardians(List<Guardian> guardians)
         {
             switch (GameFlowManager.Instance.GameMode)
@@ -59,8 +61,8 @@ namespace JumpeeIsland
 
         Vector3 GenerateRandomVector()
         {
-            float randomX = Random.Range(-1f, 1f); // Adjust the range based on your requirements
-            float randomZ = Random.Range(-1f, 1f); // Adjust the range based on your requirements
+            float randomX = Random.Range(-_spawnArea, _spawnArea); // Adjust the range based on your requirements
+            float randomZ = Random.Range(-_spawnArea, _spawnArea); // Adjust the range based on your requirements
 
             // Set the y value to 0
             Vector3 randomVector = new Vector3(randomX, 0f, randomZ);

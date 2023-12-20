@@ -95,6 +95,7 @@ namespace JumpeeIsland
         public void OnCancelTheDeal()
         {
             _confirmPanel.SetActive(false);
+            _isInADeal = false;
             CleanGhostBuilding();
         }
 
@@ -103,12 +104,7 @@ namespace JumpeeIsland
             foreach (Transform child in _buildPoint)
                 Destroy(child.gameObject);
 
-            MainUI.Instance.OnHideAllMenu.Invoke();
-        }
-
-        public bool IsInADeal()
-        {
-            return _isInADeal;
+            // MainUI.Instance.OnHideAllMenu.Invoke();
         }
 
         #endregion

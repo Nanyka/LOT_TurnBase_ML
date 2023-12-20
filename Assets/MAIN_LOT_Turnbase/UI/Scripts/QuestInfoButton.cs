@@ -38,16 +38,6 @@ namespace JumpeeIsland
                 return;
             
             _infoPanel.SetActive(!_infoPanel.activeInHierarchy);
-            
-            // if (_currentQuest.isFinalBoss)
-            // {
-            //     MainUI.Instance.OnConversationUI.Invoke(
-            //         $"Defeat the boss in {_currentQuest.maxMovingTurn} steps to UNLOCK NEW CHARACTER", true);
-            // }
-            // else
-            // {
-            //     _infoPanel.SetActive(!_infoPanel.activeInHierarchy);
-            // }
         }
     }
 }

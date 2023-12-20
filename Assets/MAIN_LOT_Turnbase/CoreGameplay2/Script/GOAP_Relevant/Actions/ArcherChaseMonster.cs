@@ -14,7 +14,7 @@ namespace JumpeeIsland
         private void Start()
         {
             _sensor = GetComponent<ISensor>();
-            distanceToAttack = _sensor.DetectRange() + 1f;
+            distanceToAttack = _sensor.DetectRange();
         }
 
         public override bool PrePerform()
@@ -36,9 +36,9 @@ namespace JumpeeIsland
             if (distanceToMonster > distanceToAttack)
             {
                 Vector3 vectorAB = pointB - pointA;
-                // float mag = vectorAB.magnitude;
-                // Vector3 normalizedDirection = vectorAB / mag;
-                Vector3 scaledDirection = vectorAB.normalized * distanceToAttack;
+                float mag = vectorAB.magnitude;
+                Vector3 normalizedDirection = vectorAB / mag;
+                Vector3 scaledDirection = normalizedDirection * distanceToAttack;
                 Vector3 midpoint = pointA + scaledDirection;
                 m_GAgent.SetIProcessUpdate(this, midpoint);
             }
