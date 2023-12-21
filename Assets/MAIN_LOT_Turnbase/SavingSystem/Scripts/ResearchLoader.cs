@@ -56,7 +56,7 @@ namespace JumpeeIsland
                 var tierResearches = SavingSystemManager.Instance.GetCurrentTier().UnlockedResearches;
                 foreach (var research in tierResearches)
                 {
-                    Debug.Log($"The research about {research.ResearchName} is on the shelve");
+                    // Debug.Log($"The research about {research.ResearchName} is on the shelve");
                     m_Researches.Add(research);
                 }
             }

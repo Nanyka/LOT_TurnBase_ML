@@ -17,8 +17,9 @@ namespace JumpeeIsland
             virtualPurchaseTransactions { get; private set; } = new();
 
         private List<CurrencyDefinition> currencyDefinitions { get; set; }
+        private List<PlayerBalance> _playerBalances;
         private List<InventoryItemDefinition> inventoryItemDefinitions { get; set; }
-        private List<PlayersInventoryItem> _playersInventory;
+        private List<PlayersInventoryItem> _playersInventory = new();
 
         private int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
         private List<VirtualPurchaseDefinition> m_VirtualPurchaseDefinitions;
@@ -70,7 +71,6 @@ namespace JumpeeIsland
             try
             {
                 balanceResult = await GetEconomyBalances();
-                return balanceResult?.Balances;
             }
             catch (EconomyRateLimitedException e)
             {
@@ -82,7 +82,16 @@ namespace JumpeeIsland
                 Debug.LogException(e);
             }
             
-            return null;
+            if (this == null || balanceResult == null)
+                return null;
+
+            _playerBalances = balanceResult.Balances;
+            return _playerBalances;
+        }
+
+        public List<PlayerBalance> GetBalances()
+        {
+            return _playerBalances;
         }
         
         public async Task InGameRefreshCurrencyBalances()
@@ -105,8 +114,6 @@ namespace JumpeeIsland
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
             if (this == null) return;
-
-            // TODO: Update local currency
         }
 
         static Task<GetBalancesResult> GetEconomyBalances()
@@ -166,10 +173,15 @@ namespace JumpeeIsland
 
         #region INVENTORY
 
+        public List<PlayersInventoryItem> GetPlayerInventory()
+        {
+            return _playersInventory;
+        }
+
         public async Task<List<PlayersInventoryItem>> RefreshInventory()
         {
             GetInventoryResult inventoryResult = null;
-
+        
             try
             {
                 inventoryResult = await LoadPlayerInventory();
@@ -183,12 +195,12 @@ namespace JumpeeIsland
                 Debug.Log("Problem getting Economy inventory items:");
                 Debug.LogException(e);
             }
-
+        
             if (this == null || inventoryResult == null)
                 return null;
-
+        
             _playersInventory = inventoryResult.PlayersInventoryItems;
-
+        
             return _playersInventory;
         }
 

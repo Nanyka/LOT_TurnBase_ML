@@ -10,10 +10,10 @@ namespace JumpeeIsland
     {
         private List<JIInventoryItem> m_Inventories;
 
-        private void Start()
-        {
-            GameFlowManager.Instance.OnDataLoaded.AddListener(SetupBuildingMenu);
-        }
+        // private void Start()
+        // {
+        //     GameFlowManager.Instance.OnDataLoaded.AddListener(SetupBuildingMenu);
+        // }
 
         public void SetData(List<PlayersInventoryItem> inventories)
         {
@@ -25,10 +25,11 @@ namespace JumpeeIsland
             // SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
         }
 
-        private void SetupBuildingMenu(long arg0)
-        {
-            SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
-        }
+        // private void SetupBuildingMenu(long arg0)
+        // {
+        //     Debug.Log($"Inventory count: {m_Inventories.Count}");
+        //     SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
+        // }
 
         public void SendInventoriesToBuildingMenu()
         {
@@ -79,5 +80,8 @@ namespace JumpeeIsland
     public interface IInventoryDeliver
     {
         public IEnumerable<JIInventoryItem> GetInventoriesByType(InventoryType inventoryType);
+        public void SetData(List<PlayersInventoryItem> inventories);
+        public void SendInventoriesToBuildingMenu();
+        public void SendInventoriesToCreatureMenu();
     }
 }

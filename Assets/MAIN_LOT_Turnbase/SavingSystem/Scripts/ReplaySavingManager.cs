@@ -33,7 +33,7 @@ namespace JumpeeIsland
             await m_CloudConnector.Init();
 
             // Load gameState from local to check if the previous session is disconnected
-            await LoadPreviousMetadata();
+            LoadPreviousMetadata();
             
             m_EnvLoader.SetData(m_RuntimeMetadata.BattleRecord.environmentData);
             m_EnvLoader.Init();

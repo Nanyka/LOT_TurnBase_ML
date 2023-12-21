@@ -349,7 +349,7 @@ namespace JumpeeIsland
         InboxMessage FetchMessage(string messageId)
         {
             var json = RemoteConfigService.Instance.appConfig.GetJson(messageId, "");
-            Debug.Log($"Get message {messageId} with info: {json}");
+            // Debug.Log($"Get message {messageId} with info: {json}");
             
             if (string.IsNullOrEmpty(json))
             {

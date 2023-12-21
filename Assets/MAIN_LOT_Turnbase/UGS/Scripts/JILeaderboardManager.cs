@@ -33,7 +33,7 @@ namespace JumpeeIsland
             _playerScore = await UpdatePlayerScore();
         }
         
-        public async void AddScore(int playerScore)
+        public async Task AddScore(int playerScore)
         {
             var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_battleScoreId, playerScore);
         }

@@ -9,14 +9,14 @@ using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    public enum SavingPath
-    {
-        PlayerEnvData,
-        Currencies,
-        Commands,
-        GameState,
-        QuestData
-    }
+    // public enum SavingPath
+    // {
+    //     PlayerEnvData,
+    //     Currencies,
+    //     Commands,
+    //     GameState,
+    //     QuestData
+    // }
 
     [RequireComponent(typeof(ICurrencyLoader))]
     public class SavingSystemManager : Singleton<SavingSystemManager>
@@ -44,18 +44,15 @@ namespace JumpeeIsland
 
         // invoke at CreatureInGame, BuildingInGame
         [NonSerialized] public UnityEvent<RecordAction> OnRecordAction = new();
-
-        [SerializeField] protected JICloudConnector m_CloudConnector;
         [SerializeField] private string[] m_BasicInventory;
 
+        protected JICloudConnector m_CloudConnector;
         protected IEnvironmentLoader m_EnvLoader;
         private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
         private IStoragesControl m_StorageController;
-
-        // private IMonsterControler m_MonsterController;
         private ICurrencyLoader m_CurrencyLoader;
-        private InventoryLoader m_InventoryLoader;
+        private IInventoryDeliver m_InventoryLoader;
 
         protected RuntimeMetadata m_RuntimeMetadata = new();
         private GameProcessData m_GameProcess = new();
@@ -68,13 +65,13 @@ namespace JumpeeIsland
         {
             base.Awake();
             _gamePath = Application.persistentDataPath;
+            
             m_EnvLoader = GetComponent<IEnvironmentLoader>();
             m_StorageHandler = GetComponent<IResourceStock>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_StorageController = GetComponent<IStoragesControl>();
-            // m_MonsterController = GetComponent<IMonsterControler>();
             m_CurrencyLoader = GetComponent<ICurrencyLoader>();
-            m_InventoryLoader = GetComponent<InventoryLoader>();
+            m_InventoryLoader = GetComponent<IInventoryDeliver>();
 
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
@@ -108,11 +105,13 @@ namespace JumpeeIsland
 
         public virtual async void StartLoadData()
         {
+            m_CloudConnector = JICloudConnector.Instance;
+
             // Authenticate on UGS and get envData
             await m_CloudConnector.Init();
 
             // Load gameState from local to check if the previous session is disconnected
-            await LoadPreviousMetadata();
+            LoadPreviousMetadata();
 
             // mark as starting point of loading phase.
             // If this process is not complete, the environment will not be save at OnDisable()
@@ -122,7 +121,7 @@ namespace JumpeeIsland
             LoadLocalCurrencies();
 
             // Load currency after commit MOVE created during skip period
-            await LoadEconomy();
+            LoadEconomy();
             // m_CurrencyLoader.Init();
 
             // Load environment and calculate any time-based resource increment
@@ -154,7 +153,7 @@ namespace JumpeeIsland
             SaveManager.Instance.Save(m_RuntimeMetadata, gameStatePath, MetadataWasSaved, encrypt);
         }
 
-        protected async Task LoadPreviousMetadata()
+        protected void LoadPreviousMetadata()
         {
             var gameStatePath = GetSavingPath(SavingPath.GameState);
             SaveManager.Instance.Load<RuntimeMetadata>(gameStatePath, MetadataWasLoaded, encrypt);
@@ -292,10 +291,11 @@ namespace JumpeeIsland
             }
         }
 
-        private async Task LoadEnvironment()
+        private Task LoadEnvironment()
         {
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
             SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
+            return Task.CompletedTask;
         }
 
         private async void EnvWasLoaded(EnvironmentData data, SaveResult result, string message)
@@ -311,9 +311,8 @@ namespace JumpeeIsland
             if (result == SaveResult.Success)
             {
                 // Fetch mainHallTier after receive envData
-                var mainHall = data.BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL);
-                await m_CloudConnector.FetchEnvRelevantData(mainHall.CurrentLevel);
-
+                // var mainHall = data.BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL);
+                // await m_CloudConnector.FetchEnvRelevantData(mainHall.CurrentLevel);
                 m_EnvLoader.SetData(data);
                 m_EnvLoader.Init();
             }
@@ -605,12 +604,12 @@ namespace JumpeeIsland
                 m_CurrencyLoader.SetLocalBalances(currencies);
         }
 
-        private async Task LoadEconomy()
+        private void LoadEconomy()
         {
-            m_InventoryLoader.SetData(await m_CloudConnector.OnLoadInventory());
+            m_InventoryLoader.SetData(m_CloudConnector.GetPlayerInventory());
             m_CloudConnector.OnLoadVirtualPurchase();
-            m_CurrencyLoader.Init(await m_CloudConnector.OnLoadCurrency());
-            m_CurrencyLoader.GrantMove(await m_CloudConnector.OnGrantMove());
+            m_CurrencyLoader.Init(m_CloudConnector.GetBalances());
+            // m_CurrencyLoader.GrantMove(await m_CloudConnector.OnGrantMove());
         }
 
         public async Task RefreshEconomy()
@@ -746,9 +745,9 @@ namespace JumpeeIsland
 
         #region INVENTORY
 
-        public async void ResetBasicInventory()
+        private async void ResetBasicInventory()
         {
-            await m_CloudConnector.OnResetBasicInventory(m_BasicInventory.ToList());
+            await m_CloudConnector.OnResetBasicInventory();
         }
 
         public void OnAskForShowingBuildingMenu()
@@ -1074,5 +1073,14 @@ namespace JumpeeIsland
         // }
 
         #endregion
+    }
+    
+    public enum SavingPath
+    {
+        PlayerEnvData,
+        Currencies,
+        Commands,
+        GameState,
+        QuestData
     }
 }

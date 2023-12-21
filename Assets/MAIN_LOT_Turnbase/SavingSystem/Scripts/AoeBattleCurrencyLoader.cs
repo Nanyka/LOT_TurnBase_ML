@@ -23,16 +23,6 @@ namespace JumpeeIsland
             // Wood is used as MANA in the AoeBattleMode
             m_Currencies.Find(t => t.CurrencyId == "WOOD").Balance = 0;
 
-            // foreach (var localBalance in m_LocalBalances.LocalBalances)
-            // {
-            //     var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
-            //     if (localBalance.Balance != currency.Balance)
-            //     {
-            //         currency.Balance = localBalance.Balance;
-            //         SavingSystemManager.Instance.OnSetCloudCurrency(localBalance.CurrencyId, localBalance.Balance);
-            //     }
-            // }
-
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 

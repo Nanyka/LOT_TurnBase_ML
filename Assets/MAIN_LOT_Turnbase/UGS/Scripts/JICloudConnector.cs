@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class JICloudConnector : MonoBehaviour
+    public class JICloudConnector : Singleton<JICloudConnector>
     {
         [SerializeField] protected JIEconomyManager _economyManager;
         [SerializeField] private JICloudCodeManager _cloudCodeManager;
@@ -21,13 +21,25 @@ namespace JumpeeIsland
         [SerializeField] private JILeaderboardManager _leaderboardManager;
         [SerializeField] private JICustomEventSender _customEventSender;
         [SerializeField] private JICloudSaveManager _cloudSaveManager;
+        [SerializeField] private JILocalSaveManager _localSaveManager;
+        [SerializeField] private string[] m_BasicInventory;
 
         private string _enemyPlayerId;
+        private bool _isInit;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            DontDestroyOnLoad(gameObject);
+        }
 
         public async Task Init()
         {
             try
             {
+                if (_isInit)
+                    return;
+                
                 var options = new InitializationOptions();
                 options.SetEnvironmentName("dev");
                 await UnityServices.InitializeAsync(options);
@@ -36,45 +48,90 @@ namespace JumpeeIsland
                 if (this == null)
                     return;
 
-                if (!AuthenticationService.Instance.IsSignedIn)
-                {
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                    if (this == null)
-                        return;
-                }
-
-                Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
-
+                if (await SignIn()) 
+                    return;
+                
+                if (this == null)
+                    return;
+                
                 await _economyManager.RefreshEconomyConfiguration();
                 if (this == null)
                     return;
-
+                
                 await _leaderboardManager.RefreshBoards();
                 if (this == null)
                     return;
-
+                
                 if (_cloudSaveManager != null)
                 {
                     await _cloudSaveManager.Init();
                     if (this == null)
                         return;
                 }
-
+                
                 await FetchUpdatedServicesData();
                 if (this == null) return;
-
+                
                 Debug.Log("Initialization and signin complete.");
+                _isInit = true;
             }
-            catch (Exception e)
+            catch (AuthenticationException ex)
             {
-                Debug.LogException(e);
+                // Debug.LogException(ex);
+                Debug.Log($"The playerID has been removed. Token exist: {AuthenticationService.Instance.SessionTokenExists}");
+                await Init();
             }
+            catch (RequestFailedException ex)
+            {
+                Debug.LogException(ex);
+            }  
+        }
+
+        private async Task<bool> SignIn()
+        {
+            if (AuthenticationService.Instance.SessionTokenExists)
+            {
+                if (!AuthenticationService.Instance.IsSignedIn)
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                    if (this == null)
+                        return true;
+                }
+
+                Debug.Log($"Player id when token exist:{AuthenticationService.Instance.PlayerId}");
+                _localSaveManager.LoadEnvironment();
+                var mainHall = _localSaveManager.GetEnvData().BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL);
+                await FetchEnvRelevantData(mainHall.CurrentLevel);
+            }
+            else
+            {
+                Debug.Log("The playerId still not exist");
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+                if (this == null)
+                    return true;
+                Debug.Log($"Player id new one:{AuthenticationService.Instance.PlayerId}");
+
+                var cloudEnvData = await OnResetEnvData();
+                // m_EnvData = await OnResetEnvData();
+
+                if (cloudEnvData != null)
+                {
+                    _localSaveManager.SavePlayerEnv(cloudEnvData);
+                    await OnLoadCurrency();
+                    await OnResetBasicInventory();
+                    await _leaderboardManager.AddScore(0);
+                }
+            }
+
+            return false;
         }
 
         async Task FetchUpdatedServicesData()
         {
             await Task.WhenAll(
                 OnLoadInventory(),
+                OnLoadCurrency(),
                 _remoteConfigManager.FetchCommandConfigs()
             );
         }
@@ -127,6 +184,11 @@ namespace JumpeeIsland
             }
 
             return null;
+        }
+
+        public List<PlayerBalance> GetBalances()
+        {
+            return _economyManager.GetBalances();
         }
 
         public void OnCommandStackUp(CommandName commandName)
@@ -297,12 +359,19 @@ namespace JumpeeIsland
 
         #region INVENTORY DATA
 
-        public async Task OnResetBasicInventory(List<string> basicInventory)
+        public async Task OnResetBasicInventory()
         {
             await _economyManager.ClearInventory();
 
-            foreach (var inventoryId in basicInventory)
-                OnGrantInventory(inventoryId);
+            foreach (var inventoryId in m_BasicInventory)
+                await OnGrantInventory(inventoryId);
+
+            await OnLoadInventory(); // Refresh new currency
+        }
+
+        public List<PlayersInventoryItem> GetPlayerInventory()
+        {
+            return _economyManager.GetPlayerInventory();
         }
 
         public async Task<List<PlayersInventoryItem>> OnLoadInventory()
@@ -430,16 +499,11 @@ namespace JumpeeIsland
         {
             return _remoteConfigManager.curTier;
         }
-        
+
         public MainHallTier GetNextTier()
         {
             return _remoteConfigManager.nextTier;
         }
-
-        // public async Task<MainHallTier> GetMainHallTier(int curMainHallLevel)
-        // {
-        //     return await _remoteConfigManager.GetMainHallTierConfigs(curMainHallLevel);
-        // }
 
         #endregion
 
@@ -527,6 +591,15 @@ namespace JumpeeIsland
         public void AddBattleEmail(string playerId, BattleRecord battleRecord)
         {
             _cloudSaveManager.AddBattleMail(playerId, battleRecord);
+        }
+
+        #endregion
+
+        #region LOCAL SAVER
+
+        public ILocalSaver GetLocalSaver()
+        {
+            return _localSaveManager;
         }
 
         #endregion

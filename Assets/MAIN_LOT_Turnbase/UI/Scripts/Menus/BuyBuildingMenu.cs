@@ -13,7 +13,6 @@ namespace JumpeeIsland
         [SerializeField] private GameObject _tabHolder;
         [SerializeField] private GameObject _confirmPanel;
         [FormerlySerializedAs("_buildingTas")] [SerializeField] private TabButton[] _buildingTab;
-        // [SerializeField] private List<BuildingBuyButton> _functionBuildings;
         [SerializeField] private List<BuildingBuyButton> _towers;
         [SerializeField] private List<BuildingBuyButton> _trap;
         [SerializeField] private List<BuildingBuyButton> _decoration;
@@ -23,16 +22,19 @@ namespace JumpeeIsland
         private BuildingBuyButton _selectedBuilding;
         private IConfirmFunction _currentConfirm;
         private bool _isInADeal;
+        private bool _isInit;
 
         private void Start()
         {
-            SavingSystemManager.Instance.OnSetUpBuildingMenus.AddListener(Init);
+            // SavingSystemManager.Instance.OnSetUpBuildingMenus.AddListener(Init);
             MainUI.Instance.OnBuyBuildingMenu.AddListener(ShowBuildingMenu);
             MainUI.Instance.OnHideAllMenu.AddListener(HideBuildingMenu);
         }
 
         private void Init(List<JIInventoryItem> inventories)
         {
+            
+            
             // foreach (var buyButton in _functionBuildings)
             //     buyButton.TurnOff();
             foreach (var buyButton in _towers)
@@ -70,6 +72,12 @@ namespace JumpeeIsland
 
         private void ShowBuildingMenu(List<JIInventoryItem> inventories)
         {
+            if (_isInit == false)
+            {
+                Init(inventories);
+                _isInit = true;
+            }
+
             _tabHolder.SetActive(true);
             _buildingTab[0].OnActiveTab();
         }
