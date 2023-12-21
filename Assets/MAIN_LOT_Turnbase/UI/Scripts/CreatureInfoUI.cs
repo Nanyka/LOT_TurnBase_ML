@@ -27,7 +27,6 @@ namespace JumpeeIsland
 
         private void HideInfoMenu()
         {
-            Debug.Log("Hide entity info");
             infoMenu.SetActive(false);
         }
 

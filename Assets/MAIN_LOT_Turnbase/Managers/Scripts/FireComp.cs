@@ -11,15 +11,21 @@ namespace JumpeeIsland
         [SerializeField] private float _angle;
         [SerializeField] private int _reloadDuration;
         [SerializeField] private bool _isInPlaceFire;
-        
+
         private Vector3 _targetPos;
         private Vector3 _velocity;
 
         public void PlayCurveFX(Vector3 targetPos)
         {
+            if (_isInPlaceFire)
+            {
+                PlayerPointFX();
+                return;
+            }
+
             if (_bulletFX != null)
             {
-                _targetPos = targetPos + Vector3.up*0.5f;
+                _targetPos = targetPos + Vector3.up * 0.5f;
                 var position = _bulletFX.transform.position;
                 _velocity = CalcBallisticVelocityVector(position, _targetPos, _angle);
                 _bulletFX.transform.LookAt(new Vector3(_targetPos.x, position.y, _targetPos.z));
@@ -29,48 +35,50 @@ namespace JumpeeIsland
                 _bulletFX.Play();
             }
         }
-        
+
         public void PlayCurveFX(IEnumerable<Vector3> targetPos)
         {
+            if (_isInPlaceFire)
+            {
+                PlayerPointFX();
+                return;
+            }
+
             if (_bulletFX != null)
             {
-                if (_isInPlaceFire)
-                    PlayerPointFX();
-                else
+                foreach (var target in targetPos)
                 {
-                    foreach (var target in targetPos)
-                    {
-                        var position = _bulletFX.transform.position;
-                        _velocity = CalcBallisticVelocityVector(position, target, _angle);
-                        _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
-                        _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
-                        var main = _bulletFX.main;
-                        main.startSpeed = _velocity.magnitude;
-                        _bulletFX.Play();
-                    }
+                    var position = _bulletFX.transform.position;
+                    _velocity = CalcBallisticVelocityVector(position, target, _angle);
+                    _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
+                    _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
+                    var main = _bulletFX.main;
+                    main.startSpeed = _velocity.magnitude;
+                    _bulletFX.Play();
                 }
             }
         }
 
         public void PlayCurveFX(IEnumerable<Vector3> targetPos, AttackVisual attackVisual)
         {
+            if (_isInPlaceFire)
+            {
+                PlayerPointFX();
+                return;
+            }
+
             if (_bulletFX != null)
             {
-                if (_isInPlaceFire)
-                    PlayerPointFX();
-                else
+                foreach (var target in targetPos)
                 {
-                    foreach (var target in targetPos)
-                    {
-                        attackVisual.RotateTowardTarget(target);
-                        var position = _bulletFX.transform.position;
-                        _velocity = CalcBallisticVelocityVector(position, target, _angle);
-                        _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
-                        _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
-                        var main = _bulletFX.main;
-                        main.startSpeed = _velocity.magnitude;
-                        _bulletFX.Play();
-                    }
+                    attackVisual.RotateTowardTarget(target);
+                    var position = _bulletFX.transform.position;
+                    _velocity = CalcBallisticVelocityVector(position, target, _angle);
+                    _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
+                    _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
+                    var main = _bulletFX.main;
+                    main.startSpeed = _velocity.magnitude;
+                    _bulletFX.Play();
                 }
             }
         }

@@ -56,6 +56,7 @@ namespace JumpeeIsland
         public List<string> skinAddress;
         public EntityData EntityData; // Just used in BattleMode to place creatures
         public List<SkillEffectType> skillsAddress;
+        public List<string> skillIcons;
         public List<string> statsAddress;
         public List<BuildingStats> buildingStats;
         public List<CreatureStats> creatureStats;

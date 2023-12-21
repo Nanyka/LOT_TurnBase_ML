@@ -33,6 +33,7 @@ namespace JumpeeIsland
             if (_currentPoint == null)
                 return false;
 
+            // Debug.Log($"Then nearest tower is at {_currentPoint.GetPosition()}");
             var myPos = transform.position;
             if (NavMesh.SamplePosition(myPos, out NavMeshHit curPosHit, 2f, NavMesh.AllAreas))
             {
@@ -58,7 +59,7 @@ namespace JumpeeIsland
 
             if (totalDistance > _distanceToAttack)
             {
-                int closestWaypointIndex = -1;
+                int closestWaypointIndex = _path.corners.Length - 1;
                 float partialDistance = 0.0f;
 
                 for (int i = 0; i < _path.corners.Length - 1; i++) {
@@ -79,8 +80,12 @@ namespace JumpeeIsland
                         break;
                     }
                 }
-                
-                float offset = (_distanceToAttack - partialDistance) / Vector3.Distance(_path.corners[closestWaypointIndex], _path.corners[closestWaypointIndex - 1]);
+
+                var offset = 0f;
+                if (partialDistance >= _distanceToAttack)
+                    offset = _distanceToAttack / partialDistance;
+                else
+                    offset = (_distanceToAttack - partialDistance) / Vector3.Distance(_path.corners[closestWaypointIndex], _path.corners[closestWaypointIndex - 1]);
                 // Debug.Log($"We are at corner {closestWaypointIndex} with partialDistance is {partialDistance}");
                 // Debug.Log($"The offset ratio is {offset}");
 

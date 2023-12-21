@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class ContributeResource : GAction, IProcessUpdate
     {
-        [SerializeField] private CharacterEntity m_Entity;
+        [SerializeField] private AoeHarvesterEntity m_Entity;
 
         private IStoreResource _currentPoint;
 
@@ -19,7 +19,6 @@ namespace JumpeeIsland
                 return false;
             }
 
-            // Target = m_GAgent.Inventory.items[0];
             m_GAgent.SetIProcessUpdate(this, _currentPoint.GetGameObject().transform.position);
 
             return true;
@@ -32,6 +31,7 @@ namespace JumpeeIsland
 
         public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
+            m_Entity.SetCarryingState(true);
             m_Entity.MoveTowards(targetPos, this);
         }
 

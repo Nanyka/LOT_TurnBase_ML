@@ -14,7 +14,7 @@ namespace JumpeeIsland
         private void Start()
         {
             _sensor = GetComponent<ISensor>();
-            distanceToAttack = _sensor.DetectRange();
+            distanceToAttack = _sensor.DetectRange() -1f;
         }
 
         public override bool PrePerform()
@@ -23,24 +23,13 @@ namespace JumpeeIsland
             if (target == null)
                 return false;
 
-            // Target = target;
+            var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 
-            // Calculate the distance between the object and the monster
-            // If the distance shorter than distanceToAttack --> FinishFromOutside
-            // Else, calculate the position that place the object a position equal distanceToAttack
-
-            var pointB = target.transform.position;
-            var pointA = transform.position;
-            var distanceToMonster = Vector3.Distance(pointA, pointB);
-
-            if (distanceToMonster > distanceToAttack)
+            if (distanceToTarget > distanceToAttack)
             {
-                Vector3 vectorAB = pointB - pointA;
-                float mag = vectorAB.magnitude;
-                Vector3 normalizedDirection = vectorAB / mag;
-                Vector3 scaledDirection = normalizedDirection * distanceToAttack;
-                Vector3 midpoint = pointA + scaledDirection;
-                m_GAgent.SetIProcessUpdate(this, midpoint);
+                float offset = distanceToAttack / distanceToTarget;
+                var interpolatePos = Vector3.Lerp(target.transform.position, transform.position, offset);
+                m_GAgent.SetIProcessUpdate(this,interpolatePos);
             }
 
             return true;

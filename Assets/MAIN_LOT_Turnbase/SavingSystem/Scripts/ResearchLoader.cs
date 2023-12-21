@@ -25,16 +25,16 @@ namespace JumpeeIsland
                 // var troopLevel = SavingSystemManager.Instance.GetInventoryLevel(item.inventoryName);
 
                 // Add 2 research for each available troop because of setting animators with 2 special skills
-                for (int i = 1; i <= 2; i++)
+                for (int i = 0; i <= 1; i++)
                 {
                     var newTopic = new Research
                     {
                         ResearchType = ResearchType.TROOP_TRANSFORM,
-                        ResearchIcon = item.spriteAddress,
+                        ResearchIcon = item.skillIcons[i],
                         TroopType = TroopType.NONE,
                         TroopStats = TroopStats.NONE,
                         Target = item.inventoryName,
-                        Magnitude = i,
+                        Magnitude = i+1,
                         Difficulty = 0,
                         Explaination = $"{item.inventoryName} learn new skill"
                     };

@@ -15,7 +15,7 @@ namespace JumpeeIsland
         private void Start()
         {
             _sensor = GetComponent<ISensor>();
-            distanceToAttack = _sensor.DetectRange();
+            distanceToAttack = _sensor.DetectRange() - 1;
         }
 
         public override bool PrePerform()

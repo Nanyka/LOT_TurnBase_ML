@@ -152,7 +152,7 @@ namespace JumpeeIsland
             }
             else
             {
-                Debug.Log("Null processUpdate");
+                // Debug.Log("Null processUpdate");
                 WaitForPostPerformance();
             }
         }

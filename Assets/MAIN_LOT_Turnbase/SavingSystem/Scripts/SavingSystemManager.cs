@@ -367,7 +367,9 @@ namespace JumpeeIsland
         // Player pay some cost for constructing the building
         public async void OnPlaceABuilding(JIInventoryItem inventoryItem, Vector3 position, bool isCheckMax)
         {
-            if (isCheckMax && GetEnvironmentData().BuildingData.Count >= GetCurrentTier().MaxAmountOfBuilding)
+            var buildingLimit = GetCurrentTier().TierItems.Find(t => t.itemName.Equals(inventoryItem.inventoryName)).amount;
+            var buildingCount = GetEnvironmentData().BuildingData.Count(t => t.EntityName.Equals(inventoryItem.inventoryName));
+            if (buildingCount >= buildingLimit)
             {
                 MainUI.Instance.OnConversationUI.Invoke("Reach limited construction", true);
                 return;
@@ -393,11 +395,12 @@ namespace JumpeeIsland
 
             if (buildingLimitation == null)
                 return;
-            
+
             var checkedAmount = buildingLimitation.amount;
-            if (GetEnvironmentData().CheckBuildingLimitAmount(inventoryItem.inventoryName,checkedAmount))
+            if (GetEnvironmentData().CheckBuildingLimitAmount(inventoryItem.inventoryName, checkedAmount))
             {
-                MainUI.Instance.OnConversationUI.Invoke($"{inventoryItem.inventoryName} reach limited construction", true);
+                MainUI.Instance.OnConversationUI.Invoke($"{inventoryItem.inventoryName} reach limited construction",
+                    true);
                 return;
             }
 
@@ -510,7 +513,7 @@ namespace JumpeeIsland
                     return null;
                 }
             }
-            
+
             return m_EnvLoader.TrainACreature(creatureData);
         }
 
@@ -688,7 +691,7 @@ namespace JumpeeIsland
         public void DeductCurrencyFromBuildings(string currencyId, int amount)
         {
             DeductCurrency(currencyId, amount);
-            
+
             // if (currencyId.Equals(CurrencyType.GOLD.ToString()) ||
             //     currencyId.Equals(CurrencyType.GEM.ToString()) ||
             //     currencyId.Equals(CurrencyType.MOVE.ToString()))

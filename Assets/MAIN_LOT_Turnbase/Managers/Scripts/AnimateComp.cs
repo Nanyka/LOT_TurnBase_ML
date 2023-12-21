@@ -165,6 +165,11 @@ namespace JumpeeIsland
             m_Animator.SetTrigger(Attack);
         }
 
+        public void SetBoolValue(string animName, bool value)
+        {
+            m_Animator.SetBool(animName,value);
+        }
+
         public void SetAnimatorSpeed(float speed)
         {
             m_Animator.speed = speed;

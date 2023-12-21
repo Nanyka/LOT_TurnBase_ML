@@ -17,7 +17,7 @@ namespace JumpeeIsland
 
         private IComboMonitor _mComboMonitor;
         private IHealthComp m_HealthComp;
-        private IAnimateComp m_AnimateComp;
+        protected IAnimateComp m_AnimateComp;
         private IMoveComp m_MovementComp;
         private ISkinComp m_SkinComp;
         private ISkillComp m_SkillComp;

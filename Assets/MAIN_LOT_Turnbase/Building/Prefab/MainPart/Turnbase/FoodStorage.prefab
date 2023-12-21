@@ -91,7 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 7351982336936001907}
-  m_SkinComp: {fileID: 6015422943590722227}
   m_HealthComp: {fileID: 4002886840912316199}
   m_AttackComp: {fileID: 6405466737416276475}
   m_EffectComp: {fileID: 7746303012626098451}
@@ -102,6 +101,7 @@ MonoBehaviour:
   OnThisBuildingUpgrade:
     m_PersistentCalls:
       m_Calls: []
+  _killAccumulation: 0
 --- !u!114 &6015422943590722227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,8 +117,6 @@ MonoBehaviour:
   m_SkinAnchor: {fileID: 8647897864553342451}
   _appearVfx: {fileID: 0}
   _factionRenderers: []
-  _activeMaterial: {fileID: 0}
-  _disableMaterial: {fileID: 0}
 --- !u!114 &6289146406539845179
 MonoBehaviour:
   m_ObjectHideFlags: 0

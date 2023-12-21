@@ -7,7 +7,7 @@ namespace JumpeeIsland
         private IComboMonitor m_ComboMonitor;
         private IAttackRelated m_AttackRelated;
         private ISkillComp m_SkillComp;
-        private ISkillCaster _mSkillCaster;
+        private ISkillCaster m_SkillCaster;
         private IComboReceiver _comboReceiver;
         private int _skillAvailable;
 
@@ -16,7 +16,7 @@ namespace JumpeeIsland
             m_ComboMonitor = GetComponent<IComboMonitor>();
             m_AttackRelated = GetComponent<IAttackRelated>();
             m_SkillComp = GetComponent<ISkillComp>();
-            _mSkillCaster = GetComponent<ISkillCaster>();
+            m_SkillCaster = GetComponent<ISkillCaster>();
             _comboReceiver = GetComponent<IComboReceiver>();
         }
 
@@ -32,7 +32,7 @@ namespace JumpeeIsland
             {
                 if (_skillAvailable > 0)
                 {
-                    m_SkillComp.GetSkill(_skillAvailable)?.TakeEffectOn(_mSkillCaster, targetEntity);
+                    m_SkillComp.GetSkill(_skillAvailable)?.TakeEffectOn(m_SkillCaster, targetEntity);
                     _skillAvailable = 0;
                 }
                 else if (_comboReceiver.GetAttackIndex() > 0)

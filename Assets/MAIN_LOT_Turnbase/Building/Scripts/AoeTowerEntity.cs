@@ -7,11 +7,11 @@ namespace JumpeeIsland
     public class AoeTowerEntity: Entity, IAttackRelated, ISkillCaster, IBuildingDealer, IGetEntityData<BuildingStats>
     {
         // [SerializeField] private SkinComp m_SkinComp;
-        [SerializeField] private SkillComp m_SkillComp;
 
         private IHealthComp m_HealthComp;
         private IBuildingConstruct m_Constructor;
         private ISkinComp m_SkinComp;
+        private ISkillComp m_SkillComp;
         private BuildingData m_BuildingData;
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -22,6 +22,7 @@ namespace JumpeeIsland
             m_HealthComp = GetComponent<IHealthComp>();
             m_Constructor = GetComponent<IBuildingConstruct>();
             m_SkinComp = GetComponent<ISkinComp>();
+            m_SkillComp = GetComponent<ISkillComp>();
             m_BuildingData = buildingData;
             RefreshEntity();
         }
@@ -103,7 +104,7 @@ namespace JumpeeIsland
         
         public IEnumerable<Skill_SO> GetSkills()
         {
-            return m_SkillComp.GetSkills();
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -149,7 +150,7 @@ namespace JumpeeIsland
 
             m_Transform.position = m_BuildingData.Position;
             m_HealthComp.Init(m_CurrentStats.MaxHp, OnUnitDie, m_BuildingData);
-            m_SkillComp.Init(m_BuildingData.EntityName);
+            m_SkillComp?.Init(m_BuildingData.EntityName, m_BuildingData.CurrentLevel);
             OnUnitDie.AddListener(DieIndividualProcess);
             m_Constructor.Init(m_BuildingData.FactionType);
         }

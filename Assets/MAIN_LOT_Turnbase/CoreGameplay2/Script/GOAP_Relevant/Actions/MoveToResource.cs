@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class MoveToResource : GAction, IProcessUpdate
     {
-        [SerializeField] private CharacterEntity m_Entity;
+        [SerializeField] private AoeHarvesterEntity m_Entity;
         
         private ICheckableObject _currentPoint;
 
@@ -37,39 +37,6 @@ namespace JumpeeIsland
             m_GAgent.SetIProcessUpdate(this, _currentPoint.GetPosition());
             
             return true;
-            
-            // var distanceToTarget = float.PositiveInfinity;
-            // if (m_GAgent.Inventory.IsEmpty())
-            // {
-            //     _currentPoint = null;
-            //     var resources = SavingSystemManager.Instance.GetEnvLoader().GetResources();
-            //     foreach (var resource in resources)
-            //     {
-            //         if (resource.TryGetComponent(out ICheckableObject checkableObject))
-            //         {
-            //             if (checkableObject.IsCheckable() == false)
-            //                 continue;
-            //
-            //             var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
-            //             if (curDis < distanceToTarget)
-            //             {
-            //                 distanceToTarget = curDis;
-            //                 _currentPoint = checkableObject;
-            //             }
-            //         }
-            //     }
-            //
-            //     if (_currentPoint != null)
-            //         m_GAgent.Inventory.AddItem(_currentPoint.GetGameObject());
-            // }
-            //
-            // if (m_GAgent.Inventory.items.Count == 0)
-            //     return false;
-            //     
-            // Target = m_GAgent.Inventory.items[0];
-            // m_GAgent.SetIProcessUpdate(this);
-            //
-            // return true;
         }
 
         public override bool PostPerform()
@@ -79,6 +46,7 @@ namespace JumpeeIsland
 
         public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
+            m_Entity.SetCarryingState(false);
             m_Entity.MoveTowards(targetPos, this);
         }
 

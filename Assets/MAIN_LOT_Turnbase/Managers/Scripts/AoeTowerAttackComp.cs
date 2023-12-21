@@ -13,8 +13,14 @@ namespace JumpeeIsland
 
         public void SuccessAttack(GameObject target)
         {
-            if (target.TryGetComponent(out IHealthComp targetHp))
-                targetHp.TakeDamage(m_AttackRelated);
+            if (target.TryGetComponent(out IAttackRelated targetEntity))
+            {
+                if (targetEntity.GetFaction() == m_AttackRelated.GetFaction())
+                    return;
+
+                if (target.TryGetComponent(out IHealthComp targetHp))
+                    targetHp.TakeDamage(m_AttackRelated);
+            }
         }
     }
 }

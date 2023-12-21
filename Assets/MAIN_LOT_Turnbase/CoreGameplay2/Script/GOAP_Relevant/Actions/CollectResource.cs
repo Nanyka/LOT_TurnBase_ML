@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     public class CollectResource : GAction, IProcessUpdate
     {
-        [SerializeField] private CharacterEntity m_Character;
+        [SerializeField] private AoeHarvesterEntity m_Character;
         [SerializeField] private float _checkDistance = 2f;
         
         private ICheckableObject _currentPoint;
@@ -57,7 +57,7 @@ namespace JumpeeIsland
         
         private async Task WaitToCompleteTheAction()
         {
-            await Task.Delay(Mathf.RoundToInt(Duration * 1000));
+            await Task.Delay(5000);
             StopProcess();
         }
 
