@@ -77,8 +77,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 7765034802513230632}
-  m_SkillComp: {fileID: 3517292512145327493}
-  _killAccumulation: 0
 --- !u!114 &-6715394732119096313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,8 +117,6 @@ MonoBehaviour:
   m_SkinAnchor: {fileID: 557556919060864680}
   _appearVfx: {fileID: 0}
   _factionRenderers: []
-  _activeMaterial: {fileID: 0}
-  _disableMaterial: {fileID: 0}
 --- !u!114 &3517292512145327493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +188,8 @@ MonoBehaviour:
   _cost: 0
   m_InProcessState: 
   m_FinishState: Tower
+  _curProcess: 0
+  IsAvailable: 0
 --- !u!1 &3194885446414522042
 GameObject:
   m_ObjectHideFlags: 0

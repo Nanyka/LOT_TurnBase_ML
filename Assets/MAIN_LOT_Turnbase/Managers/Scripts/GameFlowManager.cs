@@ -48,7 +48,7 @@ namespace JumpeeIsland
         public bool _isGameRunning;
 
         protected EnvironmentManager _environmentManager;
-        protected TutorialController _tutorialController;
+        private ITutorialControl _tutorialController;
         protected GameSpawner _gameSpawner;
         protected GlobalVfx _globalVfx;
 
@@ -56,9 +56,9 @@ namespace JumpeeIsland
         {
             base.Awake();
             _environmentManager = FindObjectOfType<EnvironmentManager>();
-            _tutorialController = FindObjectOfType<TutorialController>();
             _gameSpawner = FindObjectOfType<GameSpawner>();
             _globalVfx = GetComponent<GlobalVfx>();
+            _tutorialController = GetComponent<ITutorialControl>();
 
             OnDataLoaded.AddListener(RecordStartedState);
             OnKickOffEnv.AddListener(ConfirmGameStarted);

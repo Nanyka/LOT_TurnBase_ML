@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace JumpeeIsland
 {
@@ -9,7 +10,8 @@ namespace JumpeeIsland
         {
             var cloudConnector = JICloudConnector.Instance;
             await cloudConnector.Init();
-            GetComponent<ILoadScene>().LoadScene();
+            
+            GetComponent<ILoadScene>().LoadScene(JICloudConnector.Instance.GetLocalEnvData().mapSize);
         }
     }
 }

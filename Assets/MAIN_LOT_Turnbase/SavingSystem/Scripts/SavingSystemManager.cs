@@ -9,15 +9,6 @@ using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
-    // public enum SavingPath
-    // {
-    //     PlayerEnvData,
-    //     Currencies,
-    //     Commands,
-    //     GameState,
-    //     QuestData
-    // }
-
     [RequireComponent(typeof(ICurrencyLoader))]
     public class SavingSystemManager : Singleton<SavingSystemManager>
     {
@@ -125,7 +116,7 @@ namespace JumpeeIsland
             // m_CurrencyLoader.Init();
 
             // Load environment and calculate any time-based resource increment
-            await LoadEnvironment();
+            LoadEnvironment();
 
             // Load game process to refresh current tutorial
             LoadGameProcess();
@@ -134,6 +125,11 @@ namespace JumpeeIsland
             SaveMetadata(); // set it as connected state when loaded all disconnected session's data
             SetInLoading(false); // Finish loading phase
 
+            Invoke(nameof(FinishLoading),1f);
+        }
+
+        private void FinishLoading()
+        {
             GameFlowManager.Instance.OnDataLoaded.Invoke(m_CurrencyLoader.GetCurrency("MOVE"));
         }
 
@@ -291,11 +287,20 @@ namespace JumpeeIsland
             }
         }
 
-        private Task LoadEnvironment()
+        private void LoadEnvironment()
         {
-            var envPath = GetSavingPath(SavingPath.PlayerEnvData);
-            SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
-            return Task.CompletedTask;
+            var envData = m_CloudConnector.GetLocalEnvData();
+
+            if (envData != null)
+            {
+                m_EnvLoader.SetData(envData);
+                m_EnvLoader.Init();
+            }
+            else
+            {
+                var envPath = GetSavingPath(SavingPath.PlayerEnvData);
+                SaveManager.Instance.Load<EnvironmentData>(envPath, EnvWasLoaded, encrypt);
+            }
         }
 
         private async void EnvWasLoaded(EnvironmentData data, SaveResult result, string message)
@@ -311,8 +316,6 @@ namespace JumpeeIsland
             if (result == SaveResult.Success)
             {
                 // Fetch mainHallTier after receive envData
-                // var mainHall = data.BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL);
-                // await m_CloudConnector.FetchEnvRelevantData(mainHall.CurrentLevel);
                 m_EnvLoader.SetData(data);
                 m_EnvLoader.Init();
             }

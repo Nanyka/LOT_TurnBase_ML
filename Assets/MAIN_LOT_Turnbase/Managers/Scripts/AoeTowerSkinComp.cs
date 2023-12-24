@@ -1,4 +1,4 @@
-using FOW;
+// using FOW;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -32,9 +32,9 @@ namespace JumpeeIsland
 
         public void ReturnSkin(GameObject skinObject)
         {
-            var hider = GetComponent<IHiderDisable>();
-            if (skinObject.TryGetComponent(out FogOfWarHider fogHider))
-                hider.SetHider(fogHider);
+            // var hider = GetComponent<IHiderDisable>();
+            // if (skinObject.TryGetComponent(out FogOfWarHider fogHider))
+            //     hider.SetHider(fogHider);
         }
     }
 }

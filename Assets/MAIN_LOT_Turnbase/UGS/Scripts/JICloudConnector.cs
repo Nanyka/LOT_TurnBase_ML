@@ -143,6 +143,11 @@ namespace JumpeeIsland
 
         #region ENVIRONMENT DATA
 
+        public EnvironmentData GetLocalEnvData()
+        {
+            return _localSaveManager.GetEnvData();
+        }
+
         public async Task OnSaveEnvData()
         {
             await _cloudCodeManager.CallSaveEnvData(SavingSystemManager.Instance.GetEnvDataForSave());

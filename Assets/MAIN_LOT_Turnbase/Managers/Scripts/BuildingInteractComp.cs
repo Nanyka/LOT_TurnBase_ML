@@ -17,6 +17,7 @@ namespace JumpeeIsland
         public void OnClick()
         {
             MainUI.Instance.OnShowInfo.Invoke(this);
+            // Debug.Log($"On click {name}");
         }
 
         public void OnHoldEnter()
@@ -59,7 +60,7 @@ namespace JumpeeIsland
 
         public void OnDoubleTaps()
         {
-            // Debug.Log($"On double tapping {name}");
+            Debug.Log($"On double tapping {name}");
         }
 
         public (Entity entity, int jump) ShowInfo()

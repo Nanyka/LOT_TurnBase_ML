@@ -8,7 +8,7 @@ namespace JumpeeIsland
 {
     public class LoadCloudScene : MonoBehaviour, ILoadScene
     {
-        [SerializeField] private string m_EcoModeScene;
+        [SerializeField] private string[] m_EcoModeScene;
         [SerializeField] private Slider m_LoadingSlider;
 
         private AsyncOperationHandle m_SceneHandle;
@@ -25,9 +25,9 @@ namespace JumpeeIsland
         //     m_SceneHandle.Completed += OnLoadScene;
         // }
 
-        public void LoadScene()
+        public void LoadScene(int mapIndex)
         {
-            m_SceneHandle = Addressables.LoadSceneAsync(m_EcoModeScene);
+            m_SceneHandle = Addressables.LoadSceneAsync(m_EcoModeScene[mapIndex]);
             m_SceneHandle.Completed += OnLoadScene;
         }
 
@@ -64,6 +64,6 @@ namespace JumpeeIsland
 
     public interface ILoadScene
     {
-        public void LoadScene();
+        public void LoadScene(int mapIndex);
     }
 }

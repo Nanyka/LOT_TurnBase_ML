@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using FOW;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeTowerFireExecutor : MonoBehaviour, IAttackExecutor, IHiderDisable
+    public class AoeTowerFireExecutor : MonoBehaviour, IAttackExecutor //, IHiderDisable
     {
         [SerializeField] private float detectRange;
         [SerializeField] private FireComp m_FireComp;
@@ -83,14 +82,14 @@ namespace JumpeeIsland
             _attackComp.SuccessAttack(target);
         }
 
-        public void SetHider(FogOfWarHider hider)
-        {
-            // m_Hider = hider;
-        }
+        // public void SetHider(FogOfWarHider hider)
+        // {
+        //     // m_Hider = hider;
+        // }
     }
 
-    public interface IHiderDisable
-    {
-        public void SetHider(FogOfWarHider hider);
-    }
+    // public interface IHiderDisable
+    // {
+    //     public void SetHider(FogOfWarHider hider);
+    // }
 }
