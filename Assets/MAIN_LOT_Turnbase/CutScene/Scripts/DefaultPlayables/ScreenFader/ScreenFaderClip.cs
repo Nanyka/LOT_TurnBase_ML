@@ -6,7 +6,7 @@ using UnityEngine.Timeline;
 [Serializable]
 public class ScreenFaderClip : PlayableAsset, ITimelineClipAsset
 {
-    public ScreenFaderBehaviour template = new ScreenFaderBehaviour ();
+    public ScreenFaderBehaviour template = new();
 
     public ClipCaps clipCaps
     {

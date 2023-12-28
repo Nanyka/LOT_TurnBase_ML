@@ -66,11 +66,11 @@ public class TimeMachineClipInspector : Editor
 					EditorGUILayout.PropertyField(conditionProp);
 					break;
 
-				case TimeMachineBehaviour.Condition.PlatoonIsAlive:
-					EditorGUILayout.HelpBox("The above action will be executed if any Unit in the Platoon connected below is alive when the playhead reaches this clip.", MessageType.Info);
+				case TimeMachineBehaviour.Condition.CustomCondition:
+					EditorGUILayout.HelpBox("The above action will be executed if the checker is satisfied when the playhead reaches this clip.", MessageType.Info);
 					EditorGUILayout.Space();
 					EditorGUILayout.PropertyField(conditionProp);
-					EditorGUILayout.PropertyField(serializedObject.FindProperty("platoon"));
+					EditorGUILayout.PropertyField(serializedObject.FindProperty("checkerObject"));
 					break;
 				
 			}

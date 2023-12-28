@@ -10,6 +10,7 @@ public class ScreenFaderMixerBehaviour : PlayableBehaviour
 
     Image m_TrackBinding;
     bool m_FirstFrameHappened;
+    private ScreenFaderBehaviour input;
 
     public override void ProcessFrame(Playable playable, FrameData info, object playerData)
     {
@@ -35,7 +36,7 @@ public class ScreenFaderMixerBehaviour : PlayableBehaviour
         {
             float inputWeight = playable.GetInputWeight(i);
             ScriptPlayable<ScreenFaderBehaviour> inputPlayable = (ScriptPlayable<ScreenFaderBehaviour>)playable.GetInput(i);
-            ScreenFaderBehaviour input = inputPlayable.GetBehaviour ();
+            input = inputPlayable.GetBehaviour ();
             
             blendedColor += input.color * inputWeight;
             totalWeight += inputWeight;

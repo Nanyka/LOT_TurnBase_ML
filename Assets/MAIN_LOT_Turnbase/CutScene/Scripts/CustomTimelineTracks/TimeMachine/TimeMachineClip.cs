@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 
 [Serializable]
@@ -14,7 +15,7 @@ public class TimeMachineClip : PlayableAsset, ITimelineClipAsset
 	public string markerToJumpTo = "", markerLabel = "";
 	public float timeToJumpTo = 0f;
 
-	public ExposedReference<TimeMachineCheckableObject> platoon;
+	public ExposedReference<GameObject> checkerObject;
 
     public ClipCaps clipCaps
     {
@@ -25,7 +26,7 @@ public class TimeMachineClip : PlayableAsset, ITimelineClipAsset
     {
         var playable = ScriptPlayable<TimeMachineBehaviour>.Create (graph, template);
         TimeMachineBehaviour clone = playable.GetBehaviour ();
-        clone.platoon = platoon.Resolve (graph.GetResolver ());
+        clone.checkingObject = checkerObject.Resolve (graph.GetResolver ());
 		clone.markerToJumpTo = markerToJumpTo;
 		clone.action = action;
 		clone.condition = condition;

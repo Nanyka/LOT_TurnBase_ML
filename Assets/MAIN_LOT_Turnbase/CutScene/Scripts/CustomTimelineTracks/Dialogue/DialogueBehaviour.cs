@@ -9,7 +9,9 @@ public enum ButtonRequire
 {
     NONE,
     SKIP,
-    STARTBATTLE
+    CLICK,
+    STARTGAME,
+    TOBATTLE
 }
 
 [Serializable]

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 
 [Serializable]
@@ -10,7 +11,9 @@ public class TimeMachineBehaviour : PlayableBehaviour
 	public Condition condition;
 	public string markerToJumpTo, markerLabel;
 	public float timeToJumpTo;
-    public TimeMachineCheckableObject platoon;
+    public GameObject checkingObject;
+
+    private ITimeMachineChecker checker;
 
 	[HideInInspector]
 	public bool clipExecuted = false; //the user shouldn't author this, the Mixer does
@@ -22,16 +25,14 @@ public class TimeMachineBehaviour : PlayableBehaviour
 			case Condition.Always:
 				return true;
 				
-			case Condition.PlatoonIsAlive:
+			case Condition.CustomCondition:
 				//The Timeline will jump to the label or time if a specific Platoon still has at least 1 unit alive
-				if(platoon != null)
+				if(checkingObject.TryGetComponent(out checker))
 				{
-					return !platoon.CheckIfAllDead();
+					return !checker.ConditionCheck();
 				}
-				else
-				{
-					return false;
-				}
+
+				return false;
 
 			case Condition.Never:
 			default:
@@ -51,6 +52,6 @@ public class TimeMachineBehaviour : PlayableBehaviour
 	{
 		Always,
 		Never,
-		PlatoonIsAlive,
+		CustomCondition,
 	}
 }
