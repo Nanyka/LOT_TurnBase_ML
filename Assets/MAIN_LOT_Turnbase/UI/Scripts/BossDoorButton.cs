@@ -31,7 +31,7 @@ namespace JumpeeIsland
                 if (_bossScene.IsNullOrEmpty())
                     return;
                 
-                SavingSystemManager.Instance.SendBossQuestEvent(_bossIndex);
+                SavingSystemManager.Instance.SendBossQuestEvent(_bossIndex); // for statistic purpose
                 Addressables.LoadSceneAsync(_bossScene);
             }
         }

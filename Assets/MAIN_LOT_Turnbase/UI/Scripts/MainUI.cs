@@ -31,6 +31,8 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent OnShowBossSelector = new(); // send to BossSelector, invoke at ShowBossSelectorButton
 
+        [NonSerialized] public UnityEvent<IConfirmFunction> OnTurnToBattleMode = new(); // send to StartBossMapCutScene; invoke at BossSelector
+        
         [NonSerialized] public UnityEvent<List<CreatureData>> OnShowDropTroopMenu = new(); // send to DropTroopMenu, invoke at ShowBattleCreatureMenu
 
         [NonSerialized] public UnityEvent<CreatureEntity> OnShowCreatureDetails = new(); // send to CreatureDetailsMenu, invoke at CreatureInfoUI
@@ -56,8 +58,8 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<ILaboratory> OnAskForResearch = new(); // send to AoeResearchMenu; invoke at LaboratoryComp
 
         public bool IsInteractable;
-        public bool IsInRelocating;
 
+        // [SerializeField] private DialogUI _dialogUI;
         [SerializeField] private GameObject[] _panels;
         [SerializeField] private GameObject[] _buttons;
 
@@ -135,5 +137,15 @@ namespace JumpeeIsland
         {
             _ecoBossInfo.TurnOn(spriteAddress);
         }
+
+        // public void SetDialogue(string characterName, string dialogueLine, int dialogueSize)
+        // {
+        //     _dialogUI.ShowDialogLine(dialogueLine, dialogueSize);
+        // }
+        //
+        // public void ToggleDialoguePanel(bool isOn)
+        // {
+        //     _dialogUI.ToggleDialogBox(isOn);
+        // }
     }
 }

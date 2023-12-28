@@ -1,7 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using JumpeeIsland;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class TimelineManager : Singleton<TimelineManager>
 {
@@ -30,8 +34,16 @@ public class TimelineManager : Singleton<TimelineManager>
         {
             if (_activeDirector.playableGraph.IsValid() == false)
                 return;
-            
+
             Debug.Log("is resume");
+            var trackAsset = ((TimelineAsset)_activeDirector.playableAsset).GetOutputTracks()
+                .First(e => e.name.Equals("Dialogue Track"));
+            if (trackAsset != null)
+            {
+                var bindingObject = _activeDirector.GetGenericBinding(trackAsset) as DialogUI;
+                if (bindingObject != null) bindingObject.ToggleDialogBox(false);
+            }
+            
             _activeDirector.playableGraph.GetRootPlayable(0).SetSpeed(1d);
             _isPause = false;
         }

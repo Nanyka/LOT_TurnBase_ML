@@ -7,66 +7,59 @@ using UnityEngine.Timeline;
 
 public enum ButtonRequire
 {
-	NONE,
-	MOVE,
-	DASH,
-	WEAKATTACK,
-	STRONGATTACK
+    NONE,
+    SKIP,
+    STARTBATTLE
 }
 
 [Serializable]
 public class DialogueBehaviour : PlayableBehaviour
 {
     public string characterName;
-    [TextArea]
-    public string dialogueLine;
+    [TextArea] public string dialogueLine;
     public int dialogueSize;
     public ButtonRequire buttonRequire;
 
-	private bool clipPlayed = false;
-	private bool pauseScheduled = false;
-	private PlayableDirector director;
-	private MainUI _mainUI;
+    private bool clipPlayed = false;
+    private bool pauseScheduled = false;
+    private PlayableDirector director;
+    private DialogUI _dialogUI;
 
-	public override void OnPlayableCreate(Playable playable)
-	{
-		director = (playable.GetGraph().GetResolver() as PlayableDirector);
-		// Debug.Log($"On Create timeline: {director.playableGraph.GetRootPlayable(0)}");
-	}
+    public override void OnPlayableCreate(Playable playable)
+    {
+        director = (playable.GetGraph().GetResolver() as PlayableDirector);
+        // Debug.Log($"On Create timeline: {director.playableGraph.GetRootPlayable(0)}");
+    }
 
-	public override void OnBehaviourPause(Playable playable, FrameData info)
-	{
-		if(pauseScheduled)
-		{
-			pauseScheduled = false;
-			TimelineManager.Instance.PauseTimeline(director, buttonRequire);
-		}
-		else
-		{
-			// if (_mainUI != null)
-				// _mainUI.ToggleDialoguePanel(false);
-		}
+    public override void OnBehaviourPause(Playable playable, FrameData info)
+    {
+        if (pauseScheduled)
+        {
+            pauseScheduled = false;
+            TimelineManager.Instance.PauseTimeline(director, buttonRequire);
+        }
+        else
+        {
+            if (_dialogUI != null) _dialogUI.ToggleDialogBox(false);
+        }
 
-		clipPlayed = false;
-	}
+        clipPlayed = false;
+    }
 
-	public override void ProcessFrame(Playable playable, FrameData info, object playerData)
-	{
-		_mainUI = playerData as MainUI;
-		
-		if(!clipPlayed && info.weight > 0f)
-		{
-			// _mainUI.SetDialogue(characterName, dialogueLine, dialogueSize);
+    public override void ProcessFrame(Playable playable, FrameData info, object playerData)
+    {
+        _dialogUI = playerData as DialogUI;
 
-			if(Application.isPlaying)
-			{
-				if(buttonRequire != ButtonRequire.NONE)
-				{
-					pauseScheduled = true;
-				}
-			}
+        if (!clipPlayed && info.weight > 0f)
+        {
+            if (_dialogUI != null)
+                _dialogUI.ShowDialogLine(dialogueLine, dialogueSize, buttonRequire == ButtonRequire.SKIP);
 
-			clipPlayed = true;
-		}
-	}
+            if (Application.isPlaying)
+                if (buttonRequire != ButtonRequire.NONE)
+                    pauseScheduled = true;
+
+            clipPlayed = true;
+        }
+    }
 }

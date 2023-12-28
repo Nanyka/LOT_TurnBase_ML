@@ -50,14 +50,17 @@ public class ScreenFaderMixerBehaviour : PlayableBehaviour
         }
 
         m_TrackBinding.color = blendedColor + m_DefaultColor * (1f - totalWeight);
-        if (currentInputs != 1 && 1f - totalWeight > greatestWeight)
-        {
-        }
+        // if (currentInputs != 1 && 1f - totalWeight > greatestWeight)
+        // {
+        // }
     }
 
     public override void OnGraphStop (Playable playable)
     {
-        m_TrackBinding.color = m_DefaultColor;
-        m_FirstFrameHappened = false;
+        if (m_TrackBinding != null)
+        {
+            m_TrackBinding.color = m_DefaultColor;
+            m_FirstFrameHappened = false;
+        }
     }
 }

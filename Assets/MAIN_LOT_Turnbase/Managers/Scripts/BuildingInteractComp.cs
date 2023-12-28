@@ -32,7 +32,6 @@ namespace JumpeeIsland
                 return;
 
             _isOnRelocating = true;
-            MainUI.Instance.IsInRelocating = _isOnRelocating;
 
             // Debug.Log($"On holding {name}");
         }
@@ -52,7 +51,6 @@ namespace JumpeeIsland
                 return;
             
             _isOnRelocating = false;
-            MainUI.Instance.IsInRelocating = _isOnRelocating;
             var mTransform = transform;
             m_Entity.UpdateTransform(mTransform.position, mTransform.eulerAngles);
             // Debug.Log($"On cancelling {name}");

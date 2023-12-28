@@ -6,7 +6,7 @@ namespace JumpeeIsland
     {
         public void Init(string currentTutorial)
         {
-            Debug.Log($"Load tutorial {currentTutorial}");
+            Debug.Log($"TODO: Load tutorial {currentTutorial} and load timeline base on the current tutorial");
         }
     }
 
