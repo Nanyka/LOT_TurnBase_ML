@@ -24,7 +24,7 @@ namespace JumpeeIsland
             SetGoal();
         }
 
-        protected virtual void OnEnable()
+        public virtual void OnEnable()
         {
             _isActive = true;
             ResetBrain();
@@ -32,15 +32,13 @@ namespace JumpeeIsland
             Invoke(nameof(APlusAlgorithm), 1f);
         }
 
-        protected void OnDisable()
+        public void OnDisable()
         {
             _isActive = false;
             ResetBrain();
         }
 
-        protected override void Start()
-        {
-        }
+        protected override void Start() { }
 
         private void SetActions()
         {

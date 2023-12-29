@@ -7,7 +7,7 @@ namespace JumpeeIsland
 {
     public class HarvesterBrain : EnemyBrainComp
     {
-        protected override void OnEnable()
+        public override void OnEnable()
         {
             base.OnEnable();
             AddInitStates();

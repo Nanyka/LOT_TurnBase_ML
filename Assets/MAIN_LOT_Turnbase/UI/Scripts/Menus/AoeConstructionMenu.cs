@@ -35,7 +35,6 @@ namespace JumpeeIsland
                 buyButton.TurnOff();
 
             // Split building into categories
-
             var orderedInventories = inventories.OrderBy(t => t.inventoryName);
 
             var index = 0;

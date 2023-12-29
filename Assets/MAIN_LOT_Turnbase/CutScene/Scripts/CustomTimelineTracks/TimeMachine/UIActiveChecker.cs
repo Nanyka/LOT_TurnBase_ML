@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class UIActiveChecker : MonoBehaviour, ITimeMachineChecker
+namespace JumpeeIsland
 {
-	[SerializeField] private GameObject checkedObject;
-	
-	public bool ConditionCheck()
+	public class UIActiveChecker : MonoBehaviour, ITimeMachineChecker
 	{
-		return checkedObject.activeInHierarchy;
+		[SerializeField] private GameObject checkedObject;
+	
+		public bool ConditionCheck()
+		{
+			return checkedObject.activeInHierarchy;
+		}
 	}
 }

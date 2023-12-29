@@ -9,6 +9,7 @@ namespace JumpeeIsland
         GOLD,
         GEM,
         MOVE,
-        MULTI
+        MULTI,
+        TROOP
     }
 }

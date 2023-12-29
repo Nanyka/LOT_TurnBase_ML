@@ -18,7 +18,6 @@ namespace JumpeeIsland
         [SerializeField] protected List<StarHolder> _starHolders;
         [SerializeField] protected List<BattleRewardItem> _rewardItemUI;
 
-        // private CollectedLoot m_CollectedLoot;
         private int _startGameEnemyCount;
 
         protected virtual void Start()

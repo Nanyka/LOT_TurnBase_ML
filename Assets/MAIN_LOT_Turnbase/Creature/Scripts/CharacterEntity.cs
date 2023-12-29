@@ -11,9 +11,7 @@ namespace JumpeeIsland
         public Vector3 _assemblyPoint { get; set; }
 
         // control components
-        // [SerializeField] private SkinComp m_SkinComp;
-        // [SerializeField] private EffectComp m_EffectComp;
-        [SerializeField] private EnemyBrainComp m_Brain;
+        [SerializeField] protected EnemyBrainComp m_Brain;
 
         private IComboMonitor _mComboMonitor;
         private IHealthComp m_HealthComp;
@@ -46,7 +44,7 @@ namespace JumpeeIsland
             m_EffectComp = GetComponent<IEffectComp>();
         }
 
-        public void Init(CreatureData creatureData)
+        public virtual void Init(CreatureData creatureData)
         {
             m_CreatureData = creatureData;
             m_Transform = transform;
@@ -232,14 +230,22 @@ namespace JumpeeIsland
             // Retrieve entity data
             if (m_CreatureData.EntityName.Equals("King") && GameFlowManager.Instance.GameMode != GameMode.ECONOMY)
                 m_CreatureData.CurrentHp = m_CurrentStat.HealthPoint;
-            
+
             m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
             m_EffectComp.Init(this);
-            m_SkillComp?.Init(m_CreatureData.EntityName,m_CreatureData.CurrentLevel);
+            m_SkillComp?.Init(m_CreatureData.EntityName, m_CreatureData.CurrentLevel);
 
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
+        }
+
+        public void SetBrainState(bool isEnable)
+        {
+            if (isEnable)
+                m_Brain.OnEnable();
+            else
+                m_Brain.OnDisable();
         }
 
         #endregion

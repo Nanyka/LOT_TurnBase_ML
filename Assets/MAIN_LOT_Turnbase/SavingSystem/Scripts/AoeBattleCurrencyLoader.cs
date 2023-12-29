@@ -13,13 +13,13 @@ namespace JumpeeIsland
         {
             m_LocalBalances = localBalancesData;
         }
-        
+
         public void Init(List<PlayerBalance> currencies)
         {
             Debug.Log("Load currencies...");
 
             m_Currencies = currencies;
-            
+
             // Wood is used as MANA in the AoeBattleMode
             m_Currencies.Find(t => t.CurrencyId == "WOOD").Balance = 0;
 

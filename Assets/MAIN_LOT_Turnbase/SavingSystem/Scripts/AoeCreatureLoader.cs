@@ -43,7 +43,6 @@ namespace JumpeeIsland
                 return null;
 
             creatureData.FactionType = _factionController.GetFaction(); // assign Faction
-            // GameFlowManager.Instance.OnDomainRegister.Invoke(creatureObj, _factionController.GetFaction());
             
             if (creatureObj.TryGetComponent(out ICreatureInit creatureInGame))
             {

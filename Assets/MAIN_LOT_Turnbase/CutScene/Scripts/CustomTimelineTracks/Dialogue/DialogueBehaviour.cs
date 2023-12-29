@@ -17,9 +17,10 @@ public enum ButtonRequire
 [Serializable]
 public class DialogueBehaviour : PlayableBehaviour
 {
-    public string characterName;
+    public Sprite characterIcon;
     [TextArea] public string dialogueLine;
-    public int dialogueSize;
+    public int dialogueWidth;
+    public int dialogueHeight;
     public ButtonRequire buttonRequire;
 
     private bool clipPlayed = false;
@@ -30,7 +31,6 @@ public class DialogueBehaviour : PlayableBehaviour
     public override void OnPlayableCreate(Playable playable)
     {
         director = (playable.GetGraph().GetResolver() as PlayableDirector);
-        // Debug.Log($"On Create timeline: {director.playableGraph.GetRootPlayable(0)}");
     }
 
     public override void OnBehaviourPause(Playable playable, FrameData info)
@@ -50,12 +50,20 @@ public class DialogueBehaviour : PlayableBehaviour
 
     public override void ProcessFrame(Playable playable, FrameData info, object playerData)
     {
-        _dialogUI = playerData as DialogUI;
-
         if (!clipPlayed && info.weight > 0f)
         {
+            if (_dialogUI == null)
+                _dialogUI = playerData as DialogUI;
+
+            if (_dialogUI == null)
+                return;
+
+            if (characterIcon != null)
+                _dialogUI.SetCharacterIcon(characterIcon);
+
             if (_dialogUI != null)
-                _dialogUI.ShowDialogLine(dialogueLine, dialogueSize, buttonRequire == ButtonRequire.SKIP);
+                _dialogUI.ShowDialogLine(dialogueLine, dialogueWidth, dialogueHeight,
+                    buttonRequire == ButtonRequire.SKIP);
 
             if (Application.isPlaying)
                 if (buttonRequire != ButtonRequire.NONE)

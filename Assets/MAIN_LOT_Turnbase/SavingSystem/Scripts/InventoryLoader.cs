@@ -22,7 +22,7 @@ namespace JumpeeIsland
             foreach (var item in inventories)
                 m_Inventories.Add(item.GetItemDefinition().CustomDataDeserializable.GetAs<JIInventoryItem>());
             
-            // SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
+            SavingSystemManager.Instance.OnSetUpBuildingMenus.Invoke(m_Inventories);
         }
 
         // private void SetupBuildingMenu(long arg0)

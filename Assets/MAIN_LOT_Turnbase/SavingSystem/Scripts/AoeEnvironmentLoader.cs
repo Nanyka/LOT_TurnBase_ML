@@ -7,9 +7,8 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl //, IMonsterControler
+    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl
     {
-        // [SerializeField] protected TileManager tileManager;
         [SerializeField] private GameObject resources;
         [SerializeField] protected GameObject playerBuildings;
         [SerializeField] private GameObject enemyBuildings;
@@ -17,8 +16,8 @@ namespace JumpeeIsland
         [SerializeField] private GameObject neutralCreatures;
         [SerializeField] private GameObject collectable;
 
-        [SerializeField] private EnvironmentData _environmentData;
-        private EnvironmentData _playerEnvCache;
+        [SerializeField] protected EnvironmentData _environmentData;
+        [SerializeField] protected EnvironmentData _playerEnvCache;
         private List<IStoreResource> _resourceStorages = new();
         private IBuildingLoader playerBuildingLoader;
         private IBuildingLoader enemyBuildingLoader;
@@ -39,11 +38,10 @@ namespace JumpeeIsland
             monsterLoader = neutralCreatures.GetComponent<ICreatureLoader>();
         }
 
-        public async void Init()
+        public virtual async void Init()
         {
             SavingSystemManager.Instance.OnRemoveEntityData.AddListener(RemoveDestroyedEntity);
             Debug.Log("Load data into managers...");
-            // tileManager.Init(_environmentData.mapSize);
 
             // Save playerEnv into the cache that will be used for saving at the end of battle
             _playerEnvCache = _environmentData;
@@ -65,13 +63,13 @@ namespace JumpeeIsland
             Debug.Log("----GAME START!!!----");
         }
 
-        private void ExecuteEnvData()
+        protected void ExecuteEnvData()
         {
             enemyBuildingLoader.StartUpLoadData(_environmentData.BuildingData);
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
-        private void RemoveDestroyedEntity(IRemoveEntity removeInterface)
+        protected void RemoveDestroyedEntity(IRemoveEntity removeInterface)
         {
             var entityData = removeInterface.GetEntityData();
 
@@ -125,8 +123,8 @@ namespace JumpeeIsland
 
         public EnvironmentData GetDataForSave()
         {
-            _playerEnvCache.AbstractInBattleCreatures(_environmentData.PlayerData);
-            _playerEnvCache.RemoveZeroHpPlayerCreatures();
+            // _playerEnvCache.AbstractInBattleCreatures(_environmentData.PlayerData);
+            // _playerEnvCache.RemoveZeroHpPlayerCreatures();
             return _playerEnvCache;
         }
 

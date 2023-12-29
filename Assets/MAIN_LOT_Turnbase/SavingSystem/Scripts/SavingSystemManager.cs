@@ -507,9 +507,10 @@ namespace JumpeeIsland
 
         public GameObject OnTrainACreature(CreatureData creatureData)
         {
+            // TODO: Check by mainHallTier but not by envData
             if (creatureData.CreatureType == CreatureType.WORKER)
             {
-                if (m_EnvLoader.GetData().CheckFullCapacity())
+                if (m_EnvLoader.GetData().CheckFullCapacity(m_EnvLoader.GetDataForSave().GetMainHallLevel()))
                 {
                     MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
                     return null;

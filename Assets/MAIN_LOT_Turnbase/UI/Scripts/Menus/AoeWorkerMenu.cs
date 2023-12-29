@@ -40,8 +40,10 @@ namespace JumpeeIsland
             
             foreach (var troopDropButton in _workerButtons)
                 troopDropButton.TurnOff();
+            
+            var orderedInventories = inventoryItems.OrderBy(t => t.inventoryName);
 
-            foreach (var inventory in inventoryItems)
+            foreach (var inventory in orderedInventories)
             {
                 if (inventory.inventoryType != InventoryType.Worker)
                     continue;

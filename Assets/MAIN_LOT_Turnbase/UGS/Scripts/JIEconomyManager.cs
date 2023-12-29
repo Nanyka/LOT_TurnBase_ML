@@ -35,7 +35,7 @@ namespace JumpeeIsland
                 instance = this;
             }
         }
-        
+
         public async Task RefreshEconomyConfiguration()
         {
             // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
@@ -51,6 +51,8 @@ namespace JumpeeIsland
             currencyDefinitions = EconomyService.Instance.Configuration.GetCurrencies();
             inventoryItemDefinitions = EconomyService.Instance.Configuration.GetInventoryItems();
             m_VirtualPurchaseDefinitions = EconomyService.Instance.Configuration.GetVirtualPurchases();
+
+            InitializeVirtualPurchaseLookup();
         }
 
         #region CURRENCY
@@ -60,7 +62,7 @@ namespace JumpeeIsland
             var currencyData = currencyDefinitions.Find(t => t.Id.Equals(currencyId));
             if (currencyData == null)
                 return null;
-            
+
             return currencyData.CustomDataDeserializable.GetAs<CurrencyCustomData>().spriteAddress;
         }
 
@@ -81,7 +83,7 @@ namespace JumpeeIsland
                 Debug.Log("Problem getting Economy currency balances:");
                 Debug.LogException(e);
             }
-            
+
             if (this == null || balanceResult == null)
                 return null;
 
@@ -93,7 +95,7 @@ namespace JumpeeIsland
         {
             return _playerBalances;
         }
-        
+
         public async Task InGameRefreshCurrencyBalances()
         {
             GetBalancesResult balanceResult = null;
@@ -181,7 +183,7 @@ namespace JumpeeIsland
         public async Task<List<PlayersInventoryItem>> RefreshInventory()
         {
             GetInventoryResult inventoryResult = null;
-        
+
             try
             {
                 inventoryResult = await LoadPlayerInventory();
@@ -195,12 +197,12 @@ namespace JumpeeIsland
                 Debug.Log("Problem getting Economy inventory items:");
                 Debug.LogException(e);
             }
-        
+
             if (this == null || inventoryResult == null)
                 return null;
-        
+
             _playersInventory = inventoryResult.PlayersInventoryItems;
-        
+
             return _playersInventory;
         }
 
@@ -294,7 +296,7 @@ namespace JumpeeIsland
                                     _playersInventory.Find(t => t.GetItemDefinition().Name.Equals(inventoryId));
 
             if (selectedInventory == null) return returnLevel;
-            
+
             var instanceData = selectedInventory.InstanceData.GetAs<InventoryInstanceData>();
             if (instanceData != null)
                 returnLevel = instanceData.level;
@@ -382,7 +384,7 @@ namespace JumpeeIsland
         }
 
         #endregion
-        
+
         void OnDestroy()
         {
             if (instance == this)

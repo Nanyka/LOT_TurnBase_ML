@@ -21,7 +21,6 @@ public class TimelineManager : Singleton<TimelineManager>
             if (_activeDirector.playableGraph.IsValid() == false)
                 return;
 
-            Debug.Log("is pause");
             _curButtonRequire = buttonRequire;
             _activeDirector.playableGraph.GetRootPlayable(0).SetSpeed(0d);
             _isPause = true;
@@ -35,7 +34,6 @@ public class TimelineManager : Singleton<TimelineManager>
             if (_activeDirector.playableGraph.IsValid() == false)
                 return;
 
-            Debug.Log("is resume");
             var trackAsset = ((TimelineAsset)_activeDirector.playableAsset).GetOutputTracks()
                 .First(e => e.name.Equals("Dialogue Track"));
             if (trackAsset != null)

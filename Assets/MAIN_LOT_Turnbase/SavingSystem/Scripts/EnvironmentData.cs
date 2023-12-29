@@ -90,10 +90,19 @@ namespace JumpeeIsland
 
         public bool CheckFullCapacity()
         {
-            // var totalSpace = BuildingData.Count(t => t.BuildingType == BuildingType.TOWNHOUSE);
-            var mailHallLevel = BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL).CurrentLevel;
+            var workerAmount = PlayerData.Count(t => t.CreatureType == CreatureType.WORKER);
+            return (1 + GetMainHallLevel()) * SavingSystemManager.Instance.GetTownhouseSpace() <= workerAmount;
+        }
+        
+        public bool CheckFullCapacity(int mailHallLevel)
+        {
             var workerAmount = PlayerData.Count(t => t.CreatureType == CreatureType.WORKER);
             return (1 + mailHallLevel) * SavingSystemManager.Instance.GetTownhouseSpace() <= workerAmount;
+        }
+
+        public int GetMainHallLevel()
+        {
+            return BuildingData.Find(t => t.BuildingType == BuildingType.MAINHALL).CurrentLevel;
         }
 
         public int GetTownhouseSpace()
@@ -199,6 +208,11 @@ namespace JumpeeIsland
         public int CountEnemyBuilding(FactionType enemyFaction)
         {
             return BuildingData.Count(t => t.FactionType == enemyFaction && t.BuildingType != BuildingType.GUARDIANAREA);
+        }
+
+        public bool IsDefeatedBoss()
+        {
+            return EnemyData.Any(t => t.CreatureType == CreatureType.ECOBOSS);
         }
 
         public void GatherCreature(string creatureName)
