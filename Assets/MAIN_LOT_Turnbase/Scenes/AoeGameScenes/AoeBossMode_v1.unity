@@ -1207,9 +1207,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 882514319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1, y: -37.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 15, y: 35}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &123654020
@@ -1619,10 +1619,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 882514319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 136, y: -37.5}
-  m_SizeDelta: {x: 250, y: 60}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &170453572
 MonoBehaviour:
@@ -1658,9 +1658,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The troops is ready for our conquere.
-
-    Let''s him out'
+  m_text: <size=18><color=#FE1B43>Hold</color> your finger on top of the camp
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
   m_sharedMaterial: {fileID: 7374927986402738804, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
@@ -36837,7 +36835,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 806485571}
   m_OnClick:
     m_PersistentCalls:
@@ -37457,7 +37455,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 271, y: 80}
+  m_SizeDelta: {x: 0, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &882514320
 CanvasRenderer:
@@ -47255,7 +47253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1170862657
 RectTransform:
   m_ObjectHideFlags: 0
@@ -76587,14 +76585,13 @@ PlayableDirector:
     value: {fileID: 806485569}
   - key: {fileID: 9079796404720050480, guid: f9b48b2054b434377b36b9eb336ff783, type: 2}
     value: {fileID: 1831788768}
-  - key: {fileID: 3068721117382269690, guid: f9b48b2054b434377b36b9eb336ff783, type: 2}
-    value: {fileID: 170453573}
   - key: {fileID: -4858146974690607986, guid: f9b48b2054b434377b36b9eb336ff783, type: 2}
     value: {fileID: 410085606}
   m_ExposedReferences:
     m_References:
     - 8ed7d7ee22d534a6598f5401473de9ca: {fileID: 1241155893}
     - c352002b3309349339a88a70d59e561a: {fileID: 1344503504}
+    - 1fd366bdd7cf34f78983be98652c8bd3: {fileID: 1996483523}
     - a42d243fde33041018bf45b90a33afba: {fileID: 1241155893}
     - fecced3434b7f4e12b4440ced0b320c7: {fileID: 1241155893}
     - a463456c2c7a444f6a9f6995b98f1e33: {fileID: 1241155893}
@@ -76628,7 +76625,7 @@ PlayableDirector:
     - 0f0845b5e605b48ce9e2eccead3c3574: {fileID: 679208139}
     - 3434f01684920487cbfdcfb4dfd3201c: {fileID: 824412167}
     - f724e34fcb16442d6a9db1e87c884ae5: {fileID: 1241155893}
-    - d7bd69081178743d8a8cb16e620bc818: {fileID: 1996483523}
+    - d7bd69081178743d8a8cb16e620bc818: {fileID: 679208139}
     - ad861125a95c2456f81f369d61991151: {fileID: 971332375}
     - a98d6fa7f09744a0bbc0300fc652d83f: {fileID: 806485568}
     - 0d012d89bb07745739f32162aca6c9d5: {fileID: 1241155893}
@@ -76668,6 +76665,7 @@ PlayableDirector:
     - 0e59a1288d0964ccba7f48f1ee19634a: {fileID: 1534471333}
     - ad7a36bfe5bf14ca79d14e11af621d84: {fileID: 1618100213}
     - 2c213159108c54c898bca73a8be35aa5: {fileID: 1330485215}
+    - 82863cc73b824424e9e9145a895b41dc: {fileID: 1996483523}
     - d58305fc1cea440018b1ce4e70e2be17: {fileID: 1618100213}
     - d6f36638943d2431682f7b50a58e7efc: {fileID: 1241155893}
     - 08f79e78944c549198f1989fbe892dd7: {fileID: 679208139}
@@ -83809,7 +83807,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 150, y: -200}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2006734789
@@ -84331,9 +84329,9 @@ RectTransform:
   - {fileID: 1726194635}
   m_Father: {fileID: 882514319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -124, y: -37.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2041415173
