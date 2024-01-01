@@ -5,17 +5,17 @@ namespace JumpeeIsland
 {
     public class ShowBattleCreatureMenu : MonoBehaviour
     {
-        private BattleEnvLoader _battleEnvLoader;
+        private BattleEnvLoad _battleEnvLoad;
 
         private void Start()
         {
-            _battleEnvLoader = FindObjectOfType<BattleEnvLoader>();
+            _battleEnvLoad = FindObjectOfType<BattleEnvLoad>();
         }
 
         public void OnOpenCreatureMenu()
         {
             MainUI.Instance.OnHideAllMenu.Invoke();
-            MainUI.Instance.OnShowDropTroopMenu.Invoke(_battleEnvLoader.GetSpawnList());
+            MainUI.Instance.OnShowDropTroopMenu.Invoke(_battleEnvLoad.GetSpawnList());
         }
     }
 }

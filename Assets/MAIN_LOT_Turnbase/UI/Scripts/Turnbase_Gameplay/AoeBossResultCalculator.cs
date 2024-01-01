@@ -10,6 +10,7 @@ namespace JumpeeIsland
     public class AoeBossResultCalculator : MonoBehaviour
     {
         [SerializeField] private int m_BossIndex;
+        [SerializeField] private int _unlockedMap; // the player will be moved into this unlocked map after defeated the boss
         [SerializeField] private GameObject _winPanel;
         [SerializeField] private GameObject _losePanel;
 
@@ -20,31 +21,42 @@ namespace JumpeeIsland
 
         private async void UpdateWinCondition()
         {
-            // Defeat the boss to win the game
-            if (SavingSystemManager.Instance.GetEnvironmentData().IsDefeatedBoss())
-                await ShowKillBossPanel(2000);
-            else
-                await ShowLosePanel(2000);
-            
+            await WaitToCalculate();
+
+            // if (SavingSystemManager.Instance.GetEnvironmentData().EnemyData.Count == 0)
+            // {
+            //     // Defeat the boss to win the game
+            //     Debug.Log($"Result: {SavingSystemManager.Instance.GetEnvironmentData().IsDefeatedBoss()}");
+            //     if (SavingSystemManager.Instance.GetEnvironmentData().IsDefeatedBoss())
+            //         await ShowKillBossPanel(2000);
+            //     else
+            //         await ShowLosePanel(2000);
+            // }
+
             // TODO: Check to return the ecoMode when the player have no enough money to follow the battle
         }
 
-        private async Task ShowKillBossPanel(int delayInterval)
+        private async Task WaitToCalculate()
         {
-            await Task.Delay(delayInterval);
+            await Task.Delay(2000);
+            
+            if (SavingSystemManager.Instance.GetEnvironmentData().IsDefeatedBoss())
+                ShowKillBossPanel();
+            else
+                ShowLosePanel();
+        }
 
-            // Save the result
+        private void ShowKillBossPanel()
+        {
             _winPanel.SetActive(true);
             if (SavingSystemManager.Instance.GetGameProcess().bossUnlock <= m_BossIndex)
                 SavingSystemManager.Instance.SaveBossUnlock(m_BossIndex + 1);
+            SavingSystemManager.Instance.GetEnvDataForSave().mapSize = _unlockedMap;
             SavingSystemManager.Instance.SaveBossBattle();
         }
         
-        private async Task ShowLosePanel(int delayInterval)
+        private void ShowLosePanel()
         {
-            await Task.Delay(delayInterval);
-
-            // Save the result
             _losePanel.SetActive(true);
         }
     }

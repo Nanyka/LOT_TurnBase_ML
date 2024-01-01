@@ -23,7 +23,10 @@ namespace JumpeeIsland
         {
             var target = _sensor.ExecuteSensor();
             if (target == null)
+            {
+                // _sensor.ResetSensor();
                 return false;
+            }
 
             Target = target;
             m_GAgent.SetIProcessUpdate(this);

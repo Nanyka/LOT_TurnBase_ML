@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class EnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IResourceStock
+    public class EnvironmentLoad : MonoBehaviour, IEnvironmentLoad, IResourceStock
     {
         [SerializeField] protected TileManager tileManager;
         [SerializeField] private ResourceLoader resourceLoader;
@@ -115,6 +115,11 @@ namespace JumpeeIsland
             return resourceLoader.GetResources();
         }
 
+        public EnvironmentLoader GetSpecificEnvLoader<EnvironmentLoader>()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region COLLECTABLE
@@ -145,16 +150,6 @@ namespace JumpeeIsland
             buildingLoader.GetController().DeductCurrencyFromBuildings(currencyId, amount);
         }
 
-        // public MainHallTier GetCurrentTier()
-        // {
-        //     return buildingLoader.GetCurrentTier();
-        // }
-        //
-        // public MainHallTier GetUpcomingTier()
-        // {
-        //     return buildingLoader.GetUpcomingTier();
-        // }
-
         public virtual IEnumerable<GameObject> GetBuildings(FactionType faction)
         {
             return buildingLoader.GetBuildings();
@@ -162,13 +157,15 @@ namespace JumpeeIsland
 
         #endregion
 
-        #region CREATURES
+        #region PLAYER
 
         public GameObject TrainACreature(CreatureData creatureData)
         {
             _environmentData.AddPlayerData(creatureData);
             return playerLoader.PlaceNewObject(creatureData);
         }
+
+        #endregion
 
         #region ENEMY
 
@@ -179,11 +176,9 @@ namespace JumpeeIsland
         }
 
         #endregion
-
-        #endregion
     }
     
-    public interface IEnvironmentLoader
+    public interface IEnvironmentLoad
     {
         public void Init();
         public void SetData(EnvironmentData environmentData);

@@ -5,7 +5,6 @@ namespace JumpeeIsland
 {
     public class AoeArcherAttackExecutor : MonoBehaviour, IAttackExecutor
     {
-        
         [SerializeField] private AnimAttackCollider[] attackColliders;
         
         private IAttackComp _attackComp;

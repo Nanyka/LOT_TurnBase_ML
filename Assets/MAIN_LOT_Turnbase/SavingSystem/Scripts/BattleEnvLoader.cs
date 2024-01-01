@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class BattleEnvLoader : EnvironmentLoader
+    public class BattleEnvLoad : EnvironmentLoad
     {
         [SerializeField] protected EnvironmentData _playerEnvCache;
 

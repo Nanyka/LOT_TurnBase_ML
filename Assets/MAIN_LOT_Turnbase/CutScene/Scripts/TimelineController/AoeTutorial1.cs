@@ -7,7 +7,7 @@ namespace JumpeeIsland
     public class AoeTutorial1 : MonoBehaviour, IOnTrackController
     {
         [SerializeField] private Transform factoryPos;
-        [SerializeField] private Transform monsterPos;
+        // [SerializeField] private Transform monsterPos;
 
         private void Start()
         {
@@ -17,7 +17,6 @@ namespace JumpeeIsland
         
         private void StartTimeline(long arg0)
         {
-            // Debug.Log("Resume timeline 1");
             TimelineManager.Instance.ResumeTimeline(ButtonRequire.STARTGAME);
         }
         
@@ -40,9 +39,9 @@ namespace JumpeeIsland
 
         public void ActionTwo()
         {
-            var monsterPlace = SavingSystemManager.Instance.GetEnvironmentData().BuildingData.First(t =>
-                t.FactionType == FactionType.Enemy && t.BuildingType == BuildingType.GUARDIANAREA);
-            monsterPos.position = Camera.main.WorldToScreenPoint(monsterPlace.Position);
+            // var monsterPlace = SavingSystemManager.Instance.GetEnvironmentData().BuildingData.First(t =>
+            //     t.FactionType == FactionType.Enemy && t.BuildingType == BuildingType.GUARDIANAREA);
+            // monsterPos.position = Camera.main.WorldToScreenPoint(monsterPlace.Position);
         }
 
         public void ActionThree()

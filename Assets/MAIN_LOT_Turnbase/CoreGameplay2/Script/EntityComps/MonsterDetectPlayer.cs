@@ -36,9 +36,8 @@ namespace JumpeeIsland
             if (target != null)
             {
                 m_Brain.RefreshBrain(detectedState);
-                // m_Brain.GetBeliefStates().ModifyState(detectedState,1);
                 isDetected = true;
-                await RecheckTarget();
+                // await RecheckTarget();
             }
         }
         
@@ -81,10 +80,11 @@ namespace JumpeeIsland
                         target = hitColliders[i].gameObject;
                     }
                 }
-
+                
                 return target;
             }
-
+            
+            ResetSensor();
             return null;
         }
 
@@ -92,11 +92,19 @@ namespace JumpeeIsland
         {
             return detectRange;
         }
+
+        private void ResetSensor()
+        {
+            if (!isDetected) return;
+            isDetected = false;
+            m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
+        }
     }
 
     public interface ISensor
     {
         public GameObject ExecuteSensor();
         public float DetectRange();
+        // public void ResetSensor();
     }
 }

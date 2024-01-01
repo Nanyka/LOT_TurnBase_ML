@@ -137,8 +137,8 @@ namespace JumpeeIsland
 
         protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
         {
+            SetBrainState(false);
             _isDie = true;
-
             // Turn off the stuffs that are in running
         }
 
@@ -235,6 +235,7 @@ namespace JumpeeIsland
             m_HealthComp.Init(m_CurrentStat.HealthPoint, OnUnitDie, m_CreatureData);
             m_EffectComp.Init(this);
             m_SkillComp?.Init(m_CreatureData.EntityName, m_CreatureData.CurrentLevel);
+            SetBrainState(true);
 
             OnUnitDie.AddListener(DieIndividualProcess);
             _isDie = false;
@@ -243,9 +244,9 @@ namespace JumpeeIsland
         public void SetBrainState(bool isEnable)
         {
             if (isEnable)
-                m_Brain.OnEnable();
+                m_Brain.EnableBrain();
             else
-                m_Brain.OnDisable();
+                m_Brain.DisableBrain();
         }
 
         #endregion

@@ -6004,8 +6004,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c79fd5cb53444b786dc17ce2bd5fbab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectRange: 6
+  detectRange: 5
   detectedState: SeePlayer
+  isDetected: 0
 --- !u!114 &7432903058257928230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6124,7 +6125,7 @@ MonoBehaviour:
   Cost: 1
   Target: {fileID: 0}
   TargetTag: 
-  Duration: 0
+  Duration: 1
   IsAutoComplete: 0
   IsWaitAndStop: 0
   PreConditions:

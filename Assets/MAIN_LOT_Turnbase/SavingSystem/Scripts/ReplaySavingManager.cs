@@ -35,8 +35,8 @@ namespace JumpeeIsland
             // Load gameState from local to check if the previous session is disconnected
             LoadPreviousMetadata();
             
-            m_EnvLoader.SetData(m_RuntimeMetadata.BattleRecord.environmentData);
-            m_EnvLoader.Init();
+            m_EnvLoad.SetData(m_RuntimeMetadata.BattleRecord.environmentData);
+            m_EnvLoad.Init();
 
             GameFlowManager.Instance.OnDataLoaded.Invoke(0);
             Debug.Log("Completed loading process");

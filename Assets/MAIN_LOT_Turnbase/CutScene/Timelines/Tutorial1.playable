@@ -1489,7 +1489,7 @@ MonoBehaviour:
     dialogueLine: ...and workers are an undeniable force to run the factories
     dialogueWidth: 350
     dialogueHeight: 80
-    buttonRequire: 0
+    buttonRequire: 1
 --- !u!114 &-4336956670820844619
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2697,7 +2697,7 @@ MonoBehaviour:
     dialogueLine: hire a CONSTRUCTOR to help us eract the building
     dialogueWidth: 280
     dialogueHeight: 80
-    buttonRequire: 0
+    buttonRequire: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6427,14 +6427,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template:
     characterIcon: {fileID: 0}
-    dialogueLine: 'It''s showtime of your talent, my lord
+    dialogueLine: '<size=18>It''s showtime of your talent, my lord
 
-      Lead our troops
-      to the valor
-
-
-'
-    dialogueWidth: 350
+      <color=#FE1B43>LET''S
+      GO</color>'
+    dialogueWidth: 400
     dialogueHeight: 80
     buttonRequire: 1
 --- !u!114 &6297503738489473122
@@ -6730,7 +6727,7 @@ MonoBehaviour:
   isActive: 0
   isSpawner: 0
   isActionOne: 1
-  isActionTwo: 1
+  isActionTwo: 0
   isActionThree: 0
 --- !u!114 &7998486560540005904
 MonoBehaviour:

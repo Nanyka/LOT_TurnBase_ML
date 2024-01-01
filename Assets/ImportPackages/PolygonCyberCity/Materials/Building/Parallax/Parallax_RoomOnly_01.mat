@@ -10,7 +10,7 @@ Material:
   m_Name: Parallax_RoomOnly_01
   m_Shader: {fileID: 4800000, guid: ee9b2d1310bf84d4e8ca148c0cf40ab8, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -40,6 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaCutoff: 0.5
     - _BackWallTexTiling: 0.4
     - _CeilingTexTiling: 0.4
     - _FacadeSmoothness: 0.2
@@ -54,6 +55,7 @@ Material:
     - _WalltexTiling: 0.4
     - __dirty: 0
     m_Colors:
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _PositionOffsetXYZroomsWprops: {r: 0, g: 0, b: 2.4, a: 0}
     - _RoomTint: {r: 0.3773585, g: 0.23302893, b: 0, a: 0}
     - _RoomsXYZPropsW: {r: 4, g: 3.3, b: 2, a: 1}

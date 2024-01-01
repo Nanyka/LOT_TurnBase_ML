@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeEcoBoss0AttackExecutor : MonoBehaviour, IAttackExecutor
+    public class AoeEcoBoss0AttackExecutor : MonoBehaviour, IAttackExecutor, IAttackRegister
     {
         [SerializeField] private float attackRange;
         [SerializeField] private ParticleSystem[] attackVfx;
@@ -77,5 +77,10 @@ namespace JumpeeIsland
         {
             Debug.Log("Use for multi range attacks");
         }
+    }
+
+    public interface IAttackRegister
+    {
+        public void Init();
     }
 }

@@ -22,13 +22,14 @@ namespace JumpeeIsland
         private void OnDisable()
         {
             ModifyWorldState();
+            CancelInvoke();
         }
 
         private void Init()
         {
             _curStorage = _capacity;
-            Refresh();
-            CancelInvoke();
+            // Refresh();
+            // CancelInvoke();
             InvokeRepeating(nameof(Regenerate), _recoverySpeed, _recoverySpeed);
         }
 

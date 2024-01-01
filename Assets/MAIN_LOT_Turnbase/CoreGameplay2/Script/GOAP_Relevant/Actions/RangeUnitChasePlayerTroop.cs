@@ -22,7 +22,10 @@ namespace JumpeeIsland
         {
             var target = _sensor.ExecuteSensor();
             if (target == null)
+            {
+                // _sensor.ResetSensor();
                 return false;
+            }
 
             var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 

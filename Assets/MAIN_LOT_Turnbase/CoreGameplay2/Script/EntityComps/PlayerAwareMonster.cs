@@ -47,7 +47,7 @@ namespace JumpeeIsland
                 m_Mover.StopWalk();
                 m_Brain.RefreshBrain(detectedState);
                 isDetected = true;
-                await RecheckTarget();
+                // await RecheckTarget();
             }
         }
 
@@ -94,12 +94,20 @@ namespace JumpeeIsland
                 return target;
             }
 
+            ResetSensor();
             return null;
         }
 
         public float DetectRange()
         {
             return detectRange;
+        }
+
+        public void ResetSensor()
+        {
+            if (!isDetected) return;
+            isDetected = false;
+            m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
         }
     }
 }

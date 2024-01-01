@@ -212,7 +212,7 @@ namespace JumpeeIsland
 
         public bool IsDefeatedBoss()
         {
-            return EnemyData.Any(t => t.CreatureType == CreatureType.ECOBOSS);
+            return EnemyData.Any(t => t.CreatureType == CreatureType.ECOBOSS) == false;
         }
 
         public void GatherCreature(string creatureName)

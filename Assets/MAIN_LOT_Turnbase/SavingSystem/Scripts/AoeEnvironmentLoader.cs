@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace JumpeeIsland
 {
-    public class AoeEnvironmentLoader : MonoBehaviour, IEnvironmentLoader, IStoragesControl
+    public class AoeEnvironmentLoad : MonoBehaviour, IEnvironmentLoad, IStoragesControl
     {
         [SerializeField] private GameObject resources;
         [SerializeField] protected GameObject playerBuildings;
@@ -18,13 +18,13 @@ namespace JumpeeIsland
 
         [SerializeField] protected EnvironmentData _environmentData;
         [SerializeField] protected EnvironmentData _playerEnvCache;
-        private List<IStoreResource> _resourceStorages = new();
+        protected List<IStoreResource> _resourceStorages = new();
         private IBuildingLoader playerBuildingLoader;
-        private IBuildingLoader enemyBuildingLoader;
+        protected IBuildingLoader enemyBuildingLoader;
         private IResourceLoader resourceLoader;
         private ICollectableLoader collectableLoader;
         private ICreatureLoader playerLoader;
-        private ICreatureLoader monsterLoader;
+        protected ICreatureLoader monsterLoader;
 
         #region ENVIRONMENT LOADER
 
@@ -69,7 +69,7 @@ namespace JumpeeIsland
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
-        protected void RemoveDestroyedEntity(IRemoveEntity removeInterface)
+        protected virtual void RemoveDestroyedEntity(IRemoveEntity removeInterface)
         {
             var entityData = removeInterface.GetEntityData();
 
@@ -170,7 +170,7 @@ namespace JumpeeIsland
             return playerLoader.PlaceNewObject(creatureData);
         }
 
-        public GameObject SpawnAnEnemy(CreatureData creatureData)
+        public virtual GameObject SpawnAnEnemy(CreatureData creatureData)
         {
             _environmentData.AddEnemyData(creatureData);
             var spawnedTroop = monsterLoader.PlaceNewObject(creatureData);

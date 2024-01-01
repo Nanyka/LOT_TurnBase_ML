@@ -38,6 +38,6 @@ public class UIInteractiveBehaviour : PlayableBehaviour
     public override void OnPlayableDestroy(Playable playable)
     {
         if (_selectable != null)
-            _selectable.interactable = !isInteractable;
+            _selectable.interactable = isInteractable;
     }
 }

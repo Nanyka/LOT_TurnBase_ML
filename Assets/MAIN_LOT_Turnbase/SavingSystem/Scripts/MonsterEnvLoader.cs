@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class MonsterEnvLoader : BattleEnvLoader
+    public class MonsterEnvLoad : BattleEnvLoad
     {
         public override void Init()
         {

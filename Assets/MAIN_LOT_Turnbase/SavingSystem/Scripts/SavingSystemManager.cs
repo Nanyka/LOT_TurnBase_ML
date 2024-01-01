@@ -38,12 +38,13 @@ namespace JumpeeIsland
         [SerializeField] private string[] m_BasicInventory;
 
         protected JICloudConnector m_CloudConnector;
-        protected IEnvironmentLoader m_EnvLoader;
+        protected IEnvironmentLoad m_EnvLoad;
         private IResourceStock m_StorageHandler;
         private IResearchTopicSupervisor m_ResearchSup;
         private IStoragesControl m_StorageController;
         private ICurrencyLoader m_CurrencyLoader;
         private IInventoryDeliver m_InventoryLoader;
+        private IMonsterControl m_MonsterController;
 
         protected RuntimeMetadata m_RuntimeMetadata = new();
         private GameProcessData m_GameProcess = new();
@@ -57,12 +58,13 @@ namespace JumpeeIsland
             base.Awake();
             _gamePath = Application.persistentDataPath;
             
-            m_EnvLoader = GetComponent<IEnvironmentLoader>();
+            m_EnvLoad = GetComponent<IEnvironmentLoad>();
             m_StorageHandler = GetComponent<IResourceStock>();
             m_ResearchSup = GetComponent<IResearchTopicSupervisor>();
             m_StorageController = GetComponent<IStoragesControl>();
             m_CurrencyLoader = GetComponent<ICurrencyLoader>();
             m_InventoryLoader = GetComponent<IInventoryDeliver>();
+            m_MonsterController = GetComponent<IMonsterControl>();
 
             OnSavePlayerEnvData.AddListener(SavePlayerEnv);
             OnContributeCommand.AddListener(StackUpCommand);
@@ -78,7 +80,7 @@ namespace JumpeeIsland
         private async void SaveGameState()
         {
             if (!CheckLoadingPhaseFinished() || GameFlowManager.Instance.GameMode == GameMode.AOE) return;
-            if (m_EnvLoader.GetDataForSave().CheckStorable() == false)
+            if (m_EnvLoad.GetDataForSave().CheckStorable() == false)
                 return;
             SavePlayerEnvAtEndGame();
             SaveCommandBatch(m_CloudConnector.GetCommands());
@@ -135,9 +137,9 @@ namespace JumpeeIsland
 
         public async void OnResetData()
         {
-            m_EnvLoader.ResetData();
+            m_EnvLoad.ResetData();
             await ResetData();
-            m_EnvLoader.Init();
+            m_EnvLoad.Init();
         }
 
         #region GAME STATE
@@ -269,13 +271,13 @@ namespace JumpeeIsland
                 return;
 
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
-            SaveManager.Instance.Save(m_EnvLoader.GetData(), envPath, DataWasSaved, encrypt);
+            SaveManager.Instance.Save(m_EnvLoad.GetData(), envPath, DataWasSaved, encrypt);
         }
 
         private void SavePlayerEnvAtEndGame()
         {
             var envPath = GetSavingPath(SavingPath.PlayerEnvData);
-            SaveManager.Instance.Save(m_EnvLoader.GetDataForSave(), envPath, DataWasSaved, encrypt);
+            SaveManager.Instance.Save(m_EnvLoad.GetDataForSave(), envPath, DataWasSaved, encrypt);
         }
 
         private void DataWasSaved(SaveResult result, string message)
@@ -293,8 +295,8 @@ namespace JumpeeIsland
 
             if (envData != null)
             {
-                m_EnvLoader.SetData(envData);
-                m_EnvLoader.Init();
+                m_EnvLoad.SetData(envData);
+                m_EnvLoad.Init();
             }
             else
             {
@@ -316,8 +318,8 @@ namespace JumpeeIsland
             if (result == SaveResult.Success)
             {
                 // Fetch mainHallTier after receive envData
-                m_EnvLoader.SetData(data);
-                m_EnvLoader.Init();
+                m_EnvLoad.SetData(data);
+                m_EnvLoad.Init();
             }
         }
 
@@ -327,7 +329,7 @@ namespace JumpeeIsland
 
             if (cloudEnvData != null)
             {
-                m_EnvLoader.SetData(cloudEnvData);
+                m_EnvLoad.SetData(cloudEnvData);
                 SavePlayerEnv();
                 m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
                 ResetBasicInventory();
@@ -350,7 +352,7 @@ namespace JumpeeIsland
                         Position = position,
                         CurrentLevel = 0
                     };
-                    m_EnvLoader.SpawnResource(newResource);
+                    m_EnvLoad.SpawnResource(newResource);
                 }
             }
         }
@@ -363,7 +365,7 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = level
             };
-            m_EnvLoader.SpawnCollectable(collectableData);
+            m_EnvLoad.SpawnCollectable(collectableData);
         }
 
         // Player pay some cost for constructing the building
@@ -386,7 +388,7 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
-            m_EnvLoader.PlaceABuilding(newBuilding);
+            m_EnvLoad.PlaceABuilding(newBuilding);
         }
 
         // Player pay something for construction locally
@@ -416,7 +418,7 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
-            m_EnvLoader.PlaceABuilding(newBuilding);
+            m_EnvLoad.PlaceABuilding(newBuilding);
         }
 
         // Spawn from a reward, player pay nothing for it
@@ -436,12 +438,12 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
-            m_EnvLoader.PlaceABuilding(newBuilding);
+            m_EnvLoad.PlaceABuilding(newBuilding);
         }
 
         public async void OnTrainACreature(JIInventoryItem inventoryItem, Vector3 position, bool isWaitForPurchase)
         {
-            if (m_EnvLoader.GetData().CheckFullCapacity())
+            if (m_EnvLoad.GetData().CheckFullCapacity())
             {
                 MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
                 return;
@@ -465,7 +467,7 @@ namespace JumpeeIsland
                 newCreature.Position = position;
             }
 
-            m_EnvLoader.TrainACreature(newCreature);
+            m_EnvLoad.TrainACreature(newCreature);
         }
 
         public async Task<GameObject> OnTrainACreature(string creatureName, Vector3 position, bool isWaitForPurchase)
@@ -502,7 +504,7 @@ namespace JumpeeIsland
                 newCreature.Position = position;
             }
 
-            return m_EnvLoader.TrainACreature(newCreature);
+            return m_EnvLoad.TrainACreature(newCreature);
         }
 
         public GameObject OnTrainACreature(CreatureData creatureData)
@@ -510,14 +512,14 @@ namespace JumpeeIsland
             // TODO: Check by mainHallTier but not by envData
             if (creatureData.CreatureType == CreatureType.WORKER)
             {
-                if (m_EnvLoader.GetData().CheckFullCapacity(m_EnvLoader.GetDataForSave().GetMainHallLevel()))
+                if (m_EnvLoad.GetData().CheckFullCapacity(m_EnvLoad.GetDataForSave().GetMainHallLevel()))
                 {
                     MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
                     return null;
                 }
             }
 
-            return m_EnvLoader.TrainACreature(creatureData);
+            return m_EnvLoad.TrainACreature(creatureData);
         }
 
         public GameObject OnSpawnMovableEntity(string itemId, Vector3 position)
@@ -530,12 +532,12 @@ namespace JumpeeIsland
                 Position = position,
                 CurrentLevel = 0
             };
-            return m_EnvLoader.SpawnAnEnemy(newEntity);
+            return m_EnvLoad.SpawnAnEnemy(newEntity);
         }
 
         public async void OnSaveEnvById(string playerId)
         {
-            await m_CloudConnector.OnSaveEnvById(m_EnvLoader.GetData(), playerId);
+            await m_CloudConnector.OnSaveEnvById(m_EnvLoad.GetData(), playerId);
         }
 
         public async void OnSyncEnvData()
@@ -990,6 +992,7 @@ namespace JumpeeIsland
         public async void SaveBossBattle()
         {
             m_GameProcess.battleCount++;
+            SavePlayerEnvAtEndGame();
             await m_CloudConnector.OnSaveGameProcess(m_GameProcess);
         }
 
@@ -1028,11 +1031,6 @@ namespace JumpeeIsland
             return m_ResearchSup.GetTopics();
         }
 
-        // public void RemoveResearch(Research research)
-        // {
-        //     m_ResearchSup.RemoveResearch(research);
-        // }
-
         #endregion
 
         #region GET & SET
@@ -1045,7 +1043,7 @@ namespace JumpeeIsland
 
         public EnvironmentData GetEnvironmentData()
         {
-            return m_EnvLoader.GetData();
+            return m_EnvLoad.GetData();
         }
 
         /// <summary>
@@ -1053,7 +1051,7 @@ namespace JumpeeIsland
         /// </summary>
         public EnvironmentData GetEnvDataForSave()
         {
-            return m_EnvLoader.GetDataForSave();
+            return m_EnvLoad.GetDataForSave();
         }
 
         public GameProcessData GetGameProcess()
@@ -1061,9 +1059,9 @@ namespace JumpeeIsland
             return m_GameProcess;
         }
 
-        public IEnvironmentLoader GetEnvLoader()
+        public IEnvironmentLoad GetEnvLoader()
         {
-            return m_EnvLoader;
+            return m_EnvLoad;
         }
 
         public IStoragesControl GetStorageController()
@@ -1071,10 +1069,10 @@ namespace JumpeeIsland
             return m_StorageController;
         }
 
-        // public IMonsterControler GetMonsterController()
-        // {
-        //     return m_MonsterController;
-        // }
+        public IMonsterControl GetMonsterController()
+        {
+            return m_MonsterController;
+        }
 
         #endregion
     }

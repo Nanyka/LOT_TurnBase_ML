@@ -24,15 +24,14 @@ namespace JumpeeIsland
             SetGoal();
         }
 
-        public virtual void OnEnable()
+        public virtual void EnableBrain()
         {
             _isActive = true;
             ResetBrain();
-            // TODO: After restructure GWorld as the fist loading, call APlusAlgorithm directly instead of Invoke
             Invoke(nameof(APlusAlgorithm), 1f);
         }
 
-        public void OnDisable()
+        public void DisableBrain()
         {
             _isActive = false;
             ResetBrain();

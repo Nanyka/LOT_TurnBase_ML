@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeEcoEnvironmentLoader : MonoBehaviour, IEnvironmentLoader
+    public class AoeEcoEnvironmentLoad : MonoBehaviour, IEnvironmentLoad
     {
         [SerializeField] protected GameObject buildingLoader;
         [SerializeField] private GameObject playerLoader;
