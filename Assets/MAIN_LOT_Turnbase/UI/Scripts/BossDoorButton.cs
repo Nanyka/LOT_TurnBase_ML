@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 using WebSocketSharp;
 
 namespace JumpeeIsland
@@ -12,6 +13,7 @@ namespace JumpeeIsland
         [SerializeField] private int _bossIndex;
         [SerializeField] private GameObject _newIcon;
         [SerializeField] private GameObject _lockIcon;
+        [SerializeField] private Image _mapImage;
         private BossSelector m_BossSelector;
         private bool _isLocked;
 
@@ -19,6 +21,7 @@ namespace JumpeeIsland
         {
             m_BossSelector = bossSelector;
             _isLocked = isLocked;
+            _mapImage.color = _isLocked ? Color.black : Color.white;
             _lockIcon.SetActive(_isLocked);
         }
 
