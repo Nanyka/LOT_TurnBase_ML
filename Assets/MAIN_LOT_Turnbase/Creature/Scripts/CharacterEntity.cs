@@ -27,7 +27,7 @@ namespace JumpeeIsland
         // in-game data
         private CreatureData m_CreatureData;
         private CreatureStats m_CurrentStat;
-        [SerializeField] private int _attackIndex;
+        private int _attackIndex;
         private int _killAccumulation;
         private bool _isDie;
 
@@ -135,7 +135,7 @@ namespace JumpeeIsland
 
         #region HEALTH
 
-        protected virtual void DieIndividualProcess(IAttackRelated killedByEntity)
+        private void DieIndividualProcess(IAttackRelated killedByEntity)
         {
             SetBrainState(false);
             _isDie = true;
@@ -167,11 +167,6 @@ namespace JumpeeIsland
         #region ATTACK
 
         public void StartAttack()
-        {
-            m_AnimateComp.TriggerAttackAnim(_attackIndex);
-        }
-
-        public void StartAttack(Vector3 attackPos)
         {
             m_AnimateComp.TriggerAttackAnim(_attackIndex);
         }

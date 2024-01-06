@@ -23,10 +23,7 @@ namespace JumpeeIsland
         {
             var target = _sensor.ExecuteSensor();
             if (target == null)
-            {
-                // _sensor.ResetSensor();
                 return false;
-            }
 
             Target = target;
             m_GAgent.SetIProcessUpdate(this);
@@ -43,9 +40,9 @@ namespace JumpeeIsland
 
         public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
-            if (Vector3.Distance(myTransform.position, targetPos) < m_Entity.GetStopDistance())
-                m_GAgent.FinishFromOutside();
-            else
+            // if (Vector3.Distance(myTransform.position, targetPos) < m_Entity.GetStopDistance())
+            //     m_GAgent.FinishFromOutside();
+            // else
                 m_Entity.MoveTowards(targetPos, this);
         }
 

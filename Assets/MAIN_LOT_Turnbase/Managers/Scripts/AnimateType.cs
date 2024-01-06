@@ -6,6 +6,7 @@ namespace JumpeeIsland
         Walk,
         Attack,
         Die,
-        TakeDamage
+        TakeDamage,
+        Harvest
     }
 }

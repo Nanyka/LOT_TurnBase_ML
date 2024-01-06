@@ -39,7 +39,12 @@ namespace JumpeeIsland
             }
         }
 
-        public void Die(IAttackRelated killedByFaction)
+        public void HideTheEntity()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void Die(IAttackRelated killedByFaction)
         {
             _isDeath = true;
             _dieEvent.Invoke(killedByFaction);

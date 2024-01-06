@@ -51,25 +51,25 @@ namespace JumpeeIsland
             }
         }
 
-        private async Task RecheckTarget()
-        {
-            try
-            {
-                _cancellation = new CancellationTokenSource();
-                await Task.Delay(3000, _cancellation.Token);
-                if (ExecuteSensor() == null)
-                {
-                    isDetected = false;
-                    m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
-                }
-                else
-                    await RecheckTarget();
-            }
-            catch (Exception e)
-            {
-                // ignored
-            }
-        }
+        // private async Task RecheckTarget()
+        // {
+        //     try
+        //     {
+        //         _cancellation = new CancellationTokenSource();
+        //         await Task.Delay(3000, _cancellation.Token);
+        //         if (ExecuteSensor() == null)
+        //         {
+        //             isDetected = false;
+        //             m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
+        //         }
+        //         else
+        //             await RecheckTarget();
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         // ignored
+        //     }
+        // }
 
         public GameObject ExecuteSensor()
         {

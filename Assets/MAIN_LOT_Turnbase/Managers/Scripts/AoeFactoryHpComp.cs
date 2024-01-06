@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -28,9 +27,9 @@ namespace JumpeeIsland
             throw new System.NotImplementedException();
         }
 
-        public void Die(IAttackRelated killedByFaction)
+        public void HideTheEntity()
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         public bool CheckAlive()

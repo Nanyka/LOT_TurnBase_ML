@@ -26,6 +26,7 @@ namespace JumpeeIsland
             {
                 var myData = m_Data.GetData() as CreatureData;
                 var myStrength = m_Data.GetStats().Strength;
+                
                 myStrength = myData.TurnCount > 0 ? myStrength - myData.TurnCount : myStrength;
                 var remainResource = checkableObject.GetRemainAmount();
                 var collectedAmount = remainResource > myStrength ? myStrength : remainResource;
@@ -35,6 +36,7 @@ namespace JumpeeIsland
                     m_Brain.Beliefs.RemoveState("Empty");
                     m_Brain.Beliefs.ModifyState("targetAvailable", 1);
                 }
+                
                 myData.TurnCount += collectedAmount;
                 checkableObject.ReduceCheckableAmount(collectedAmount);
             }

@@ -23,7 +23,7 @@ namespace JumpeeIsland
             InvokeRepeating(nameof(CheckTroopInRange),3f,3f);
         }
         
-        private async void CheckTroopInRange()
+        private void CheckTroopInRange()
         {
             // Check if the inventory is any.
             // If the inventory is empty, adding the nearby enemy into the Inventory, and set the belief that it is an enemy in range
@@ -37,29 +37,28 @@ namespace JumpeeIsland
             {
                 m_Brain.RefreshBrain(detectedState);
                 isDetected = true;
-                // await RecheckTarget();
             }
         }
         
-        private async Task RecheckTarget()
-        {
-            try
-            {
-                _cancellation = new CancellationTokenSource();
-                await Task.Delay(3000, _cancellation.Token);
-                if (ExecuteSensor() == null)
-                {
-                    isDetected = false;
-                    m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
-                }
-                else
-                    await RecheckTarget();
-            }
-            catch (Exception e)
-            {
-                // ignored
-            }
-        }
+        // private async Task RecheckTarget()
+        // {
+        //     try
+        //     {
+        //         _cancellation = new CancellationTokenSource();
+        //         await Task.Delay(3000, _cancellation.Token);
+        //         if (ExecuteSensor() == null)
+        //         {
+        //             isDetected = false;
+        //             m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
+        //         }
+        //         else
+        //             await RecheckTarget();
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         // ignored
+        //     }
+        // }
 
         public GameObject ExecuteSensor()
         {

@@ -57,6 +57,11 @@ namespace JumpeeIsland
             StartCoroutine(DestroyVisual());
         }
 
+        public void HideTheEntity()
+        {
+            Die(null);
+        }
+
         public bool CheckAlive()
         {
             return !_isDeath;
@@ -84,7 +89,7 @@ namespace JumpeeIsland
     {
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData);
         public void TakeDamage(IAttackRelated attackBy);
-        public void Die(IAttackRelated killedByFaction);
+        public void HideTheEntity(); // Mostly use for transform period when the old entity must be remove for replacing with a new one
         public bool CheckAlive();
     }
 }

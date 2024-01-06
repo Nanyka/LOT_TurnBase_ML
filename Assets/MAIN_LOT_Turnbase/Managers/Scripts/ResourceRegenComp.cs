@@ -28,7 +28,7 @@ namespace JumpeeIsland
         private void Init()
         {
             _curStorage = _capacity;
-            // Refresh();
+            Refresh(); // Register the resource at the beginning of the game
             // CancelInvoke();
             InvokeRepeating(nameof(Regenerate), _recoverySpeed, _recoverySpeed);
         }

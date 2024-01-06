@@ -6,13 +6,12 @@ namespace JumpeeIsland
     {
         private IComboMonitor _mComboMonitor;
         private IAttackRelated m_AttackRelated;
-        private IGetEntityData<CreatureData> m_Data;
 
         private void Start()
         {
             _mComboMonitor = GetComponent<IComboMonitor>();
             m_AttackRelated = GetComponent<IAttackRelated>();
-            m_Data = GetComponent<IGetEntityData<CreatureData>>();
+            GetComponent<IGetEntityData<CreatureData>>();
         }
 
         public void SuccessAttack(GameObject target)
