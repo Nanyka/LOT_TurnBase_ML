@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 937470351109615851}
   - component: {fileID: 8730761902999619269}
   - component: {fileID: 8059139123396688748}
+  - component: {fileID: 772043289945518358}
   m_Layer: 0
   m_Name: InputManager(Singleton)
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3702369170056084613}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10, y: 0.9166666, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -138,6 +139,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ff48413f-0a79-4817-a997-c5a8c90e5b6e
     m_ActionName: Player/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6f18a04f-b03a-45f3-88ad-0b7ad959712b
+    m_ActionName: Timeline/Skip[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Touch
   m_DefaultActionMap: Player
@@ -161,3 +166,19 @@ MonoBehaviour:
   _dropLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &772043289945518358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3702369170056084613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2ffb144546456fad9ccdc0a5ef48f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _castRange: 5
+  _castLayer:
+    serializedVersion: 2
+    m_Bits: 128

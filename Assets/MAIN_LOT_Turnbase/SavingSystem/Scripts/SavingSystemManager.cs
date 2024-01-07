@@ -534,6 +534,11 @@ namespace JumpeeIsland
             };
             return m_EnvLoad.SpawnAnEnemy(newEntity);
         }
+        
+        public GameObject OnSpawnMovableEntity(CreatureData entityData)
+        {
+            return m_EnvLoad.SpawnAnEnemy(entityData);
+        }
 
         public async void OnSaveEnvById(string playerId)
         {

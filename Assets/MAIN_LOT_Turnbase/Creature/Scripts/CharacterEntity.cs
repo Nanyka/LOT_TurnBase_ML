@@ -109,7 +109,8 @@ namespace JumpeeIsland
         public void SetAssemblyPoint(Vector3 assemblyPoint)
         {
             _assemblyPoint = assemblyPoint;
-            m_Brain.AddBeliefs("HaveJustWentOut");
+            m_Brain.RefreshBrain("HaveJustWentOut");
+            // m_Brain.AddBeliefs("HaveJustWentOut");
         }
 
         public CreatureStats GetStats()

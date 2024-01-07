@@ -6,68 +6,60 @@ namespace JumpeeIsland
     public class FireBoss : GAction
     {
         [SerializeField] private GameObject m_Character;
-        
+
         private float _checkDistance;
         private IAttackExecutor m_AttackExecutor;
+        private ISensor _detectPlayerTroop;
         private Vector3 _currentTarget;
 
         private void Start()
         {
             m_AttackExecutor = m_Character.GetComponent<IAttackExecutor>();
-            _checkDistance = m_GAgent.GetComponent<ISensor>().DetectRange() + 1f;
+            _detectPlayerTroop = GetComponent<ISensor>();
+            _checkDistance = _detectPlayerTroop.DetectRange() + 1f;
         }
 
         public override bool PrePerform()
         {
-            // _currentPoint = null;
+            var target = _detectPlayerTroop.ExecuteSensor();
+
+            if (target == null)
+                return false;
+
+            var position = target.transform.position;
+            if (Vector3.Distance(transform.position, position) > _checkDistance)
+                return false;
+
+            m_Character.transform.LookAt(new Vector3(position.x, m_Character.transform.position.y, position.z));
+            m_AttackExecutor.ExecuteHitEffect(position); // Set target
+
+            return true;
+            
             // var distanceToTarget = float.PositiveInfinity;
-            // var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Enemy);
-            //     
-            // foreach (var building in buildings)
-            // {
-            //     if (building.TryGetComponent(out ICheckableObject checkableObject))
-            //     {
-            //         if (checkableObject.IsCheckable() == false)
-            //             continue;
+            // var monsters = SavingSystemManager.Instance.GetMonsterController().GetMonsters();
             //
-            //         var curDis = Vector3.Distance(transform.position, checkableObject.GetPosition());
-            //         if (curDis < distanceToTarget)
-            //         {
-            //             distanceToTarget = curDis;
-            //             _currentPoint = checkableObject;
-            //         }
+            // foreach (var monster in monsters)
+            // {
+            //     var curDis = Vector3.Distance(transform.position, monster.transform.position);
+            //     if (curDis > _checkDistance)
+            //         return false;
+            //
+            //     if (curDis < distanceToTarget)
+            //     {
+            //         distanceToTarget = curDis;
+            //         _currentTarget = monster.transform.position;
             //     }
             // }
             //
-            // if (_currentPoint == null || distanceToTarget > _checkDistance)
+            // if (distanceToTarget < float.PositiveInfinity)
             // {
-            //     return false;
+            //     m_Character.transform.LookAt(new Vector3(_currentTarget.x, m_Character.transform.position.y,
+            //         _currentTarget.z));
+            //     m_AttackExecutor.ExecuteHitEffect(_currentTarget); // Set target
+            //     return true;
             // }
-            //
-            // var position = _currentPoint.GetPosition();
-            
-            var distanceToTarget = float.PositiveInfinity;
-            var monsters = SavingSystemManager.Instance.GetMonsterController().GetMonsters();
-
-            foreach (var monster in monsters)
-            {
-                var curDis = Vector3.Distance(transform.position, monster.transform.position);
-                if (curDis < distanceToTarget)
-                {
-                    distanceToTarget = curDis;
-                    _currentTarget = monster.transform.position;
-                }
-            }
-
-            if (distanceToTarget < float.PositiveInfinity)
-            {
-                m_Character.transform.LookAt(new Vector3(_currentTarget.x, m_Character.transform.position.y,
-                    _currentTarget.z));
-                m_AttackExecutor.ExecuteHitEffect(_currentTarget); // Set target
-                return true;
-            }
-            else
-                return false;
+            // else
+            //     return false;
         }
 
         public override bool PostPerform()

@@ -7,12 +7,12 @@ namespace JumpeeIsland
     {
         [SerializeField] private ObjectPool _collectablePool;
         private List<CollectableData> _collectableData = new();
-        private CollectableController _collectableController;
+        // private CollectableController _collectableController;
         
         private void Start()
         {
             GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
-            _collectableController = GetComponent<CollectableController>();
+            // _collectableController = GetComponent<CollectableController>();
         }
         
         private void Init()
@@ -40,13 +40,10 @@ namespace JumpeeIsland
             var collectableObj = _collectablePool.GetObject(collectableData.EntityName);
             if (collectableObj == null)
                 return null;
-
-            collectableData.FactionType = FactionType.Neutral; // assign Faction
-            // GameFlowManager.Instance.OnDomainRegister.Invoke(resourceObj, resourceData.CreatureType);
-
-            if (!collectableObj.TryGetComponent(out CollectableInGame collectableInGame)) return null;
-            collectableInGame.gameObject.SetActive(true);
-            collectableInGame.Init(collectableData, _collectableController);
+            
+            if (!collectableObj.TryGetComponent(out AoeCollectableEntity collectableEntity)) return null;
+            collectableEntity.gameObject.SetActive(true);
+            collectableEntity.Init(collectableData);
             return collectableObj;
         }
 

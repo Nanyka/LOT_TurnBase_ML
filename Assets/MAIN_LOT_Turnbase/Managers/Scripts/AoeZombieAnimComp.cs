@@ -58,10 +58,7 @@ namespace JumpeeIsland
                     m_Animator.SetTrigger(TakeDamage);
                     break;
                 case AnimateType.Harvest:
-                {
-                    Debug.Log("Set trigger is Harvest");
                     m_Animator.SetTrigger(Harvest);
-                }
                     break;
             }
         }

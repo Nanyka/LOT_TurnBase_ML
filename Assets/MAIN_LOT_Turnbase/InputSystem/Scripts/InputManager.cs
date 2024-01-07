@@ -10,14 +10,17 @@ namespace JumpeeIsland
     {
         [SerializeField] private LayerMask _selectLayer;
         [SerializeField] private LayerMask _dropLayer;
+        // [SerializeField] private LayerMask _assignLayer;
 
         private IInputExecutor _currentExecutor;
+        private IGlobalInteract _globalInteract;
         private Camera _mainCamera;
         private bool _isDropTroop;
         private bool _isCameraMove;
 
         private void Start()
         {
+            _globalInteract = GetComponent<IGlobalInteract>();
             _mainCamera = Camera.main;
         }
 
@@ -96,6 +99,10 @@ namespace JumpeeIsland
                         _currentExecutor = executor;
                         _currentExecutor.OnDoubleTaps();
                     }
+                }
+                else if (Physics.Raycast(moveRay, out var assignHit, 100f, _dropLayer))
+                {   
+                    _globalInteract.OnDoubleTap(assignHit.point);
                 }
             }
         }

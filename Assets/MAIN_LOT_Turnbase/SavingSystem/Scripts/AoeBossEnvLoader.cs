@@ -36,7 +36,6 @@ namespace JumpeeIsland
 
         public override GameObject SpawnAnEnemy(CreatureData creatureData)
         {
-            Debug.Log($"Spawn enemy: {creatureData.EntityName}");
             _environmentData.AddEnemyData(creatureData);
             var spawnedTroop = monsterLoader.PlaceNewObject(creatureData);
 

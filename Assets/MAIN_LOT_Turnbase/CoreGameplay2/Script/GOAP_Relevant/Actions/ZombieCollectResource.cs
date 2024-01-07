@@ -6,7 +6,7 @@ namespace JumpeeIsland
 {
     public class ZombieCollectResource : GAction
     {
-        [SerializeField] private AoeZombieEntity m_Character;
+        [SerializeField] private AoeManualZombieEntity m_Character;
         [SerializeField] private float _checkDistance = 2f;
 
         private ICheckableObject _currentPoint;

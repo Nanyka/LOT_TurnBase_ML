@@ -66,6 +66,7 @@ namespace JumpeeIsland
         protected void ExecuteEnvData()
         {
             enemyBuildingLoader.StartUpLoadData(_environmentData.BuildingData);
+            collectableLoader.StartUpLoadData(_environmentData.CollectableData);
             GameFlowManager.Instance.OnInitiateObjects.Invoke();
         }
 
