@@ -37,6 +37,11 @@ namespace JumpeeIsland
             m_Animator.SetBool(animName,value);
         }
 
+        public void SetFloatValue(string param, float value)
+        {
+            m_Animator.SetFloat(param,value);
+        }
+
         public void SetAnimatorSpeed(float speed)
         {
             m_Animator.speed = speed;

@@ -36,7 +36,11 @@ namespace JumpeeIsland
 
             var costs = SavingSystemManager.Instance.GetPurchaseCost(buildingItem.virtualPurchaseId);
             if (costs.Count > 0)
-                m_Price.text = costs[0].amount.ToString();
+            {
+                _constructingCost.currencyId = costs[0].id;
+                _constructingCost.amount = costs[0].amount;
+            }
+            m_Price.text = _constructingCost.amount.ToString();
 
             m_Container.SetActive(true);
         }

@@ -41,7 +41,7 @@ namespace JumpeeIsland
 
         public void HideTheEntity()
         {
-            throw new System.NotImplementedException();
+            Die(null);
         }
 
         private void Die(IAttackRelated killedByFaction)

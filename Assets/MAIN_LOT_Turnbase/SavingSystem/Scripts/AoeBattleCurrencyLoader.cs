@@ -19,9 +19,22 @@ namespace JumpeeIsland
             Debug.Log("Load currencies...");
 
             m_Currencies = currencies;
+            
+            foreach (var localBalance in m_LocalBalances.LocalBalances)
+            {
+                var currency = m_Currencies.Find(t => t.CurrencyId == localBalance.CurrencyId);
+                if (localBalance.Balance != currency.Balance)
+                {
+                    currency.Balance = localBalance.Balance;
+                    SavingSystemManager.Instance.OnSetCloudCurrency(localBalance.CurrencyId, localBalance.Balance);
+                }
+            }
 
             // Wood is used as MANA in the AoeBattleMode
-            m_Currencies.Find(t => t.CurrencyId == "WOOD").Balance = 0;
+            m_LocalBalances.LocalBalances.Find(t => t.CurrencyId == "WOOD").Balance = 0;
+            
+            // Grant an amount of COIN for TESTING
+            m_LocalBalances.LocalBalances.Find(t => t.CurrencyId == "COIN").Balance = 100;
 
             MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
@@ -48,23 +61,26 @@ namespace JumpeeIsland
 
         public void GainCurrency(string currencyId, int currencyAmount)
         {
-            m_Currencies.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
+            m_LocalBalances.LocalBalances.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
+            SavingSystemManager.Instance.SaveLocalBalances(m_LocalBalances);
         }
 
         public void DeductCurrency(string currencyId, int currencyAmount)
         {
-            throw new System.NotImplementedException();
+            m_LocalBalances.LocalBalances.Find(t => t.CurrencyId == currencyId).Balance -= currencyAmount;
+            MainUI.Instance.OnUpdateCurrencies.Invoke();
+            SavingSystemManager.Instance.SaveLocalBalances(m_LocalBalances);
         }
 
         public bool CheckEnoughCurrency(string currencyId, int currencyAmount)
         {
-            return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance >= currencyAmount;
+            return m_LocalBalances.LocalBalances.Find(t => t.CurrencyId == currencyId).Balance >= currencyAmount;
         }
 
-        public IEnumerable<PlayerBalance> GetCurrencies()
+        public IEnumerable<LocalBalance> GetCurrencies()
         {
-            return m_Currencies;
+            return m_LocalBalances.LocalBalances;
         }
     }
 }

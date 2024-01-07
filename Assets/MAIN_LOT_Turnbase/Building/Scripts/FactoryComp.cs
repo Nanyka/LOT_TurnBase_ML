@@ -17,6 +17,7 @@ namespace JumpeeIsland
         private IBuildingDealer m_Building;
         private IEntityUIUpdate m_UIUpdater;
         private ICheckableObject m_CheckableObj;
+        public IHealthComp m_HealthComp;
         private int _curStorage;
         private int _spawnableAmount;
         private float _curWeight = 1f;
@@ -35,11 +36,12 @@ namespace JumpeeIsland
             _isOnHolding = false;
         }
 
-        private void Start()
+        private void Awake()
         {
             m_Building = GetComponent<IBuildingDealer>();
             m_UIUpdater = GetComponent<IEntityUIUpdate>();
             m_CheckableObj = GetComponent<ICheckableObject>();
+            m_HealthComp = GetComponent<IHealthComp>();
         }
 
         public void OnClick()
@@ -66,15 +68,15 @@ namespace JumpeeIsland
 
         public async void OnHoldCanCel()
         {
-            if (_isOnHolding == false)
+            if (_isOnHolding == false || IsFullStock() == false)
                 return;
 
             _isOnHolding = false;
             if (_curStorage < costPerTroop)
                 return;
 
-            if (IsFullStock())
-                m_Building.GetWorldStateChanger().ChangeState(1); // restart the factory after release a part of its storage
+            // if (IsFullStock())
+            //     m_Building.GetWorldStateChanger().ChangeState(1); // restart the factory after release a part of its storage
 
             _spawnableAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
             for (int i = 0; i < _spawnableAmount; i++)
@@ -120,6 +122,9 @@ namespace JumpeeIsland
             _curStorage -= _spawnableAmount * costPerTroop;
             _spawnableAmount = 0;
             UpdateTroopAmountUI();
+            
+            // Destroy the factory after completed the training
+            m_HealthComp.HideTheEntity();
         }
 
         public void OnDoubleTaps()
@@ -153,15 +158,15 @@ namespace JumpeeIsland
 
         private void UpdateTroopAmountUI()
         {
-            if (_spawnableAmount > 0)
+            if (IsFullStock())
             {
                 m_UIUpdater.UpdatePriceText(_spawnableAmount);
                 m_UIUpdater.ShowPriceTag(true);
             }
             else
                 m_UIUpdater.ShowPriceTag(false);
-
-            MainUI.Instance.OnUpdateCurrencies.Invoke();
+        
+            // MainUI.Instance.OnUpdateCurrencies.Invoke();
         }
 
         public GameObject GetGameObject()

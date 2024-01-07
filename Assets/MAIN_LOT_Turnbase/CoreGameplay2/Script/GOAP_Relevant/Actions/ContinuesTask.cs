@@ -1,12 +1,13 @@
+using System.Threading.Tasks;
 using GOAP;
 using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class ContinuesTask : GAction
+    public class ContinuesTask : GAction, IProcessUpdate
     {
+        [SerializeField] private CharacterEntity m_Character;
         [SerializeField] private float _checkDistance = 1f;
-        [SerializeField] private string _targetTag;
         private ICheckableObject _currentPoint;
 
         public override bool PrePerform()
@@ -60,8 +61,12 @@ namespace JumpeeIsland
             if (Vector3.Distance(transform.position, _currentPoint.GetPosition()) < _checkDistance &&
                 _currentPoint.IsCheckable() == false)
             {
-                _currentPoint.ReduceCheckableAmount(1);
-                Duration = 1f;
+                // _currentPoint.ReduceCheckableAmount(1);
+                // Duration = 1f;
+                
+                Target = _currentPoint.GetGameObject();
+                m_GAgent.SetIProcessUpdate(this);
+                
                 return false;
             }
             
@@ -75,6 +80,25 @@ namespace JumpeeIsland
         public override bool PostPerform()
         {
             return true;
+        }
+        
+        public async void StartProcess(Transform myTransform, Vector3 targetPos)
+        {
+            myTransform.LookAt(new Vector3(targetPos.x, myTransform.position.y, targetPos.z));
+            m_Character.StartAttack();
+            await WaitToCompleteTheAction();
+        }
+        
+        private async Task WaitToCompleteTheAction()
+        {
+            await Task.Delay(3000);
+            StopProcess();
+        }
+
+        public void StopProcess()
+        {
+            _currentPoint.ReduceCheckableAmount(1);
+            m_GAgent.FinishFromOutside();
         }
     }
 }

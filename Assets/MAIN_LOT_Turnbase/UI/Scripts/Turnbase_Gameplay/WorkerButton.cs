@@ -27,6 +27,10 @@ namespace JumpeeIsland
             _inventoryItem = creatureInventory;
             m_ItemIcon.sprite = AddressableManager.Instance.GetAddressableSprite(_inventoryItem.spriteAddress);
             
+            var costs = SavingSystemManager.Instance.GetPurchaseCost(_inventoryItem.virtualPurchaseId);
+            if (costs.Count > 0)
+                m_Level.text = costs[0].amount.ToString();
+            
             if (_mAoeWorkerMenu == null)
                 _mAoeWorkerMenu = aoeTroopMenu;
         }

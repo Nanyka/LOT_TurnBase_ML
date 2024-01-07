@@ -1,39 +1,20 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GOAP;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class CheckInProcessArea : GAction
+    public class CheckInProcessArea : GAction, IProcessUpdate
     {
+        [SerializeField] private CharacterEntity m_Character;
         [SerializeField] private float _checkDistance = 1f;
         
         private ICheckableObject _currentPoint;
 
         public override bool PrePerform()
         {
-            // if (m_GAgent.Inventory.IsEmpty())
-            //     return true;
-            //
-            // if (m_GAgent.Inventory.items[0].TryGetComponent(out ICheckableObject checkableObject))
-            // {
-            //     var distanceToTarget = Vector3.Distance(checkableObject.GetPosition(), transform.position);
-            //
-            //     if (distanceToTarget < _checkDistance)
-            //     {
-            //         checkableObject.ReduceCheckableAmount(1);
-            //         if (checkableObject.IsCheckable() == false)
-            //             m_GAgent.Inventory.ClearInventory();
-            //
-            //         m_GAgent.Beliefs.RemoveState("Empty");
-            //         m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
-            //         Duration = 1f;
-            //     }
-            //     else
-            //         Duration = 0f;
-            // }
-            
             var distanceToTarget = float.PositiveInfinity;
             _currentPoint = null;
             var buildings = SavingSystemManager.Instance.GetEnvLoader().GetBuildings(FactionType.Player);
@@ -60,11 +41,14 @@ namespace JumpeeIsland
             
             if (distanceToTarget < _checkDistance)
             {
-                _currentPoint.ReduceCheckableAmount(1);
-            
+                // _currentPoint.ReduceCheckableAmount(1);
+                // Duration = 1f;
+
                 m_GAgent.Beliefs.RemoveState("Empty");
                 m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
-                Duration = 1f;
+                
+                Target = _currentPoint.GetGameObject();
+                m_GAgent.SetIProcessUpdate(this);
             }
             else
             {
@@ -78,6 +62,28 @@ namespace JumpeeIsland
         public override bool PostPerform()
         {
             return true;
+        }
+        
+        public async void StartProcess(Transform myTransform, Vector3 targetPos)
+        {
+            Debug.Log("Start constructing");
+            myTransform.LookAt(new Vector3(targetPos.x, myTransform.position.y, targetPos.z));
+            m_Character.StartAttack();
+            await WaitToCompleteTheAction();
+        }
+        
+        private async Task WaitToCompleteTheAction()
+        {
+            await Task.Delay(3000);
+            StopProcess();
+        }
+
+        public void StopProcess()
+        {
+            Debug.Log("End constructing");
+
+            _currentPoint.ReduceCheckableAmount(1);
+            m_GAgent.FinishFromOutside();
         }
     }
 }

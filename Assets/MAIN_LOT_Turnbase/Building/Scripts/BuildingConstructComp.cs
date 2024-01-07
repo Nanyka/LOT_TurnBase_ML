@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using GOAP;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,11 +13,18 @@ namespace JumpeeIsland
         [SerializeField] private int _cost;
         [SerializeField] private string m_InProcessState;
         [SerializeField] private string m_FinishState;
-        
+        [SerializeField] private bool _isSelfErect;
+
+        private IEntityUIUpdate _healthBarUpdate;
         private bool _isFinishConstructed;
-        [SerializeField] private int _curProcess;
-        [SerializeField] private bool IsAvailable;
+        private int _curProcess;
+        private bool IsAvailable;
         private bool _isInit;
+
+        private void Awake()
+        {
+            _healthBarUpdate = GetComponent<IEntityUIUpdate>();
+        }
 
         public void Init(FactionType factionType)
         {
@@ -31,7 +39,18 @@ namespace JumpeeIsland
                 _curProcess = 0;
                 SetResourceScale();
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
+
+                if (_isSelfErect)
+                    InvokeRepeating(nameof(SelfErect),1f,1f);
             }
+        }
+
+        private void SelfErect()
+        {
+            ReduceCheckableAmount(1);
+            _healthBarUpdate.UpdateHealthSlider(_curProcess*1f/_cost);
+            if (IsAvailable || _isFinishConstructed)
+                CancelInvoke();
         }
 
         private void OnDisable()
@@ -50,17 +69,6 @@ namespace JumpeeIsland
                 IsAvailable = true;
             }
         }
-
-        // private void Destroyed()
-        // {
-        //     if (IsAvailable && GWorld.Instance != null)
-        //     {
-        //         _curProcess = 0;
-        //         SetResourceScale();
-        //         GWorld.Instance.GetWorld().ModifyState(m_FinishState, -1);
-        //         IsAvailable = false;
-        //     }
-        // }
 
         #region EXPLOITING
 

@@ -409,7 +409,13 @@ namespace JumpeeIsland
             }
 
             if (m_CurrencyLoader.CheckEnoughCurrency(cost.currencyId, cost.amount) == false)
+            {
+                MainUI.Instance.OnConversationUI.Invoke($"Not enough {cost.currencyId} for constructing",true);
                 return;
+            }
+            
+            // Deduct the cost from local currencies
+            DeductCurrency(cost.currencyId,cost.amount);
 
             // ...and get the building in place
             var newBuilding = new BuildingData
@@ -639,10 +645,10 @@ namespace JumpeeIsland
             m_CurrencyLoader.GainCurrency(rewardID, rewardAmount);
         }
 
-        public async void DeductCurrency(string currencyId, int amount)
+        public void DeductCurrency(string currencyId, int amount)
         {
-            await RefreshEconomy();
-            m_CloudConnector.DeductCurrency(currencyId, amount);
+            // await RefreshEconomy();
+            // m_CloudConnector.DeductCurrency(currencyId, amount);
             m_CurrencyLoader.DeductCurrency(currencyId, amount);
         }
 
@@ -710,7 +716,7 @@ namespace JumpeeIsland
             //     m_StorageHandler.DeductCurrencyFromBuildings(currencyId, amount);
         }
 
-        public IEnumerable<PlayerBalance> GetCurrencies()
+        public IEnumerable<LocalBalance> GetCurrencies()
         {
             return m_CurrencyLoader.GetCurrencies();
         }

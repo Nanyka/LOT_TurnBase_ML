@@ -28,6 +28,7 @@ namespace JumpeeIsland
 
         public void StartProcess(Transform myTransform, Vector3 targetPos)
         {
+            // Debug.Log($"{name} wander to {targetPos}");
             m_Entity.MoveTowards(targetPos, this);
         }
 

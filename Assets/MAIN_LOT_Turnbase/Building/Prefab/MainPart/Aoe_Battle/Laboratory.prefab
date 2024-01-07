@@ -92,8 +92,6 @@ MonoBehaviour:
   m_SkinAnchor: {fileID: 8647897864553342451}
   _appearVfx: {fileID: 0}
   _factionRenderers: []
-  _activeMaterial: {fileID: 0}
-  _disableMaterial: {fileID: 0}
 --- !u!114 &6289146406539845179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,9 +160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8fc1ba32cd447c906dd55429a09992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cost: 1
+  _cost: 30
   m_InProcessState: InProcessBuilding
   m_FinishState: Laboratory
+  _isSelfErect: 1
 --- !u!114 &1614630934215542972
 MonoBehaviour:
   m_ObjectHideFlags: 0

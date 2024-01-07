@@ -84,9 +84,9 @@ namespace JumpeeIsland
             return m_Currencies.Find(t => t.CurrencyId == currencyId).Balance;
         }
 
-        public IEnumerable<PlayerBalance> GetCurrencies()
+        public IEnumerable<LocalBalance> GetCurrencies()
         {
-            return m_Currencies;
+            return m_LocalBalances.LocalBalances;
         }
 
         // public long GetMoveAmount()
@@ -162,6 +162,6 @@ namespace JumpeeIsland
         public void GainCurrency(string currencyId, int currencyAmount);
         public void DeductCurrency(string currencyId, int currencyAmount);
         public bool CheckEnoughCurrency(string currencyId, int currencyAmount);
-        public IEnumerable<PlayerBalance> GetCurrencies();
+        public IEnumerable<LocalBalance> GetCurrencies();
     }
 }
