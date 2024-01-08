@@ -38,7 +38,7 @@ public class DialogueBehaviour : PlayableBehaviour
         if (pauseScheduled)
         {
             pauseScheduled = false;
-            TimelineManager.Instance.PauseTimeline(director, buttonRequire);
+            TimelineManager.Instance.OnPauseTimeline.Invoke(director, buttonRequire);
         }
         else
         {

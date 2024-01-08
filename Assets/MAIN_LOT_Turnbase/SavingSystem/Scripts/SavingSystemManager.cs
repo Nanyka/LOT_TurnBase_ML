@@ -527,6 +527,28 @@ namespace JumpeeIsland
 
             return m_EnvLoad.TrainACreature(creatureData);
         }
+        
+        public void OnTrainACreature(CreatureData creatureData, CurrencyUnit cost)
+        {
+            if (m_CurrencyLoader.CheckEnoughCurrency(cost.currencyId, cost.amount) == false)
+            {
+                MainUI.Instance.OnConversationUI.Invoke($"Not enough {cost.currencyId} for constructing",true);
+                return;
+            }
+            
+            if (creatureData.CreatureType == CreatureType.WORKER)
+            {
+                if (m_EnvLoad.GetData().CheckFullCapacity(m_EnvLoad.GetDataForSave().GetMainHallLevel()))
+                {
+                    MainUI.Instance.OnConversationUI.Invoke("No any space for new member", true);
+                    return;
+                }
+            }
+        
+            DeductCurrency(cost.currencyId,cost.amount);
+            m_EnvLoad.TrainACreature(creatureData);
+            
+        }
 
         public GameObject OnSpawnMovableEntity(string itemId, Vector3 position)
         {

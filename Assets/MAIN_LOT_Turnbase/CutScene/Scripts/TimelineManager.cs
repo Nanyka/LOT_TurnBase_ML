@@ -4,14 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using JumpeeIsland;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 public class TimelineManager : Singleton<TimelineManager>
 {
+    [HideInInspector] public UnityEvent<PlayableDirector, ButtonRequire> OnPauseTimeline; // send to this, TimelineCameraMover; invoke at DialogBehaviour
+
     private PlayableDirector _activeDirector;
     private ButtonRequire _curButtonRequire;
     private bool _isPause;
+
+    private void Start()
+    {
+        OnPauseTimeline.AddListener(PauseTimeline);
+    }
 
     public void PauseTimeline(PlayableDirector whichOne, ButtonRequire buttonRequire)
     {

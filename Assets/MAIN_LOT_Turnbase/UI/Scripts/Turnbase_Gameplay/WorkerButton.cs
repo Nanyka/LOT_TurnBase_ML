@@ -14,6 +14,7 @@ namespace JumpeeIsland
         private AoeWorkerMenu _mAoeWorkerMenu;
         private Vector3 _spawnPosition;
         private JIInventoryItem _inventoryItem;
+        private CurrencyUnit _cost;
         private int _layerMask = 1 << 6;
         private Camera _camera;
 
@@ -29,7 +30,12 @@ namespace JumpeeIsland
             
             var costs = SavingSystemManager.Instance.GetPurchaseCost(_inventoryItem.virtualPurchaseId);
             if (costs.Count > 0)
-                m_Level.text = costs[0].amount.ToString();
+            {
+                _cost.currencyId = costs[0].id;
+                _cost.amount = costs[0].amount;
+            }
+                
+            m_Level.text = _cost.amount.ToString();
             
             if (_mAoeWorkerMenu == null)
                 _mAoeWorkerMenu = aoeTroopMenu;
@@ -72,7 +78,7 @@ namespace JumpeeIsland
                 CurrentLevel = 0,
                 CreatureType = CreatureType.WORKER
             };
-            SavingSystemManager.Instance.OnTrainACreature(newWorker);
+            SavingSystemManager.Instance.OnTrainACreature(newWorker, _cost);
         }
 
         public GameObject GetGameObject()

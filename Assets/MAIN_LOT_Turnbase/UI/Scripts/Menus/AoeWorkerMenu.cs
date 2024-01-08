@@ -65,26 +65,6 @@ namespace JumpeeIsland
             _creatureMenu.SetActive(false);
         }
 
-        #region MANAGE MENU
-
-        // Just use this in BattleMode
-        // public void CheckEmptyMenu()
-        // {
-        //     if (_workerButtons.Count(t => t.CheckActive()) == 0)
-        //     {
-        //         HideCreatureMenu();
-        //         StartCoroutine(WaitToStartGame());
-        //     }
-        // }
-        //
-        // private IEnumerator WaitToStartGame()
-        // {
-        //     yield return new WaitForSeconds(1f);
-        //     GameFlowManager.Instance.OnKickOffEnv.Invoke();
-        // }
-
-        #endregion
-
         #region IN A DEAL
 
         public void StartADeal(string skinAddress)

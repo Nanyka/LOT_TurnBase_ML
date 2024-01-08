@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 namespace JumpeeIsland
 {
+    
+    
     public class CameraController : Singleton<CameraController>
     {
         [NonSerialized] public UnityEvent<Vector2> OnMoveFocalPoint = new(); // invoke at InputManager
