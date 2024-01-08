@@ -8,8 +8,8 @@ namespace JumpeeIsland
     {
         protected override void Start()
         {
-            _creatureMenu = GetComponent<CreatureMenu>();
-            _mainCamera = Camera.main;
+            // _creatureMenu = GetComponent<CreatureMenu>();
+            // _mainCamera = Camera.main;
 
             OnEnableInteract.AddListener(EnableInteractable);
             GameFlowManager.Instance.OnGameOver.AddListener(DisableInteractable);

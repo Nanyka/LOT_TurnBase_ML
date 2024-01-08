@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ namespace JumpeeIsland
 
         public long GetCurrency(string currencyId)
         {
-            return 0;
+            return m_LocalBalances.LocalBalances.First(t => t.CurrencyId == currencyId).Balance;
         }
 
         public void ResetCurrencies(List<PlayerBalance> currencies)

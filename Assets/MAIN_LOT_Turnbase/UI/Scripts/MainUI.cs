@@ -13,7 +13,7 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController, NpcInGame
 
-        [NonSerialized] public UnityEvent<float> OnEcoBossUI = new(); // send to EcoBossInfoUI ; invoke at PlayerFactionController
+        [NonSerialized] public UnityEvent<float> OnBossMapProfitUpdate = new(); // send to EcoBossInfoUI, AoeCurrencyInfo; invoke at PlayerFactionController, AoeBossResultCalculator
 
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
 
@@ -58,25 +58,26 @@ namespace JumpeeIsland
         [NonSerialized] public UnityEvent<ILaboratory> OnAskForResearch = new(); // send to AoeResearchMenu; invoke at LaboratoryComp
 
         public bool IsInteractable;
+        public bool IsCameraMovable;
 
         // [SerializeField] private DialogUI _dialogUI;
         [SerializeField] private GameObject[] _panels;
         [SerializeField] private GameObject[] _buttons;
 
-        private BuyBuildingMenu _buyBuildingMenu;
-        protected CreatureMenu _creatureMenu;
+        // private BuyBuildingMenu _buyBuildingMenu;
+        // protected CreatureMenu _creatureMenu;
         private CreatureInfoUI _creatureInfo;
         private EcoBossInfoUI _ecoBossInfo;
-        protected Camera _mainCamera;
-        protected int _layerMask = 1 << 9 | 1 << 8 | 1 << 7;
+        // protected Camera _mainCamera;
+        // protected int _layerMask = 1 << 9 | 1 << 8 | 1 << 7;
 
         protected virtual void Start()
         {
-            _buyBuildingMenu = GetComponent<BuyBuildingMenu>();
-            _creatureMenu = GetComponent<CreatureMenu>();
+            // _buyBuildingMenu = GetComponent<BuyBuildingMenu>();
+            // _creatureMenu = GetComponent<CreatureMenu>();
             _creatureInfo = GetComponent<CreatureInfoUI>();
             _ecoBossInfo = GetComponent<EcoBossInfoUI>();
-            _mainCamera = Camera.main;
+            // _mainCamera = Camera.main;
 
             GameFlowManager.Instance.OnDataLoaded.AddListener(EnableInteract);
         }
@@ -85,6 +86,7 @@ namespace JumpeeIsland
         {
             OnEnableInteract.Invoke();
             IsInteractable = true;
+            IsCameraMovable = true;
         }
 
         // protected virtual void Update()

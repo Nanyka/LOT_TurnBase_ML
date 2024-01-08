@@ -71,6 +71,7 @@ namespace JumpeeIsland
         {
             _isInADeal = true;
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, _buildPoint);
+            MainUI.Instance.IsCameraMovable = false;
         }
 
         public void SelectLocation(Vector3 position)
@@ -102,8 +103,7 @@ namespace JumpeeIsland
         {
             foreach (Transform child in _buildPoint)
                 Destroy(child.gameObject);
-
-            // MainUI.Instance.OnHideAllMenu.Invoke();
+            MainUI.Instance.IsCameraMovable = true;
         }
 
         #endregion

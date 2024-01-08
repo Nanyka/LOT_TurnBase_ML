@@ -25,14 +25,20 @@ namespace JumpeeIsland
 
         private void Update()
         {
-            m_FocalPoint.position = Vector3.Lerp(m_FocalPoint.position, _target, _lerpSpeed * Time.deltaTime);
+            var position = m_FocalPoint.position;
+            float lerpFactor = Mathf.Clamp01(Vector3.Distance(position, _target) / _lerpSpeed);
+            position = Vector3.Lerp(position, _target, lerpFactor);
+            m_FocalPoint.position = position;
         }
 
         private void MoveFocalPoint(Vector2 delta)
         {
+            if (MainUI.Instance.IsCameraMovable == false)
+                return;
+
             delta *= _movingSpeed;
-            _target = m_FocalPoint.position;
-            _target += new Vector3(delta.x, _target.y, delta.y);
+            // _target = m_FocalPoint.position;
+            _target += new Vector3(delta.x, 0f, delta.y);
         }
     }
 }

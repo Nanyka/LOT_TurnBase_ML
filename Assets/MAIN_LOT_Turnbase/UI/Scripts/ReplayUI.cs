@@ -6,7 +6,7 @@ namespace JumpeeIsland
     {
         protected override void Start()
         {
-            _mainCamera = Camera.main;
+            // _mainCamera = Camera.main;
             GameFlowManager.Instance.OnDataLoaded.AddListener(EnableInteract);
         }
 
