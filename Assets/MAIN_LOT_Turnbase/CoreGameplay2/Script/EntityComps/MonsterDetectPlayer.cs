@@ -96,7 +96,7 @@ namespace JumpeeIsland
         {
             if (!isDetected) return;
             isDetected = false;
-            m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
+            m_Brain.GetBeliefStates().RemoveState(detectedState);
         }
     }
 

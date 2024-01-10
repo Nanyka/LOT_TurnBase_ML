@@ -75,7 +75,7 @@ namespace JumpeeIsland
         public override bool PostPerform()
         {
             if (_addState.IsNullOrEmpty() == false)
-                m_GAgent.Beliefs.ModifyState(_addState, 1);
+                m_GAgent.Beliefs.AddState(_addState);
 
             if (_removeState.IsNullOrEmpty() == false)
                 m_GAgent.Beliefs.RemoveState(_removeState);

@@ -63,7 +63,7 @@ namespace JumpeeIsland
 
         public void AddBeliefs(string state)
         {
-            Beliefs.ModifyState(state, 1);
+            Beliefs.AddState(state);
         }
 
         #endregion
@@ -156,7 +156,7 @@ namespace JumpeeIsland
 
         private void WhenNoSelectedAction()
         {
-            Beliefs.ModifyState("Idle", 1);
+            Beliefs.AddState("Idle");
             // Debug.Log("APlus from NoSelectedAction");
             Invoke(nameof(APlusAlgorithm), RestInterval);
         }
@@ -220,8 +220,8 @@ namespace JumpeeIsland
         {
             // _isActive = true;
             ResetBrain();
-            Beliefs.ModifyState("Idle",1);
-            Beliefs.ModifyState(addedState,1);
+            Beliefs.AddState("Idle");
+            Beliefs.AddState(addedState);
             APlusAlgorithm();
         }
 

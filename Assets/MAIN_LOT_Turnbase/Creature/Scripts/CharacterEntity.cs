@@ -8,7 +8,7 @@ namespace JumpeeIsland
     public class CharacterEntity : Entity, IComboReceiver, IAttackRelated, ITroopAssembly,
         IGetEntityData<CreatureStats>, ICreatureInit, ISkillCaster
     {
-        public Vector3 _assemblyPoint { get; set; }
+        public Vector3 _assemblyPoint; //{ get; set; }
 
         // control components
         [SerializeField] protected EnemyBrainComp m_Brain;
@@ -25,7 +25,7 @@ namespace JumpeeIsland
         private List<CreatureStats> m_CreatureStats;
 
         // in-game data
-        private CreatureData m_CreatureData;
+        protected CreatureData m_CreatureData;
         protected CreatureStats m_CurrentStat;
         private int _attackIndex;
         private int _killAccumulation;
@@ -109,8 +109,8 @@ namespace JumpeeIsland
         public void SetAssemblyPoint(Vector3 assemblyPoint)
         {
             _assemblyPoint = assemblyPoint;
-            m_Brain.RefreshBrain("HaveJustWentOut");
-            // m_Brain.AddBeliefs("HaveJustWentOut");
+            m_Brain.AddBeliefs("HaveJustWentOut");
+            // m_Brain.RefreshBrain("HaveJustWentOut");
         }
 
         public CreatureStats GetStats()

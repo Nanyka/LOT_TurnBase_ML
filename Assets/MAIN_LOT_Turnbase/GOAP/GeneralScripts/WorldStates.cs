@@ -17,9 +17,15 @@ namespace GOAP
             return _states.ContainsKey(key);
         }
 
-        public void AddState(string key, int value)
+        /// <summary>
+        ///   <para>Add 1 State into local belief. If the State existed, add nothing</para>
+        /// </summary>
+        public void AddState(string key)
         {
-            _states.Add(key, value);
+            if (HasState(key))
+                return;
+
+            _states.Add(key, 1);
         }
 
         public void ModifyState(string key, int value)
@@ -36,7 +42,7 @@ namespace GOAP
 
         public void RemoveState(string key)
         {
-            if (_states.ContainsKey(key))
+            if (HasState(key))
                 _states.Remove(key);
         }
 

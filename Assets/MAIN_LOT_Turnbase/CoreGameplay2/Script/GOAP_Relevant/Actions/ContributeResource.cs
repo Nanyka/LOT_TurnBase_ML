@@ -51,7 +51,7 @@ namespace JumpeeIsland
         private void ResetGOAPState()
         {
             m_GAgent.Beliefs.ClearStates();
-            m_GAgent.Beliefs.ModifyState("Empty", 1);
+            m_GAgent.Beliefs.AddState("Empty");
             
             // m_GAgent.Beliefs.RemoveState("targetAvailable");
         }

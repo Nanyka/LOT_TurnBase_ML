@@ -7,7 +7,9 @@ namespace JumpeeIsland
     public class AoeTutorial1 : MonoBehaviour, IOnTrackController
     {
         [SerializeField] private Transform factoryPos;
-        // [SerializeField] private Transform monsterPos;
+        [SerializeField] private AoeTutorialRegisterComp[] _registerComps;
+
+        private int _currentRegister;
 
         private void Start()
         {
@@ -39,9 +41,8 @@ namespace JumpeeIsland
 
         public void ActionTwo()
         {
-            // var monsterPlace = SavingSystemManager.Instance.GetEnvironmentData().BuildingData.First(t =>
-            //     t.FactionType == FactionType.Enemy && t.BuildingType == BuildingType.GUARDIANAREA);
-            // monsterPos.position = Camera.main.WorldToScreenPoint(monsterPlace.Position);
+            _registerComps[_currentRegister].Register();
+            _currentRegister++;
         }
 
         public void ActionThree()

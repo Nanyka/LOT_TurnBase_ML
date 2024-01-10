@@ -15,7 +15,7 @@ namespace JumpeeIsland
 
         private void AddInitStates()
         {
-            Beliefs.ModifyState("Empty",1);
+            Beliefs.AddState("Empty");
         }
     }
 }

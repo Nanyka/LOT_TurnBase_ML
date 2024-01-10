@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 3570379257344317519}
   - component: {fileID: 4055503724487554618}
   - component: {fileID: 6254316791657815370}
-  - component: {fileID: 8624231042329929181}
   m_Layer: 11
   m_Name: Monster0
   m_TagString: Untagged
@@ -133,8 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 1764998686934934833}
+  _assemblyPoint: {x: 0, y: 0, z: 0}
   m_Brain: {fileID: 5260024252357978533}
-  _attackIndex: 0
 --- !u!114 &2297637555043360336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,35 +260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ComboIndex: 1
---- !u!114 &8624231042329929181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24668024133234973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ab7ce89d44c46d0b57debc9954af535, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CreatureData:
-    EntityName: EcoBoss0
-    SkinAddress: 
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    FactionType: 1
-    CurrentHp: 0
-    CurrentLevel: 0
-    EntityType: 4
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 1
-    EffectCaches: []
-  m_WorldState: ECOBOSS
-  _isBoss: 1
 --- !u!1 &468692550216725630
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,7 +34,7 @@ namespace JumpeeIsland
                 if (remainResource > myStrength)
                 {
                     m_Brain.Beliefs.RemoveState("Empty");
-                    m_Brain.Beliefs.ModifyState("targetAvailable", 1);
+                    m_Brain.Beliefs.AddState("targetAvailable");
                 }
                 
                 myData.TurnCount += collectedAmount;

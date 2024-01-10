@@ -14,7 +14,7 @@ namespace JumpeeIsland
         private AoeWorkerMenu _mAoeWorkerMenu;
         private Vector3 _spawnPosition;
         private JIInventoryItem _inventoryItem;
-        private CurrencyUnit _cost;
+        private CurrencyUnit _cost = new();
         private int _layerMask = 1 << 6;
         private Camera _camera;
 

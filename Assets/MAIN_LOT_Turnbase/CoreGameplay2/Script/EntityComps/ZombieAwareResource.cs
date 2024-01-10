@@ -135,10 +135,10 @@ namespace JumpeeIsland
             switch (_currentDetectType)
             {
                 case ZombieDetectType.RESOURCE:
-                    m_Brain.GetBeliefStates().ModifyState(detectedResourceState,-1);
+                    m_Brain.GetBeliefStates().RemoveState(detectedResourceState);
                     break;
                 case ZombieDetectType.ENEMY:
-                    m_Brain.GetBeliefStates().ModifyState(detectedEnemyState,-1);
+                    m_Brain.GetBeliefStates().RemoveState(detectedEnemyState);
                     break;
             }
             _currentDetectType = ZombieDetectType.NONE;

@@ -28,14 +28,18 @@ namespace JumpeeIsland
             _cancellation.Cancel();
         }
 
-        private void Start()
+        private void Awake()
         {
             m_Brain = GetComponent<IBrain>();
             m_Mover = mainEntity.GetComponent<IMover>();
+        }
+
+        private void Start()
+        {
             GameFlowManager.Instance.OnMonsterAttack.AddListener(AwareMonsterAttack);
         }
 
-        private async void AwareMonsterAttack()
+        public void AwareMonsterAttack()
         {
             if (isDetected)
                 return;
@@ -107,7 +111,7 @@ namespace JumpeeIsland
         {
             if (!isDetected) return;
             isDetected = false;
-            m_Brain.GetBeliefStates().ModifyState(detectedState,-1);
+            m_Brain.GetBeliefStates().RemoveState(detectedState);
         }
     }
 }

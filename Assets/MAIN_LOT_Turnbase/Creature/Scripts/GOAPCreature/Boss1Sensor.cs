@@ -350,16 +350,16 @@ namespace JumpeeIsland
             switch (movingIndex)
             {
                 case 1:
-                    beliefs.ModifyState("GOLEFT", 1);
+                    beliefs.AddState("GOLEFT");
                     break;
                 case 2:
-                    beliefs.ModifyState("GORIGHT", 1);
+                    beliefs.AddState("GORIGHT");
                     break;
                 case 3:
-                    beliefs.ModifyState("GOBACKWARD", 1);
+                    beliefs.AddState("GOBACKWARD");
                     break;
                 case 4:
-                    beliefs.ModifyState("GOFORWARD", 1);
+                    beliefs.AddState("GOFORWARD");
                     break;
             }
         }

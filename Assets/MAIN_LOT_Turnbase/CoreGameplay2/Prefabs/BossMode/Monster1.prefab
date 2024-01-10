@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 4674707566364356206}
   - component: {fileID: 6455501808421609934}
   - component: {fileID: 1626548008828611945}
-  - component: {fileID: 4163507862399210608}
   m_Layer: 11
   m_Name: Monster1
   m_TagString: Untagged
@@ -241,8 +240,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 7372261134331641849}
+  _assemblyPoint: {x: 0, y: 0, z: 0}
   m_Brain: {fileID: 98598941826601757}
-  _attackIndex: 0
 --- !u!114 &6061034860253440618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,35 +380,6 @@ MonoBehaviour:
   - {fileID: 8466890933631867753}
   - {fileID: 8466890933631867753}
   _angle: 45
---- !u!114 &4163507862399210608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1987728269022821807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ab7ce89d44c46d0b57debc9954af535, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CreatureData:
-    EntityName: Monster1
-    SkinAddress: 
-    Position: {x: 12, y: 0, z: -6}
-    Rotation: {x: 0, y: 180, z: 0}
-    FactionType: 1
-    CurrentHp: 0
-    CurrentLevel: 0
-    EntityType: 4
-    CreatureType: 0
-    CurrentShield: 0
-    CurrentExp: 0
-    TurnCount: 0
-    CurrentDamage: 1
-    EffectCaches: []
-  m_WorldState: 
-  _isBoss: 0
 --- !u!1 &2070026297200321185
 GameObject:
   m_ObjectHideFlags: 0
@@ -16297,7 +16267,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectRange: 5
   detectedState: SeePlayer
-  isDetected: 0
 --- !u!114 &4902324086720087363
 MonoBehaviour:
   m_ObjectHideFlags: 0

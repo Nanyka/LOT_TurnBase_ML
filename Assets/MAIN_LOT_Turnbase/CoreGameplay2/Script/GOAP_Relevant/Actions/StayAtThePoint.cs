@@ -23,7 +23,7 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            m_GAgent.Beliefs.ModifyState("MoveToCenter", -1);
+            m_GAgent.Beliefs.RemoveState("MoveToCenter");
             return true;
         }
 

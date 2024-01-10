@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace JumpeeIsland
@@ -17,7 +18,7 @@ namespace JumpeeIsland
         private IBuildingDealer m_Building;
         private IEntityUIUpdate m_UIUpdater;
         private ICheckableObject m_CheckableObj;
-        public IHealthComp m_HealthComp;
+        private IHealthComp m_HealthComp;
         private int _curStorage;
         private int _spawnableAmount;
         private float _curWeight = 1f;
@@ -42,6 +43,12 @@ namespace JumpeeIsland
             m_UIUpdater = GetComponent<IEntityUIUpdate>();
             m_CheckableObj = GetComponent<ICheckableObject>();
             m_HealthComp = GetComponent<IHealthComp>();
+        }
+
+        private void Start()
+        {
+            assemblyPoint = transform.position;
+            testAssemblyPoint.position = assemblyPoint;
         }
 
         public void OnClick()
@@ -72,12 +79,27 @@ namespace JumpeeIsland
                 return;
 
             _isOnHolding = false;
-            if (_curStorage < costPerTroop)
-                return;
+            // if (_curStorage < costPerTroop)
+            //     return;
 
             // if (IsFullStock())
             //     m_Building.GetWorldStateChanger().ChangeState(1); // restart the factory after release a part of its storage
 
+            await SpawnTroop();
+        }
+
+        public async void OnDoubleTaps()
+        {
+            Debug.Log($"Double taps on {name}");
+            
+            if (IsFullStock() == false)
+                return;
+
+            await SpawnTroop();
+        }
+
+        private async Task SpawnTroop()
+        {
             _spawnableAmount = Mathf.FloorToInt(_curStorage * 1f / costPerTroop);
             for (int i = 0; i < _spawnableAmount; i++)
             {
@@ -104,14 +126,14 @@ namespace JumpeeIsland
                             {
                                 if (troopName.Equals(research.Target))
                                     attackReceiver.EnablePowerBar(research.Magnitude);
-                                
+
                                 break;
                             }
                             case ResearchType.TROOP_STATS:
                             {
                                 if (research.TroopType == TroopType.NONE || research.TroopType == troopType)
                                     Debug.Log("Do some stats changing");
-                                
+
                                 break;
                             }
                         }
@@ -122,14 +144,9 @@ namespace JumpeeIsland
             _curStorage -= _spawnableAmount * costPerTroop;
             _spawnableAmount = 0;
             UpdateTroopAmountUI();
-            
+
             // Destroy the factory after completed the training
             m_HealthComp.HideTheEntity();
-        }
-
-        public void OnDoubleTaps()
-        {
-            Debug.Log($"Double taps on {name}");
         }
 
         public bool IsFullStock()

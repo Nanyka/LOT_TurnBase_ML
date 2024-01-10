@@ -24,7 +24,7 @@ namespace JumpeeIsland
 
         public override bool PostPerform()
         {
-            m_GAgent.Beliefs.ModifyState("HaveJustWentOut", -1);
+            m_GAgent.Beliefs.RemoveState("HaveJustWentOut");
             return true;
         }
 

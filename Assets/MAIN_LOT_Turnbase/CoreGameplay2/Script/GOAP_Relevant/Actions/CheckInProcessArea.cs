@@ -45,7 +45,7 @@ namespace JumpeeIsland
                 // Duration = 1f;
 
                 m_GAgent.Beliefs.RemoveState("Empty");
-                m_GAgent.Beliefs.ModifyState("targetAvailable", 1);
+                m_GAgent.Beliefs.AddState("targetAvailable");
                 
                 Target = _currentPoint.GetGameObject();
                 m_GAgent.SetIProcessUpdate(this);
