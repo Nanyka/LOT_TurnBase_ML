@@ -8,15 +8,16 @@ namespace JumpeeIsland
         public override void Init(CreatureData creatureData)
         {
             base.Init(creatureData);
-            if (m_Brain.TryGetComponent(out PlayerAwareMonster sensor))
-                StartCoroutine(FirstDetecting(sensor));
+            GetComponent<IAttackRegister>().Init();
+
+            // if (m_Brain.TryGetComponent(out PlayerAwareMonster sensor))
+            //     StartCoroutine(FirstDetecting(sensor));
         }
 
-        private IEnumerator FirstDetecting(PlayerAwareMonster sensor)
-        {
-            yield return new WaitForSeconds(3f);
-            Debug.Log("First detecting");
-            sensor.AwareMonsterAttack();
-        }
+        // private IEnumerator FirstDetecting(PlayerAwareMonster sensor)
+        // {
+        //     yield return new WaitForSeconds(3f);
+        //     sensor.AwareMonsterAttack();
+        // }
     }
 }

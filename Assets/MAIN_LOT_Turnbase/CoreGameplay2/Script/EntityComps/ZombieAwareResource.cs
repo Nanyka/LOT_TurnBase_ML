@@ -127,6 +127,31 @@ namespace JumpeeIsland
             return detectRange;
         }
 
+        public bool FullyDetect()
+        {
+            if (isDetected)
+                return false;
+            
+            var target = ExecuteSensor();
+
+            if (target != null)
+            {
+                switch (_currentDetectType)
+                {
+                    case ZombieDetectType.RESOURCE:
+                        m_Brain.RefreshBrain(detectedResourceState);
+                        break;
+                    case ZombieDetectType.ENEMY:
+                        m_Brain.RefreshBrain(detectedEnemyState);
+                        break;
+                }
+                
+                isDetected = true;
+            }
+
+            return isDetected;
+        }
+
         private void ResetSensor()
         {
             if (!isDetected) return;

@@ -8,7 +8,7 @@ namespace JumpeeIsland
     public class CharacterEntity : Entity, IComboReceiver, IAttackRelated, ITroopAssembly,
         IGetEntityData<CreatureStats>, ICreatureInit, ISkillCaster
     {
-        public Vector3 _assemblyPoint; //{ get; set; }
+        public Vector3 _assemblyPoint { get; set; }
 
         // control components
         [SerializeField] protected EnemyBrainComp m_Brain;
@@ -72,6 +72,19 @@ namespace JumpeeIsland
             return m_CreatureData;
         }
 
+        public CreatureStats GetStats()
+        {
+            return m_CurrentStat;
+        }
+
+        public bool CheckAvailable()
+        {
+            return m_HealthComp.CheckAlive();
+        }
+
+        #endregion
+        
+        
         #region ATTACK RELATED
 
         public void GainGoldValue()
@@ -102,25 +115,6 @@ namespace JumpeeIsland
         public void AccumulateKills()
         {
             _killAccumulation++;
-        }
-
-        #endregion
-
-        public void SetAssemblyPoint(Vector3 assemblyPoint)
-        {
-            _assemblyPoint = assemblyPoint;
-            m_Brain.AddBeliefs("HaveJustWentOut");
-            // m_Brain.RefreshBrain("HaveJustWentOut");
-        }
-
-        public CreatureStats GetStats()
-        {
-            return m_CurrentStat;
-        }
-
-        public bool CheckAvailable()
-        {
-            return m_HealthComp.CheckAlive();
         }
 
         #endregion
@@ -162,6 +156,24 @@ namespace JumpeeIsland
         {
             return m_MovementComp.GetStopDistance();
         }
+        
+        
+
+        public void SetAssemblyPoint(Vector3 assemblyPoint)
+        {
+            if (m_Brain.ExecuteSensor() == false)
+            {
+                _assemblyPoint = assemblyPoint;
+                // m_Brain.AddBeliefs("HaveJustWentOut");
+                m_Brain.RefreshBrain("HaveJustWentOut");
+            }
+        }
+
+        // public void SetDetectedMonster(Vector3 assemblyPoint)
+        // {
+        //     SetAssemblyPoint(assemblyPoint);
+        //     m_Brain.AddBeliefs("SeeMonster");
+        // }
 
         #endregion
 
@@ -251,6 +263,7 @@ namespace JumpeeIsland
     public interface ITroopAssembly
     {
         public void SetAssemblyPoint(Vector3 assemblyPoint);
+        // public void SetDetectedMonster(Vector3 assemblyPoint);
     }
 
     public interface IComboReceiver

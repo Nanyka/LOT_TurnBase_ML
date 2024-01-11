@@ -11,7 +11,7 @@ namespace JumpeeIsland
         [SerializeField] private GameObject mainEntity;
         [SerializeField] private float detectRange;
         [SerializeField] private string detectedState;
-        
+
         private IBrain m_Brain;
         private IMover m_Mover;
         private LayerMask layerMask = 1 << 11;
@@ -79,10 +79,10 @@ namespace JumpeeIsland
         {
             Collider[] hitColliders = new Collider[10];
             int numColliders = Physics.OverlapSphereNonAlloc(transform.position, detectRange, hitColliders, layerMask);
+            GameObject target = null;
 
             if (numColliders > 0)
             {
-                GameObject target = null;
                 var distanceToTarget = float.PositiveInfinity;
 
                 for (int i = 0; i < numColliders; i++)
@@ -95,11 +95,13 @@ namespace JumpeeIsland
                     }
                 }
 
-                return target;
+                // return target;
             }
 
-            ResetSensor();
-            return null;
+            if (target == null)
+                ResetSensor();
+            
+            return target;
         }
 
         public float DetectRange()
@@ -107,7 +109,24 @@ namespace JumpeeIsland
             return detectRange;
         }
 
-        public void ResetSensor()
+        public bool FullyDetect()
+        {
+            if (isDetected)
+                return false;
+
+            var target = ExecuteSensor();
+
+            if (target != null)
+            {
+                m_Mover.StopWalk();
+                m_Brain.RefreshBrain(detectedState);
+                isDetected = true;
+            }
+
+            return isDetected;
+        }
+
+        private void ResetSensor()
         {
             if (!isDetected) return;
             isDetected = false;

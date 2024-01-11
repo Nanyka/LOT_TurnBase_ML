@@ -92,6 +92,22 @@ namespace JumpeeIsland
             return detectRange;
         }
 
+        public bool FullyDetect()
+        {
+            if (isDetected)
+                return false;
+            
+            var target = ExecuteSensor();
+
+            if (target != null)
+            {
+                m_Brain.RefreshBrain(detectedState);
+                isDetected = true;
+            }
+
+            return isDetected;
+        }
+
         private void ResetSensor()
         {
             if (!isDetected) return;
@@ -104,6 +120,6 @@ namespace JumpeeIsland
     {
         public GameObject ExecuteSensor();
         public float DetectRange();
-        // public void ResetSensor();
+        public bool FullyDetect();
     }
 }

@@ -11,7 +11,8 @@ namespace JumpeeIsland
     {
         [SerializeField] private Transform _mainTranform;
         [SerializeField] private EnemyGoalManager m_GoalManager;
-
+        
+        private ISensor m_Sensor;
         private SubGoal _currentGoal;
         private CancellationTokenSource _cancellation = new();
         private bool _isActive;
@@ -20,6 +21,8 @@ namespace JumpeeIsland
 
         private void Awake()
         {
+            m_Sensor = GetComponent<ISensor>();
+            
             SetActions();
             SetGoal();
         }
@@ -225,6 +228,11 @@ namespace JumpeeIsland
             APlusAlgorithm();
         }
 
+        public bool ExecuteSensor()
+        {
+            return m_Sensor.FullyDetect();
+        }
+
         private void ResetBrain()
         {
             Beliefs.ClearStates();
@@ -240,5 +248,6 @@ namespace JumpeeIsland
     {
         public WorldStates GetBeliefStates();
         public void RefreshBrain(string addedState);
+        public bool ExecuteSensor();
     }
 }
