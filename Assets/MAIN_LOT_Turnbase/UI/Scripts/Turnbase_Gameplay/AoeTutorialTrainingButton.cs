@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
-    public class WorkerButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IConfirmFunction, IDragDropButton
+    public class AoeTutorialTrainingButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
+        IConfirmFunction, IDragDropButton
     {
         [SerializeField] private TextMeshProUGUI m_Level;
         [SerializeField] private Image m_ItemIcon;
@@ -73,14 +74,7 @@ namespace JumpeeIsland
 
         public void ClickYes()
         {
-            var newWorker = new CreatureData
-            {
-                EntityName = _inventoryItem.inventoryName,
-                Position = _spawnPosition,
-                CurrentLevel = 0,
-                CreatureType = CreatureType.WORKER
-            };
-            SavingSystemManager.Instance.OnTrainACreature(newWorker, _cost);
+            TimelineManager.Instance.OnStringCheck.Invoke(_inventoryItem.inventoryName);
         }
 
         public GameObject GetGameObject()

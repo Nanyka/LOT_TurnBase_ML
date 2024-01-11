@@ -157,23 +157,14 @@ namespace JumpeeIsland
             return m_MovementComp.GetStopDistance();
         }
         
-        
-
         public void SetAssemblyPoint(Vector3 assemblyPoint)
         {
             if (m_Brain.ExecuteSensor() == false)
             {
                 _assemblyPoint = assemblyPoint;
-                // m_Brain.AddBeliefs("HaveJustWentOut");
                 m_Brain.RefreshBrain("HaveJustWentOut");
             }
         }
-
-        // public void SetDetectedMonster(Vector3 assemblyPoint)
-        // {
-        //     SetAssemblyPoint(assemblyPoint);
-        //     m_Brain.AddBeliefs("SeeMonster");
-        // }
 
         #endregion
 
@@ -219,10 +210,10 @@ namespace JumpeeIsland
             m_CurrentStat = m_CreatureStats[m_CreatureData.CurrentLevel];
 
             // Initiate entity data if it's new
-            var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
+            // var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
             m_CreatureData.SkinAddress =
-                inventoryItem.skinAddress[
-                    Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventoryItem.skinAddress.Count - 1)];
+                inventory.skinAddress[
+                    Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventory.skinAddress.Count - 1)];
             m_CreatureData.CreatureType = m_CurrentStat.CreatureType;
             m_CreatureData.CurrentExp = 0;
             if (m_CreatureData.CurrentHp <= 0)

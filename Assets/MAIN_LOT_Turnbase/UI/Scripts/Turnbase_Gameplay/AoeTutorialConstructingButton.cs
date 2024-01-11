@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,7 +6,7 @@ using UnityEngine.UI;
 
 namespace JumpeeIsland
 {
-    public class AoeDragDropButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
+    public class AoeTutorialDragDropButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
         IConfirmFunction, IDragDropButton
     {
         [SerializeField] private GameObject m_Container;
@@ -74,18 +73,13 @@ namespace JumpeeIsland
 
         public virtual void ClickYes()
         {
-            SavingSystemManager.Instance.OnPlaceABuilding(m_BuidlingItem, _buildingPosition, _constructingCost);
+            // Debug.Log($"This is a tutorial constructing button of {m_BuidlingItem.inventoryName}");
+            TimelineManager.Instance.OnStringCheck.Invoke(m_BuidlingItem.inventoryName);
         }
 
         public GameObject GetGameObject()
         {
             return gameObject;
         }
-    }
-
-    public interface IDragDropButton
-    {
-        public void TurnOn(JIInventoryItem buildingItem, IDragDropMenu dragDropMenu);
-        public void TurnOff();
     }
 }

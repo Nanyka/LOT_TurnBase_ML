@@ -6,15 +6,16 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class AoeWorkerMenu : MonoBehaviour
+    public class AoeWorkerMenu : MonoBehaviour, IDragDropMenu
     {
         public bool _isInADeal { get; set; }
 
         [SerializeField] private GameObject _creatureMenu;
         [SerializeField] private GameObject _confirmPanel;
-        [SerializeField] protected List<WorkerButton> _workerButtons;
+        [SerializeField] protected List<GameObject> _buttons;
         [SerializeField] private Transform _settlePoint;
 
+        private List<IDragDropButton> _workerButtons = new();
         private int _layerMask = 1 << 6;
         private List<JIInventoryItem> m_Troops = new();
         private TroopDropButton _selectedCreature;
@@ -25,7 +26,12 @@ namespace JumpeeIsland
         {
             MainUI.Instance.OnShowCreatureMenu.AddListener(ShowWorkerMenu);
             MainUI.Instance.OnHideAllMenu.AddListener(HideCreatureMenu);
-            // MainUI.Instance.OnShowDropTroopMenu.AddListener(ShowMenu);
+
+            foreach (var button in _buttons)
+            {
+                if (button.TryGetComponent(out IDragDropButton workerButton))
+                    _workerButtons.Add(workerButton);
+            }
         }
 
         private void ShowWorkerMenu(List<JIInventoryItem> inventoryItems)
@@ -54,7 +60,7 @@ namespace JumpeeIsland
             for (int i = 0; i < m_Troops.Count; i++)
             {
                 _workerButtons[i].TurnOn(m_Troops[i], this);
-                _workerButtons[i].gameObject.SetActive(true);
+                // _workerButtons[i].gameObject.SetActive(true);
             }
 
             _creatureMenu.SetActive(true);
@@ -107,5 +113,12 @@ namespace JumpeeIsland
         }
 
         #endregion
+    }
+    
+    public interface IDragDropMenu
+    {
+        public void StartADeal(string skinAddress);
+        public void SelectLocation(Vector3 position);
+        public void EndDeal(IConfirmFunction confirmFunction);
     }
 }

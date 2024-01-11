@@ -5,17 +5,19 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class AoeConstructionMenu : MonoBehaviour
+    public class AoeConstructionMenu : MonoBehaviour, IDragDropMenu
     {
         public bool _isInADeal { get; set; }
 
         [SerializeField] private GameObject _tabHolder;
         [SerializeField] private GameObject _confirmPanel;
         [SerializeField] private TabButton[] _buildingTab;
-        [SerializeField] private List<AoeConstructingButton> _troopBuildings;
-        [SerializeField] private List<AoeConstructingButton> _researchBuildings;
+        [SerializeField] private List<GameObject> _troopBuildings;
+        [SerializeField] private List<GameObject> _researchBuildings;
         [SerializeField] private Transform _buildPoint;
 
+        private List<IDragDropButton> _forgeButtons = new();
+        private List<IDragDropButton> _labButtons = new ();
         private int _layerMask = 1 << 6;
         private BuildingBuyButton _selectedBuilding;
         private IConfirmFunction _currentConfirm;
@@ -25,13 +27,26 @@ namespace JumpeeIsland
             SavingSystemManager.Instance.OnSetUpBuildingMenus.AddListener(Init);
             MainUI.Instance.OnBuyBuildingMenu.AddListener(ShowBuildingMenu);
             MainUI.Instance.OnHideAllMenu.AddListener(HideBuildingMenu);
+            
+            // Setup buttons
+            foreach (var building in _troopBuildings)
+            {
+                if (building.TryGetComponent(out IDragDropButton button))
+                    _forgeButtons.Add(button);
+            }
+            
+            foreach (var building in _researchBuildings)
+            {
+                if (building.TryGetComponent(out IDragDropButton button))
+                    _labButtons.Add(button);
+            }
         }
 
         private void Init(List<JIInventoryItem> inventories)
         {
-            foreach (var buyButton in _troopBuildings)
+            foreach (var buyButton in _forgeButtons)
                 buyButton.TurnOff();
-            foreach (var buyButton in _researchBuildings)
+            foreach (var buyButton in _labButtons)
                 buyButton.TurnOff();
 
             // Split building into categories
@@ -40,12 +55,12 @@ namespace JumpeeIsland
             var index = 0;
             foreach (var inventory in orderedInventories)
                 if (inventory.inventoryType == InventoryType.Building)
-                    _troopBuildings[index++].TurnOn(inventory, this);
+                    _forgeButtons[index++].TurnOn(inventory, this);
 
             index = 0;
             foreach (var inventory in orderedInventories)
                 if (inventory.inventoryType == InventoryType.Research)
-                    _researchBuildings[index++].TurnOn(inventory, this);
+                    _labButtons[index++].TurnOn(inventory, this);
         }
 
 
@@ -79,7 +94,7 @@ namespace JumpeeIsland
             _buildPoint.position = position;
         }
 
-        public void EndSelectionPhase(IConfirmFunction confirmFunction)
+        public void EndDeal(IConfirmFunction confirmFunction)
         {
             _currentConfirm = confirmFunction;
             _confirmPanel.SetActive(true);

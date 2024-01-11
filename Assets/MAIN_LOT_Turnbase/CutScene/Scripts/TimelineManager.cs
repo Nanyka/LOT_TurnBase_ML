@@ -11,6 +11,7 @@ using UnityEngine.Timeline;
 public class TimelineManager : Singleton<TimelineManager>
 {
     [HideInInspector] public UnityEvent<PlayableDirector, ButtonRequire> OnPauseTimeline; // send to this, TimelineCameraMover; invoke at DialogBehaviour
+    [HideInInspector] public UnityEvent<string> OnStringCheck; // send to StringChecker, invoke at AoeTutorialConstructingButton
 
     private PlayableDirector _activeDirector;
     private ButtonRequire _curButtonRequire;
