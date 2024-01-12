@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
@@ -8,9 +9,9 @@ namespace JumpeeIsland
     {
         [SerializeField] private Transform factoryObject;
         [SerializeField] private Transform factoryPos;
-        [SerializeField] private AoeTutorialRegisterComp[] _registerComps;
+        [SerializeField] private AoeTutorialEntity[] _tutorialEntities;
 
-        private int _currentRegister;
+        private int _curIndex;
 
         private void Start()
         {
@@ -22,7 +23,12 @@ namespace JumpeeIsland
         {
             TimelineManager.Instance.ResumeTimeline(ButtonRequire.STARTGAME);
         }
-        
+
+        public void SetIntParam(int intParam)
+        {
+            _curIndex = intParam;
+        }
+
         public void SetActive(bool isActive)
         {
             
@@ -42,13 +48,12 @@ namespace JumpeeIsland
 
         public void ActionTwo()
         {
-            _registerComps[_currentRegister].Register();
-            _currentRegister++;
+            // _tutorialEntities[_curIndex].TakeDamage();
         }
 
         public void ActionThree()
         {
-            throw new System.NotImplementedException();
+            // _tutorialEntities[_curIndex].Die();
         }
     }
 }

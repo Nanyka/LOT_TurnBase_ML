@@ -15,7 +15,7 @@ namespace JumpeeIsland
         private IInputExecutor _currentExecutor;
         private IGlobalInteract _globalInteract;
         private Camera _mainCamera;
-        private bool _isDropTroop;
+        private bool _isDropEntity;
         private bool _isCameraMove;
 
         private void Start()
@@ -57,7 +57,7 @@ namespace JumpeeIsland
                 var moveRay = _mainCamera.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
                 if (Physics.Raycast(moveRay, out var selectHit, 100f, _selectLayer))
                 {
-                    _isDropTroop = true;
+                    _isDropEntity = true;
                     
                     if (selectHit.collider.TryGetComponent(out IInputExecutor executor))
                     {
@@ -73,7 +73,7 @@ namespace JumpeeIsland
 
             if (context.canceled)
             {
-                _isDropTroop = false;
+                _isDropEntity = false;
                 _isCameraMove = false;
 
                 if (_currentExecutor != null)
@@ -110,7 +110,7 @@ namespace JumpeeIsland
         public void PlayerDetectTouch(InputAction.CallbackContext context)
         {
             // TODO Select object from selectLayer and drop point at dropLayer
-            if (_isDropTroop)
+            if (_isDropEntity)
             {
                 if (PointingChecker.IsPointerOverUIObject())
                     return;
@@ -125,6 +125,15 @@ namespace JumpeeIsland
         {
             if (_isCameraMove)
                 CameraController.Instance.OnMoveFocalPoint.Invoke(context.ReadValue<Vector2>());
+        }
+
+        public Vector3 GetTouchPoint()
+        {
+            var moveRay = _mainCamera.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
+            if (Physics.Raycast(moveRay, out var dropHit, 100f, _dropLayer))
+                return dropHit.point;
+            
+            return Vector3.zero;
         }
     }
 }

@@ -25,7 +25,12 @@ namespace JumpeeIsland
             Debug.Log("Resume timeline");
             TimelineManager.Instance.ResumeTimeline(ButtonRequire.STARTGAME);
         }
-        
+
+        public void SetIntParam(int intParam)
+        {
+            
+        }
+
         public void SetActive(bool isActive)
         {
             

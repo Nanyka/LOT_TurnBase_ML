@@ -6,10 +6,12 @@ namespace JumpeeIsland
 {
     public class AoeTutorialBuildingEntity : AoeTutorialEntity
     {
+        [SerializeField] private BuildingData m_BuildingData;
+        [SerializeField] private bool _isUpdatePos;
+
         private IBuildingConstruct m_Constructor;
         private ISkinComp m_SkinComp;
         private IEntityUIUpdate m_UIUpdator;
-        private BuildingData m_BuildingData { get; set; }
 
         private void Awake()
         {
@@ -26,20 +28,12 @@ namespace JumpeeIsland
 
         private void WaitForSkin()
         {
-            Init(new BuildingData()
-            {
-                EntityName = "WarriorForge",
-                FactionType = FactionType.Player,
-                CurrentLevel = 0
-            });
-            
+            Init();
             gameObject.SetActive(false);
         }
 
-        public override void Init(EntityData entityData)
+        private void Init()
         {
-            m_BuildingData = entityData as BuildingData;
-            
             RefreshEntity();
         }
 
@@ -55,5 +49,22 @@ namespace JumpeeIsland
                 : inventoryItem.skinAddress[0];
             m_SkinComp.Init(m_BuildingData.SkinAddress);
         }
+
+        // public override void TakeDamage()
+        // {
+        //     gameObject.SetActive(true);
+        //     
+        //     if (_isUpdatePos == false)
+        //         return;
+        //
+        //     var touchPoint = InputManager.Instance.GetTouchPoint();
+        //     if (touchPoint != Vector3.zero)
+        //         transform.position = touchPoint;
+        // }
+        //
+        // public override void Die()
+        // {
+        //     gameObject.SetActive(false);
+        // }
     }
 }

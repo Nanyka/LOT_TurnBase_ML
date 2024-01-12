@@ -25,6 +25,11 @@ namespace JumpeeIsland
             _playableDirector.Play();
         }
 
+        public void SetIntParam(int intParam)
+        {
+            
+        }
+
         public void SetActive(bool isActive)
         {
             

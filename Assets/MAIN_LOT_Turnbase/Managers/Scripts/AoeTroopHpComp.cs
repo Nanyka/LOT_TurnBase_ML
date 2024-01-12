@@ -34,6 +34,7 @@ namespace JumpeeIsland
             if (_isDeath)
                 return;
 
+            // TODO: How to retrieve attack damage from attackBy entity
             m_Data.CurrentHp -= attackBy.GetAttackDamage();
             entityUI.UpdateHealthSlider(m_Data.CurrentHp * 1f / m_MAXHp);
 
@@ -47,7 +48,7 @@ namespace JumpeeIsland
                 m_AnimateComp.SetAnimation(AnimateType.TakeDamage);
         }
 
-        public virtual void Die(IAttackRelated killedByFaction)
+        protected virtual void Die(IAttackRelated killedByFaction)
         {
             _isDeath = true;
             m_Collider.enabled = false;

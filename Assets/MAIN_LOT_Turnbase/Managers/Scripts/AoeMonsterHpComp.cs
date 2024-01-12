@@ -5,8 +5,8 @@ namespace JumpeeIsland
     public class AoeMonsterHpComp : AoeTroopHpComp
     {
         [SerializeField] private CurrencyUnit _reward;
-        
-        public override void Die(IAttackRelated killedByFaction)
+
+        protected override void Die(IAttackRelated killedByFaction)
         {
             base.Die(killedByFaction);
 
