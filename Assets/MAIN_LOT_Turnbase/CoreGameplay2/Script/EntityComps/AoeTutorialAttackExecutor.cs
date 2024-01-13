@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeTutorialAttackExecutor : MonoBehaviour, IAttackExecutor, IAttackRegister
+    public class AoeTutorialAttackExecutor : MonoBehaviour, IAttackExecutor
     {
         // [SerializeField] private float attackRange;
         [SerializeField] private ParticleSystem attackVfx;
@@ -17,7 +17,7 @@ namespace JumpeeIsland
         private LayerMask _attackLayerMask = 1 << 7 | 1 << 9;
         private LayerMask _collectLayerMask = 1 << 8;
 
-        public void Init()
+        public void Start()
         {
             // _attackComp = GetComponent<IAttackComp>();
             _attackRelated = GetComponent<IAttackRelated>();
@@ -50,9 +50,10 @@ namespace JumpeeIsland
 
         public void ExecuteHitEffect(GameObject target)
         {
-            if (gameObject.TryGetComponent(out IHealthComp healthComp))
+            if (target.TryGetComponent(out IHealthComp healthComp))
             {
-                Debug.Log("Attack an object with a healComp");
+                Debug.Log($"Attack an object with a healComp. My attacker: {_attackRelated}");
+                healthComp.TakeDamage(_attackRelated);
             }
             
             // _attackComp.SuccessAttack(target);

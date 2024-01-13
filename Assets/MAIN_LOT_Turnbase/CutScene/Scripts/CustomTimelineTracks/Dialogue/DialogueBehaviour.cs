@@ -11,7 +11,8 @@ public enum ButtonRequire
     SKIP,
     CLICK,
     STARTGAME,
-    TOBATTLE
+    TOBATTLE,
+    DOUBLETAP
 }
 
 [Serializable]

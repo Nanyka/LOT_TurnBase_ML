@@ -49,22 +49,5 @@ namespace JumpeeIsland
                 : inventoryItem.skinAddress[0];
             m_SkinComp.Init(m_BuildingData.SkinAddress);
         }
-
-        // public override void TakeDamage()
-        // {
-        //     gameObject.SetActive(true);
-        //     
-        //     if (_isUpdatePos == false)
-        //         return;
-        //
-        //     var touchPoint = InputManager.Instance.GetTouchPoint();
-        //     if (touchPoint != Vector3.zero)
-        //         transform.position = touchPoint;
-        // }
-        //
-        // public override void Die()
-        // {
-        //     gameObject.SetActive(false);
-        // }
     }
 }

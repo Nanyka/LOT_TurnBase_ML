@@ -102,7 +102,7 @@ namespace JumpeeIsland
                 }
                 else if (Physics.Raycast(moveRay, out var assignHit, 100f, _dropLayer))
                 {   
-                    _globalInteract.OnDoubleTap(assignHit.point);
+                    _globalInteract?.OnDoubleTap(assignHit.point);
                 }
             }
         }

@@ -9,9 +9,6 @@ namespace JumpeeIsland
     {
         [SerializeField] private Transform factoryObject;
         [SerializeField] private Transform factoryPos;
-        [SerializeField] private AoeTutorialEntity[] _tutorialEntities;
-
-        private int _curIndex;
 
         private void Start()
         {
@@ -26,7 +23,7 @@ namespace JumpeeIsland
 
         public void SetIntParam(int intParam)
         {
-            _curIndex = intParam;
+            
         }
 
         public void SetActive(bool isActive)
@@ -48,7 +45,7 @@ namespace JumpeeIsland
 
         public void ActionTwo()
         {
-            // _tutorialEntities[_curIndex].TakeDamage();
+            GameFlowManager.Instance.AskGlobalVfx(GlobalVfxType.FULLSCREENCONFETTI,Vector3.zero);
         }
 
         public void ActionThree()

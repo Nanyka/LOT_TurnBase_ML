@@ -10,17 +10,14 @@ namespace JumpeeIsland
         [HideInInspector] public UnityEvent<IAttackRelated> OnUnitDie = new();
         
         [SerializeField] private CreatureData m_CreatureData;
-        [SerializeField] private bool _isUpdatePos;
 
         private IHealthComp m_HealthComp;
-        private IAnimateComp m_AnimateComp;
-        private IAttackRegister m_AttackExecutor;
+        // private IAttackRegister m_AttackExecutor;
 
         private void Awake()
         {
             m_HealthComp = GetComponent<IHealthComp>();
-            m_AnimateComp = GetComponent<IAnimateComp>();
-            m_AttackExecutor = GetComponent<IAttackRegister>();
+            // m_AttackExecutor = GetComponent<IAttackRegister>();
         }
         
         private void Start()
@@ -37,31 +34,9 @@ namespace JumpeeIsland
         private void Init()
         {
             var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_CreatureData.EntityName);
-            // m_CreatureData.SkinAddress =
-            //     inventoryItem.skinAddress[
-            //         Mathf.Clamp(m_CreatureData.CurrentLevel, 0, inventoryItem.skinAddress.Count - 1)];
-            //
-            // m_SkinComp.Init(m_CreatureData.SkinAddress, m_AnimateComp);
             m_HealthComp.Init(inventoryItem.creatureStats[m_CreatureData.CurrentLevel].HealthPoint, OnUnitDie, m_CreatureData);
-            m_AttackExecutor?.Init();
+            // m_AttackExecutor?.Init();
         }
-
-        // public override void TakeDamage()
-        // {
-        //     // gameObject.SetActive(true);
-        //     //
-        //     // if (_isUpdatePos == false)
-        //     //     return;
-        //     //
-        //     // var touchPoint = InputManager.Instance.GetTouchPoint();
-        //     // if (touchPoint != Vector3.zero)
-        //     //     transform.position = touchPoint;
-        // }
-        //
-        // public override void Die()
-        // {
-        //     gameObject.SetActive(false);
-        // }
 
         public void GainGoldValue()
         {
