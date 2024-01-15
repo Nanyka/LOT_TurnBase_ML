@@ -41,6 +41,8 @@ namespace JumpeeIsland
         public void PlayAttackVfx()
         {
             attackVfx.Play();
+            
+            
         }
 
         public FactionType GetFaction()

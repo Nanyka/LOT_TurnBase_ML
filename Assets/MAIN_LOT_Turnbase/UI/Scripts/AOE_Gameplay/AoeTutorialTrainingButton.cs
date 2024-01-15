@@ -74,7 +74,7 @@ namespace JumpeeIsland
 
         public void ClickYes()
         {
-            TimelineManager.Instance.OnStringCheck.Invoke(_inventoryItem.inventoryName);
+            TimelineManager.Instance.OnStringCheck.Invoke(_inventoryItem.inventoryName, ButtonRequire.NONE);
         }
 
         public GameObject GetGameObject()

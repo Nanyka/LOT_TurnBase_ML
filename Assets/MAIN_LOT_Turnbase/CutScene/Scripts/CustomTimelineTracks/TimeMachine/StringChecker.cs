@@ -6,6 +6,7 @@ namespace JumpeeIsland
     public class StringChecker : MonoBehaviour, ITimeMachineChecker
     {
         [SerializeField] private string _targetString;
+        [SerializeField] private ButtonRequire _buttonRequire;
         
         private string _checkedString;
         
@@ -14,8 +15,11 @@ namespace JumpeeIsland
             TimelineManager.Instance.OnStringCheck.AddListener(SetStringToCheck);
         }
 
-        private void SetStringToCheck(string checkedString)
+        private void SetStringToCheck(string checkedString, ButtonRequire buttonRequire)
         {
+            if (_buttonRequire != ButtonRequire.NONE && buttonRequire != _buttonRequire)
+                return;
+            
             _checkedString = checkedString;
         }
 

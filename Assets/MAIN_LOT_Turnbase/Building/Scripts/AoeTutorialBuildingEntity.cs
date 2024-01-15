@@ -10,13 +10,13 @@ namespace JumpeeIsland
         [SerializeField] private bool _isUpdatePos;
 
         private IBuildingConstruct m_Constructor;
-        private ISkinComp m_SkinComp;
+        // private ISkinComp m_SkinComp;
         private IEntityUIUpdate m_UIUpdator;
 
         private void Awake()
         {
             m_Constructor = GetComponent<IBuildingConstruct>();
-            m_SkinComp = GetComponent<ISkinComp>();
+            // m_SkinComp = GetComponent<ISkinComp>();
             m_UIUpdator = GetComponent<IEntityUIUpdate>();
         }
 
@@ -43,11 +43,11 @@ namespace JumpeeIsland
             m_UIUpdator.ShowBars(false,true,false);
             
             // Download skin
-            var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
-            m_BuildingData.SkinAddress = inventoryItem.skinAddress.Count > m_BuildingData.CurrentLevel
-                ? inventoryItem.skinAddress[m_BuildingData.CurrentLevel]
-                : inventoryItem.skinAddress[0];
-            m_SkinComp.Init(m_BuildingData.SkinAddress);
+            // var inventoryItem = SavingSystemManager.Instance.GetInventoryItemByName(m_BuildingData.EntityName);
+            // m_BuildingData.SkinAddress = inventoryItem.skinAddress.Count > m_BuildingData.CurrentLevel
+            //     ? inventoryItem.skinAddress[m_BuildingData.CurrentLevel]
+            //     : inventoryItem.skinAddress[0];
+            // m_SkinComp.Init(m_BuildingData.SkinAddress);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace JumpeeIsland
         public virtual void ClickYes()
         {
             // Debug.Log($"This is a tutorial constructing button of {m_BuidlingItem.inventoryName}");
-            TimelineManager.Instance.OnStringCheck.Invoke(m_BuidlingItem.inventoryName);
+            TimelineManager.Instance.OnStringCheck.Invoke(m_BuidlingItem.inventoryName, ButtonRequire.NONE);
         }
 
         public GameObject GetGameObject()

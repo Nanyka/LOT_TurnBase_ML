@@ -9,6 +9,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private Transform factoryObject;
         [SerializeField] private Transform factoryPos;
+        [SerializeField] private Transform zombiePos;
 
         private void Start()
         {
@@ -50,7 +51,7 @@ namespace JumpeeIsland
 
         public void ActionThree()
         {
-            // _tutorialEntities[_curIndex].Die();
+            MainUI.Instance.OnShowCurrencyVfx.Invoke("WOOD",5,zombiePos.position);
         }
     }
 }

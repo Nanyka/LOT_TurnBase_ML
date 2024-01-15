@@ -28,7 +28,7 @@ namespace JumpeeIsland
         private void WaitForSkin()
         {
             Init();
-            gameObject.SetActive(false);
+            // gameObject.SetActive(false);
         }
 
         private void Init()

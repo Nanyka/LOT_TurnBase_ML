@@ -30,7 +30,7 @@ namespace JumpeeIsland
         {
             Debug.Log($"Double tap on {name}");
             GameFlowManager.Instance.AskGlobalVfx(GlobalVfxType.RADAR, transform.position);
-            TimelineManager.Instance.OnStringCheck.Invoke(_stringToCheck);
+            TimelineManager.Instance.OnStringCheck.Invoke(_stringToCheck, ButtonRequire.DOUBLETAP);
         }
     }
 }
