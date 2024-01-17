@@ -26,13 +26,7 @@ namespace JumpeeIsland
             if (_bulletFX != null)
             {
                 _targetPos = targetPos + Vector3.up * 0.5f;
-                var position = _bulletFX.transform.position;
-                _velocity = CalcBallisticVelocityVector(position, _targetPos, _angle);
-                _bulletFX.transform.LookAt(new Vector3(_targetPos.x, position.y, _targetPos.z));
-                _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
-                var main = _bulletFX.main;
-                main.startSpeed = _velocity.magnitude;
-                _bulletFX.Play();
+                Fire();
             }
         }
 
@@ -48,13 +42,8 @@ namespace JumpeeIsland
             {
                 foreach (var target in targetPos)
                 {
-                    var position = _bulletFX.transform.position;
-                    _velocity = CalcBallisticVelocityVector(position, target, _angle);
-                    _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
-                    _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
-                    var main = _bulletFX.main;
-                    main.startSpeed = _velocity.magnitude;
-                    _bulletFX.Play();
+                    _targetPos = target;
+                    Fire();
                 }
             }
         }
@@ -72,13 +61,7 @@ namespace JumpeeIsland
                 foreach (var target in targetPos)
                 {
                     attackVisual.RotateTowardTarget(target);
-                    var position = _bulletFX.transform.position;
-                    _velocity = CalcBallisticVelocityVector(position, target, _angle);
-                    _bulletFX.transform.LookAt(new Vector3(target.x, position.y, target.z));
-                    _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
-                    var main = _bulletFX.main;
-                    main.startSpeed = _velocity.magnitude;
-                    _bulletFX.Play();
+                    Fire();
                 }
             }
         }
@@ -87,6 +70,17 @@ namespace JumpeeIsland
         {
             if (_bulletFX != null)
                 _bulletFX.Play();
+        }
+
+        private void Fire()
+        {
+            var position = _bulletFX.transform.position;
+            _velocity = CalcBallisticVelocityVector(position, _targetPos, _angle);
+            _bulletFX.transform.LookAt(new Vector3(_targetPos.x, position.y, _targetPos.z));
+            _bulletFX.transform.Rotate(Vector3.right, -1f * _angle);
+            var main = _bulletFX.main;
+            main.startSpeed = _velocity.magnitude;
+            _bulletFX.Play();
         }
 
         private Vector3 CalcBallisticVelocityVector(Vector3 source, Vector3 target, float angle)

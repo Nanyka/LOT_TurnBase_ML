@@ -94,6 +94,11 @@ namespace JumpeeIsland
         {
             m_Animator.speed = speed;
         }
+
+        public void SetLookAt(Vector3 lookAt)
+        {
+            m_RotatePart.eulerAngles = lookAt;
+        }
     }
     
     public interface IMover
@@ -110,5 +115,6 @@ namespace JumpeeIsland
         public void SetBoolValue(string animName, bool value);
         public void SetFloatValue(string param, float value);
         public void SetAnimatorSpeed(float speed);
+        public void SetLookAt(Vector3 lookAt);
     }
 }

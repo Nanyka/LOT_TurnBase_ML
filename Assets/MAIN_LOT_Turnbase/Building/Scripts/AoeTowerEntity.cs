@@ -12,6 +12,7 @@ namespace JumpeeIsland
         private IBuildingConstruct m_Constructor;
         private ISkinComp m_SkinComp;
         private ISkillComp m_SkillComp;
+        private IAnimateComp m_AnimateComp;
         private BuildingData m_BuildingData;
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -23,6 +24,7 @@ namespace JumpeeIsland
             m_Constructor = GetComponent<IBuildingConstruct>();
             m_SkinComp = GetComponent<ISkinComp>();
             m_SkillComp = GetComponent<ISkillComp>();
+            m_AnimateComp = GetComponent<IAnimateComp>();
             m_BuildingData = buildingData;
             RefreshEntity();
         }
@@ -177,7 +179,7 @@ namespace JumpeeIsland
             m_BuildingData.SkinAddress = inventoryItem.skinAddress.Count > m_BuildingData.CurrentLevel
                 ? inventoryItem.skinAddress[m_BuildingData.CurrentLevel]
                 : inventoryItem.skinAddress[0];
-            m_SkinComp.Init(m_BuildingData.SkinAddress);
+            m_SkinComp.Init(m_BuildingData.SkinAddress, m_AnimateComp);
         }
 
         #endregion

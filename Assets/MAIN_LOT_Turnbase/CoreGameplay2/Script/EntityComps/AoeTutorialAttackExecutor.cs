@@ -53,10 +53,7 @@ namespace JumpeeIsland
         public void ExecuteHitEffect(GameObject target)
         {
             if (target.TryGetComponent(out IHealthComp healthComp))
-            {
-                Debug.Log($"Attack an object with a healComp. My attacker: {_attackRelated}");
                 healthComp.TakeDamage(_attackRelated);
-            }
             
             // _attackComp.SuccessAttack(target);
         }

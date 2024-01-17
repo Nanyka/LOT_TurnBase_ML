@@ -24,7 +24,7 @@ namespace JumpeeIsland
                 switch (reward.service)
                 {
                     case "currency":
-                        SavingSystemManager.Instance.IncrementLocalCurrency(reward.id, reward.amount);
+                        SavingSystemManager.Instance.IncreaseLocalCurrency(reward.id, reward.amount);
                         break;
                 }
             }

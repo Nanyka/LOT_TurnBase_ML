@@ -547,7 +547,6 @@ namespace JumpeeIsland
         
             DeductCurrency(cost.currencyId,cost.amount);
             m_EnvLoad.TrainACreature(creatureData);
-            
         }
 
         public GameObject OnSpawnMovableEntity(string itemId, Vector3 position)
@@ -662,7 +661,7 @@ namespace JumpeeIsland
             m_CurrencyLoader.ResetCurrencies(await m_CloudConnector.OnLoadCurrency());
         }
 
-        public void IncrementLocalCurrency(string rewardID, int rewardAmount)
+        public void IncreaseLocalCurrency(string rewardID, int rewardAmount)
         {
             m_CurrencyLoader.GainCurrency(rewardID, rewardAmount);
         }
@@ -692,7 +691,7 @@ namespace JumpeeIsland
                         if (reward.id.Equals(CurrencyType.GOLD.ToString()) ||
                             reward.id.Equals(CurrencyType.GEM.ToString()) ||
                             reward.id.Equals(CurrencyType.MOVE.ToString()))
-                            IncrementLocalCurrency(reward.id, reward.amount);
+                            IncreaseLocalCurrency(reward.id, reward.amount);
                         else
                             m_StorageHandler.StoreRewardAtBuildings(reward.id, reward.amount);
 
@@ -710,7 +709,7 @@ namespace JumpeeIsland
             if (currency.Equals(CurrencyType.GOLD.ToString()) ||
                 currency.Equals(CurrencyType.GEM.ToString()) ||
                 currency.Equals(CurrencyType.MOVE.ToString()))
-                IncrementLocalCurrency(currency, amount);
+                IncreaseLocalCurrency(currency, amount);
             else
                 m_StorageHandler.StoreRewardAtBuildings(currency, amount);
         }
@@ -878,7 +877,7 @@ namespace JumpeeIsland
                 if (reward.id.Equals(CurrencyType.GOLD.ToString()) ||
                     reward.id.Equals(CurrencyType.GEM.ToString()) ||
                     reward.id.Equals(CurrencyType.MOVE.ToString()))
-                    IncrementLocalCurrency(reward.id, reward.amount);
+                    IncreaseLocalCurrency(reward.id, reward.amount);
                 else
                     m_StorageHandler.StoreRewardAtBuildings(reward.id, reward.amount);
             }

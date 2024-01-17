@@ -94,5 +94,10 @@ namespace JumpeeIsland
         {
             m_Animator.speed = speed;
         }
+
+        public void SetLookAt(Vector3 lookAt)
+        {
+            m_RotatePart.eulerAngles = lookAt;
+        }
     }
 }

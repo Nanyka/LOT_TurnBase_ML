@@ -30,6 +30,11 @@ namespace JumpeeIsland
             
         }
 
+        public void SetStringParam(string stringParam)
+        {
+            
+        }
+
         public void SetActive(bool isActive)
         {
             

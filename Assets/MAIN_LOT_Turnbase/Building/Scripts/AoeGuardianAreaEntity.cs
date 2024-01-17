@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class AoeGuardianAreaEntity : Entity, IBuildingDealer, IBuildingUpgrade, IBuildingSale
+    public class AoeGuardianAreaEntity : Entity, IBuildingDealer, IBuildingUpgrade, IBuildingSale, IGetEntityData<GuardianAreaStat>
     {
         private ISkinComp m_SkinComp;
         private IGuardianArea m_GuardianArea;
@@ -38,6 +38,11 @@ namespace JumpeeIsland
         public override EntityData GetData()
         {
             return m_BuildingData;
+        }
+
+        public GuardianAreaStat GetStats()
+        {
+            return m_CurrentStat;
         }
 
         public override FactionType GetFaction()

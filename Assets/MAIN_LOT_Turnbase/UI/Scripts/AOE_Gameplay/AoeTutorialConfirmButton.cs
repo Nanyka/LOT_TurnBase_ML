@@ -8,7 +8,6 @@ namespace JumpeeIsland
         
         public void ClickYes()
         {
-            Debug.Log($"Click on confirmButton to send: {_sentString}");
             TimelineManager.Instance.OnStringCheck.Invoke(_sentString, ButtonRequire.NONE);
         }
 

@@ -62,6 +62,7 @@ namespace JumpeeIsland
 
         public void GainCurrency(string currencyId, int currencyAmount)
         {
+            currencyAmount = Mathf.Abs(currencyAmount);
             m_LocalBalances.LocalBalances.Find(t => t.CurrencyId == currencyId).Balance += currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
             SavingSystemManager.Instance.SaveLocalBalances(m_LocalBalances);
@@ -69,6 +70,7 @@ namespace JumpeeIsland
 
         public void DeductCurrency(string currencyId, int currencyAmount)
         {
+            currencyAmount = Mathf.Abs(currencyAmount);
             m_LocalBalances.LocalBalances.Find(t => t.CurrencyId == currencyId).Balance -= currencyAmount;
             MainUI.Instance.OnUpdateCurrencies.Invoke();
             SavingSystemManager.Instance.SaveLocalBalances(m_LocalBalances);

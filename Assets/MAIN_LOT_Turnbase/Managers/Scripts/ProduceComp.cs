@@ -27,7 +27,7 @@ namespace JumpeeIsland
                 product = product <= buildingData.GetStoreSpace() ? product : buildingData.GetStoreSpace();
 
                 m_BuildingEntity.StoreCurrency(product);
-                SavingSystemManager.Instance.IncrementLocalCurrency(buildingData.StorageCurrency.ToString(), product);
+                SavingSystemManager.Instance.IncreaseLocalCurrency(buildingData.StorageCurrency.ToString(), product);
             }
         }
     }

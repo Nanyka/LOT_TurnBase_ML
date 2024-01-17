@@ -10,7 +10,7 @@ namespace JumpeeIsland
         {
             base.Die(killedByFaction);
 
-            SavingSystemManager.Instance.IncrementLocalCurrency(_reward.currencyId,_reward.amount);
+            SavingSystemManager.Instance.IncreaseLocalCurrency(_reward.currencyId,_reward.amount);
             MainUI.Instance.OnShowCurrencyVfx.Invoke(_reward.currencyId,_reward.amount,transform.position);
         }
     }

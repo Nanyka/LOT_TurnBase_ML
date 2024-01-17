@@ -33,7 +33,6 @@ namespace JumpeeIsland
             if (_isDeath)
                 return;
 
-            Debug.Log($"Attack by: {attackBy.GetAttackDamage()}");
             m_Data.CurrentHp -= attackBy.GetAttackDamage();
             entityUI.UpdateHealthSlider(m_Data.CurrentHp * 1f / m_MAXHp);
         }

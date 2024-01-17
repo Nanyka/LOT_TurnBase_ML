@@ -6,6 +6,8 @@ namespace JumpeeIsland
     public class AoeTowerSkinComp : MonoBehaviour, ISkinComp
     {
         [SerializeField] private Transform m_SkinAnchor;
+
+        private IAnimateComp _animateComp;
         
         public void Init(string skinAddress)
         {
@@ -17,7 +19,11 @@ namespace JumpeeIsland
 
         public void Init(string skinAddress, IAnimateComp animateComp)
         {
-            throw new System.NotImplementedException();
+            _animateComp = animateComp;
+            if (skinAddress.Equals(""))
+                return;
+
+            AddressableManager.Instance.GetAddressableGameObject(skinAddress, m_SkinAnchor, this);
         }
 
         public void SetDefaultMaterial()
@@ -32,9 +38,7 @@ namespace JumpeeIsland
 
         public void ReturnSkin(GameObject skinObject)
         {
-            // var hider = GetComponent<IHiderDisable>();
-            // if (skinObject.TryGetComponent(out FogOfWarHider fogHider))
-            //     hider.SetHider(fogHider);
+            _animateComp.Init(skinObject);
         }
     }
 }

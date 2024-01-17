@@ -180,6 +180,11 @@ namespace JumpeeIsland
             m_Animator.speed = speed;
         }
 
+        public void SetLookAt(Vector3 lookAt)
+        {
+            m_RotatePart.eulerAngles = lookAt;
+        }
+
         public void SetFloatParameter(string param, float value)
         {
             m_Animator.SetFloat(param, value);

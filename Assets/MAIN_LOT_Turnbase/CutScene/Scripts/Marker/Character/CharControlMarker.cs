@@ -8,6 +8,7 @@ using UnityEngine.Timeline;
 public class CharControlMarker : Marker, INotification
 {
     public int intParam;
+    public string stringParam;
     public bool isActive;
     public bool isSpawner;
     public bool isActionOne;

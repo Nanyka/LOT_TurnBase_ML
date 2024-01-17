@@ -22,8 +22,11 @@ namespace JumpeeIsland
 
         public void OnHoldEnter()
         {
-            if (GameFlowManager.Instance.GameMode == GameMode.AOE)
-                return;
+            // if (GameFlowManager.Instance.GameMode != GameMode.AOE)
+            //     return;
+            // var checkFaction = GameFlowManager.Instance.GameMode == GameMode.ECONOMY
+            //     ? FactionType.Player
+            //     : FactionType.Enemy;
             
             if (m_Entity.GetFaction() != FactionType.Player)
                 return;

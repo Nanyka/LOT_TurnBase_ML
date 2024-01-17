@@ -191,7 +191,7 @@ namespace JumpeeIsland
                 var storeAmount = building.GetStoreSpace(currencyType);
                 storeAmount = storeAmount > amount ? amount : storeAmount;
                 building.StoreCurrency(storeAmount);
-                SavingSystemManager.Instance.IncrementLocalCurrency(currencyId, storeAmount);
+                SavingSystemManager.Instance.IncreaseLocalCurrency(currencyId, storeAmount);
                 amount -= storeAmount;
             }
         }

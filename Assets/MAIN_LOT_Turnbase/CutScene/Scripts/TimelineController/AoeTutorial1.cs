@@ -11,12 +11,15 @@ namespace JumpeeIsland
         [SerializeField] private Transform factoryPos;
         [SerializeField] private Transform zombiePos;
 
+        private int _curInteger;
+        private string _curString;
+
         private void Start()
         {
             GameFlowManager.Instance.OnDataLoaded.AddListener(StartTimeline);
             TimelineManager.Instance.PauseTimeline(GetComponent<PlayableDirector>(), ButtonRequire.STARTGAME);
         }
-        
+
         private void StartTimeline(long arg0)
         {
             TimelineManager.Instance.ResumeTimeline(ButtonRequire.STARTGAME);
@@ -24,12 +27,16 @@ namespace JumpeeIsland
 
         public void SetIntParam(int intParam)
         {
-            
+            _curInteger = intParam;
+        }
+
+        public void SetStringParam(string stringParam)
+        {
+            _curString = stringParam;
         }
 
         public void SetActive(bool isActive)
         {
-            
         }
 
         public void Spawn()
@@ -39,19 +46,25 @@ namespace JumpeeIsland
 
         public void ActionOne()
         {
-            // var factory = SavingSystemManager.Instance.GetEnvironmentData().BuildingData.First(t =>
-            //     t.FactionType == FactionType.Player && t.BuildingType == BuildingType.TRAININGCAMP);
             factoryPos.position = Camera.main.WorldToScreenPoint(factoryObject.position);
         }
 
         public void ActionTwo()
         {
-            GameFlowManager.Instance.AskGlobalVfx(GlobalVfxType.FULLSCREENCONFETTI,Vector3.zero);
+            GameFlowManager.Instance.AskGlobalVfx(GlobalVfxType.FULLSCREENCONFETTI, Vector3.zero);
         }
 
         public void ActionThree()
         {
-            MainUI.Instance.OnShowCurrencyVfx.Invoke("WOOD",5,zombiePos.position);
+            if (_curInteger > 0)
+            {
+                SavingSystemManager.Instance.IncreaseLocalCurrency(_curString,_curInteger);
+                MainUI.Instance.OnShowCurrencyVfx.Invoke(_curString, _curInteger, zombiePos.position);
+            }
+            else
+            {
+                SavingSystemManager.Instance.DeductCurrency(_curString,_curInteger);
+            }
         }
     }
 }

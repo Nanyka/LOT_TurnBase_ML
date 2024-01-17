@@ -28,8 +28,8 @@ namespace JumpeeIsland
 
         public void Init(FactionType factionType)
         {
-            _isInit = true;
-            _isFinishConstructed = factionType != FactionType.Player;
+            // The construction should be executed only in the battles where the building is belonging to player
+            _isFinishConstructed = factionType != FactionType.Player || GameFlowManager.Instance.GameMode == GameMode.ECONOMY;
             IsAvailable = false;
             
             if (_isFinishConstructed)
@@ -43,6 +43,8 @@ namespace JumpeeIsland
                 if (_isSelfErect)
                     InvokeRepeating(nameof(SelfErect),1f,1f);
             }
+            
+            _isInit = true;
         }
 
         private void SelfErect()

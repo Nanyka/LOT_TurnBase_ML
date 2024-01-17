@@ -75,7 +75,7 @@ namespace JumpeeIsland
             _winPanel.SetActive(true);
             if (SavingSystemManager.Instance.GetGameProcess().bossUnlock <= m_BossIndex)
                 SavingSystemManager.Instance.SaveBossUnlock(m_BossIndex + 1);
-            SavingSystemManager.Instance.GetEnvDataForSave().mapSize = _unlockedMap;
+            SavingSystemManager.Instance.GetEnvDataForSave().mapSize = _unlockedMap; //TODO: Remove this and set the finish button to the current Map
             SavingSystemManager.Instance.SaveBossBattle();
         }
 
