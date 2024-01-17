@@ -9,6 +9,9 @@ namespace JumpeeIsland
 
         private Animator m_Animator;
         private bool isReady;
+        
+        private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
+        private static readonly int Attack = Animator.StringToHash("Attack");
 
         private void Awake()
         {
@@ -53,7 +56,8 @@ namespace JumpeeIsland
 
         public void TriggerAttackAnim(int attackIndex)
         {
-            throw new System.NotImplementedException();
+            m_Animator.SetInteger(AttackIndex, attackIndex);
+            m_Animator.SetTrigger(Attack);
         }
 
         public void SetBoolValue(string animName, bool value)

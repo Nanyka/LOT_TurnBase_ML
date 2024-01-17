@@ -6,12 +6,14 @@ namespace JumpeeIsland
     public class AoeTowerFireExecutor : MonoBehaviour, IAttackExecutor //, IHiderDisable
     {
         [SerializeField] private float detectRange;
-        [SerializeField] private FireComp m_FireComp;
+        // [SerializeField] private FireComp m_FireComp;
         [SerializeField] private List<AnimAttackCollider> attackColliders;
 
         private IAttackComp _attackComp;
         private IAttackRelated _attackRelated;
+        private IFireComp _fireComp;
         private IAnimateComp _animateComp;
+
         // private FogOfWarHider m_Hider;
         private LayerMask layerMask = 1 << 7; // Enemy layer is 5
         private Vector3 _firePos;
@@ -22,6 +24,7 @@ namespace JumpeeIsland
             _attackComp = GetComponent<IAttackComp>();
             _attackRelated = GetComponent<IAttackRelated>();
             _animateComp = GetComponent<IAnimateComp>();
+            _fireComp = GetComponent<IFireComp>();
 
             foreach (var attackCollider in attackColliders)
                 attackCollider.Init(this);
@@ -59,12 +62,16 @@ namespace JumpeeIsland
             }
 
             if (distanceToTarget < float.PositiveInfinity)
+            {
+                _firePos += Vector3.up * 0.5f;
+                _animateComp.SetLookAt(_firePos);
                 _animateComp.TriggerAttackAnim(0); // TODO: use attackIndex from PowerComp
+            }
         }
 
-        public void Fire()
+        public void AskForFire()
         {
-            m_FireComp.PlayCurveFX(_firePos);
+            _fireComp.PlayCurveFX(_firePos);
         }
 
         public void ExecuteHitEffect(Vector3 atPos)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JumpeeIsland
 {
-    public class FireComp : MonoBehaviour
+    public class FireComp : MonoBehaviour, IFireComp
     {
         [SerializeField] private ParticleSystem _bulletFX;
         [SerializeField] private float _angle;

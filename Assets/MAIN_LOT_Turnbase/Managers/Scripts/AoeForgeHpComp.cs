@@ -62,7 +62,6 @@ namespace JumpeeIsland
         {
             // Add VFX
             yield return new WaitForSeconds(1f);
-            Debug.Log("Remove building");
             gameObject.SetActive(false);
         }
 

@@ -26,7 +26,7 @@ namespace JumpeeIsland
 
         private void UpdateEcoBossInfo(float healthPortion)
         {
-            MainUI.Instance.OnBossMapProfitUpdate.Invoke(healthPortion);
+            MainUI.Instance.OnProfitUpdate.Invoke(healthPortion);
         }
     }
 }

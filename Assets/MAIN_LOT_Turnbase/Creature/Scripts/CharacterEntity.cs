@@ -157,7 +157,7 @@ namespace JumpeeIsland
             return m_MovementComp.GetStopDistance();
         }
         
-        public void SetAssemblyPoint(Vector3 assemblyPoint)
+        public virtual void SetAssemblyPoint(Vector3 assemblyPoint)
         {
             if (m_Brain.ExecuteSensor() == false)
             {

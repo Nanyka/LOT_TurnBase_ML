@@ -13,7 +13,7 @@ namespace JumpeeIsland
 
         [NonSerialized] public UnityEvent<IShowInfo> OnShowInfo = new(); // send to CreatureInfoUI; invoke at PlayerFactionController, NpcInGame
 
-        [NonSerialized] public UnityEvent<float> OnBossMapProfitUpdate = new(); // send to EcoBossInfoUI, AoeCurrencyInfo; invoke at PlayerFactionController, AoeBossResultCalculator
+        [NonSerialized] public UnityEvent<float> OnProfitUpdate = new(); // send to EcoBossInfoUI, AoeCurrencyInfo; invoke at PlayerFactionController, AoeBossResultCalculator
 
         [NonSerialized] public UnityEvent<long> OnRemainStep = new(); // send to StepCounter; invoke at EnvironmentManager
 

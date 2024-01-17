@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -37,7 +38,9 @@ namespace JumpeeIsland
         private IEnumerator SpawnZombie()
         {
             yield return new WaitForSeconds(_spawningBreakPeriod);
-            if (_spawningRound < _maxZombieAmount)
+
+            var zombieAmount = SavingSystemManager.Instance.GetEnvironmentData().EnemyData.Count(t => t.CreatureType == CreatureType.MOVER);
+            if (zombieAmount < _maxZombieAmount)
             {
                 var randomCreatureData = _enemies[Random.Range(0, _enemies.Count)];
                 randomCreatureData.Position = _navmeshVertices[Random.Range(0, _navmeshVertices.Length)];

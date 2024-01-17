@@ -12,7 +12,7 @@ namespace JumpeeIsland
 
         private void Start()
         {
-            MainUI.Instance.OnBossMapProfitUpdate.AddListener(UpdateEcoBossState);
+            MainUI.Instance.OnProfitUpdate.AddListener(UpdateEcoBossState);
         }
         
         private void UpdateEcoBossState(float healthPortion)

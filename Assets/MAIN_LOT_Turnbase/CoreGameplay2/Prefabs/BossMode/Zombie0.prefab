@@ -34714,7 +34714,7 @@ GameObject:
   - component: {fileID: -355993685606130800}
   - component: {fileID: 3783713815750401447}
   - component: {fileID: 5620056203829820542}
-  - component: {fileID: -4915522173204434805}
+  - component: {fileID: 2551594005806256269}
   - component: {fileID: 7557282303953632554}
   - component: {fileID: 2619636922917219167}
   - component: {fileID: 582392424553600982}
@@ -34831,6 +34831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Transform: {fileID: 765458664678213309}
   m_Brain: {fileID: 4952066524200732265}
+  _isNoDamage: 0
 --- !u!114 &2768966365666163441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34899,7 +34900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RotatePart: {fileID: 2013509190373015732}
---- !u!114 &-4915522173204434805
+--- !u!114 &2551594005806256269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34908,9 +34909,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4480443274318773752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d770306380b41cc9b3874cae2b4b279, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fc2d0fbae1d4069b324c703fa37788b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reward:
+    currencyId: WOOD
+    amount: 3
 --- !u!114 &7557282303953632554
 MonoBehaviour:
   m_ObjectHideFlags: 0

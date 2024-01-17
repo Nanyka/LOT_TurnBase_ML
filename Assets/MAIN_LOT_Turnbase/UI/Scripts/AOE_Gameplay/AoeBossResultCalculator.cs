@@ -31,7 +31,7 @@ namespace JumpeeIsland
         {
             var coinCurrency = SavingSystemManager.Instance.GetCurrencyById("COIN");
             _primaryCoinAmount = coinCurrency;
-            MainUI.Instance.OnBossMapProfitUpdate.Invoke((coinCurrency - _primaryCoinAmount) * 1f / _primaryCoinAmount);
+            MainUI.Instance.OnProfitUpdate.Invoke((coinCurrency - _primaryCoinAmount) * 1f / _primaryCoinAmount);
         }
 
         private void UpdateProfit()
@@ -40,7 +40,7 @@ namespace JumpeeIsland
                 return;
 
             var coinCurrency = SavingSystemManager.Instance.GetCurrencyById("COIN");
-            MainUI.Instance.OnBossMapProfitUpdate.Invoke((coinCurrency - _primaryCoinAmount) * 1f / _primaryCoinAmount);
+            MainUI.Instance.OnProfitUpdate.Invoke((coinCurrency - _primaryCoinAmount) * 1f / _primaryCoinAmount);
         }
 
         private async void UpdateWinCondition()

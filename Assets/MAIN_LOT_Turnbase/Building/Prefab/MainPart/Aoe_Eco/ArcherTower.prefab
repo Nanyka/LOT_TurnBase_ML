@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 8033016921547363773}
   - component: {fileID: 927064584690109685}
   - component: {fileID: 4724937684536445432}
-  - component: {fileID: 3520087299387872629}
+  - component: {fileID: 5686236577107427624}
   m_Layer: 9
   m_Name: ArcherTower
   m_TagString: Untagged
@@ -140,8 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b912a1a2d84b0ea7e63410f9cb1b5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectRange: 5
-  m_FireComp: {fileID: 3520087299387872629}
+  detectRange: 10
   attackColliders:
   - {fileID: 225964536794504194}
 --- !u!114 &5016425118435779792
@@ -241,7 +240,7 @@ MonoBehaviour:
   m_InProcessState: 
   m_FinishState: Tower
   _isSelfErect: 0
---- !u!114 &3520087299387872629
+--- !u!114 &5686236577107427624
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -250,13 +249,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 515362425244201486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d45bf48ee4a4f11a160cf791836416c, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c3e65b9677d424493371654a82d9c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletFX: {fileID: 6011154242825338813}
   _angle: 45
   _reloadDuration: 0
-  _isInPlaceFire: 0
+  _isStraightFire: 1
 --- !u!1 &903986455080350699
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +668,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 10
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1111,7 +1110,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1473,10 +1472,126 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    m_BurstCount: 1
+    m_BurstCount: 3
     m_Bursts:
     - serializedVersion: 2
       time: 0
+      countCurve:
+        serializedVersion: 2
+        minMaxState: 0
+        scalar: 1
+        minScalar: 30
+        maxCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        minCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+      cycleCount: 1
+      repeatInterval: 0.01
+      probability: 1
+    - serializedVersion: 2
+      time: 0.1
+      countCurve:
+        serializedVersion: 2
+        minMaxState: 0
+        scalar: 1
+        minScalar: 30
+        maxCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        minCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+      cycleCount: 1
+      repeatInterval: 0.01
+      probability: 1
+    - serializedVersion: 2
+      time: 0.2
       countCurve:
         serializedVersion: 2
         minMaxState: 0
@@ -5444,7 +5559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collideLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
 --- !u!1 &1867109068190376953
 GameObject:
   m_ObjectHideFlags: 0

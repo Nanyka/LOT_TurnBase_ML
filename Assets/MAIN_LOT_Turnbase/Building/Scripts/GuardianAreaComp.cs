@@ -34,6 +34,8 @@ namespace JumpeeIsland
                 {
                     foreach (var guardian in guardians)
                     {
+                        Debug.Log($"Spawn {guardian.EntityName}");
+
                         var enemyPos = transform.position + GenerateRandomVector();
                         var enemyObj = SavingSystemManager.Instance.OnSpawnMovableEntity(guardian.EntityName, enemyPos);
             

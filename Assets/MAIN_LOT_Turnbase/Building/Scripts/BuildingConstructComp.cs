@@ -18,7 +18,7 @@ namespace JumpeeIsland
         private IEntityUIUpdate _healthBarUpdate;
         private bool _isFinishConstructed;
         private int _curProcess;
-        private bool IsAvailable;
+        private bool _isAvailable;
         private bool _isInit;
 
         private void Awake()
@@ -29,9 +29,10 @@ namespace JumpeeIsland
         public void Init(FactionType factionType)
         {
             // The construction should be executed only in the battles where the building is belonging to player
-            _isFinishConstructed = factionType != FactionType.Player || GameFlowManager.Instance.GameMode == GameMode.ECONOMY;
-            IsAvailable = false;
-            
+            _isFinishConstructed = factionType != FactionType.Player ||
+                                   GameFlowManager.Instance.GameMode == GameMode.ECONOMY;
+            _isAvailable = false;
+
             if (_isFinishConstructed)
                 Completion();
             else
@@ -41,34 +42,39 @@ namespace JumpeeIsland
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, 1);
 
                 if (_isSelfErect)
-                    InvokeRepeating(nameof(SelfErect),1f,1f);
+                    InvokeRepeating(nameof(SelfErect), 1f, 1f);
             }
-            
+
             _isInit = true;
         }
 
         private void SelfErect()
         {
             ReduceCheckableAmount(1);
-            _healthBarUpdate.UpdateHealthSlider(_curProcess*1f/_cost);
-            if (IsAvailable || _isFinishConstructed)
+            _healthBarUpdate.UpdateHealthSlider(_curProcess * 1f / _cost);
+            if (_isAvailable || _isFinishConstructed)
                 CancelInvoke();
         }
 
         private void OnDisable()
         {
             if (GWorld.Instance != null && _isInit)
+            {
+                if (_isAvailable == false && _isFinishConstructed)
+                    return;
+
                 GWorld.Instance.GetWorld().ModifyState(_isFinishConstructed ? m_FinishState : m_InProcessState, -1);
+            }
         }
 
         private void Completion()
         {
-            if (IsAvailable == false)
+            if (_isAvailable == false)
             {
                 GWorld.Instance.GetWorld().ModifyState(m_FinishState, 1);
                 GWorld.Instance.GetWorld().ModifyState(m_InProcessState, -1);
                 _completed.Invoke();
-                IsAvailable = true;
+                _isAvailable = true;
             }
         }
 
@@ -76,7 +82,7 @@ namespace JumpeeIsland
 
         public bool IsCheckable()
         {
-            return IsAvailable && gameObject.activeInHierarchy;
+            return _isAvailable && gameObject.activeInHierarchy;
         }
 
         public Vector3 GetPosition()
@@ -86,7 +92,7 @@ namespace JumpeeIsland
 
         public void ReduceCheckableAmount(int amount)
         {
-            if (IsAvailable)
+            if (_isAvailable)
                 return;
 
             _curProcess = Mathf.Clamp(_curProcess + amount, 0, _cost);
@@ -120,6 +126,9 @@ namespace JumpeeIsland
 
         public void ChangeState(int amount)
         {
+            if (amount < 0)
+                _isAvailable = false;
+
             GWorld.Instance.GetWorld().ModifyState(m_FinishState, amount);
         }
 
@@ -133,7 +142,7 @@ namespace JumpeeIsland
             return this;
         }
     }
-    
+
     public interface IBuildingConstruct
     {
         public void Init(FactionType factionType);

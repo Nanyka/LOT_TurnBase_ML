@@ -13,7 +13,7 @@ namespace JumpeeIsland
         private void Start()
         {
             MainUI.Instance.OnUpdateCurrencies.AddListener(UpdateCurrencies);
-            MainUI.Instance.OnBossMapProfitUpdate.AddListener(UpdateProfitPanel);
+            MainUI.Instance.OnProfitUpdate.AddListener(UpdateProfitPanel);
         }
 
         private void UpdateCurrencies()

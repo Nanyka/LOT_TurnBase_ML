@@ -22,5 +22,7 @@ namespace JumpeeIsland
         {
             m_AnimateComp.SetBoolValue("Carrying" ,isCarrying);
         }
+        
+        public override void SetAssemblyPoint(Vector3 assemblyPoint) { }
     }
 }

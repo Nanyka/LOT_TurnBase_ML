@@ -8,7 +8,7 @@ namespace JumpeeIsland
         [SerializeField] protected GameObject buildingLoader;
         [SerializeField] private GameObject playerLoader;
 
-        private EnvironmentData _environmentData;
+        [SerializeField] private EnvironmentData _environmentData;
         private IBuildingLoader m_BuildingLoader;
         private ICreatureLoader m_GuardianLoader;
 

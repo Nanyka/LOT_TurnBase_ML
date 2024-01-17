@@ -12,7 +12,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private GameObject _tabHolder;
         [SerializeField] private GameObject _confirmPanel;
-        [FormerlySerializedAs("_buildingTas")] [SerializeField] private TabButton[] _buildingTab;
+        [SerializeField] private TabButton[] _buildingTab;
         [SerializeField] private List<BuildingBuyButton> _towers;
         [SerializeField] private List<BuildingBuyButton> _trap;
         [SerializeField] private List<BuildingBuyButton> _decoration;
@@ -95,6 +95,7 @@ namespace JumpeeIsland
         {
             _isInADeal = true;
             AddressableManager.Instance.GetAddressableGameObject(skinAddress, _buildPoint);
+            MainUI.Instance.IsCameraMovable = false;
         }
 
         public void SelectLocation(Vector3 position)
@@ -127,7 +128,8 @@ namespace JumpeeIsland
             foreach (Transform child in _buildPoint)
                 Destroy(child.gameObject);
             
-            MainUI.Instance.OnHideAllMenu.Invoke();
+            // MainUI.Instance.OnHideAllMenu.Invoke();
+            MainUI.Instance.IsCameraMovable = true;
         }
 
         public bool IsInADeal()

@@ -5,34 +5,35 @@ using UnityEngine.Serialization;
 
 namespace JumpeeIsland
 {
-    public class AoeTowerFireComp : MonoBehaviour
+    public class AoeTowerFireComp : MonoBehaviour, IFireComp
     {
         [SerializeField] private ParticleSystem _bulletFX;
         [SerializeField] private float _angle;
         [SerializeField] private int _reloadDuration;
         [SerializeField] private bool _isStraightFire;
 
-        private IAnimateComp _animateComp;
+        // private IAnimateComp _animateComp;
         private Vector3 _targetPos;
         private Vector3 _velocity;
 
-        private void Awake()
-        {
-            _animateComp = GetComponent<IAnimateComp>();
-        }
+        // private void Awake()
+        // {
+        //     _animateComp = GetComponent<IAnimateComp>();
+        // }
 
         public void PlayCurveFX(Vector3 targetPos)
         {
             if (_isStraightFire)
             {
-                _animateComp.SetLookAt(targetPos);
+                _targetPos = targetPos;
+                _bulletFX.transform.LookAt(_targetPos);
                 PlayerPointFX();
                 return;
             }
 
             if (_bulletFX != null)
             {
-                _targetPos = targetPos + Vector3.up * 0.5f;
+                _targetPos = targetPos;
                 Fire();
             }
         }
