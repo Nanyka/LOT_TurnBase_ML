@@ -18,7 +18,7 @@ namespace JumpeeIsland
                 m_GAgent.SetIProcessUpdate(this, hit.position);
             else
                 m_GAgent.SetIProcessUpdate(this, transform.position);
-
+            
             return true;
         }
 

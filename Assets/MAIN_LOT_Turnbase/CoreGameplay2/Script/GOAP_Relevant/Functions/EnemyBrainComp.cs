@@ -168,7 +168,7 @@ namespace JumpeeIsland
         {
             if (CurrentAction.IsWaitAndStop == false)
                 m_ProcessUpdate?.StopProcess();
-
+            
             await CompleteAction();
         }
 
@@ -237,6 +237,7 @@ namespace JumpeeIsland
         {
             Beliefs.ClearStates();
             Inventory.ClearInventory();
+            m_ProcessUpdate = null;
             CurrentAction = null;
             _actionQueue?.Clear();
             CancelInvoke();
