@@ -28,13 +28,12 @@ namespace JumpeeIsland
 
         private void SetAttackLayer()
         {
-            // attackCollider.Init(this);
-
             foreach (var attackChecker in attackVfx)
-            {
                 if (attackChecker.TryGetComponent(out AnimAttackCollider attackCollider))
                     attackCollider.Init(this);
-            }
+
+            if (harvestVfx.TryGetComponent(out AnimAttackCollider harvestCollider))
+                harvestCollider.Init(this);
         }
 
         public void PlayHarvestVfx()

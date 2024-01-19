@@ -84,7 +84,6 @@ namespace JumpeeIsland
 
         #endregion
         
-        
         #region ATTACK RELATED
 
         public void GainGoldValue()

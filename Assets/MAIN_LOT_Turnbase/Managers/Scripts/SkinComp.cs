@@ -72,6 +72,11 @@ namespace JumpeeIsland
             _curAnimComp.Init(skinObject);
         }
 
+        public void TurnSkin(bool state)
+        {
+            m_SkinAnchor.gameObject.SetActive(state);
+        }
+
         private void SetMaterial(Material material)
         {
             foreach (var item in _factionRenderers)
@@ -92,5 +97,6 @@ namespace JumpeeIsland
         public void SetDefaultMaterial();
         public void SetCustomMaterial(Material material);
         public void ReturnSkin(GameObject skinObject);
+        public void TurnSkin(bool state);
     }
 }

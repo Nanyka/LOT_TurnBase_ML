@@ -9,9 +9,10 @@ namespace JumpeeIsland
         private Collider m_Collider;
         private IEntityUIUpdate entityUI;
         private IAnimateComp m_AnimateComp;
+        private ISkinComp m_SkinComp;
         private UnityEvent<IAttackRelated> _dieEvent;
         private int m_MAXHp;
-        private EntityData m_Data;
+        protected EntityData m_Data;
         private bool _isDeath;
 
         public void Init(int maxHp, UnityEvent<IAttackRelated> dieEvent, EntityData entityData)
@@ -19,6 +20,8 @@ namespace JumpeeIsland
             m_Collider = GetComponent<Collider>();
             entityUI = GetComponent<IEntityUIUpdate>();
             m_AnimateComp = GetComponent<IAnimateComp>();
+            m_SkinComp = GetComponent<ISkinComp>();
+            m_SkinComp.TurnSkin(true);
             m_MAXHp = maxHp;
             m_Data = entityData;
             _dieEvent = dieEvent;
@@ -72,6 +75,15 @@ namespace JumpeeIsland
         {
             // Add VFX
             yield return new WaitForSeconds(2f);
+            
+            m_SkinComp.TurnSkin(false);
+            StartCoroutine(DisableGameObject());
+        }
+
+        private IEnumerator DisableGameObject()
+        {
+            yield return new WaitForSeconds(1f);
+            
             gameObject.SetActive(false);
         }
 

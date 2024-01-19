@@ -10,7 +10,7 @@ namespace JumpeeIsland
         public CreatureType CreatureType;
         public int CurrentShield;
         public int CurrentExp;
-        public int TurnCount;
+        public int TurnCount; 
         public int CurrentDamage;
         public List<EffectCache> EffectCaches = new();
 

@@ -44,5 +44,10 @@ namespace JumpeeIsland
             m_Renderer = skinObject.GetComponentInChildren<Renderer>();
             _defaultMaterial = m_Renderer.material;
         }
+
+        public void TurnSkin(bool state)
+        {
+            m_SkinAnchor.gameObject.SetActive(state);
+        }
     }
 }

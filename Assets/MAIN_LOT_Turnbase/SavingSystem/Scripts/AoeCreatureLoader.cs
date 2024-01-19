@@ -8,7 +8,7 @@ namespace JumpeeIsland
     {
         [SerializeField] private FactionType _factionType;
         
-        private IFactionController _factionController;
+        // private IFactionController _factionController;
         private ObjectPool _creaturePool;
         // protected List<CreatureData> _creatureDatas;
 
@@ -20,13 +20,13 @@ namespace JumpeeIsland
         protected virtual void Start()
         {
             GameFlowManager.Instance.OnInitiateObjects.AddListener(Init);
-            _factionController = GetComponent<IFactionController>();
+            // _factionController = GetComponent<IFactionController>();
             _creaturePool = GetComponent<ObjectPool>();
         }
 
         public void Init()
         {
-            _factionController.Init();
+            // _factionController.Init();
         }
 
         public virtual GameObject PlaceNewObject(CreatureData data)
@@ -36,13 +36,13 @@ namespace JumpeeIsland
 
         private GameObject TrainANewCreature(CreatureData creatureData)
         {
-            creatureData.FactionType = _factionType;
+            creatureData.FactionType = _factionType; // assign Faction
             creatureData.EntityType = _factionType == FactionType.Player ? EntityType.PLAYER : EntityType.ENEMY;
             var creatureObj = _creaturePool.GetObject(creatureData.EntityName);
             if (creatureObj == null)
                 return null;
 
-            creatureData.FactionType = _factionController.GetFaction(); // assign Faction
+            // creatureData.FactionType = _factionController.GetFaction(); 
             
             if (creatureObj.TryGetComponent(out ICreatureInit creatureInGame))
             {
@@ -57,7 +57,7 @@ namespace JumpeeIsland
         {
             _creaturePool.ResetPool();
             // _creatureDatas = new();
-            _factionController.ResetData();
+            // _factionController.ResetData();
         }
     }
 }

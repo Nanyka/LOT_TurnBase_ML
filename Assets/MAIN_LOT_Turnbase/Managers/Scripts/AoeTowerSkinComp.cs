@@ -40,5 +40,10 @@ namespace JumpeeIsland
         {
             _animateComp.Init(skinObject);
         }
+
+        public void TurnSkin(bool state)
+        {
+            m_SkinAnchor.gameObject.SetActive(state);
+        }
     }
 }
