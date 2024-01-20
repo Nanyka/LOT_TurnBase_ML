@@ -40,8 +40,8 @@ namespace JumpeeIsland
         public void OnClickYes()
         {
             Debug.Log("Confirmed the boss map");
-            MainUI.Instance.OnTurnToBattleMode.Invoke(m_Confirm);
-            // m_Confirm.ClickYes();
+            //MainUI.Instance.OnTurnToBattleMode.Invoke(m_Confirm);
+             m_Confirm.ClickYes();
         }
     }
 }
