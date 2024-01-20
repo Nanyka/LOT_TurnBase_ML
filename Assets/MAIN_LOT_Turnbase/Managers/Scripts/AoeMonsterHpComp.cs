@@ -10,13 +10,9 @@ namespace JumpeeIsland
         {
             base.Die(killedByFaction);
 
-            if (killedByFaction == null)
+            if (killedByFaction == null || killedByFaction.GetFaction() == m_Data.FactionType)
                 return;
-
-            Debug.Log($"{m_Data.FactionType} kill by {killedByFaction.GetFaction()}");
-            if (killedByFaction.GetFaction() == m_Data.FactionType)
-                return;
-
+            
             SavingSystemManager.Instance.IncreaseLocalCurrency(_reward.currencyId,_reward.amount);
             MainUI.Instance.OnShowCurrencyVfx.Invoke(_reward.currencyId,_reward.amount,transform.position);
         }

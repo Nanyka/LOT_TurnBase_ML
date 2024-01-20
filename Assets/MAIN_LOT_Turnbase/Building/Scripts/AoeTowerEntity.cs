@@ -13,6 +13,7 @@ namespace JumpeeIsland
         private ISkinComp m_SkinComp;
         private ISkillComp m_SkillComp;
         private IAnimateComp m_AnimateComp;
+        private IEffectComp m_EffectComp;
         private BuildingData m_BuildingData;
         private List<BuildingStats> m_BuildingStats;
         private BuildingStats m_CurrentStats;
@@ -25,6 +26,7 @@ namespace JumpeeIsland
             m_SkinComp = GetComponent<ISkinComp>();
             m_SkillComp = GetComponent<ISkillComp>();
             m_AnimateComp = GetComponent<IAnimateComp>();
+            m_EffectComp = GetComponent<IEffectComp>();
             m_BuildingData = buildingData;
             RefreshEntity();
         }
@@ -124,7 +126,7 @@ namespace JumpeeIsland
 
         public IEffectComp GetEffectComp()
         {
-            throw new NotImplementedException();
+            return m_EffectComp;
         }
 
         public void AccumulateKills()
@@ -180,6 +182,7 @@ namespace JumpeeIsland
                 ? inventoryItem.skinAddress[m_BuildingData.CurrentLevel]
                 : inventoryItem.skinAddress[0];
             m_SkinComp.Init(m_BuildingData.SkinAddress, m_AnimateComp);
+            m_EffectComp.Init(this);
         }
 
         #endregion

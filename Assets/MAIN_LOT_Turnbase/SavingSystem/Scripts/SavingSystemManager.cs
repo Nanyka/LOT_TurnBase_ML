@@ -401,7 +401,7 @@ namespace JumpeeIsland
                 return;
 
             var checkedAmount = buildingLimitation.amount;
-            Debug.Log($"Check limit amount of {inventoryItem.inventoryName}: {checkedAmount}");
+            // Debug.Log($"Check limit amount of {inventoryItem.inventoryName}: {checkedAmount}");
             if (GetEnvironmentData().CheckBuildingLimitAmount(inventoryItem.inventoryName, checkedAmount))
             {
                 MainUI.Instance.OnConversationUI.Invoke($"{inventoryItem.inventoryName} reach limited construction",

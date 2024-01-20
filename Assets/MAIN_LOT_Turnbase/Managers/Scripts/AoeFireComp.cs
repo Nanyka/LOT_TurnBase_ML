@@ -20,18 +20,17 @@ namespace JumpeeIsland
 
         public void PlayCurveFX(Vector3 targetPos)
         {
-            
+            _targetPos = targetPos + Vector3.up*0.5f;
             var bulletFX = _bulletFXs[_comboReceiver.GetAttackIndex()];
             if (bulletFX != null)
             {
                 if (_isInPlaceFire)
                 {
-                    bulletFX.transform.LookAt(targetPos);
+                    bulletFX.transform.LookAt(_targetPos);
                     bulletFX.Play();
                     return;
                 }
                 
-                _targetPos = targetPos + Vector3.up*0.5f;
                 var position = bulletFX.transform.position;
                 _velocity = CalcBallisticVelocityVector(position, _targetPos, _angle);
                 bulletFX.transform.LookAt(new Vector3(_targetPos.x, position.y, _targetPos.z));

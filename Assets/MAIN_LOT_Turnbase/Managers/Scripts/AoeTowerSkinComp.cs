@@ -28,12 +28,13 @@ namespace JumpeeIsland
 
         public void SetDefaultMaterial()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TODO: Tower refresh material for frozing");
         }
 
         public void SetCustomMaterial(Material material)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TODO: Tower need material for frozing");
+            
         }
 
         public void ReturnSkin(GameObject skinObject)
